@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-sidebar',
+  selector: 'sidebar',
   template: `<div class="sidebar sidebar-left" id="sidebar">
     HERES THE SIDEBAR
             <!--<accordion>

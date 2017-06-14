@@ -1,0 +1,45 @@
+#header {
+   top: 0px;
+   left: 0px;
+   right: 0px;
+   height: 65px;
+   background-color: #59595C;
+   color: #E7E4CE;
+   position: absolute;
+   z-index: 1;
+   display: inline;
+   font-family: BryantWebRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+   font-size: 40px;
+}
+#usgsLogoDiv {
+   float: left;
+   background-color: Black;
+  /* height: 50px; */
+   width: 150px;
+   max-height: 65px;
+   padding-top: 10px;
+   padding-right: 5px;
+   padding-bottom: 5px;
+   text-align: center;
+}
+#usgsLogo {
+   height: 45px;
+   cursor: pointer;
+}
+#title {
+   float: left;
+   padding-right: 5px;
+   padding-left: 10px;
+   padding-top: 10px;
+   font-family: "BryantWebBold","Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+#titleSeparator {
+   color: #F37A49;
+   float: left;
+   padding-right: 5px;
+   padding-top: 10px;
+   font-family: BryantWebBold, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+#subTitle {
+   padding-top: 10px;
+}

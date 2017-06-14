@@ -5,13 +5,17 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { SidebarModule } from "app/sidebar/sidebar.module";
+import { NavbarModule } from "app/navbar/navbar.module";
+import { MainviewModule } from "app/mainview/mainview.module";
+
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule, FormsModule, HttpModule, SidebarModule
+    BrowserModule, FormsModule, HttpModule, SidebarModule, NavbarModule, MainviewModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

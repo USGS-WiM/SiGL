@@ -1,5 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { SidebarComponent } from "app/sidebar/sidebar.component";
+import { NavbarComponent } from "app/navbar/navbar.component";
+import { MainviewComponent } from "app/mainview/mainview.component";
 
 @Component({
   selector: 'app-root',
