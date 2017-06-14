@@ -1,5 +1,5 @@
 // import {LatLngBounds} from "leaflet";
-import { ILatLng } from "app/shared/latlong.interface";
+import { ILatLng } from "./latlong.interface";
 
 export class Location implements ILatLng {
     latitude: number;
