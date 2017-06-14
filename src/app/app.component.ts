@@ -1,10 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { SidebarComponent } from "app/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  template: `
+      <navbar></navbar>
+      <sidebar></sidebar>
+      <mainview></mainview>
+  `,
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  @ViewChild(NavbarComponent) navbarComponent: NavbarComponent;
+  @ViewChild(SidebarComponent) sidebarComponent: SidebarComponent;    
+  @ViewChild(MainviewComponent) mainviewCommponent: MainviewComponent;
 }
