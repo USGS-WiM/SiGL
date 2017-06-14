@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { SidebarModule } from "app/sidebar/sidebar.module";
 import { NavbarModule } from "app/navbar/navbar.module";
 import { MainviewModule } from "app/mainview/mainview.module";
+import { SharedModule } from "app/shared/shared.module";
 
 
 @NgModule({
@@ -14,8 +15,7 @@ import { MainviewModule } from "app/mainview/mainview.module";
     AppComponent
   ],
   imports: [
-    BrowserModule, FormsModule, HttpModule, SidebarModule, NavbarModule, MainviewModule
-    
+    BrowserModule, FormsModule, HttpModule, SidebarModule, NavbarModule, MainviewModule, SharedModule    
   ],
   providers: [],
   bootstrap: [AppComponent]
