@@ -6,6 +6,10 @@ import { MainviewComponent } from './mainview.component';
   imports: [
     CommonModule
   ],
-  declarations: [MainviewComponent]
+  declarations: [MainviewComponent],
+  exports: [
+    MainviewComponent
+  ]
 })
+
 export class MainviewModule { }

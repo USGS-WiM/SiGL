@@ -4,7 +4,10 @@ import { SidebarComponent } from './sidebar.component';
 
 @NgModule({
   imports: [ CommonModule ],
-  declarations: [SidebarComponent]
+  declarations: [SidebarComponent],
+  exports: [
+    SidebarComponent
+  ]
 })
 
 export class SidebarModule { }
