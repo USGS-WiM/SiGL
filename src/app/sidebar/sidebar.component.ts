@@ -11,7 +11,10 @@ export class SidebarComponent implements OnInit {
 
   constructor(private _modalService: ModalService) { }
 
-  ngOnInit() {} 
+  ngOnInit() {
+    // subscribe to get updates when things are changed in filtermodal
+    
+  } 
   
   // show filter button click
   public showFilterModal(): void {
