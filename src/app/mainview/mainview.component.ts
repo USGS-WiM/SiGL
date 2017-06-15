@@ -18,12 +18,12 @@ export class MainviewComponent implements OnInit {
             maxZoom: 19,
             layers: [this._mapService.baseMaps.Topo]
       });
-      L.control.layers(this._mapService.baseMaps).addTo(map);
-      L.control.scale().addTo(map);
+      L.control.layers(this._mapService.baseMaps).addTo(this.map);
+      L.control.scale().addTo(this.map);
      // this._mapService.map = map;       
-      L.control.scale().addTo(map);
+      L.control.scale().addTo(this.map);
 
-      this._mapService.map = map; 
+      this._mapService.map = this.map; 
   }
 
 }
