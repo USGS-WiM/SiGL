@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BasemapsComponent } from "app/mainview/basemaps/basemaps.component";
 
 @Component({
   selector: 'sidebar',
