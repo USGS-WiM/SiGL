@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { MapService } from "app/shared/map.service";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MapService } from "app/shared/services/map.service";
+import { FilterComponent } from "app/shared/components/filter/filter.component";
 
 @Component({
   selector: 'mainview',
-  template: `<div id="map"></div>`,
+  template: `<filter #filtermodal (modalResponseEvent)="FilterModalResponse($event)"></filter>
+              <div id="map"></div>`,
   styleUrls: ['./mainview.component.css']
 })
-export class MainviewComponent implements OnInit {
+export class MainviewComponent implements OnInit {  
+  // filter modal, opened from sidebar's (click) function that changing show boolean, subscribed to in the filterModalComponent
+  @ViewChild('filtermodal') filtermodal: FilterComponent; 
   public map: any;
   constructor( private _mapService: MapService) { }
 
@@ -24,6 +28,11 @@ export class MainviewComponent implements OnInit {
       L.control.scale().addTo(this.map);
 
       this._mapService.map = this.map; 
+  }
+
+  // response from filter modal closing
+  public FilterModalResponse(r){
+    let test = "what";
   }
 
 }

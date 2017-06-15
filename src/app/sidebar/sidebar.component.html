@@ -1,5 +1,5 @@
 <div class="sidebar sidebar-left" id="sidebar">
-    <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+    <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-1">
     <ngb-panel title="Basemaps">
         <ng-template ngbPanelContent>
             <basemaps></basemaps>
@@ -7,7 +7,7 @@
     </ngb-panel>
     <ngb-panel title="Filters">
         <ng-template ngbPanelContent>
-            <!--<filterside></filterside>  -->
+            <button type="button" class="btn btn-primary" (click)="showFilterModal()">Change filters</button>            
         </ng-template>
     </ngb-panel>    
     </ngb-accordion>

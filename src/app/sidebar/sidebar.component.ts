@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BasemapsComponent } from "app/mainview/basemaps/basemaps.component";
+import { ModalService } from "app/shared/services/modal.service";
 
 @Component({
   selector: 'sidebar',
@@ -8,9 +9,14 @@ import { BasemapsComponent } from "app/mainview/basemaps/basemaps.component";
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _modalService: ModalService) { }
 
-  ngOnInit() {
+  ngOnInit() {} 
+  
+  // show filter button click
+  public showFilterModal(): void {
+    // change boolean value to show the modal (filter)
+    this._modalService.showModal = true; 
   }
 
 }
