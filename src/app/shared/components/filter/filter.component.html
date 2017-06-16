@@ -3,7 +3,14 @@
         <h4 class="modal-title">Filter Map</h4>
     </div>
     <div class="modal-body">
-        <p>Modal works!</p>
+        <div>
+            <div class="row">
+                <label class="col-xs-3">Parameters:</label>
+                <div class="col-xs-6">
+                    <ss-multiselect-dropdown [options]="parameterMulti" [(ngModel)]="parameterSelected"></ss-multiselect-dropdown>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button (click)="c('Clear')" style="color:black;">Clear All</button>
