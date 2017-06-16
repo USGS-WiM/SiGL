@@ -12,34 +12,45 @@
    font-size: 40px;
 }
 #usgsLogoDiv {
-   float: left;
-   background-color: Black;
-  /* height: 50px; */
-   width: 150px;
-   max-height: 65px;
-   padding-top: 10px;
-   padding-right: 5px;
-   padding-bottom: 5px;
-   text-align: center;
+    float: left;
+    background-color: Black;
+    height: 65px;
+    width: 150px;
+    padding-top: 10px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    text-align: center;   
+   line-height: 0px !important;
 }
 #usgsLogo {
    height: 45px;
    cursor: pointer;
 }
 #title {
-   float: left;
-   padding-right: 5px;
-   padding-left: 10px;
-   padding-top: 10px;
-   font-family: "BryantWebBold","Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    float: left;
+    padding-right: 5px;
+    padding-left: 10px;
+    padding-top: 10px;
+    font-family: "BryantWebBold","Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 #titleSeparator {
-   color: #F37A49;
-   float: left;
-   padding-right: 5px;
-   padding-top: 10px;
-   font-family: BryantWebBold, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    color: #F37A49;
+    float: left;
+    padding-right: 5px;
+    padding-top: 10px;
+    font-family: BryantWebBold, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 #subTitle {
-   padding-top: 10px;
+    padding-top: 10px;
+}
+#betaTitle {
+    float: right;
+    padding: 20px;
+    font-size: 16px;
+    color: #AAAAB5;
+}
+#helpIcon {
+    float: right;
+    cursor: pointer;
+    padding-top: 5px;
 }

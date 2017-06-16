@@ -2,16 +2,22 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'navbar',
-  template: `<nav id="header" class="navbar nav-default navbar-fixed-top" role="navigation">
-                <div id="usgsLogoDiv" class="navbar-header">
-                  <img id="usgsLogo" alt="USGS Logo" src="assets/usgsLogo.png" /><!--</a>-->
+  template: `<div id="header">
+                <div id="headerLogo">
+                  <div id="usgsLogoDiv">
+                    <img id="usgsLogo" alt="USGS Logo" title="USGS Links" src="assets/usgsLogo.png" /><!--</a>-->
+                  </div>
+                  <div id="titles">
+                    <div id="betaTitle"></div>
+                    <div id="title">{{title}}</div>
+                    <div id="titleSeparator">:</div>
+                    <div id="subTitle">
+                      {{subtitle}}
+                      <img id="helpIcon" src="assets/MoreInfo.png" title="Help" />
+                    </div>
+                  </div>
                 </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                  <div id="title">{{title}}</div>
-                  <div id="titleSeparator">:</div>
-                  <div id="subTitle">{{subtitle}}</div>
-                </div>
-            </nav>`,
+            </div>`,
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
