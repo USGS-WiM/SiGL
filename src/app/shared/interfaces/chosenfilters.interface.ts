@@ -1,7 +1,7 @@
-// import { IMultiSelectOption  } from "angular-2-dropdown-multiselect";
-/*import {Iorganization} from "./organization.interface";
+import { IMultiSelectOption  } from "angular-2-dropdown-multiselect";
+import {Iorganization} from "./organization.interface";
 
-export interface IsitesFilter {
+export interface IchosenFilters {
     s_parameters?: Array<number>;
     PARAMETERS?: Array<IMultiSelectOption>;
     s_projDuration?: Array<number>;
@@ -22,4 +22,4 @@ export interface IsitesFilter {
     ORG?: Iorganization;
     p_objectives?: Array<number>;
     OBJS?:Array<IMultiSelectOption>;
-}*/
+}
