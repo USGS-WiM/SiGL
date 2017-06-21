@@ -55,20 +55,23 @@
             <div class="row">
                 <label class="col-xs-3">Organization: </label>
                 <div class="col-xs-6">
-                    <ss-multiselect-dropdown [options]="organizationMulti" [(ngModel)]="orgainzationSelected" (ngModelChange)="filterChange('organization', $event)"></ss-multiselect-dropdown>
+                    <select class="form-control" [(ngModel)]="orgSelected" (ngModelChange)="filterChange('organization', $event)">
+                        <option value=""></option>
+                        <option [ngValue]="o" *ngFor="let o of organizationList">{{o.organization_name}}</option>
+                    </select>                
                 </div>
             </div>
             <div class="row">
                 <label class="col-xs-3">Project Objective: </label>
                 <div class="col-xs-6">
-                    <ss-multiselect-dropdown [options]="objectiveMulti" [(ngModel)]="objecttiveSelected" (ngModelChange)="filterChange('objective', $event)"></ss-multiselect-dropdown>
+                    <ss-multiselect-dropdown [options]="objectiveMulti" [(ngModel)]="objectiveSelected" (ngModelChange)="filterChange('objective', $event)"></ss-multiselect-dropdown>
                 </div>
             </div>
             <br/>
              <div class="row">
                 <label class="col-xs-3">Search by project name: </label>
                 <div class="col-xs-6">
-                    <select class="form-control" [(ngModel)]="selectedProject" (ngModelChange)="onProjectSelect($event)" name="project">
+                    <select class="form-control" [(ngModel)]="projectSelected" (ngModelChange)="onProjectSelect($event)" name="project">
                         <option [ngValue]="p" *ngFor="let p of projectList">{{p.name}}</option>
                     </select>
                 </div>

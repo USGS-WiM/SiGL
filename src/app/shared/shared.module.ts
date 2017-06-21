@@ -10,9 +10,9 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 
 
 @NgModule({
-  imports: [ CommonModule, NgbModule.forRoot(), MultiselectDropdownModule, FormsModule],
-  exports: [NgbModule, FilterComponent, MultiselectDropdownModule],
-  declarations: [FilterComponent],
-  providers: [ MapService, ModalService, SiglService ]
+	imports: [CommonModule, NgbModule.forRoot(), MultiselectDropdownModule, FormsModule],
+	exports: [NgbModule, FilterComponent, MultiselectDropdownModule],
+	declarations: [FilterComponent],
+	providers: [MapService, ModalService, SiglService]
 })
 export class SharedModule { }
