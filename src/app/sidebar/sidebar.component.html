@@ -7,7 +7,80 @@
     </ngb-panel>
     <ngb-panel title="Filters">
         <ng-template ngbPanelContent>
-            <button type="button" class="btn btn-primary" (click)="showFilterModal()">Change filters</button>            
+            <button type="button" class="btn btn-primary" (click)="showFilterModal()">Change filters</button>
+            
+            <div *ngIf="chosenFilters?.PARAMETERS">
+                <span *ngIf="chosenFilters.PARAMETERS.length > 0">Parameter<span *ngIf="chosenFilters.PARAMETERS.length > 1">s</span>:</span>
+                <ul>
+                    <li *ngFor="let p of chosenFilters.PARAMETERS;">{{p.name}}</li>
+                </ul>
+
+            </div>
+
+            <div *ngIf="chosenFilters?.DURATIONS">
+                <span *ngIf="chosenFilters.DURATIONS.length > 0">Duration<span *ngIf="chosenFilters.DURATIONS.length > 1">s</span>:</span>
+                <ul>
+                    <li *ngFor="let d of chosenFilters.DURATIONS">{{d.name}}</li>
+                </ul>
+            </div>
+
+            <div *ngIf="chosenFilters?.STATUSES">
+                <span *ngIf="chosenFilters.STATUSES.length > 0">Status:</span>
+                <ul>
+                    <li *ngFor="let s of chosenFilters.STATUSES">{{s.name}}</li>
+                </ul>
+            </div>
+
+            <div *ngIf="chosenFilters?.RESOURCES">
+                <span *ngIf="chosenFilters.RESOURCES.length > 0">Resource Component<span *ngIf="chosenFilters.RESOURCES.length > 1">s</span>:</span>
+                <ul>
+                    <li *ngFor="let r of chosenFilters.RESOURCES">{{r.name}}</li>
+                </ul>
+            </div>
+            
+            <div *ngIf="chosenFilters?.MEDIA">
+                <span *ngIf="chosenFilters.MEDIA.length > 0">Media:</span>
+                <ul>
+                    <li *ngFor="let m of chosenFilters.MEDIA">{{m.name}}</li>
+                </ul>
+            </div>
+
+             <div *ngIf="chosenFilters?.LAKES">
+                <span *ngIf="chosenFilters.LAKES.length > 0">Great Lake<span *ngIf="chosenFilters.LAKES.length > 1">s</span>:</span>
+                <ul>
+                    <li *ngFor="let l of chosenFilters.LAKES">{{l.name}}</li>
+                </ul>
+            </div>
+
+            <div *ngIf="chosenFilters?.STATES">
+                <span *ngIf="chosenFilters.STATES.length > 0">State<span *ngIf="chosenFilters.STATES.length > 1">s</span>/Province<span *ngIf="chosenFilters.STATES.length > 1">s</span>:</span>
+                <ul>
+                    <li *ngFor="let st of chosenFilters.STATES">{{st.name}}</li>
+                </ul>
+            </div>
+
+            <div *ngIf="chosenFilters?.MONITORS">
+                <span *ngIf="chosenFilters.MONITORS.length > 0">Monitoring effort or coordination:</span>
+                <ul>
+                    <li *ngFor="let m of chosenFilters.MONITORS">{{m.name}}</li>
+                </ul>
+            </div>
+
+             <div *ngIf="chosenFilters?.ORG">
+                <span>Organization:</span>
+                <ul>
+                    <li>{{chosenFilters.ORG.organization_name}}</li>
+                </ul>
+            </div>
+
+            <div *ngIf="chosenFilters?.OBJS">
+                <span *ngIf="chosenFilters.OBJS.length > 0">Project Objective<span *ngIf="chosenFilters.OBJS.length > 1">s</span>:</span>
+                <ul>
+                    <li *ngFor="let ob of chosenFilters.OBJS">{{ob.name}}</li>
+                </ul>
+            </div>
+
+
         </ng-template>
     </ngb-panel>    
     </ngb-accordion>
