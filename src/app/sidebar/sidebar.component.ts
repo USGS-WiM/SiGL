@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BasemapsComponent } from "app/mainview/basemaps/basemaps.component";
+import { ResultsComponent } from "app/mainview/results/results.component";
 import { ModalService } from "app/shared/services/modal.service";
 import { SiglService } from "app/shared/services/siglservices.service";
 import { IchosenFilters } from "app/shared/interfaces/chosenFilters.interface";
