@@ -3,12 +3,12 @@ import { MapService } from "app/shared/services/map.service";
 import { FilterComponent } from "app/shared/components/filter/filter.component";
 
 @Component({
-  selector: 'mainview',
+  selector: 'mapview',
   template: `<filter #filtermodal (modalResponseEvent)="FilterModalResponse($event)"></filter>
               <div id="map"></div>`,
-  styleUrls: ['./mainview.component.css']
+  styleUrls: ['./mapview.component.css']
 })
-export class MainviewComponent implements OnInit {  
+export class MapviewComponent implements OnInit {  
   // filter modal, opened from sidebar's (click) function that changing show boolean, subscribed to in the filterModalComponent
   @ViewChild('filtermodal') filtermodal: FilterComponent; 
   public map: any;
