@@ -188,9 +188,7 @@ export class SiglService {
 		let sitesParam: URLSearchParams = new URLSearchParams();
 		if (filters.p_organization) sitesParam.set("ProjOrg", filters.p_organization.toString());
 		if (filters.p_objectives) sitesParam.set("ProjObjs", filters.p_objectives.join(','));
-		
-			sitesParam.set("Parameters", filters.s_parameters.join(","));
-		
+		if(filters.s_parameters) sitesParam.set("Parameters", filters.s_parameters.join(","));
 		if (filters.s_projDuration) sitesParam.set("Duration", filters.s_projDuration.join(","));
 		if (filters.s_projStatus) sitesParam.set("Status", filters.s_projStatus.join(","));
 		if (filters.s_resources) sitesParam.set("ResComp", filters.s_resources.join(","));
