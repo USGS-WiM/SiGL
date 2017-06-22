@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions } from "@angular/http";
+import { Http, Response, RequestOptions, URLSearchParams } from "@angular/http";
 import { Iparameter } from "app/shared/interfaces/parameter.interface";
 import { IprojDuration } from "app/shared/interfaces/projduration.interface";
 import { IprojStatus } from "app/shared/interfaces/projstatus.interface";
