@@ -178,7 +178,26 @@ export class FilterComponent implements OnInit {
 
     public showFilterModal(): void {
         this._ngbService.open(this.modalElement, { backdrop: 'static', keyboard: false, size: 'lg' }).result.then((results) => {
-            //they closed modal, do stuff 
+            if (results == 'Clear'){
+                //reset all selects in the modal
+                this.parameterSelected = [];
+                this.projDurationSelected = [];
+                this.projStatusSelected = [];
+                this.resourceSelected = [];
+                this.mediaSelected = [];
+                this.lakeSelected = [];
+                this.stateSelected = [];
+                this.monitoringEffortSelected = [];
+                this.orgSelected = undefined;
+                this.objectiveSelected = [];
+                this.projectSelected = undefined;
+                //clear sidebar
+                this.chosenFiltersObj = {};
+                this._siglService.chosenFilters = this.chosenFiltersObj;
+            } else{
+                //search
+                this._siglService.setFilteredSites(this.chosenFiltersObj);
+            }
             this.modalResponseEvent.emit(results);
         })
     }

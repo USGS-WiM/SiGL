@@ -1,16 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions } from "@angular/http";
-import { Subject } from "rxjs/Subject";
+import { Http, Response, RequestOptions, URLSearchParams } from "@angular/http";
 import { Iparameter } from "app/shared/interfaces/parameter.interface";
 import { IprojDuration } from "app/shared/interfaces/projduration.interface";
 import { IprojStatus } from "app/shared/interfaces/projstatus.interface";
 import { Iresource } from "app/shared/interfaces/resource.interface";
 import { Imedia } from "app/shared/interfaces/media.interface";
-
-import { Observable } from "rxjs/Observable";
-import { CONFIG } from "./config";
-
-import "rxjs/add/operator/map";
 import { Ilake } from "app/shared/interfaces/lake.interface";
 import { Istate } from "app/shared/interfaces/state.interface";
 import { ImonitorEffort } from "app/shared/interfaces/monitoreffort.interface";
@@ -18,8 +12,11 @@ import { Iproject } from "app/shared/interfaces/project.interface";
 import { Iorganization } from "app/shared/interfaces/organization.interface";
 import { Iobjective } from "app/shared/interfaces/objective.interface";
 import { IchosenFilters } from "app/shared/interfaces/chosenFilters.interface";
-
-
+import { Isite } from "app/shared/interfaces/site.interface";
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/operator/map";
+import { Subject } from "rxjs/Subject";
+import { CONFIG } from "./config";
 
 
 @Injectable()
@@ -52,6 +49,7 @@ export class SiglService {
 	private _organizationSubject: Subject<Array<Iorganization>> = new Subject<Array<Iorganization>>();
 	private _objectiveSubject: Subject<Array<Iobjective>> = new Subject<Array<Iobjective>>();
 	private _chosenFilterSubject: Subject<any> = new Subject<any>();
+	private _filteredSitesSubject: Subject<Array<Isite>> = new Subject<Array<Isite>>();
 
 	//getters
 	public get parameters(): Observable<Array<Iparameter>> {
@@ -90,9 +88,13 @@ export class SiglService {
 	public get chosenFilters(): any {
 		return this._chosenFilterSubject.asObservable();
 	}
+	public get filteredSites(): Observable<Array<Isite>>{
+		return this._filteredSitesSubject.asObservable();
+	}
 
 	//http requests  
 	//get from services, set subjects
+	//called from constructor only so private
 	private setParameters(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.PARAMETERS_URL, options)
@@ -179,6 +181,27 @@ export class SiglService {
 			.map(res => <Array<Iobjective>>res.json())
 			.subscribe(ob => {
 				this._objectiveSubject.next(ob);
+			}, error => this.handleError);
+	}
+	//getting called from separate component so it nees to be public
+	public setFilteredSites(filters: IchosenFilters): void {
+		let sitesParam: URLSearchParams = new URLSearchParams();
+		if (filters.p_organization) sitesParam.set("ProjOrg", filters.p_organization.toString());
+		if (filters.p_objectives) sitesParam.set("ProjObjs", filters.p_objectives.join(','));
+		if(filters.s_parameters) sitesParam.set("Parameters", filters.s_parameters.join(","));
+		if (filters.s_projDuration) sitesParam.set("Duration", filters.s_projDuration.join(","));
+		if (filters.s_projStatus) sitesParam.set("Status", filters.s_projStatus.join(","));
+		if (filters.s_resources) sitesParam.set("ResComp", filters.s_resources.join(","));
+		if (filters.s_media) sitesParam.set("Media", filters.s_media.join(","));
+		if (filters.s_lakes) sitesParam.set("Lake", filters.s_lakes.join(","));
+		if (filters.s_states) sitesParam.set("State", filters.s_states.join(","));
+		if (filters.s_monitorEffect) sitesParam.set("ProjMonitorCoords", filters.s_monitorEffect.join(","));
+
+		let options = new RequestOptions( { headers: CONFIG.MIN_JSON_HEADERS, search: sitesParam });
+		this._http.get(CONFIG.FILTERED_SITES_URL, options)
+			.map(res => <Array<Isite>>res.json())
+			.subscribe(site => {
+				this._filteredSitesSubject.next(site);
 			}, error => this.handleError);
 	}
 
