@@ -1,7 +1,15 @@
 #map {
    position:absolute;
    top:65px;
-   left:400px;
    bottom:0;
    width:100%;
+}
+
+#handle {
+    position: absolute;
+    top:0px;
+    background-color: #59595C;
+    color: #E7E4CE;
+    width:100%;
+    text-align: center;
 }
