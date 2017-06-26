@@ -7,13 +7,13 @@ import { FilterComponent } from './components/filter/filter.component';
 import { ModalService } from 'app/shared/services/modal.service';
 import { SiglService } from 'app/shared/services/siglservices.service';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
-import { ResultsComponent } from './components/results/results.component'
+
 
 
 @NgModule({
 	imports: [CommonModule, NgbModule.forRoot(), MultiselectDropdownModule, FormsModule],
-	exports: [NgbModule, FilterComponent, MultiselectDropdownModule, ResultsComponent],
-	declarations: [FilterComponent, ResultsComponent],
+	exports: [NgbModule, FilterComponent, MultiselectDropdownModule ],
+	declarations: [FilterComponent ],
 	providers: [MapService, ModalService, SiglService]
 })
 export class SharedModule { }

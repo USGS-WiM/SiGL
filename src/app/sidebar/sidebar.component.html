@@ -83,11 +83,15 @@
 
         </ng-template>
     </ngb-panel> 
-    <ngb-panel title="Filter Results">
+     <ngb-panel title="Filter Results">
         <ng-template ngbPanelContent>
-            <results></results>
+            <div *ngIf="filteredProjects?.length > 0">
+                <ul>
+                    <li *ngFor="let proj of filteredProjects">{{proj.name}}</li>
+                </ul>
+            </div>
         </ng-template>
-    </ngb-panel>   
+    </ngb-panel>
     </ngb-accordion>
 
     
