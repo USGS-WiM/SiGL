@@ -13,10 +13,12 @@ import { Iorganization } from "app/shared/interfaces/organization.interface";
 import { Iobjective } from "app/shared/interfaces/objective.interface";
 import { IchosenFilters } from "app/shared/interfaces/chosenFilters.interface";
 import { Isite } from "app/shared/interfaces/site.interface";
+import { Ifilteredproject } from "app/shared/interfaces/filteredproject";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import { Subject } from "rxjs/Subject";
 import { CONFIG } from "./config";
+
 
 
 @Injectable()
@@ -49,7 +51,8 @@ export class SiglService {
 	private _organizationSubject: Subject<Array<Iorganization>> = new Subject<Array<Iorganization>>();
 	private _objectiveSubject: Subject<Array<Iobjective>> = new Subject<Array<Iobjective>>();
 	private _chosenFilterSubject: Subject<any> = new Subject<any>();
-	private _filteredSitesSubject: Subject<Array<Isite>> = new Subject<Array<Isite>>();
+	//private _filteredSitesSubject: Subject<Array<Isite>> = new Subject<Array<Isite>>();
+	private _filteredProjectSubject: Subject<Array<Ifilteredproject>> = new Subject<Array<Ifilteredproject>>();
 
 	//getters
 	public get parameters(): Observable<Array<Iparameter>> {
@@ -88,8 +91,11 @@ export class SiglService {
 	public get chosenFilters(): any {
 		return this._chosenFilterSubject.asObservable();
 	}
-	public get filteredSites(): Observable<Array<Isite>>{
+	/*public get filteredSites(): Observable<Array<Isite>>{
 		return this._filteredSitesSubject.asObservable();
+	}*/
+	public get filteredProjects(): Observable<Array<Ifilteredproject>>{
+		return this._filteredProjectSubject.asObservable();
 	}
 
 	//http requests  
@@ -198,10 +204,10 @@ export class SiglService {
 		if (filters.s_monitorEffect) sitesParam.set("ProjMonitorCoords", filters.s_monitorEffect.join(","));
 
 		let options = new RequestOptions( { headers: CONFIG.MIN_JSON_HEADERS, search: sitesParam });
-		this._http.get(CONFIG.FILTERED_SITES_URL, options)
-			.map(res => <Array<Isite>>res.json())
-			.subscribe(site => {
-				this._filteredSitesSubject.next(site);
+		this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
+			.map(res => <Array<Ifilteredproject>>res.json())
+			.subscribe(proj => {
+				this._filteredProjectSubject.next(proj);
 			}, error => this.handleError);
 	}
 
