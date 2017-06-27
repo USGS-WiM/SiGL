@@ -20,3 +20,7 @@
 .marginLeft {
     margin-left: 20px;
 }
+
+a{
+    cursor: pointer;
+}

@@ -1,5 +1,57 @@
 <filter #filtermodal (modalResponseEvent)="FilterModalResponse($event)"></filter>
 <div id="map"></div>
-<div [ngStyle]="style" mwlResizable [enableGhostResize]="true" [resizeCursorPrecision]="30" (resizeEnd)="onResizeEnd($event)" [resizeEdges]="{bottom: false, right: right, top: true, left: false}">
+<div id="bottomBar" [ngStyle]="style" mwlResizable [enableGhostResize]="true" [resizeCursorPrecision]="30" (resizeEnd)="onResizeEnd($event)" [resizeEdges]="{bottom: false, right: right, top: true, left: false}">
     <div id="handle"><i class="fa fa-arrows-v" aria-hidden="true"></i></div>
+
+    <div id="tabContainer">
+        <ngb-tabset>
+            <ngb-tab title="Project Summary">
+                <ng-template ngbTabContent>
+                <p>Project</p>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Data/Publications">
+                <ng-template ngbTabContent>
+                    <p>Pubs</p>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Contact Info.">
+                <ng-template ngbTabContent>
+                    <p>Contact info</p>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Project Sites">
+                <ng-template ngbTabContent>
+                   <ng-container *ngTemplateOutlet="innerTabset"></ng-container>
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
+        
+        <ng-template #innerTabset>
+            <ngb-tabset>
+                <ngb-tab>
+                <ng-template ngbTabTitle>
+                    Site Details
+                </ng-template>
+                <ng-template ngbTabContent>
+                    DETAILS HERE
+                </ng-template>
+                </ngb-tab>
+                <ngb-tab>
+                <ng-template ngbTabTitle>
+                    Parameters Sampled
+                </ng-template>
+                <ng-template ngbTabContent>
+                    PARAMETERS YO
+                </ng-template>
+                </ngb-tab>
+
+            </ngb-tabset>
+        </ng-template>
+    </div>
+
+    
+
+
+
 </div>
