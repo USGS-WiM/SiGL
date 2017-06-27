@@ -91,8 +91,9 @@
                 <div *ngFor="let proj of filteredProjects;let i = index;">
                     <div>
                         <a *ngIf="proj.projectSites.length > 0" (click)="proj.isCollapsed = !proj.isCollapsed" [attr.aria-expanded]="!proj.isCollapsed" aria-controls="collapseExample">
-                            <i class="fa fa-caret-right" *ngIf="proj.isCollapsed" aria-hidden="true"></i>
-                            <i class="fa fa-caret-down" *ngIf="!proj.isCollapsed" aria-hidden="true"></i>
+                            <i [ngClass]="proj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
+                       <!-- <i class="fa fa-caret-right" *ngIf="proj.isCollapsed" aria-hidden="true"></i>
+                            <i class="fa fa-caret-down" *ngIf="!proj.isCollapsed" aria-hidden="true"></i> -->
                         </a>
                         <span>{{proj.name}}</span><span class="pull-right">{{proj.projectSites.length}}</span>
                     </div>
