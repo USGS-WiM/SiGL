@@ -5,6 +5,7 @@ import { SiglService } from "app/shared/services/siglservices.service";
 import { IchosenFilters } from "app/shared/interfaces/chosenFilters.interface";
 //import { Isite } from "app/shared/interfaces/site.interface";
 import { Ifilteredproject } from "app/shared/interfaces/filteredproject";
+import { Isimplesite } from "app/shared/interfaces/simplesite";
 
 @Component({
 	selector: 'sidebar',
@@ -42,6 +43,14 @@ export class SidebarComponent implements OnInit {
 	public showFilterModal(): void {
 		// change boolean value to show the modal (filter)
 		this._modalService.showModal = true;
+	}
+
+	public showProjectDetails(project: Ifilteredproject): void{
+		this._siglService.setFullProject(project);
+	}
+
+	public showSiteDetails(site: Isimplesite): void {
+
 	}
 
 }

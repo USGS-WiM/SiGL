@@ -1,13 +1,13 @@
 <filter #filtermodal (modalResponseEvent)="FilterModalResponse($event)"></filter>
 <div id="map"></div>
-<div id="bottomBar" [ngStyle]="style" mwlResizable [enableGhostResize]="true" [resizeCursorPrecision]="30" (resizeEnd)="onResizeEnd($event)" [resizeEdges]="{bottom: false, right: right, top: true, left: false}">
+<div id="bottomBar" *ngIf="showBottomBar" [ngStyle]="style" mwlResizable [enableGhostResize]="true" [resizeCursorPrecision]="30" (resizeEnd)="onResizeEnd($event)" [resizeEdges]="{bottom: false, right: right, top: true, left: false}">
     <div id="handle"><i class="fa fa-arrows-v" aria-hidden="true"></i></div>
 
     <div id="tabContainer">
         <ngb-tabset>
             <ngb-tab title="Project Summary">
                 <ng-template ngbTabContent>
-                <p>Project</p>
+                 <span *ngIf="fullProj">Project Name: {{fullProj.Name}} </span>
                 </ng-template>
             </ngb-tab>
             <ngb-tab title="Data/Publications">
@@ -34,7 +34,11 @@
                     Site Details
                 </ng-template>
                 <ng-template ngbTabContent>
-                    DETAILS HERE
+                    <span *ngIf="fullProjSites.length > 0">
+                        <ul>
+                            <li *ngFor="let fps of fullProjSites">{{fps.Name}}</li>
+                        </ul> 
+                    </span>
                 </ng-template>
                 </ngb-tab>
                 <ngb-tab>

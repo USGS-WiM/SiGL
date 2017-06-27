@@ -14,15 +14,19 @@ import { Iobjective } from "app/shared/interfaces/objective.interface";
 import { IchosenFilters } from "app/shared/interfaces/chosenFilters.interface";
 import { Isite } from "app/shared/interfaces/site.interface";
 import { Ifilteredproject } from "app/shared/interfaces/filteredproject";
+import { Ifullproject } from "app/shared/interfaces/fullproject.interface";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import { Subject } from "rxjs/Subject";
 import { CONFIG } from "./config";
+import { Ifullsite } from "app/shared/interfaces/fullsite.interface";
+
 
 
 
 @Injectable()
 export class SiglService {
+	
 
 	constructor(private _http: Http) {
 		this.setParameters();
@@ -53,6 +57,8 @@ export class SiglService {
 	private _chosenFilterSubject: Subject<any> = new Subject<any>();
 	//private _filteredSitesSubject: Subject<Array<Isite>> = new Subject<Array<Isite>>();
 	private _filteredProjectSubject: Subject<Array<Ifilteredproject>> = new Subject<Array<Ifilteredproject>>();
+	private _fullProjectSubject: Subject<Ifullproject> = new Subject<Ifullproject>();
+	private _fullProjectSitesSubject: Subject<Array<Ifullsite>> = new Subject<Array<Ifullsite>>();
 
 	//getters
 	public get parameters(): Observable<Array<Iparameter>> {
@@ -96,6 +102,13 @@ export class SiglService {
 	}*/
 	public get filteredProjects(): Observable<Array<Ifilteredproject>>{
 		return this._filteredProjectSubject.asObservable();
+	}
+	public get fullProject(): Observable<Ifullproject>{
+		return this._fullProjectSubject.asObservable();
+	}
+	
+	public get fullProjectSites(): Observable<Array<Ifullsite>>{
+		return this._fullProjectSitesSubject.asObservable();
 	}
 
 	//http requests  
@@ -208,6 +221,26 @@ export class SiglService {
 			.map(res => <Array<Ifilteredproject>>res.json())
 			.subscribe(proj => {
 				this._filteredProjectSubject.next(proj);
+			}, error => this.handleError);
+	}
+
+	public setFullProject(project: Ifilteredproject){
+		
+		let projectParams: URLSearchParams = new URLSearchParams();
+		projectParams.set("ByProject", project.project_id.toString());
+		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS, search:projectParams});
+		this._http.get(CONFIG.FULL_PROJECT_URL, options)
+		//this._http.get(CONFIG.PROJECT_URL + "/GetFullProject.json", options)
+			.map(res => <Ifullproject>res.json())
+			.subscribe(fullProj => {
+				this._fullProjectSubject.next(fullProj);
+				if (project.projectSites.length > 0){
+					this._http.get(CONFIG.PROJECT_URL + "/" + project.project_id + "/ProjectFullSites", options)
+						.map(res => <Array<Ifullsite>>res.json())
+						.subscribe(fsite => {
+							this._fullProjectSitesSubject.next(fsite);	
+						}, error => this.handleError);
+				}
 			}, error => this.handleError);
 	}
 
