@@ -66,7 +66,7 @@
                 </ul>
             </div>
 
-             <div *ngIf="chosenFilters?.ORG">
+            <div *ngIf="chosenFilters?.ORG">
                 <span>Organization:</span>
                 <ul>
                     <li>{{chosenFilters.ORG.organization_name}}</li>
@@ -86,9 +86,23 @@
      <ngb-panel title="Filter Results">
         <ng-template ngbPanelContent>
             <div *ngIf="filteredProjects?.length > 0">
-                <ul>
-                    <li *ngFor="let proj of filteredProjects">{{proj.name}}</li>
-                </ul>
+                <div> Click on a project name or site to highlight it on the map.</div>
+                <hr />
+                <div *ngFor="let proj of filteredProjects;let i = index;">
+                    <div>
+                        <a *ngIf="proj.projectSites.length > 0" (click)="proj.isCollapsed = !proj.isCollapsed" [attr.aria-expanded]="!proj.isCollapsed" aria-controls="collapseExample">
+                            <i class="fa fa-caret-right" *ngIf="proj.isCollapsed" aria-hidden="true"></i>
+                            <i class="fa fa-caret-down" *ngIf="!proj.isCollapsed" aria-hidden="true"></i>
+                        </a>
+                        <span>{{proj.name}}</span><span class="pull-right">{{proj.projectSites.length}}</span>
+                    </div>
+                    <div id="collapseExample" [ngbCollapse]="proj.isCollapsed">
+                        <div *ngFor="let s of proj.projectSites" class="marginLeft">
+                            {{s.name}}
+                        </div>
+                    </div>
+                    <hr />
+                </div> <!-- end ngFor each filteredProjects -->
             </div>
         </ng-template>
     </ngb-panel>

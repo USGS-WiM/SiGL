@@ -8,11 +8,15 @@
     transform: translate3d(0px, 0px, 0px);
     z-index: 1005;
     margin-top: 65px;
-    overflow:visible!important;
+/*    overflow:visible!important;*/
+    overflow-x: scroll!important;
 }
 .sidebar-left {
     display: block;
     left: 0;
     transition: width 400ms ease 0s;
     right: auto;
+}
+.marginLeft {
+    margin-left: 20px;
 }

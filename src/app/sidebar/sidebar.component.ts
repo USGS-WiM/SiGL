@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit {
 	public chosenFilters: IchosenFilters;
 	//public filteredSites: Array<Isite>;
 	public filteredProjects: Array<Ifilteredproject>;
-
+	
 	constructor(private _modalService: ModalService, private _siglService: SiglService) { }
 
 	ngOnInit() {
@@ -29,7 +29,11 @@ export class SidebarComponent implements OnInit {
 
 		//for the results accordion panel
 		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
-			this.filteredProjects = projects;
+			this.filteredProjects = [];
+			projects.forEach((p:Ifilteredproject) => {
+				p.isCollapsed = true;	
+				this.filteredProjects.push(p);
+			})
 		});
 
 	}
