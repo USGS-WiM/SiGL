@@ -17,3 +17,7 @@
 #tabContainer{
     padding-top: 30px;
 }
+
+.dataLabel{
+    font-weight: bolder;
+}

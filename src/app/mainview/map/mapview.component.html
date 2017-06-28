@@ -7,7 +7,65 @@
         <ngb-tabset>
             <ngb-tab title="Project Summary">
                 <ng-template ngbTabContent>
-                 <span *ngIf="fullProj">Project Name: {{fullProj.Name}} </span>
+                    <div>
+                        <span *ngIf="fullProj" class="dataLabel">Project Name: </span> 
+                        <span>{{fullProj.Name}}</span> 
+                    </div>
+                    <!--PIPE INSTEAD?-->
+                    <div>
+                        <div *ngIf="fullProj.Organizations.length > 0">
+                            <span class="dataLabel">Organizations: </span>
+                            <ul>
+                                <li *ngFor="let org of fullProj.Organizations">{{org.OrganizationName}}</li>
+                            </ul>
+                        </div>
+                        <div *ngIf="fullProj.ProjectWebsite">
+                            <span class="dataLabel">Project Website:</span> 
+                            <a target="blank" [href]="fullProj.ProjectWebsite">{{fullProj.ProjectWebsite}}</a> 
+                        </div>
+                        <div *ngIf="fullProj.Status">
+                            <span class="dataLabel">Project Status: </span> 
+                            <span>{{fullProj.Status}}</span>
+                        </div>
+                        <div *ngIf="fullProj.StartDate">
+                            <span class="dataLabel">Start Date: </span> 
+                            <span>{{fullProj.StartDate}}</span>
+                        </div>
+                        <div *ngIf="fullProj.EndDate">
+                            <span class="dataLabel">End Date: </span> 
+                            <span>{{fullProj.EndDate}} </span>
+                        </div>
+                        <div *ngIf="fullProj.Objectives.length > 0">
+                           <span class="dataLabel">Objectives:</span>
+                           <ul>
+                               <li *ngFor="let obj of fullProj.Objectives">{{obj.objective}}</li>
+                           </ul>
+                        </div>
+                        <div *ngIf="fullProj.MonitoringCoords.length > 0">
+                            <span class="dataLabel">Project Monitoring Effort: </span>
+                            <ul>
+                                <li *ngFor="let MC of fullProj.MonitoringCoords">{{MC.effort}}</li>
+                            </ul>
+                        </div>
+                        <div *ngIf="fullProj.Duration">
+                            <span class="dataLabel">Project Duration: </span> 
+                            <span>{{fullProj.Duration}} </span>
+                        </div>
+                        <div *ngIf="fullProj.Description">
+                            <span class="dataLabel">Project Description: </span> 
+                            <span>{{fullProj.Description}}</span>
+                        </div>
+                        <div *ngIf="fullProj.Keywords.length > 0">
+                            <span class="dataLabel">Project Keywords: </span>
+                            <ul>
+                                <li *ngFor="let KW of fullProj.Keywords">{{KW.term}}</li>
+                            </ul>
+                        </div>
+                        <div *ngIf="fullProj.AdditionalInfo">
+                            <span class="dataLabel">Additional Project Information: </span> 
+                            <span>{{fullProj.AdditionalInfo}}</span>
+                        </div>
+                    </div>
                 </ng-template>
             </ngb-tab>
             <ngb-tab title="Data/Publications">
