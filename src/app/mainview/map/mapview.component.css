@@ -18,6 +18,11 @@
     padding-top: 30px;
 }
 
+/**TODO: improve these or move elsewhere**/
 .dataLabel{
+    font-weight: bolder;
+}
+.dataHeader{
+    color: orange;
     font-weight: bolder;
 }

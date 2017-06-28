@@ -8,8 +8,7 @@
             <ngb-tab title="Project Summary">
                 <ng-template ngbTabContent>
                     <div>
-                        <span *ngIf="fullProj" class="dataLabel">Project Name: </span> 
-                        <span>{{fullProj.Name}}</span> 
+                        <span *ngIf="fullProj" class="dataHeader">Project Name: {{fullProj.Name}}</span> 
                     </div>
                     <!--PIPE INSTEAD?-->
                     <div>
@@ -70,12 +69,77 @@
             </ngb-tab>
             <ngb-tab title="Data/Publications">
                 <ng-template ngbTabContent>
-                    <p>Pubs</p>
+                    <div>
+                        <div *ngIf="fullProj.DataHosts.length > 0">
+                            <span class="dataHeader">Project Data</span>
+                            <div *ngFor="let DH of fullProj.DataHosts; let i=index">
+                                <div *ngIf="i >= 1">
+                                    <span>Additional Data({{i + 1}})</span>
+                                </div>
+                                <div *ngIf="DH.description">
+                                    <span class="dataLabel">Data Management System: </span>
+                                    <span>{{DH.description}}</span>
+                                </div>
+                                <div *ngIf="DH.host_name">
+                                    <span class="dataLabel">Data Hosting Entity: </span>
+                                    <span>{{DH.host_name}}</span>
+                                </div>
+                                <div *ngIf="DH.portal_url">
+                                    <span class="dataLabel">Online Data Location: </span>
+                                    <a target="blank" [href]="DH.portal_url">{{DH.portal_url}}</a>
+                                </div>
+                                <div>_____________________________</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div *ngIf="fullProj.Publications.length > 0">
+                                <span class="dataHeader">Publications</span>
+                                <div *ngFor="let PUB of fullProj.Publications; let i=index">
+                                    <div *ngIf="i >= 1">
+                                        <span>Publication({{i + 1}})</span>
+                                    </div>
+                                    <div *ngIf="PUB.title">
+                                        <span class="dataLabel">Publication Title: </span>
+                                        <span>{{PUB.title}}</span>
+                                    </div>
+                                    <div *ngIf="PUB.description">
+                                        <span class="dataLabel">Publication Description: </span>
+                                        <span>{{PUB.description}}</span>
+                                    </div>
+                                    <div *ngIf="PUB.url">
+                                        <span class="dataLabel">Publication URL: </span>
+                                        <a target="blank" [href]="PUB.url">{{PUB.url}}</a>
+                                    </div>
+                                    <div>_____________________________</div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
                 </ng-template>
             </ngb-tab>
             <ngb-tab title="Contact Info.">
                 <ng-template ngbTabContent>
-                    <p>Contact info</p>
+                    <div *ngIf="fullProj.Contacts.length > 0">
+                        <span class="dataHeader">Project Contacts</span>
+                        <div *ngFor="let C of fullProj.Contacts; let i=index">
+                            <div *ngIf="i >= 1">
+                                <span>Contact({{i + 1}})</span>
+                            </div>
+                            <div *ngIf="C.name">
+                                <span>{{C.name}}</span>
+                            </div>
+                            <div *ngIf="C.ContactOrgName">
+                                <span>{{C.ContactOrgName}}</span>
+                            </div>
+                            <div *ngIf="C.email">
+                                <a target="blank" [href]="'mailto:' + C.email">{{C.email}}</a>
+                            </div>
+                            <div *ngIf="C.phone">
+                                <span>{{C.phone}}</span>
+                            </div>
+                            <div>_____________________________</div>
+                        </div>
+                    </div>
                 </ng-template>
             </ngb-tab>
             <ngb-tab title="Project Sites">
@@ -92,7 +156,7 @@
                     Site Details
                 </ng-template>
                 <ng-template ngbTabContent>
-                    <span *ngIf="fullProjSites.length > 0">
+                    <span *ngIf="fullProjSites?.length > 0">
                         <ul>
                             <li *ngFor="let fps of fullProjSites">{{fps.Name}}</li>
                         </ul> 
