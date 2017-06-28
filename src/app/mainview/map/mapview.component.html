@@ -10,7 +10,6 @@
                     <div>
                         <span *ngIf="fullProj" class="dataHeader">Project Name: {{fullProj.Name}}</span> 
                     </div>
-                    <!--PIPE INSTEAD?-->
                     <div>
                         <div *ngIf="fullProj.Organizations.length > 0">
                             <span class="dataLabel">Organizations: </span>
@@ -144,6 +143,10 @@
             </ngb-tab>
             <ngb-tab title="Project Sites">
                 <ng-template ngbTabContent>
+                     <div>
+                         <!--selecting the first site in the array for now-->
+                        <span *ngIf="fullProjSites?.length > 0" class="dataHeader">Site Name: {{fullProjSites[0].Name}}</span> 
+                    </div>
                    <ng-container *ngTemplateOutlet="innerTabset"></ng-container>
                 </ng-template>
             </ngb-tab>
@@ -157,6 +160,7 @@
                 </ng-template>
                 <ng-template ngbTabContent>
                     <span *ngIf="fullProjSites?.length > 0">
+                        <!--how to handle project click?  Just select the first site in the array?-->
                         <ul>
                             <li *ngFor="let fps of fullProjSites">{{fps.Name}}</li>
                         </ul> 
@@ -168,7 +172,7 @@
                     Parameters Sampled
                 </ng-template>
                 <ng-template ngbTabContent>
-                    PARAMETERS YO
+                    <!--handle nesting params and parameter types in TYPESCRIPT?-->
                 </ng-template>
                 </ngb-tab>
 
