@@ -16,10 +16,13 @@ export class SidebarComponent implements OnInit {
 	public chosenFilters: IchosenFilters;
 	//public filteredSites: Array<Isite>;
 	public filteredProjects: Array<Ifilteredproject>;
+	private selectedProjectId: Number;
 	
 	constructor(private _modalService: ModalService, private _siglService: SiglService) { }
 
 	ngOnInit() {
+		//initialize selected project Id first time.
+		this.selectedProjectId = -1;
 		//for the filtered choices accordion panel
 		this._siglService.chosenFilters.subscribe((choices: IchosenFilters) => {
 			this.chosenFilters = choices;
@@ -46,11 +49,16 @@ export class SidebarComponent implements OnInit {
 	}
 
 	public showProjectDetails(project: Ifilteredproject): void{
-		this._siglService.setFullProject(project);
+		this.selectedProjectId = project.project_id;
+		this._siglService.setFullProject(project.project_id.toString());
 	}
 
 	public showSiteDetails(site: Isimplesite): void {
-
+		if (site.project_id != this.selectedProjectId){
+			this.selectedProjectId = site.project_id;
+			this._siglService.setFullProject(site.project_id.toString());
+		}
+		this._siglService.setFullSite(site.site_id.toString());
 	}
 
 }

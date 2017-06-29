@@ -58,7 +58,8 @@ export class SiglService {
 	//private _filteredSitesSubject: Subject<Array<Isite>> = new Subject<Array<Isite>>();
 	private _filteredProjectSubject: Subject<Array<Ifilteredproject>> = new Subject<Array<Ifilteredproject>>();
 	private _fullProjectSubject: Subject<Ifullproject> = new Subject<Ifullproject>();
-	private _fullProjectSitesSubject: Subject<Array<Ifullsite>> = new Subject<Array<Ifullsite>>();
+	//private _fullProjectSitesSubject: Subject<Array<Ifullsite>> = new Subject<Array<Ifullsite>>();
+	private _singleSiteSubject: Subject<Ifullsite> = new Subject<Ifullsite>();
 
 	//getters
 	public get parameters(): Observable<Array<Iparameter>> {
@@ -106,9 +107,11 @@ export class SiglService {
 	public get fullProject(): Observable<Ifullproject>{
 		return this._fullProjectSubject.asObservable();
 	}
-	
-	public get fullProjectSites(): Observable<Array<Ifullsite>>{
+	/*public get fullProjectSites(): Observable<Array<Ifullsite>>{
 		return this._fullProjectSitesSubject.asObservable();
+	}*/
+	public get fullSite(): Observable<Ifullsite>{
+		return this._singleSiteSubject.asObservable();
 	}
 
 	//http requests  
@@ -224,23 +227,25 @@ export class SiglService {
 			}, error => this.handleError);
 	}
 
-	public setFullProject(project: Ifilteredproject){
+	public setFullProject(projectId: string){
 		
 		let projectParams: URLSearchParams = new URLSearchParams();
-		projectParams.set("ByProject", project.project_id.toString());
+		projectParams.set("ByProject", projectId);
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS, search:projectParams});
 		this._http.get(CONFIG.FULL_PROJECT_URL, options)
-		//this._http.get(CONFIG.PROJECT_URL + "/GetFullProject.json", options)
 			.map(res => <Ifullproject>res.json())
 			.subscribe(fullProj => {
 				this._fullProjectSubject.next(fullProj);
-				if (project.projectSites.length > 0){
-					this._http.get(CONFIG.PROJECT_URL + "/" + project.project_id + "/ProjectFullSites", options)
-						.map(res => <Array<Ifullsite>>res.json())
-						.subscribe(fsite => {
-							this._fullProjectSitesSubject.next(fsite);	
-						}, error => this.handleError);
-				}
+			}, error => this.handleError);
+	}
+	
+	//
+	public setFullSite(siteId: string){
+		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
+		this._http.get(CONFIG.SITE_URL + "/" + siteId + "/GetFullSite", options)
+			.map(res => <Ifullsite>res.json())
+			.subscribe(fs => {
+				this._singleSiteSubject.next(fs);
 			}, error => this.handleError);
 	}
 

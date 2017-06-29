@@ -4,8 +4,8 @@
     <div id="handle"><i class="fa fa-arrows-v" aria-hidden="true"></i></div>
 
     <div id="tabContainer">
-        <ngb-tabset>
-            <ngb-tab title="Project Summary">
+        <ngb-tabset [activeId]="selectedTab" #t>
+            <ngb-tab title="Project Summary" id="project">
                 <ng-template ngbTabContent>
                     <div>
                         <span *ngIf="fullProj" class="dataHeader">Project Name: {{fullProj.Name}}</span> 
@@ -141,13 +141,21 @@
                     </div>
                 </ng-template>
             </ngb-tab>
-            <ngb-tab title="Project Sites">
+            <ngb-tab title="Project Site" id="site">
                 <ng-template ngbTabContent>
-                     <div>
-                         <!--selecting the first site in the array for now-->
-                        <span *ngIf="fullProjSites?.length > 0" class="dataHeader">Site Name: {{fullProjSites[0].Name}}</span> 
-                    </div>
-                   <ng-container *ngTemplateOutlet="innerTabset"></ng-container>
+                     <div *ngIf="fullSiteFlag">
+                        <div>
+                            <!--selecting the first site in the array for now-->
+                            <span *ngIf="fullSite" class="dataHeader">Site Name: {{fullSite.Name}}</span> 
+                        </div>
+                        <ng-container *ngTemplateOutlet="innerTabset"></ng-container>
+                     </div>
+                     <div *ngIf="!fullSiteFlag">
+                        <div>
+                            <span >Choose site from sidebar to see site information</span> 
+                        </div>
+                        
+                     </div>
                 </ng-template>
             </ngb-tab>
         </ngb-tabset>
@@ -159,11 +167,9 @@
                     Site Details
                 </ng-template>
                 <ng-template ngbTabContent>
-                    <span *ngIf="fullProjSites?.length > 0">
-                        <!--how to handle project click?  Just select the first site in the array?-->
-                        <ul>
-                            <li *ngFor="let fps of fullProjSites">{{fps.Name}}</li>
-                        </ul> 
+                    <span *ngIf="fullSite">
+                        <!--add in full site info from response-->
+                        
                     </span>
                 </ng-template>
                 </ngb-tab>
