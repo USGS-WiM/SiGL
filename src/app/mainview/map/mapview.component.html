@@ -168,7 +168,68 @@
                 </ng-template>
                 <ng-template ngbTabContent>
                     <span *ngIf="fullSite">
-                        <!--add in full site info from response-->
+                        <div>
+                            <span class="dataLabel" >Location: </span>
+                            <span class="dataLabel">Lat. </span><span>{{fullSite.latitude}}, </span><span class="dataLabel">Long. </span><span>{{fullSite.longitude}}</span>
+                        </div>
+                        <div>
+                            <span class="dataLabel" >State: </span>
+                            <span>{{fullSite.State}}</span>
+                        </div>
+                        <div *ngIf="fullSite.Country">
+                            <span class="dataLabel" >Country: </span>
+                            <span>{{fullSite.Country}}</span>
+                        </div>
+                         <div *ngIf="fullSite.Lake">
+                            <span class="dataLabel" >Great Lake: </span>
+                            <span>{{fullSite.Lake}}</span>
+                        </div>
+                         <div *ngIf="fullSite.Waterbody">
+                            <span class="dataLabel" >Waterbody: </span>
+                            <span>{{fullSite.Waterbody}}</span>
+                        </div>
+                         <div *ngIf="fullSite.Watershed">
+                            <span class="dataLabel" >Watershed (HUC8): </span>
+                            <span>{{fullSite.Watershed}}</span>
+                        </div>
+                         <div *ngIf="fullSite.Description">
+                            <span class="dataLabel" >Site Description: </span>
+                            <span>{{fullSite.Description}}</span>
+                        </div>
+                         <div *ngIf="fullSite.StartDate">
+                            <span class="dataLabel" >Start Date: </span>
+                            <span>{{fullSite.StartDate}}</span>
+                        </div>
+                         <div *ngIf="fullSite.EndDate">
+                            <span class="dataLabel" >End Date: </span>
+                            <span>{{fullSite.EndDate}}</span>
+                        </div>
+                         <div *ngIf="fullSite.Status">
+                            <span class="dataLabel" >Status: </span>
+                            <span>{{fullSite.Status}}</span>
+                        </div>
+                        <div *ngIf="fullSite.Resources.length > 1">
+                            <span class="dataLabel" >Resource Component: </span>
+                            <ul>
+                                <li *ngFor="let R of fullSite.Resources">{{R.resource_name}}</li>
+                            </ul>
+                        </div>
+                        <div *ngIf="fullSite.Media.length > 1">
+                            <span class="dataLabel" >Media: </span>
+                            <ul>
+                                <li *ngFor="let M of fullSite.Media">{{M.media}}</li>
+                            </ul>
+                        </div>
+                        <div *ngIf="fullSite.Frequencies.length > 1">
+                            <span class="dataLabel" >Sampling Frequency: </span>
+                            <ul>
+                                <li *ngFor="let F of fullSite.Frequencies">{{F.frequency}}</li>
+                            </ul>
+                        </div>
+                        <div *ngIf="fullSite.SamplePlatform">
+                            <span class="dataLabel" >Sampling Platform: </span>
+                            <span>{{fullSite.SamplePlatform}}</span>
+                        </div>
                         
                     </span>
                 </ng-template>
