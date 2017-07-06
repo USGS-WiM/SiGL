@@ -239,19 +239,37 @@
                 </ng-template>
                 <ng-template ngbTabContent>
                     <!--could this be custom pipe time?-->
-                    <div *ngIf="fullSite.Parameters.length > 0">
-                        <div *ngFor="let Param of fullSite.Parameters">
-                            <div *ngFor="let ParamGroup of Param.parameter_group">
-                                <div *ngIf="ParamGroup == 'Physical'">Physical:{{Param.Parameter}}</div>
-                                <div *ngIf="ParamGroup == 'Biological'">Biological:{{Param.Parameter}}</div>
-                                <div *ngIf="ParamGroup == 'Chemical'">Chemical:{{Param.Parameter}}</div>
-                            </div>
-                           <!-- <ul>
-                                <li>{{Param.parameter_group}}</li>
-                            </ul>-->
-                           
-                        </div>
-                        
+                    <div *ngIf="fullSite?.Parameters.length > 0">
+                       <div *ngIf="groupedParams?.BioArray">
+                            <span class="dataHeader">Biological</span>
+                            <ul>
+                                <li *ngFor="let Bio of groupedParams?.BioArray">{{Bio.parameter}}</li>
+                            </ul>
+                       </div> <!--END ngIf for Biological-->
+                       <div *ngIf="groupedParams?.ChemArray">
+                            <span class="dataHeader">Chemical</span>
+                            <ul>
+                                <li *ngFor="let Chem of groupedParams?.ChemArray">{{Chem.parameter}}</li>
+                            </ul>
+                       </div> <!--END ngIf for Chemical-->
+                       <div *ngIf="groupedParams?.MicroBioArray">
+                            <span class="dataHeader">Microbiological</span>
+                            <ul>
+                                <li *ngFor="let Micro of groupedParams?.MicroBioArray">{{Micro.parameter}}</li>
+                            </ul>
+                       </div> <!--END ngIf for Microbiological-->
+                       <div *ngIf="groupedParams?.PhysArray">
+                            <span class="dataHeader">Physical</span>
+                            <ul>
+                                <li *ngFor="let Phys of groupedParams?.PhysArray">{{Phys.parameter}}</li>
+                            </ul>
+                       </div> <!--END ngIf for Physical-->
+                       <div *ngIf="groupedParams?.ToxicArray">
+                            <span class="dataHeader">Toxicological</span>
+                            <ul>
+                                <li *ngFor="let Tox of groupedParams?.ToxicArray">{{Tox.parameter}}</li>
+                            </ul>
+                       </div> <!--END ngIf for Toxicological-->
 
                     </div>
                 </ng-template>

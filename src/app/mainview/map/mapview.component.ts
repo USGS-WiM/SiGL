@@ -5,6 +5,7 @@ import { ResizeEvent } from "angular-resizable-element/dist/esm/src";
 import { SiglService } from "app/shared/services/siglservices.service";
 import { Ifullproject } from "app/shared/interfaces/fullproject.interface";
 import { Ifullsite } from "app/shared/interfaces/fullsite.interface";
+import { Iparameter } from "app/shared/interfaces/parameter.interface";
 
 
 @Component({
@@ -24,6 +25,8 @@ export class MapviewComponent implements OnInit {
 	public showBottomBar: Boolean;
 	public fullSiteFlag: Boolean;
 	public selectedTab: String;
+	public groupedParams: Object;
+
 
 	constructor(private _mapService: MapService, private _siglService: SiglService) { }
 
@@ -32,6 +35,7 @@ export class MapviewComponent implements OnInit {
 		this.showBottomBar = false;
 		this.fullSiteFlag = false;
 		this.selectedTab = "project";
+		this.groupedParams = {BioArray:[], ChemArray:[], MicroBioArray:[], PhysArray:[], ToxicArray:[]};
 		
 		//for project info
 		this._siglService.fullProject.subscribe((FP: Ifullproject) => {
@@ -42,9 +46,37 @@ export class MapviewComponent implements OnInit {
 		
 		//for single site info.
 		this._siglService.fullSite.subscribe((FS: Ifullsite) => {
+			//clear GroupedParams
+			this.groupedParams = {BioArray:[], ChemArray:[], MicroBioArray:[], PhysArray:[], ToxicArray:[]};
+			
 			this.fullSite = FS;
 			this.fullSiteFlag = true;
 			this.selectedTab = 'site';
+
+			FS.Parameters.forEach( param => {
+				switch(param.parameter_group){
+					case "Biological":
+						this.groupedParams['BioArray'].push(param);
+						console.log(this.groupedParams);
+						break;
+					case "Chemical":
+						this.groupedParams['ChemArray'].push(param);
+						console.log(this.groupedParams);
+						break;
+					case "Microbiological":
+						this.groupedParams['MicroBioArray'].push(param);
+						console.log(this.groupedParams);
+						break;
+					case "Physical":
+						this.groupedParams['PhysArray'].push(param);
+						console.log(this.groupedParams);
+						break;
+					case "Toxicological":
+						this.groupedParams['ToxicArray'].push(param);
+						console.log(this.groupedParams);
+						break;
+				}
+			});
 		});
 
 		this.map = L.map("map", {
