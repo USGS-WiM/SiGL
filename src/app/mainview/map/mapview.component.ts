@@ -6,6 +6,7 @@ import { SiglService } from "app/shared/services/siglservices.service";
 import { Ifullproject } from "app/shared/interfaces/fullproject.interface";
 import { Ifullsite } from "app/shared/interfaces/fullsite.interface";
 import { Iparameter } from "app/shared/interfaces/parameter.interface";
+import { Igroupedparameters } from "app/shared/interfaces/groupedparameters";
 
 
 @Component({
@@ -25,7 +26,9 @@ export class MapviewComponent implements OnInit {
 	public showBottomBar: Boolean;
 	public fullSiteFlag: Boolean;
 	public selectedTab: String;
-	public groupedParams: Object;
+
+	public groupedParams: Igroupedparameters;
+	//public groupedParams: Object;
 
 
 	constructor(private _mapService: MapService, private _siglService: SiglService) { }
@@ -35,6 +38,7 @@ export class MapviewComponent implements OnInit {
 		this.showBottomBar = false;
 		this.fullSiteFlag = false;
 		this.selectedTab = "project";
+		
 		this.groupedParams = {BioArray:[], ChemArray:[], MicroBioArray:[], PhysArray:[], ToxicArray:[]};
 		
 		//for project info
@@ -56,23 +60,23 @@ export class MapviewComponent implements OnInit {
 			FS.Parameters.forEach( param => {
 				switch(param.parameter_group){
 					case "Biological":
-						this.groupedParams['BioArray'].push(param);
+						this.groupedParams.BioArray.push(param);
 						console.log(this.groupedParams);
 						break;
 					case "Chemical":
-						this.groupedParams['ChemArray'].push(param);
+						this.groupedParams.ChemArray.push(param);
 						console.log(this.groupedParams);
 						break;
 					case "Microbiological":
-						this.groupedParams['MicroBioArray'].push(param);
+						this.groupedParams.MicroBioArray.push(param);
 						console.log(this.groupedParams);
 						break;
 					case "Physical":
-						this.groupedParams['PhysArray'].push(param);
+						this.groupedParams.PhysArray.push(param);
 						console.log(this.groupedParams);
 						break;
 					case "Toxicological":
-						this.groupedParams['ToxicArray'].push(param);
+						this.groupedParams.ToxicArray.push(param);
 						console.log(this.groupedParams);
 						break;
 				}
