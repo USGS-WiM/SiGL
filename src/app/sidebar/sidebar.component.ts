@@ -5,6 +5,7 @@ import { SiglService } from "app/shared/services/siglservices.service";
 import { IchosenFilters } from "app/shared/interfaces/chosenFilters.interface";
 //import { Isite } from "app/shared/interfaces/site.interface";
 import { Ifilteredproject } from "app/shared/interfaces/filteredproject";
+import { Isimplesite } from "app/shared/interfaces/simplesite";
 
 @Component({
 	selector: 'sidebar',
@@ -15,10 +16,13 @@ export class SidebarComponent implements OnInit {
 	public chosenFilters: IchosenFilters;
 	//public filteredSites: Array<Isite>;
 	public filteredProjects: Array<Ifilteredproject>;
+	private selectedProjectId: Number;
 	
 	constructor(private _modalService: ModalService, private _siglService: SiglService) { }
 
 	ngOnInit() {
+		//initialize selected project Id first time.
+		this.selectedProjectId = -1;
 		//for the filtered choices accordion panel
 		this._siglService.chosenFilters.subscribe((choices: IchosenFilters) => {
 			this.chosenFilters = choices;
@@ -42,6 +46,19 @@ export class SidebarComponent implements OnInit {
 	public showFilterModal(): void {
 		// change boolean value to show the modal (filter)
 		this._modalService.showModal = true;
+	}
+
+	public showProjectDetails(project: Ifilteredproject): void{
+		this.selectedProjectId = project.project_id;
+		this._siglService.setFullProject(project.project_id.toString());
+	}
+
+	public showSiteDetails(site: Isimplesite): void {
+		if (site.project_id != this.selectedProjectId){
+			this.selectedProjectId = site.project_id;
+			this._siglService.setFullProject(site.project_id.toString());
+		}
+		this._siglService.setFullSite(site.site_id.toString());
 	}
 
 }

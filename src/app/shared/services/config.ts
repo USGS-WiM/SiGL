@@ -15,7 +15,9 @@ export class CONFIG {
     public static get MONITOR_EFFORTS_URL(): string { return this.baseURL + "MonitorCoordinations"; };
     public static get FILTERED_SITES_URL(): string { return this.baseURL + "sites/FilteredSites"; };
     public static get FILTERED_PROJECTS_URL(): string { return this.baseURL + "projects/FilteredProjects"; };
+    public static get FULL_PROJECT_URL():string { return this.baseURL + "projects/GetFullProject"; };
     public static get PROJECT_URL(): string { return this.baseURL + "projects"; };
+    public static get SITE_URL(): string { return this.baseURL + "sites"; };
     public static get ORGANIZATION_URL(): string { return this.baseURL + "organizations"; };
     public static get OBJECTIVE_URL(): string {return this.baseURL + "objectives";};
     public static get MIN_JSON_HEADERS() { return new Headers({ "Accept": "application/json" }); };

@@ -92,14 +92,12 @@
                     <div>
                         <a *ngIf="proj.projectSites.length > 0" (click)="proj.isCollapsed = !proj.isCollapsed" [attr.aria-expanded]="!proj.isCollapsed" aria-controls="collapseExample">
                             <i [ngClass]="proj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
-                       <!-- <i class="fa fa-caret-right" *ngIf="proj.isCollapsed" aria-hidden="true"></i>
-                            <i class="fa fa-caret-down" *ngIf="!proj.isCollapsed" aria-hidden="true"></i> -->
                         </a>
-                        <span>{{proj.name}}</span><span class="pull-right">{{proj.projectSites.length}}</span>
+                        <span><a (click)="showProjectDetails(proj)">{{proj.name}}</a></span><span class="pull-right">{{proj.projectSites.length}}</span>
                     </div>
                     <div id="collapseExample" [ngbCollapse]="proj.isCollapsed">
                         <div *ngFor="let s of proj.projectSites" class="marginLeft">
-                            {{s.name}}
+                            <a (click)="showSiteDetails(s)">{{s.name}}</a>
                         </div>
                     </div>
                     <hr />
