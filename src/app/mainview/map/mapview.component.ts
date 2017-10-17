@@ -7,7 +7,7 @@ import { Ifullproject } from "app/shared/interfaces/fullproject.interface";
 import { Ifullsite } from "app/shared/interfaces/fullsite.interface";
 import { Iparameter } from "app/shared/interfaces/parameter.interface";
 import { Igroupedparameters } from "app/shared/interfaces/groupedparameters";
-
+import * as L from 'leaflet';
 
 @Component({
 	selector: 'mapview',
