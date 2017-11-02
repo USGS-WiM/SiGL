@@ -8,7 +8,10 @@ import { Ifullsite } from "app/shared/interfaces/fullsite.interface";
 import { Iparameter } from "app/shared/interfaces/parameter.interface";
 import { Igroupedparameters } from "app/shared/interfaces/groupedparameters";
 import * as L from 'leaflet';
+<<<<<<< HEAD
 
+=======
+>>>>>>> a298d419160b9cd56cdc32636cbe71593149f6dd
 
 @Component({
 	selector: 'mapview',
