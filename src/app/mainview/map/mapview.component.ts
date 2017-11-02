@@ -7,6 +7,7 @@ import { Ifullproject } from "app/shared/interfaces/fullproject.interface";
 import { Ifullsite } from "app/shared/interfaces/fullsite.interface";
 import { Iparameter } from "app/shared/interfaces/parameter.interface";
 import { Igroupedparameters } from "app/shared/interfaces/groupedparameters";
+import * as L from 'leaflet';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class MapviewComponent implements OnInit {
 	// filter modal, opened from sidebar's (click) function that changing show boolean, subscribed to in the filterModalComponent
 	@ViewChild('filtermodal') filtermodal: FilterComponent;
 	public map: any;
+	public wmsLayer: any;
 	public style: Object = {};
 	public fullProj: Ifullproject;
 	public fullProjSites: Array<Ifullsite>;
@@ -90,6 +92,14 @@ export class MapviewComponent implements OnInit {
 			maxZoom: 19,
 			layers: [this._mapService.baseMaps.Topo]
 		});
+
+		this.wmsLayer = L.tileLayer.wms('http://52.21.226.149:8080/geoserver/wms?', {
+			layers: 'SIGL:SIGL_SITE',
+			format: 'image/png',
+			transparent: true,
+			zIndex: 1000
+		}).addTo(this.map);
+
 		//L.control.layers(this._mapService.baseMaps).addTo(this.map);
 		L.control.scale().addTo(this.map);
 		// this._mapService.map = map;       
