@@ -8,10 +8,6 @@ import { Ifullsite } from "app/shared/interfaces/fullsite.interface";
 import { Iparameter } from "app/shared/interfaces/parameter.interface";
 import { Igroupedparameters } from "app/shared/interfaces/groupedparameters";
 import * as L from 'leaflet';
-<<<<<<< HEAD
-
-=======
->>>>>>> a298d419160b9cd56cdc32636cbe71593149f6dd
 
 @Component({
 	selector: 'mapview',
@@ -97,7 +93,7 @@ export class MapviewComponent implements OnInit {
 		});
 
 		this.wmsLayer = L.tileLayer.wms('http://52.21.226.149:8080/geoserver/wms?', {
-			layers: 'SIGL:SIGL_SITE',
+			layers: 'SIGL:SITE_VIEW',
 			format: 'image/png',
 			transparent: true,
 			zIndex: 1000
