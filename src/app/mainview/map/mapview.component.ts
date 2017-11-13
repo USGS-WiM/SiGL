@@ -8,10 +8,9 @@ import { Ifullsite } from "app/shared/interfaces/fullsite.interface";
 import { Iparameter } from "app/shared/interfaces/parameter.interface";
 import { Igroupedparameters } from "app/shared/interfaces/groupedparameters";
 import * as L from 'leaflet';
-<<<<<<< HEAD
+//import * as WMS from 'leaflet.wms';
 
-=======
->>>>>>> a298d419160b9cd56cdc32636cbe71593149f6dd
+import { Isiteview } from "app/shared/interfaces/siteview.interface";
 
 @Component({
 	selector: 'mapview',
@@ -23,7 +22,11 @@ export class MapviewComponent implements OnInit {
 	// filter modal, opened from sidebar's (click) function that changing show boolean, subscribed to in the filterModalComponent
 	@ViewChild('filtermodal') filtermodal: FilterComponent;
 	public map: any;
-	public wmsLayer: any;
+    public wmsLayer: any;
+    public icon: any;
+    public geoJsonLayer: L.GeoJSON;
+    public geoj: any;
+	public popup: any;
 	public style: Object = {};
 	public fullProj: Ifullproject;
 	public fullProjSites: Array<Ifullsite>;
@@ -42,7 +45,16 @@ export class MapviewComponent implements OnInit {
 		//set defaults on init
 		this.showBottomBar = false;
 		this.fullSiteFlag = false;
-		this.selectedTab = "project";
+        this.selectedTab = "project";
+        
+        this.icon = {
+            radius: 8,
+            fillColor: "#ff7800",
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+        };
 		
 		this.groupedParams = {BioArray:[], ChemArray:[], MicroBioArray:[], PhysArray:[], ToxicArray:[]};
 		
@@ -51,7 +63,22 @@ export class MapviewComponent implements OnInit {
 			this.fullProj = FP;
 			this.showBottomBar = true;
 			this.selectedTab = 'project';
-		});
+        });
+        
+        this._mapService.siteView.subscribe((geoj: any) => {
+            this.geoj = geoj;
+            
+
+            this.geoJsonLayer = L.geoJSON(geoj, {
+                pointToLayer: ((feature, latlng) => {
+                    return L.circleMarker(latlng, this.icon);
+                }),
+                onEachFeature: (( feature, layer) => {
+                    layer.bindPopup("you clicked " + feature.properties.site_id);
+                }) 
+            }).addTo(this.map);
+            
+        });            
 		
 		//for single site info.
 		this._siglService.fullSite.subscribe((FS: Ifullsite) => {
@@ -94,14 +121,34 @@ export class MapviewComponent implements OnInit {
 			minZoom: 4,
 			maxZoom: 19,
 			layers: [this._mapService.baseMaps.Topo]
-		});
+        });
+        
+        
 
-		this.wmsLayer = L.tileLayer.wms('http://52.21.226.149:8080/geoserver/wms?', {
-			layers: 'SIGL:SIGL_SITE',
+    
+
+		/* this.wmsLayer = L.tileLayer.wms('http://52.21.226.149:8080/geoserver/wms?', {
+			layers: 'SIGL:SITE_VIEW',
 			format: 'image/png',
 			transparent: true,
 			zIndex: 1000
-		}).addTo(this.map);
+		}).addTo(this.map); */
+
+		/* this.wmsLayer = L.WMS.source("http://52.21.226.149:8080/geoserver", {
+			'transparent': true
+		});
+
+		this.wmsLayer.getLayer("SIGL:SITE_VIEW").addTo(this.map); */
+
+		let popup = L.popup();
+
+		function onMapClick(e){
+			popup.setLatLng(e.latlng)
+				.setContent("Youclicked" + e.latlng.toString())
+				.openOn(this);
+		}
+
+		this.map.on('click', onMapClick)
 
 		//L.control.layers(this._mapService.baseMaps).addTo(this.map);
 		L.control.scale().addTo(this.map);
