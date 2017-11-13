@@ -10,7 +10,6 @@ import { Igroupedparameters } from "app/shared/interfaces/groupedparameters";
 import * as L from 'leaflet';
 //import * as WMS from 'leaflet.wms';
 
-import { Isiteview } from "app/shared/interfaces/siteview.interface";
 
 @Component({
 	selector: 'mapview',
@@ -66,9 +65,7 @@ export class MapviewComponent implements OnInit {
         });
         
         this._mapService.siteView.subscribe((geoj: any) => {
-            this.geoj = geoj;
-            
-
+            this.geoj = geoj; //use this to filter later
             this.geoJsonLayer = L.geoJSON(geoj, {
                 pointToLayer: ((feature, latlng) => {
                     return L.circleMarker(latlng, this.icon);
@@ -125,9 +122,7 @@ export class MapviewComponent implements OnInit {
         
         
 
-    
-
-		/* this.wmsLayer = L.tileLayer.wms('http://52.21.226.149:8080/geoserver/wms?', {
+		/*this.wmsLayer = L.tileLayer.wms('http://52.21.226.149:8080/geoserver/wms?', {
 			layers: 'SIGL:SITE_VIEW',
 			format: 'image/png',
 			transparent: true,
