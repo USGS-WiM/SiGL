@@ -139,7 +139,7 @@ export class MapviewComponent implements OnInit {
 
 		function onMapClick(e){
 			popup.setLatLng(e.latlng)
-				.setContent("Youclicked" + e.latlng.toString())
+				.setContent("You Clicked SITE: " + e.latlng.toString())
 				.openOn(this);
 		}
 
