@@ -6,6 +6,7 @@ import {Idatahost} from "./datahost.interface";
 import {Iorganizationresource} from "./organizationresource.interface";
 import {Icontactresource} from "./contactresource.interface";
 import {Ipublication} from "./publication.interface";
+import { Isimplesite } from "app/shared/interfaces/simplesite";
 
 export interface Ifullproject {
     ProjectId: number;
@@ -30,4 +31,5 @@ export interface Ifullproject {
     Publications: Array<Ipublication>;
     created_stamp: Date;
     last_edited_stamp: Date;
+    projectSites?: Array<Isimplesite>;
 }
