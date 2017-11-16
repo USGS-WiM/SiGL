@@ -85,9 +85,30 @@
     </ngb-panel> 
      <ngb-panel title="Filter Results">
         <ng-template ngbPanelContent>
+            <!--If filtered Projects have been requested (from dropdown selection)-->
             <div *ngIf="filteredProjects?.length > 0">
                 <div> Click on a project name or site to highlight it on the map.</div>
                 <hr />
+                <div *ngFor="let proj of filteredProjects;let i = index;">
+                    <div>
+                        <a *ngIf="proj.projectSites.length > 0" (click)="proj.isCollapsed = !proj.isCollapsed" [attr.aria-expanded]="!proj.isCollapsed" aria-controls="collapseExample">
+                            <i [ngClass]="proj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
+                        </a>
+                        <span><a (click)="showProjectDetails(proj)">{{proj.name}}</a></span><span class="pull-right">{{proj.projectSites.length}}</span>
+                    </div>
+                    <div id="collapseExample" [ngbCollapse]="proj.isCollapsed">
+                        <div *ngFor="let s of proj.projectSites" class="marginLeft">
+                            <a (click)="showSiteDetails(s)">{{s.name}}</a>
+                        </div>
+                    </div>
+                    <hr />
+                </div> <!-- end ngFor each filteredProjects -->
+            </div>
+             <!--If no filtered Projects have been requested (but a site has been clicked on the map)-->
+            <div *ngIf="singleSiteClicked && filteredProjects?.length == 0">
+                <div> Click on a project name or site to highlight it on the map.</div>
+                <hr />
+                <!-- TODO not a loop will have to change.-->
                 <div *ngFor="let proj of filteredProjects;let i = index;">
                     <div>
                         <a *ngIf="proj.projectSites.length > 0" (click)="proj.isCollapsed = !proj.isCollapsed" [attr.aria-expanded]="!proj.isCollapsed" aria-controls="collapseExample">
