@@ -157,9 +157,9 @@ export class MapviewComponent implements OnInit {
         this.wmsLayer.getLayer("SIGL:SITE_VIEW").addTo(this.map); */
         /** END for geoserver layers */
 
-		this.popup = L.popup();
+	//	this.popup = L.popup();
 
-		this.map.on('click', this.onMapClick)
+		//this.map.on('click', this.onMapClick)
 
 		//L.control.layers(this._mapService.baseMaps).addTo(this.map);
 		L.control.scale().addTo(this.map);
@@ -188,11 +188,11 @@ export class MapviewComponent implements OnInit {
 		let test = "what";
     }
     
-    public onMapClick(e){
+   /* public onMapClick(e){
         this.popup.setLatLng(e.latlng)
             .setContent("You Clicked SITE: " + e.latlng.toString())
             .openOn(this);
-    }
+    }*/
 
 	public onResizeEnd(event: ResizeEvent): void {
 		this.style = {
@@ -213,10 +213,11 @@ export class MapviewComponent implements OnInit {
         
         if (this.filteredProjects.length > 0){
             //need to find site and highlight it in the sidebar project--> site list 
-            console.log("fired if there are filtered projects")
+			console.log("fired if there are filtered projects")
+			this._siglService.setsitePointClickBool(false);
         } else {
             console.log("fired if NO filtered projects and single site clicked");
-            this.siteClickFlag = true;
+            this._siglService.setsitePointClickBool(true);
             //there are no filtered projects, and single site was clicked
             //will need to get  full site and full project w/all sites, activate "Filter Results" slideout, populate slideout
         }

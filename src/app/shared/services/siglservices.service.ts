@@ -60,6 +60,7 @@ export class SiglService {
 	private _fullProjectSubject: Subject<Ifullproject> = new Subject<Ifullproject>();
 	//private _fullProjectSitesSubject: Subject<Array<Ifullsite>> = new Subject<Array<Ifullsite>>();
 	private _singleSiteSubject: Subject<Ifullsite> = new Subject<Ifullsite>();
+	private _sitePointClick: Subject<boolean> = new Subject<boolean>();
 
 	//getters
 	public get parameters(): Observable<Array<Iparameter>> {
@@ -113,7 +114,9 @@ export class SiglService {
 	public get fullSite(): Observable<Ifullsite>{
 		return this._singleSiteSubject.asObservable();
 	}
-
+	public get sitePointClickBool(): Observable<boolean>{
+		return this._sitePointClick.asObservable();
+	}
 	//http requests  
 	//get from services, set subjects
 	//called from constructor only so private
@@ -254,6 +257,9 @@ export class SiglService {
 		this._chosenFilterSubject.next(filters);
 	} 
 
+	public setsitePointClickBool(val: boolean) {
+		this._sitePointClick.next(val);
+	} 
 	
 	//Error Handler
 	private handleError(error: Response) {

@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { BasemapsComponent } from "app/mainview/basemaps/basemaps.component";
-import { ModalService } from "app/shared/services/modal.service";
-import { SiglService } from "app/shared/services/siglservices.service";
-import { IchosenFilters } from "app/shared/interfaces/chosenFilters.interface";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { BasemapsComponent } from "../mainview/basemaps/basemaps.component";
+import { ModalService } from "../shared/services/modal.service";
+import { SiglService } from "../shared/services/siglservices.service";
+import { IchosenFilters } from "../shared/interfaces/chosenFilters.interface";
 //import { Isite } from "app/shared/interfaces/site.interface";
-import { Ifilteredproject } from "app/shared/interfaces/filteredproject";
-import { Isimplesite } from "app/shared/interfaces/simplesite";
+import { Ifilteredproject } from "../shared/interfaces/filteredproject";
+import { Isimplesite } from "../shared/interfaces/simplesite";
+import { Ifullproject } from '../shared/interfaces/fullproject.interface';
 
 @Component({
 	selector: 'sidebar',
@@ -13,27 +14,36 @@ import { Isimplesite } from "app/shared/interfaces/simplesite";
 	styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
+	@ViewChild('acc') accordion;
 	public chosenFilters: IchosenFilters;
 	//public filteredSites: Array<Isite>;
 	public filteredProjects: Array<Ifilteredproject>;
 	private selectedProjectId: Number;
-	
+	public siteWasClicked: boolean;
+	public siteClickFullProj: Ifullproject;
+
 	constructor(private _modalService: ModalService, private _siglService: SiglService) { }
 
 	ngOnInit() {
+		this.filteredProjects = [];
 		//initialize selected project Id first time.
 		this.selectedProjectId = -1;
 		//for the filtered choices accordion panel
 		this._siglService.chosenFilters.subscribe((choices: IchosenFilters) => {
 			this.chosenFilters = choices;
 		});
-		/*this._siglService.filteredSites.subscribe((sites: Array<Isite>) => {
-			this.filteredSites = sites;
-		});*/
+		this._siglService.sitePointClickBool.subscribe((val: boolean) => {
+			this.siteWasClicked = val;
+		});
+		this._siglService.fullProject.subscribe((fullProj: Ifullproject) => {	
+			this.accordion.activeIds = ['projList'];			
+			this.siteClickFullProj = fullProj;
+		//	this.siteClickFullProj.isCollapsed = true;
+		});
 
 		//for the results accordion panel
-		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
-			this.filteredProjects = [];
+		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {			
+			this.accordion.activeIds = ['projList'];
 			projects.forEach((p:Ifilteredproject) => {
 				p.isCollapsed = true;	
 				this.filteredProjects.push(p);
@@ -48,9 +58,10 @@ export class SidebarComponent implements OnInit {
 		this._modalService.showModal = true;
 	}
 
-	public showProjectDetails(project: Ifilteredproject): void{
-		this.selectedProjectId = project.project_id;
-		this._siglService.setFullProject(project.project_id.toString());
+	public showProjectDetails(project: any): void{
+		let projID = project.project_id || project.ProjectId;
+		this.selectedProjectId = projID;
+		this._siglService.setFullProject(this.selectedProjectId.toString());
 	}
 
 	public showSiteDetails(site: Isimplesite): void {

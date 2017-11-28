@@ -32,4 +32,5 @@ export interface Ifullproject {
     created_stamp: Date;
     last_edited_stamp: Date;
     projectSites?: Array<Isimplesite>;
+    isCollapsed?:boolean;
 }

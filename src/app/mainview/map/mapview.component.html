@@ -146,7 +146,7 @@
                      <div *ngIf="fullSiteFlag">
                         <div>
                             <!--selecting the first site in the array for now-->
-                            <span *ngIf="fullSite" class="dataHeader">Site Name: {{fullSite.Name}}</span> 
+                            <span *ngIf="fullSite" class="dataHeader">Site Name: {{fullSite.Name}} -- {{fullSite.SiteId}}</span> 
                         </div>
                         <ng-container *ngTemplateOutlet="innerTabset"></ng-container>
                      </div>
