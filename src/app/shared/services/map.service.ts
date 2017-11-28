@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Map } from 'leaflet'
+import { Map, geoJSON } from 'leaflet'
 import * as L from 'leaflet';
 
 import { Observable } from "rxjs/Observable";
@@ -10,6 +10,7 @@ import { Http, Response } from '@angular/http';
 
 @Injectable()
 export class MapService {
+    private _allSiteView: any;
     public map: Map;
     public baseMaps: any;
 
@@ -40,21 +41,36 @@ export class MapService {
             })
         };
 
-        this.setSiteView();
+        this.httpRequest();
+        
     }
     
     //subject
-    private _siteViewSubject: Subject<any> = new Subject<any>();
+    private _allSiteViewSubject: Subject<any> = new Subject<any>();
+    private _filteredSiteViewSubject: Subject<any> = new Subject<any>();
 
-    public get siteView(): Observable<any> {
-        return this._siteViewSubject.asObservable();
+    public set AllSiteView(geoJson: any) {
+        this._allSiteView = geoJSON;
     }
 
-    private setSiteView(): void {
+    public get AllSiteView(): any {
+        return this._allSiteView;
+    }
+
+    public setFilteredSiteView(geoJson: any) {
+        this._filteredSiteViewSubject.next(geoJson);
+    }
+
+    public get filteredSiteView(): Observable<any> {
+        return this._filteredSiteViewSubject;
+    }
+
+    private httpRequest(): void {
         this._http.get(CONFIG.SITE_URL + "/GetSiteView.geojson")
             .map(res => <any>res.json())
             .subscribe(geoj => {
-                this._siteViewSubject.next(geoj);
+                this.AllSiteView(geoj);
+                this.setFilteredSiteView(geoj);
             }, error => this.handleError);
     }
 
