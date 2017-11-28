@@ -227,8 +227,8 @@ export class SiglService {
 			}, error => this.handleError);
 	}
 
-	public setFullProject(projectId: string){
-		
+	//  /GetFullProject?ByProject=
+	public setFullProject(projectId: string){		
 		let projectParams: URLSearchParams = new URLSearchParams();
 		projectParams.set("ByProject", projectId);
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS, search:projectParams});
@@ -239,7 +239,7 @@ export class SiglService {
 			}, error => this.handleError);
 	}
 	
-	//
+	// /GetFullSite
 	public setFullSite(siteId: string){
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.SITE_URL + "/" + siteId + "/GetFullSite", options)
