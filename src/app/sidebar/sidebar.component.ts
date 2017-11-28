@@ -59,6 +59,7 @@ export class SidebarComponent implements OnInit {
 	}
 
 	public showProjectDetails(project: any): void{
+		this._siglService.setsitePointClickBool(false); //let mainview know proj name was clicked (not site point anymore)
 		let projID = project.project_id || project.ProjectId;
 		this.selectedProjectId = projID;
 		this._siglService.setFullProject(this.selectedProjectId.toString());

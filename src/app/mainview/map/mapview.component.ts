@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { MapService } from "app/shared/services/map.service";
 import { FilterComponent } from "app/shared/components/filter/filter.component";
 import { ResizeEvent } from "angular-resizable-element/dist/esm/src";
@@ -11,6 +11,7 @@ import * as L from 'leaflet';
 import { Ifilteredproject } from 'app/shared/interfaces/filteredproject';
 //import * as WMS from 'leaflet.wms';
 
+import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'mapview',
@@ -18,7 +19,7 @@ import { Ifilteredproject } from 'app/shared/interfaces/filteredproject';
 	styleUrls: ['./mapview.component.css']
 })
 export class MapviewComponent implements OnInit {
-
+	@ViewChild('t') tabs;
 	// filter modal, opened from sidebar's (click) function that changing show boolean, subscribed to in the filterModalComponent
 	@ViewChild('filtermodal') filtermodal: FilterComponent;
 	public map: any;
@@ -36,7 +37,7 @@ export class MapviewComponent implements OnInit {
 	public showBottomBar: Boolean;
     public fullSiteFlag: Boolean;
     public siteClickFlag: Boolean;
-	public selectedTab: String;
+	//public selectedTab: String;
 
 	public groupedParams: Igroupedparameters;
 	//public groupedParams: Object;
@@ -49,7 +50,8 @@ export class MapviewComponent implements OnInit {
 		this.showBottomBar = false;
         this.fullSiteFlag = false;
         this.siteClickFlag = false;
-        this.selectedTab = "project";
+		//this.selectedTab = "project";
+		//this.tabs.select('project');
         this.filteredProjects = [];
         
         this.icon = {
@@ -74,9 +76,10 @@ export class MapviewComponent implements OnInit {
 		this._siglService.fullProject.subscribe((FP: Ifullproject) => {
 			this.fullProj = FP;
 			this.showBottomBar = true;
-			this.selectedTab = 'project';
+			let tabID = this.siteClickFlag ? 'site' : 'project';
+			this.tabs.select(tabID);
         });
-        
+        //initial get of all geojson sites
         this._mapService.siteView.subscribe((geoj: any) => {
             this.geoj = geoj; //use this to filter later
             this.geoJsonLayer = L.geoJSON(geoj, {
@@ -84,18 +87,16 @@ export class MapviewComponent implements OnInit {
                     return L.circleMarker(latlng, this.icon);
                 }),
                 onEachFeature: ((feature, layer) => {
-                    layer.bindPopup("you clicked " + feature.properties.site_id);
+                    layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
                     layer.on("click", (e) => {
                         this.onFeatureSelection(e)
                     }); 
-                    /* layer.on({
-                        click: this.onFeatureSelection,
-                        mouseover: this.onFeatureMouseover
-                    });  */
                 }) 
             }).addTo(this.map);
         });            
-		
+		this._siglService.sitePointClickBool.subscribe((val:boolean) => {
+			this.siteClickFlag = val;
+		})
 		//for single site info.
 		this._siglService.fullSite.subscribe((FS: Ifullsite) => {
 			//clear GroupedParams
@@ -103,7 +104,7 @@ export class MapviewComponent implements OnInit {
 			
 			this.fullSite = FS;
 			this.fullSiteFlag = true;
-			this.selectedTab = 'site';
+			this.tabs.select('site');
 
 			FS.Parameters.forEach( param => {
 				switch(param.parameter_group){
@@ -143,26 +144,7 @@ export class MapviewComponent implements OnInit {
 			layers: [this._mapService.baseMaps.Topo]
         });
         
-        
-        /** for geoserver layers */
-		/*this.wmsLayer = L.tileLayer.wms('http://52.21.226.149:8080/geoserver/wms?', {
-			layers: 'SIGL:SITE_VIEW',
-			format: 'image/png',
-			transparent: true,
-			zIndex: 1000
-		}).addTo(this.map); */
-		/* this.wmsLayer = L.WMS.source("http://52.21.226.149:8080/geoserver", {
-			'transparent': true
-		});
-        this.wmsLayer.getLayer("SIGL:SITE_VIEW").addTo(this.map); */
-        /** END for geoserver layers */
-
-	//	this.popup = L.popup();
-
-		//this.map.on('click', this.onMapClick)
-
-		//L.control.layers(this._mapService.baseMaps).addTo(this.map);
-		L.control.scale().addTo(this.map);
+        L.control.scale().addTo(this.map);
 		// this._mapService.map = map;       
         //L.control.scale().addTo(this.map);
         
@@ -188,12 +170,6 @@ export class MapviewComponent implements OnInit {
 		let test = "what";
     }
     
-   /* public onMapClick(e){
-        this.popup.setLatLng(e.latlng)
-            .setContent("You Clicked SITE: " + e.latlng.toString())
-            .openOn(this);
-    }*/
-
 	public onResizeEnd(event: ResizeEvent): void {
 		this.style = {
 			'z-index': '1001',
@@ -214,17 +190,20 @@ export class MapviewComponent implements OnInit {
         if (this.filteredProjects.length > 0){
             //need to find site and highlight it in the sidebar project--> site list 
 			console.log("fired if there are filtered projects")
+			this.siteClickFlag = false;
 			this._siglService.setsitePointClickBool(false);
         } else {
-            console.log("fired if NO filtered projects and single site clicked");
-            this._siglService.setsitePointClickBool(true);
+			console.log("fired if NO filtered projects and single site clicked");
+			this.siteClickFlag = true;
+			this._siglService.setsitePointClickBool(true);
+			
             //there are no filtered projects, and single site was clicked
             //will need to get  full site and full project w/all sites, activate "Filter Results" slideout, populate slideout
         }
         console.log(" SITE ID: " + event.target.feature.properties.site_id + " PROJECT ID: " + event.target.feature.properties.project_id);
         this._siglService.setFullProject(event.target.feature.properties.project_id);
         this._siglService.setFullSite(event.target.feature.properties.site_id);
-        
+        this.tabs.select('site');
         //event.target.resetIcon(event.layer);
         //event.target.feature.setIcon(this.highlightIcon);
         //event.layer.bringToFront();

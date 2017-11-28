@@ -1,6 +1,6 @@
 <filter #filtermodal (modalResponseEvent)="FilterModalResponse($event)"></filter>
 <div id="map"></div>
-<div id="bottomBar" *ngIf="showBottomBar" [ngStyle]="style" mwlResizable [enableGhostResize]="true" [resizeCursorPrecision]="30" (resizeEnd)="onResizeEnd($event)" [resizeEdges]="{bottom: false, right: right, top: true, left: false}">
+<div id="bottomBar" [hidden]="!showBottomBar" [ngStyle]="style" mwlResizable [enableGhostResize]="true" [resizeCursorPrecision]="30" (resizeEnd)="onResizeEnd($event)" [resizeEdges]="{bottom: false, right: right, top: true, left: false}">
     <div id="handle"><i class="fa fa-arrows-v" aria-hidden="true"></i></div>
 
     <div id="tabContainer">
@@ -11,55 +11,55 @@
                         <span *ngIf="fullProj" class="dataHeader">Project Name: {{fullProj.Name}}</span> 
                     </div>
                     <div>
-                        <div *ngIf="fullProj.Organizations.length > 0">
+                        <div *ngIf="fullProj?.Organizations.length > 0">
                             <span class="dataLabel">Organizations: </span>
                             <ul>
-                                <li *ngFor="let org of fullProj.Organizations">{{org.OrganizationName}}</li>
+                                <li *ngFor="let org of fullProj?.Organizations">{{org.OrganizationName}}</li>
                             </ul>
                         </div>
-                        <div *ngIf="fullProj.ProjectWebsite">
+                        <div *ngIf="fullProj?.ProjectWebsite">
                             <span class="dataLabel">Project Website:</span> 
-                            <a target="blank" [href]="fullProj.ProjectWebsite">{{fullProj.ProjectWebsite}}</a> 
+                            <a target="blank" [href]="fullProj?.ProjectWebsite">{{fullProj.ProjectWebsite}}</a> 
                         </div>
-                        <div *ngIf="fullProj.Status">
+                        <div *ngIf="fullProj?.Status">
                             <span class="dataLabel">Project Status: </span> 
                             <span>{{fullProj.Status}}</span>
                         </div>
-                        <div *ngIf="fullProj.StartDate">
+                        <div *ngIf="fullProj?.StartDate">
                             <span class="dataLabel">Start Date: </span> 
                             <span>{{fullProj.StartDate}}</span>
                         </div>
-                        <div *ngIf="fullProj.EndDate">
+                        <div *ngIf="fullProj?.EndDate">
                             <span class="dataLabel">End Date: </span> 
                             <span>{{fullProj.EndDate}} </span>
                         </div>
-                        <div *ngIf="fullProj.Objectives.length > 0">
+                        <div *ngIf="fullProj?.Objectives.length > 0">
                            <span class="dataLabel">Objectives:</span>
                            <ul>
-                               <li *ngFor="let obj of fullProj.Objectives">{{obj.objective}}</li>
+                               <li *ngFor="let obj of fullProj?.Objectives">{{obj.objective}}</li>
                            </ul>
                         </div>
-                        <div *ngIf="fullProj.MonitoringCoords.length > 0">
+                        <div *ngIf="fullProj?.MonitoringCoords.length > 0">
                             <span class="dataLabel">Project Monitoring Effort: </span>
                             <ul>
-                                <li *ngFor="let MC of fullProj.MonitoringCoords">{{MC.effort}}</li>
+                                <li *ngFor="let MC of fullProj?.MonitoringCoords">{{MC.effort}}</li>
                             </ul>
                         </div>
-                        <div *ngIf="fullProj.Duration">
+                        <div *ngIf="fullProj?.Duration">
                             <span class="dataLabel">Project Duration: </span> 
                             <span>{{fullProj.Duration}} </span>
                         </div>
-                        <div *ngIf="fullProj.Description">
+                        <div *ngIf="fullProj?.Description">
                             <span class="dataLabel">Project Description: </span> 
                             <span>{{fullProj.Description}}</span>
                         </div>
-                        <div *ngIf="fullProj.Keywords.length > 0">
+                        <div *ngIf="fullProj?.Keywords.length > 0">
                             <span class="dataLabel">Project Keywords: </span>
                             <ul>
-                                <li *ngFor="let KW of fullProj.Keywords">{{KW.term}}</li>
+                                <li *ngFor="let KW of fullProj?.Keywords">{{KW.term}}</li>
                             </ul>
                         </div>
-                        <div *ngIf="fullProj.AdditionalInfo">
+                        <div *ngIf="fullProj?.AdditionalInfo">
                             <span class="dataLabel">Additional Project Information: </span> 
                             <span>{{fullProj.AdditionalInfo}}</span>
                         </div>
@@ -69,45 +69,45 @@
             <ngb-tab title="Data/Publications">
                 <ng-template ngbTabContent>
                     <div>
-                        <div *ngIf="fullProj.DataHosts.length > 0">
+                        <div *ngIf="fullProj?.DataHosts.length > 0">
                             <span class="dataHeader">Project Data</span>
-                            <div *ngFor="let DH of fullProj.DataHosts; let i=index">
+                            <div *ngFor="let DH of fullProj?.DataHosts; let i=index">
                                 <div *ngIf="i >= 1">
                                     <span>Additional Data({{i + 1}})</span>
                                 </div>
-                                <div *ngIf="DH.description">
+                                <div *ngIf="DH?.description">
                                     <span class="dataLabel">Data Management System: </span>
                                     <span>{{DH.description}}</span>
                                 </div>
-                                <div *ngIf="DH.host_name">
+                                <div *ngIf="DH?.host_name">
                                     <span class="dataLabel">Data Hosting Entity: </span>
                                     <span>{{DH.host_name}}</span>
                                 </div>
-                                <div *ngIf="DH.portal_url">
+                                <div *ngIf="DH?.portal_url">
                                     <span class="dataLabel">Online Data Location: </span>
-                                    <a target="blank" [href]="DH.portal_url">{{DH.portal_url}}</a>
+                                    <a target="blank" [href]="DH?.portal_url">{{DH.portal_url}}</a>
                                 </div>
                                 <div>_____________________________</div>
                             </div>
                         </div>
                         <div>
-                            <div *ngIf="fullProj.Publications.length > 0">
+                            <div *ngIf="fullProj?.Publications.length > 0">
                                 <span class="dataHeader">Publications</span>
-                                <div *ngFor="let PUB of fullProj.Publications; let i=index">
+                                <div *ngFor="let PUB of fullProj?.Publications; let i=index">
                                     <div *ngIf="i >= 1">
                                         <span>Publication({{i + 1}})</span>
                                     </div>
-                                    <div *ngIf="PUB.title">
+                                    <div *ngIf="PUB?.title">
                                         <span class="dataLabel">Publication Title: </span>
                                         <span>{{PUB.title}}</span>
                                     </div>
-                                    <div *ngIf="PUB.description">
+                                    <div *ngIf="PUB?.description">
                                         <span class="dataLabel">Publication Description: </span>
                                         <span>{{PUB.description}}</span>
                                     </div>
                                     <div *ngIf="PUB.url">
                                         <span class="dataLabel">Publication URL: </span>
-                                        <a target="blank" [href]="PUB.url">{{PUB.url}}</a>
+                                        <a target="blank" [href]="PUB?.url">{{PUB.url}}</a>
                                     </div>
                                     <div>_____________________________</div>
                                 </div>
@@ -118,9 +118,9 @@
             </ngb-tab>
             <ngb-tab title="Contact Info.">
                 <ng-template ngbTabContent>
-                    <div *ngIf="fullProj.Contacts.length > 0">
+                    <div *ngIf="fullProj?.Contacts.length > 0">
                         <span class="dataHeader">Project Contacts</span>
-                        <div *ngFor="let C of fullProj.Contacts; let i=index">
+                        <div *ngFor="let C of fullProj?.Contacts; let i=index">
                             <div *ngIf="i >= 1">
                                 <span>Contact({{i + 1}})</span>
                             </div>

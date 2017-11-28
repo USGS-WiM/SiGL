@@ -105,7 +105,7 @@
                 </div> <!-- end ngFor each filteredProjects -->
             </div>
              <!--If no filtered Projects have been requested (but a site has been clicked on the map)-->
-            <div *ngIf="siteWasClicked && filteredProjects?.length == 0"> <!-- && siteClickFullProj">-->
+            <div *ngIf="filteredProjects?.length == 0 && siteClickFullProj">
                 <div> Click on a project name or site to highlight it on the map.</div>
                 <hr />               
                 <div>
