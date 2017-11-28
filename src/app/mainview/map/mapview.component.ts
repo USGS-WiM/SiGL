@@ -34,7 +34,8 @@ export class MapviewComponent implements OnInit {
     public filteredProjects: Array<Ifilteredproject>;
 	public fullSite: Ifullsite;
 	public showBottomBar: Boolean;
-	public fullSiteFlag: Boolean;
+    public fullSiteFlag: Boolean;
+    public siteClickFlag: Boolean;
 	public selectedTab: String;
 
 	public groupedParams: Igroupedparameters;
@@ -46,7 +47,8 @@ export class MapviewComponent implements OnInit {
 	ngOnInit() {
 		//set defaults on init
 		this.showBottomBar = false;
-		this.fullSiteFlag = false;
+        this.fullSiteFlag = false;
+        this.siteClickFlag = false;
         this.selectedTab = "project";
         this.filteredProjects = [];
         
@@ -149,12 +151,11 @@ export class MapviewComponent implements OnInit {
 			transparent: true,
 			zIndex: 1000
 		}).addTo(this.map); */
-
 		/* this.wmsLayer = L.WMS.source("http://52.21.226.149:8080/geoserver", {
 			'transparent': true
 		});
-
-		this.wmsLayer.getLayer("SIGL:SITE_VIEW").addTo(this.map); */
+        this.wmsLayer.getLayer("SIGL:SITE_VIEW").addTo(this.map); */
+        /** END for geoserver layers */
 
 		this.popup = L.popup();
 
@@ -209,9 +210,13 @@ export class MapviewComponent implements OnInit {
     }
     
     public onFeatureSelection(event): void {
+        
         if (this.filteredProjects.length > 0){
             //need to find site and highlight it in the sidebar project--> site list 
+            console.log("fired if there are filtered projects")
         } else {
+            console.log("fired if NO filtered projects and single site clicked");
+            this.siteClickFlag = true;
             //there are no filtered projects, and single site was clicked
             //will need to get  full site and full project w/all sites, activate "Filter Results" slideout, populate slideout
         }

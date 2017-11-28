@@ -200,7 +200,7 @@ export class FilterComponent implements OnInit {
             }
             this.modalResponseEvent.emit(results);
         })
-    }
+    }//end showFilterModal
 
     public filterChange(which: string, e: any): void {
         switch (which) {
@@ -281,5 +281,5 @@ export class FilterComponent implements OnInit {
 
     public onProjectSelect(project: Iproject){
         //handle selected project
-    }
+    } //end onProjectSelect
 }//end FilterComponent Class
