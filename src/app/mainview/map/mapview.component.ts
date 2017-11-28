@@ -81,18 +81,22 @@ export class MapviewComponent implements OnInit {
         });
         //initial get of all geojson sites
         this._mapService.filteredSiteView.subscribe((geoj: any) => {
-            this.geoj = geoj; //use this to filter later
-            this.geoJsonLayer = L.geoJSON(geoj, {
-                pointToLayer: ((feature, latlng) => {
-                    return L.circleMarker(latlng, this.icon);
-                }),
-                onEachFeature: ((feature, layer) => {
-                    layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
-                    layer.on("click", (e) => {
-                        this.onFeatureSelection(e)
-                    }); 
-                }) 
-            }).addTo(this.map);
+			if (geoj !== ""){	
+				if (this.geoJsonLayer) this.geoJsonLayer.remove();
+							
+				this.geoj = geoj; //use this to filter later
+				this.geoJsonLayer = L.geoJSON(geoj, {
+					pointToLayer: ((feature, latlng) => {
+						return L.circleMarker(latlng, this.icon);
+					}),
+					onEachFeature: ((feature, layer) => {
+						layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
+						layer.on("click", (e) => {
+							this.onFeatureSelection(e)
+						}); 
+					}) 
+				}).addTo(this.map);
+			}
         });            
 		this._siglService.sitePointClickBool.subscribe((val:boolean) => {
 			this.siteClickFlag = val;

@@ -1,20 +1,21 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalService } from "app/shared/services/modal.service";
-import { SiglService } from "app/shared/services/siglservices.service";
+import { ModalService } from "../../../shared/services/modal.service";
+import { SiglService } from "../../../shared/services/siglservices.service";
 import { IMultiSelectOption } from "angular-2-dropdown-multiselect";
-import { Iparameter } from "app/shared/interfaces/parameter.interface";
-import { IprojDuration } from "app/shared/interfaces/projduration.interface";
-import { IprojStatus } from "app/shared/interfaces/projstatus.interface";
-import { Iresource } from "app/shared/interfaces/resource.interface";
-import { Imedia } from "app/shared/interfaces/media.interface";
-import { Ilake } from "app/shared/interfaces/lake.interface";
-import { Istate } from "app/shared/interfaces/state.interface";
-import { ImonitorEffort } from "app/shared/interfaces/monitoreffort.interface";
-import { Iproject } from "app/shared/interfaces/project.interface";
-import { Iorganization } from "app/shared/interfaces/organization.interface";
-import { Iobjective } from "app/shared/interfaces/objective.interface";
-import { IchosenFilters } from "app/shared/interfaces/chosenFilters.interface";
+import { Iparameter } from "../../../shared/interfaces/parameter.interface";
+import { IprojDuration } from "../../../shared/interfaces/projduration.interface";
+import { IprojStatus } from "../../../shared/interfaces/projstatus.interface";
+import { Iresource } from "../../../shared/interfaces/resource.interface";
+import { Imedia } from "../../../shared/interfaces/media.interface";
+import { Ilake } from "../../../shared/interfaces/lake.interface";
+import { Istate } from "../../../shared/interfaces/state.interface";
+import { ImonitorEffort } from "../../../shared/interfaces/monitoreffort.interface";
+import { Iproject } from "../../../shared/interfaces/project.interface";
+import { Iorganization } from "../../../shared/interfaces/organization.interface";
+import { Iobjective } from "../../../shared/interfaces/objective.interface";
+import { IchosenFilters } from "../../../shared/interfaces/chosenFilters.interface";
+import { MapService } from '../../../shared/services/map.service';
 
 
 @Component({
@@ -68,7 +69,7 @@ export class FilterComponent implements OnInit {
 
 
     //injects services into this component
-    constructor(private _ngbService: NgbModal, private _modalService: ModalService, private _siglService: SiglService) { }
+    constructor(private _ngbService: NgbModal, private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService) { }
 
     ngOnInit() {
         //instantiate object
@@ -196,7 +197,8 @@ export class FilterComponent implements OnInit {
                 this._siglService.chosenFilters = this.chosenFiltersObj;
             } else{
                 //results == 'Search'
-                this._siglService.setFilteredSites(this.chosenFiltersObj);
+                this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
+                this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services
             }
             this.modalResponseEvent.emit(results);
         })
@@ -266,7 +268,7 @@ export class FilterComponent implements OnInit {
                 });
                 break;
             case "organization":
-                this.chosenFiltersObj.p_organization = e.orgainziation_id;
+                this.chosenFiltersObj.p_organization = e.organization_id;
                 this.chosenFiltersObj.ORG = e;
                 break;
             case "objective":

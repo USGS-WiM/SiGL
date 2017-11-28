@@ -5,15 +5,22 @@ import * as L from 'leaflet';
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import { Subject } from "rxjs/Subject";
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { CONFIG } from "./config";
 import { Http, Response } from '@angular/http';
+import { IchosenFilters } from 'app/shared/interfaces/chosenFilters.interface';
+
 
 @Injectable()
 export class MapService {
+    
     private _allSiteView: any;
     public map: Map;
     public baseMaps: any;
-
+    public filtersPassed: IchosenFilters;
+    private newFilteredGeoJson: L.GeoJSON;
+    private newFilteredGeoJsonArray: Array<any>;
 
     constructor(private _http: Http) {
         this.baseMaps = {// {s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png  
@@ -47,29 +54,76 @@ export class MapService {
     
     //subject
     private _allSiteViewSubject: Subject<any> = new Subject<any>();
-    private _filteredSiteViewSubject: Subject<any> = new Subject<any>();
+    private _filteredSiteViewSubject: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
 
+    //initial set of all geojson sites. keep for resetting
     public set AllSiteView(geoJson: any) {
         this._allSiteView = geoJSON;
     }
 
+    // clear filters and give back all
     public get AllSiteView(): any {
         return this._allSiteView;
     }
 
+    // setter for filtered geojson sites based on filters chosen
     public setFilteredSiteView(geoJson: any) {
         this._filteredSiteViewSubject.next(geoJson);
     }
 
+    // mainview subscribed to this for filtered sites
     public get filteredSiteView(): Observable<any> {
-        return this._filteredSiteViewSubject;
+        return this._filteredSiteViewSubject.asObservable();
     }
 
+    public updateFilteredSites(filters: IchosenFilters){
+        this.newFilteredGeoJsonArray = [];
+        this.newFilteredGeoJson = new L.GeoJSON();
+        this.filtersPassed = filters;
+        let isPresent = false;
+        this._filteredSiteViewSubject.getValue().features.forEach(feature => {            
+            isPresent = false;
+            let parameterArray = feature.properties.parameter_type_id ? feature.properties.parameter_type_id.split(",") : [];
+            let projDurationArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
+            let projStatusArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
+            let resArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
+            let mediaArray = feature.properties.media_type_id ? feature.properties.media_type_id.split(",") : [];
+            let lakeArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
+            let stateArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
+            let monArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
+            let org;
+            let objectiveArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
+
+            // loop through to find if filters are in geojson
+            for (let p of this.filtersPassed.s_parameters) {
+                if (parameterArray.includes(p.toString())){
+                    isPresent= true;
+                    break;
+                }
+            }
+/*            for (let p of this.filtersPassed.s_projDuration) {
+                if (projDurationArray.includes(p.toString())){
+                    isPresent= true;
+                    break;
+                }
+            } // finish all loops
+*/
+            if (isPresent) {
+                this.newFilteredGeoJsonArray.push(feature);
+            }
+        }, this);
+        let test = "hi";
+        // set the filteredSiteView to be the new geojson
+        //this.newFilteredGeoJson.addData(this.newFilteredGeoJsonArray);
+        this.setFilteredSiteView(this.newFilteredGeoJsonArray);
+        
+    }
+    //initial http get of all geojson sites
     private httpRequest(): void {
         this._http.get(CONFIG.SITE_URL + "/GetSiteView.geojson")
             .map(res => <any>res.json())
             .subscribe(geoj => {
-                this.AllSiteView(geoj);
+                this.AllSiteView = geoj;
                 this.setFilteredSiteView(geoj);
             }, error => this.handleError);
     }
