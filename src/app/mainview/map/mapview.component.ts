@@ -80,7 +80,7 @@ export class MapviewComponent implements OnInit {
 			this.tabs.select(tabID);
         });
         //initial get of all geojson sites
-        this._mapService.siteView.subscribe((geoj: any) => {
+        this._mapService.filteredSiteView.subscribe((geoj: any) => {
             this.geoj = geoj; //use this to filter later
             this.geoJsonLayer = L.geoJSON(geoj, {
                 pointToLayer: ((feature, latlng) => {

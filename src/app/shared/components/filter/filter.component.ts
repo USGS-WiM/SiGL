@@ -195,7 +195,7 @@ export class FilterComponent implements OnInit {
                 this.chosenFiltersObj = {};
                 this._siglService.chosenFilters = this.chosenFiltersObj;
             } else{
-                //search
+                //results == 'Search'
                 this._siglService.setFilteredSites(this.chosenFiltersObj);
             }
             this.modalResponseEvent.emit(results);
