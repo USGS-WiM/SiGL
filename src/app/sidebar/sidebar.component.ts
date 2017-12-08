@@ -3,11 +3,13 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 
 import { BasemapsComponent } from "../mainview/basemaps/basemaps.component";
 import { ModalService } from "../shared/services/modal.service";
-import { SiglService } from "../shared/services/siglservices.service";
 import { IchosenFilters } from "../shared/interfaces/chosenFilters.interface";
 import { Ifilteredproject } from "../shared/interfaces/filteredproject";
 import { Isimplesite } from "../shared/interfaces/simplesite";
 import { Ifullproject } from '../shared/interfaces/fullproject.interface';
+
+import { SiglService } from "../shared/services/siglservices.service";
+import { MapService } from '../shared/services/map.service';
 
 @Component({
 	selector: 'sidebar',
@@ -24,7 +26,7 @@ export class SidebarComponent implements OnInit {
 	public siteClickFullProj: Ifullproject;
 	public siteCountForm: FormGroup;
 
-	constructor(private _modalService: ModalService, private _siglService: SiglService, private _formBuilder: FormBuilder) { }
+	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService, private _formBuilder: FormBuilder) { }
 
 	ngOnInit() {
 		//site toggle button group form
@@ -89,12 +91,12 @@ export class SidebarComponent implements OnInit {
 		this.filteredProjects.forEach((p:Ifilteredproject) => {
 			if (p.project_id == projectId) {
 				p.projectSites.forEach((s:Isimplesite) => {
-					if (value == 'all'){
+					if (value == 'all'){						
 						//show me only filtered
 						if (!s.isDisplayed) {
 							s.isTempDisplayed = true;
 						}
-					} else {
+					} else {						
 						//show me only filtered
 						if (s.isTempDisplayed) {
 							s.isTempDisplayed = false;
@@ -103,5 +105,7 @@ export class SidebarComponent implements OnInit {
 				});
 			}
 		});		
+		//now add or remove from the map
+		value == 'all' ? this._mapService.AddTempSites(projectId) : this._mapService.RemoveTempSites(projectId);
 	}
 }
