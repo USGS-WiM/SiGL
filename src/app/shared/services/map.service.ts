@@ -21,7 +21,7 @@ export class MapService {
     public filtersPassed: IchosenFilters;
     private newFilteredGeoJson: L.GeoJSON;
     private newFilteredGeoJsonArray: Array<any>;
-    
+    private temporarySites: Array<any>; //add/subtract temp sites to show in map
 
     constructor(private _http: Http) {
         this.baseMaps = {// {s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png  
@@ -48,38 +48,50 @@ export class MapService {
                 maxZoom: 16
             })
         };
-
+        this.temporarySites = [];
         this.httpRequest();
         this.setFilteredSiteIDs([]);
     }
     
     //subject
-    private _allSiteViewSubject: Subject<any> = new Subject<any>();
+    private _allSiteViewSubject: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject<any>("");
     private _filteredSiteViewSubject: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
     private _filteredSiteIDsSubject: BehaviorSubject<Array<number>> = new BehaviorSubject([]); //used to let sidebar know which sites are the filtered results for styling
+    private _tempSiteSubject: Subject<any> = new Subject<any>();
 
     //initial set of all geojson sites. keep for resetting
-    public set AllSiteView(geoJson: any) { this._allSiteView = geoJSON; }
-    // clear filters and give back all
-    public get AllSiteView(): any { return this._allSiteView; }
-
+    public setAllSiteView(geoJson: any) { 
+        this._allSiteViewSubject.next(geoJSON); 
+    }
     //set array of filtered site id's 
     public setFilteredSiteIDs(siteIds: Array<number>) { 
         this._filteredSiteIDsSubject.next(siteIds);
     }
-    // siglServices wants array of filtered site id's 
-    public get filteredSiteIDs(): Observable<Array<number>> { 
-        return this._filteredSiteIDsSubject; 
-    }
-
     // setter for filtered geojson sites based on filters chosen
     public setFilteredSiteView(geoJson: any) {
         this._filteredSiteViewSubject.next(geoJson);
     }
+    // setter for filtered geojson sites based on filters chosen
+    public setTempSites(tempSites: any) {
+        this._tempSiteSubject.next(tempSites);
+    }
 
+    // clear filters and give back all
+    public get AllSiteView(): Observable<any> { 
+        return this._allSiteViewSubject.asObservable(); 
+    }
+
+    // siglServices wants array of filtered site id's 
+    public get filteredSiteIDs(): Observable<Array<number>> { 
+        return this._filteredSiteIDsSubject; 
+    }    
     // mainview subscribed to this for filtered sites
     public get filteredSiteView(): Observable<any> {
         return this._filteredSiteViewSubject.asObservable();
+    }
+    // mainview subscribed to this for temporary sites
+    public get tempSites(): Observable<any> {
+        return this._tempSiteSubject.asObservable();
     }
 
     //called after filtered modal closes and filters have been chosen
@@ -129,12 +141,22 @@ export class MapService {
         this.setFilteredSiteView(this.newFilteredGeoJsonArray);
         
     }
+    
+    // takes in projectID, loops thru this.AllSiteView and grab all sites with matching projectIDs, hit setter for mapview.component's getter to get
+    public AddTempSites(projectID: number) {
+        this._allSiteViewSubject.getValue().forEach(feature => {  
+            if (feature.properties.projectID == projectID)
+                this.temporarySites.push(feature);
+        });
+        this.setTempSites(this.tempSites);
+    }
+
     //initial http get of all geojson sites
     private httpRequest(): void {
         this._http.get(CONFIG.SITE_URL + "/GetSiteView.geojson")
             .map(res => <any>res.json())
             .subscribe(geoj => {
-                this.AllSiteView = geoj;
+                this.setAllSiteView(geoj);
                 this.setFilteredSiteView(geoj);
             }, error => this.handleError);
     }

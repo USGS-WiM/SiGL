@@ -24,9 +24,11 @@ export class MapviewComponent implements OnInit {
 	@ViewChild('filtermodal') filtermodal: FilterComponent;
 	public map: any;
     public wmsLayer: any;
-    public icon: any;
+	public icon: any;
+	public tempSitesIcon: any;
     public highlightIcon: any;
-    public geoJsonLayer: L.GeoJSON;
+	public geoJsonLayer: L.GeoJSON;
+	public tempGeoJsonLayer: L.GeoJSON;
     public geoj: any;
 	public popup: any;
 	public style: Object = {};
@@ -50,8 +52,6 @@ export class MapviewComponent implements OnInit {
 		this.showBottomBar = false;
         this.fullSiteFlag = false;
         this.siteClickFlag = false;
-		//this.selectedTab = "project";
-		//this.tabs.select('project');
         this.filteredProjects = [];
         
         this.icon = {
@@ -62,7 +62,14 @@ export class MapviewComponent implements OnInit {
             opacity: 1,
             fillOpacity: 0.5
         };
-
+		this.tempSitesIcon = {
+            radius: 5,
+            fillColor: "#6d7175",
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.5
+        };
         this.highlightIcon = {
             radius: 8,
             color: 'green',
@@ -79,7 +86,7 @@ export class MapviewComponent implements OnInit {
 			let tabID = this.siteClickFlag ? 'site' : 'project';
 			this.tabs.select(tabID);
         });
-        //initial get of all geojson sites
+        //every time geojson gets updated (initially its all, after depends on filters chosen)
         this._mapService.filteredSiteView.subscribe((geoj: any) => {
 			if (geoj !== ""){	
 				if (this.geoJsonLayer) this.geoJsonLayer.remove();
@@ -88,6 +95,25 @@ export class MapviewComponent implements OnInit {
 				this.geoJsonLayer = L.geoJSON(geoj, {
 					pointToLayer: ((feature, latlng) => {
 						return L.circleMarker(latlng, this.icon);
+					}),
+					onEachFeature: ((feature, layer) => {
+						layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
+						layer.on("click", (e) => {
+							this.onFeatureSelection(e)
+						}); 
+					}) 
+				}).addTo(this.map);
+			}
+		});            
+		//temporary sites when user clicks toggle between show all and only filteres sites from sidebar
+        this._mapService.tempSites.subscribe((tempGeoj: any) => {
+			if (tempGeoj !== ""){	
+				if (this.tempGeoJsonLayer) this.tempGeoJsonLayer.remove();
+							
+				//this.geoj = tempGeoj; //use this to filter later
+				this.tempGeoJsonLayer = L.geoJSON(tempGeoj, {
+					pointToLayer: ((feature, latlng) => {
+						return L.circleMarker(latlng, this.tempSitesIcon);
 					}),
 					onEachFeature: ((feature, layer) => {
 						layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
