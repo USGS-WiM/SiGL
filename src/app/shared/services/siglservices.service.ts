@@ -1,34 +1,35 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, URLSearchParams } from "@angular/http";
-import { Iparameter } from "app/shared/interfaces/parameter.interface";
-import { IprojDuration } from "app/shared/interfaces/projduration.interface";
-import { IprojStatus } from "app/shared/interfaces/projstatus.interface";
-import { Iresource } from "app/shared/interfaces/resource.interface";
-import { Imedia } from "app/shared/interfaces/media.interface";
-import { Ilake } from "app/shared/interfaces/lake.interface";
-import { Istate } from "app/shared/interfaces/state.interface";
-import { ImonitorEffort } from "app/shared/interfaces/monitoreffort.interface";
-import { Iproject } from "app/shared/interfaces/project.interface";
-import { Iorganization } from "app/shared/interfaces/organization.interface";
-import { Iobjective } from "app/shared/interfaces/objective.interface";
-import { IchosenFilters } from "app/shared/interfaces/chosenFilters.interface";
-import { Isite } from "app/shared/interfaces/site.interface";
-import { Ifilteredproject } from "app/shared/interfaces/filteredproject";
-import { Ifullproject } from "app/shared/interfaces/fullproject.interface";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import { Subject } from "rxjs/Subject";
+
 import { CONFIG } from "./config";
-import { Ifullsite } from "app/shared/interfaces/fullsite.interface";
 
+import { Iparameter } from "../../shared/interfaces/parameter.interface";
+import { IprojDuration } from "../../shared/interfaces/projduration.interface";
+import { IprojStatus } from "../../shared/interfaces/projstatus.interface";
+import { Iresource } from "../../shared/interfaces/resource.interface";
+import { Imedia } from "../../shared/interfaces/media.interface";
+import { Ilake } from "../../shared/interfaces/lake.interface";
+import { Istate } from "../../shared/interfaces/state.interface";
+import { ImonitorEffort } from "../../shared/interfaces/monitoreffort.interface";
+import { Iproject } from "../../shared/interfaces/project.interface";
+import { Iorganization } from "../../shared/interfaces/organization.interface";
+import { Iobjective } from "../../shared/interfaces/objective.interface";
+import { IchosenFilters } from "../../shared/interfaces/chosenFilters.interface";
+import { Isite } from "../../shared/interfaces/site.interface";
+import { Ifilteredproject } from "../../shared/interfaces/filteredproject";
+import { Ifullproject } from "../../shared/interfaces/fullproject.interface";
+import { Ifullsite } from "../../shared/interfaces/fullsite.interface";
 
-
+import { MapService } from '../../shared/services/map.service';
 
 @Injectable()
 export class SiglService {
+	private filteredSiteIDArray: any;
 	
-
-	constructor(private _http: Http) {
+	constructor(private _http: Http, private _mapService: MapService) {
 		this.setParameters();
 		this.setProjDurations();
 		this.setProjStatuses();
@@ -40,6 +41,11 @@ export class SiglService {
 		this.setProjects();
 		this.setOrganizations();
 		this.setObjectives();
+		// this gets updated everytime a filter is done. the mapServices filters the geojson and stores the filtered
+		// siteIDs in array for sidebar to use for styling the list of sites within each project (and for counts)
+		this._mapService.filteredSiteIDs.subscribe((siteIds: any) => {
+			this.filteredSiteIDArray = siteIds;
+		});
 	}
 
 	// subjects
@@ -102,6 +108,7 @@ export class SiglService {
 	/*public get filteredSites(): Observable<Array<Isite>>{
 		return this._filteredSitesSubject.asObservable();
 	}*/
+	//returns filtered projects from setFilteredSites()'s call to /FilteredProjects?...params...
 	public get filteredProjects(): Observable<Array<Ifilteredproject>>{
 		return this._filteredProjectSubject.asObservable();
 	}
@@ -208,7 +215,7 @@ export class SiglService {
 				this._objectiveSubject.next(ob);
 			}, error => this.handleError);
 	}
-	//getting called from separate component so it nees to be public
+	//called when filters modal closes and passes chosen filters
 	public setFilteredSites(filters: IchosenFilters): void {
 		let sitesParam: URLSearchParams = new URLSearchParams();
 		if (filters.p_organization) sitesParam.set("ProjOrg", filters.p_organization.toString());
@@ -226,6 +233,17 @@ export class SiglService {
 		this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
 			.map(res => <Array<Ifilteredproject>>res.json())
 			.subscribe(proj => {
+				//HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
+				for (let p of proj) {
+					for (let s of p.projectSites) {
+						if (this.filteredSiteIDArray.includes(s.site_id))
+						{
+							s.isDisplayed = true;
+						} else {
+							s.isTempDisplayed = false; //set rest to hold isTempDisplayed property
+						}						
+					}
+				}
 				this._filteredProjectSubject.next(proj);
 			}, error => this.handleError);
 	}

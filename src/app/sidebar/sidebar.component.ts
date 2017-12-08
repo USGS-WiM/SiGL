@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+
 import { BasemapsComponent } from "../mainview/basemaps/basemaps.component";
 import { ModalService } from "../shared/services/modal.service";
 import { SiglService } from "../shared/services/siglservices.service";
 import { IchosenFilters } from "../shared/interfaces/chosenFilters.interface";
-//import { Isite } from "app/shared/interfaces/site.interface";
 import { Ifilteredproject } from "../shared/interfaces/filteredproject";
 import { Isimplesite } from "../shared/interfaces/simplesite";
 import { Ifullproject } from '../shared/interfaces/fullproject.interface';
@@ -21,10 +22,15 @@ export class SidebarComponent implements OnInit {
 	private selectedProjectId: Number;
 	public siteWasClicked: boolean;
 	public siteClickFullProj: Ifullproject;
+	public siteCountForm: FormGroup;
 
-	constructor(private _modalService: ModalService, private _siglService: SiglService) { }
+	constructor(private _modalService: ModalService, private _siglService: SiglService, private _formBuilder: FormBuilder) { }
 
 	ngOnInit() {
+		//site toggle button group form
+		this.siteCountForm = this._formBuilder.group({
+			'model': 'filtered'
+		});
 		this.filteredProjects = [];
 		//initialize selected project Id first time.
 		this.selectedProjectId = -1;
@@ -45,11 +51,16 @@ export class SidebarComponent implements OnInit {
 		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {			
 			this.accordion.activeIds = ['projList'];
 			projects.forEach((p:Ifilteredproject) => {
-				p.isCollapsed = true;	
-				this.filteredProjects.push(p);
-			})
-		});
+				p.isCollapsed = true;					
+				p.filteredSiteCount = 0;
+				p.projectSites.forEach((s:Isimplesite) =>{
+					if (s.isDisplayed)
+						p.filteredSiteCount++;
+				});
 
+				this.filteredProjects.push(p);
+			});
+		});
 	}
 
 	// show filter button click
@@ -72,5 +83,25 @@ export class SidebarComponent implements OnInit {
 		}
 		this._siglService.setFullSite(site.site_id.toString());
 	}
-
+	
+	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'
+	public toggleSiteList(value: string, projectId: number) {
+		this.filteredProjects.forEach((p:Ifilteredproject) => {
+			if (p.project_id == projectId) {
+				p.projectSites.forEach((s:Isimplesite) => {
+					if (value == 'all'){
+						//show me only filtered
+						if (!s.isDisplayed) {
+							s.isTempDisplayed = true;
+						}
+					} else {
+						//show me only filtered
+						if (s.isTempDisplayed) {
+							s.isTempDisplayed = false;
+						}
+					}
+				});
+			}
+		});		
+	}
 }

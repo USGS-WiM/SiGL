@@ -94,11 +94,30 @@
                         <a *ngIf="proj.projectSites.length > 0" (click)="proj.isCollapsed = !proj.isCollapsed" [attr.aria-expanded]="!proj.isCollapsed" aria-controls="collapseExample">
                             <i [ngClass]="proj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
                         </a>
-                        <span><a (click)="showProjectDetails(proj)">{{proj.name}}</a></span><span class="pull-right">{{proj.projectSites.length}}</span>
+                        <span>                            
+                            <a (click)="showProjectDetails(proj)">{{proj.name}}</a>
+                        </span>
+                        <span class="pull-right">
+                            <form [formGroup]="siteCountForm">
+                                <div class="btn-group" ngbRadioGroup name="radioBasic" formControlName="model">                                    
+                                    <label ngbButtonLabel class="btn-primary siteFormLabel all">
+                                        <input ngbButton type="radio" (click)="toggleSiteList('all', proj.project_id)" [value]="'all'">All ({{proj.projectSites.length}})
+                                    </label>
+                                    <label ngbButtonLabel class="btn-primary siteFormLabel filtered">
+                                        <input ngbButton type="radio" (click)="toggleSiteList('filtered', proj.project_id)" [value]="'filtered'"> Filtered ({{proj.filteredSiteCount}})
+                                    </label>
+                                </div>
+                            </form> <!-- -->
+                        </span>
                     </div>
                     <div id="collapseExample" [ngbCollapse]="proj.isCollapsed">
                         <div *ngFor="let s of proj.projectSites" class="marginLeft">
-                            <a (click)="showSiteDetails(s)">{{s.name}}</a>
+                            <div *ngIf="s.isDisplayed">
+                                <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" (click)="showSiteDetails(s)">{{s.name}}</a>
+                            </div>
+                            <div *ngIf="s.isTempDisplayed">
+                                <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" (click)="showSiteDetails(s)">{{s.name}}</a>
+                            </div>
                         </div>
                     </div>
                     <hr />

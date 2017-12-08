@@ -5,4 +5,5 @@ export interface Ifilteredproject {
     project_id: number;
     projectSites: Array<Isimplesite>;
     isCollapsed?:boolean;
+    filteredSiteCount: number;
 }

@@ -21,6 +21,7 @@ export class MapService {
     public filtersPassed: IchosenFilters;
     private newFilteredGeoJson: L.GeoJSON;
     private newFilteredGeoJsonArray: Array<any>;
+    
 
     constructor(private _http: Http) {
         this.baseMaps = {// {s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png  
@@ -49,21 +50,26 @@ export class MapService {
         };
 
         this.httpRequest();
-        
+        this.setFilteredSiteIDs([]);
     }
     
     //subject
     private _allSiteViewSubject: Subject<any> = new Subject<any>();
     private _filteredSiteViewSubject: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
+    private _filteredSiteIDsSubject: BehaviorSubject<Array<number>> = new BehaviorSubject([]); //used to let sidebar know which sites are the filtered results for styling
 
     //initial set of all geojson sites. keep for resetting
-    public set AllSiteView(geoJson: any) {
-        this._allSiteView = geoJSON;
-    }
-
+    public set AllSiteView(geoJson: any) { this._allSiteView = geoJSON; }
     // clear filters and give back all
-    public get AllSiteView(): any {
-        return this._allSiteView;
+    public get AllSiteView(): any { return this._allSiteView; }
+
+    //set array of filtered site id's 
+    public setFilteredSiteIDs(siteIds: Array<number>) { 
+        this._filteredSiteIDsSubject.next(siteIds);
+    }
+    // siglServices wants array of filtered site id's 
+    public get filteredSiteIDs(): Observable<Array<number>> { 
+        return this._filteredSiteIDsSubject; 
     }
 
     // setter for filtered geojson sites based on filters chosen
@@ -76,11 +82,14 @@ export class MapService {
         return this._filteredSiteViewSubject.asObservable();
     }
 
+    //called after filtered modal closes and filters have been chosen
     public updateFilteredSites(filters: IchosenFilters){
         this.newFilteredGeoJsonArray = [];
         this.newFilteredGeoJson = new L.GeoJSON();
         this.filtersPassed = filters;
-        let isPresent = false;
+        let isPresent: boolean = false;
+        let filteredSiteIds: Array<number> = [];
+        // loop through all the geojson features to find filter matching properties
         this._filteredSiteViewSubject.getValue().features.forEach(feature => {            
             isPresent = false;
             let parameterArray = feature.properties.parameter_type_id ? feature.properties.parameter_type_id.split(",") : [];
@@ -109,12 +118,14 @@ export class MapService {
             } // finish all loops
 */
             if (isPresent) {
+                filteredSiteIds.push(feature.properties.site_id);
                 this.newFilteredGeoJsonArray.push(feature);
             }
         }, this);
         let test = "hi";
         // set the filteredSiteView to be the new geojson
         //this.newFilteredGeoJson.addData(this.newFilteredGeoJsonArray);
+        this.setFilteredSiteIDs(filteredSiteIds);
         this.setFilteredSiteView(this.newFilteredGeoJsonArray);
         
     }

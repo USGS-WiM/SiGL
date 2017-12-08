@@ -24,3 +24,17 @@
 a {
     cursor: pointer;
 }
+.active{
+    box-shadow: 0 0 0 0.2rem rgba(249, 188, 12, 0.5);
+}
+.siteFormLabel {
+    font-size:x-small!important;
+    padding: 0.1rem!important;
+    border-color:black!important;
+}
+.all {
+    background-color:gray;
+}
+.filtered {
+    background-color:orange;
+}
