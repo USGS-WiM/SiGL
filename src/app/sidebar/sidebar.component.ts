@@ -91,13 +91,12 @@ export class SidebarComponent implements OnInit {
 		this.filteredProjects.forEach((p:Ifilteredproject) => {
 			if (p.project_id == projectId) {
 				p.projectSites.forEach((s:Isimplesite) => {
-					if (value == 'all'){
-						this._mapService.AddTempSites(projectId);
+					if (value == 'all'){						
 						//show me only filtered
 						if (!s.isDisplayed) {
 							s.isTempDisplayed = true;
 						}
-					} else {
+					} else {						
 						//show me only filtered
 						if (s.isTempDisplayed) {
 							s.isTempDisplayed = false;
@@ -106,5 +105,7 @@ export class SidebarComponent implements OnInit {
 				});
 			}
 		});		
+		//now add or remove from the map
+		value == 'all' ? this._mapService.AddTempSites(projectId) : this._mapService.RemoveTempSites(projectId);
 	}
 }

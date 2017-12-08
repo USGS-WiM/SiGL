@@ -21,7 +21,7 @@ export class MapService {
     public filtersPassed: IchosenFilters;
     private newFilteredGeoJson: L.GeoJSON;
     private newFilteredGeoJsonArray: Array<any>;
-    private temporarySites: Array<any>; //add/subtract temp sites to show in map
+    private temporarySites: any = []; //add/subtract temp sites to show in map
 
     constructor(private _http: Http) {
         this.baseMaps = {// {s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png  
@@ -48,20 +48,21 @@ export class MapService {
                 maxZoom: 16
             })
         };
-        this.temporarySites = [];
+        //this.temporarySites = [];
         this.httpRequest();
         this.setFilteredSiteIDs([]);
+        
     }
     
     //subject
-    private _allSiteViewSubject: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject<any>("");
+  //  private _allSiteViewSubject: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
     private _filteredSiteViewSubject: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
     private _filteredSiteIDsSubject: BehaviorSubject<Array<number>> = new BehaviorSubject([]); //used to let sidebar know which sites are the filtered results for styling
     private _tempSiteSubject: Subject<any> = new Subject<any>();
 
     //initial set of all geojson sites. keep for resetting
     public setAllSiteView(geoJson: any) { 
-        this._allSiteViewSubject.next(geoJSON); 
+        this._allSiteView = geoJson;//this._allSiteViewSubject.next(geoJSON); 
     }
     //set array of filtered site id's 
     public setFilteredSiteIDs(siteIds: Array<number>) { 
@@ -78,7 +79,7 @@ export class MapService {
 
     // clear filters and give back all
     public get AllSiteView(): Observable<any> { 
-        return this._allSiteViewSubject.asObservable(); 
+        return this._allSiteView;// this._allSiteViewSubject.asObservable(); 
     }
 
     // siglServices wants array of filtered site id's 
@@ -144,11 +145,24 @@ export class MapService {
     
     // takes in projectID, loops thru this.AllSiteView and grab all sites with matching projectIDs, hit setter for mapview.component's getter to get
     public AddTempSites(projectID: number) {
-        this._allSiteViewSubject.getValue().forEach(feature => {  
-            if (feature.properties.projectID == projectID)
+        let theseNewTemps = this._allSiteView.features.filter(function (feature) { return feature.properties.project_id == projectID; });
+        if (this.temporarySites.length > 0) Array.prototype.push.apply(this.temporarySites,theseNewTemps);// this.temporarySites.concat(theseNewTemps);
+        else this.temporarySites = theseNewTemps;
+      /*  this._allSiteView.features.forEach(feature => {     
+            if (feature.properties.project_id == projectID)
                 this.temporarySites.push(feature);
-        });
-        this.setTempSites(this.tempSites);
+        });*/
+        this.setTempSites(this.temporarySites);      
+    }
+
+    //loop thru tempsites, remove all sites that are in projectID
+    public RemoveTempSites(projectID:number){
+        var i = this.temporarySites.length;
+        while (i--) {
+            if (this.temporarySites[i].properties.project_id == projectID) 
+                this.temporarySites.splice(i, 1);            
+        };        
+        this.setTempSites(this.temporarySites);   
     }
 
     //initial http get of all geojson sites
@@ -156,7 +170,8 @@ export class MapService {
         this._http.get(CONFIG.SITE_URL + "/GetSiteView.geojson")
             .map(res => <any>res.json())
             .subscribe(geoj => {
-                this.setAllSiteView(geoj);
+                this._allSiteView = geoj;
+               // this.setAllSiteView(geoj);
                 this.setFilteredSiteView(geoj);
             }, error => this.handleError);
     }
