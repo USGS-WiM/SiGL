@@ -55,7 +55,7 @@ export class MapviewComponent implements OnInit {
         this.filteredProjects = [];
         
         this.icon = {
-            radius: 5,
+            radius: 3,
             fillColor: "#ff7800",
             color: "#000",
             weight: 1,
