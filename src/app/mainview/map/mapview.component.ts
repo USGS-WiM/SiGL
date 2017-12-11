@@ -39,7 +39,10 @@ export class MapviewComponent implements OnInit {
 	public showBottomBar: Boolean;
     public fullSiteFlag: Boolean;
     public siteClickFlag: Boolean;
-	//public selectedTab: String;
+    public clickedMarker: any;
+    //public selectedTab: String;
+    
+    public siteLayerGroup: L.LayerGroup;
 
 	public groupedParams: Igroupedparameters;
 	//public groupedParams: Object;
@@ -53,20 +56,47 @@ export class MapviewComponent implements OnInit {
         this.fullSiteFlag = false;
         this.siteClickFlag = false;
         this.filteredProjects = [];
-        
-        this.icon = {
-            radius: 3,
-            fillColor: "#ff7800",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5
-        };
+
+        //select fillcolor for leaflet circleMakers
+        function setMarker(feature){
+            let fillColor = "";
+            switch(feature.properties.lake_type_id){
+                case 1:
+                    //Erie
+                    fillColor = "#B6BB44";
+                    break;
+                case 2:
+                    //Huron
+                    fillColor =  "#8A3133";
+                    break;
+                case 3:
+                    //Michigan
+                    fillColor = "#927F56";
+                    break;
+                case 4:
+                    //Ontario
+                    fillColor =  "#6A318F";
+                    break;
+                case 5:
+                    //Superior
+                    fillColor = "#349074"; 
+                    break;
+            }
+            return {
+                radius: 3,
+                fillColor: fillColor,
+                color: "#000",
+                weight: 0,
+                opacity: 1,
+                fillOpacity: 0.5
+            }
+        }
+
 		this.tempSitesIcon = {
-            radius: 5,
+            radius: 4,
             fillColor: "#6d7175",
             color: "#000",
-            weight: 1,
+            weight: 0,
             opacity: 1,
             fillOpacity: 0.5
         };
@@ -94,16 +124,23 @@ export class MapviewComponent implements OnInit {
 				this.geoj = geoj; //use this to filter later
 				this.geoJsonLayer = L.geoJSON(geoj, {
 					pointToLayer: ((feature, latlng) => {
-						return L.circleMarker(latlng, this.icon);
+						return L.circleMarker(latlng, setMarker(feature));
 					}),
 					onEachFeature: ((feature, layer) => {
-						layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
+                        layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
 						layer.on("click", (e) => {
+                            if (this.clickedMarker){
+                                this.clickedMarker.setStyle(setMarker(e.target.feature));
+                            }
+                            this.clickedMarker = e.target;
+                            e.target.setStyle(this.highlightIcon);
 							this.onFeatureSelection(e)
 						}); 
-					}) 
-				}).addTo(this.map);
-			}
+                    }),
+                }).addTo(this.map);
+                
+            } 
+            //this.siteLayerGroup.addTo(this.map);   
 		});            
 		//temporary sites when user clicks toggle between show all and only filteres sites from sidebar
         this._mapService.tempSites.subscribe((tempGeoj: any) => {
@@ -118,6 +155,11 @@ export class MapviewComponent implements OnInit {
 					onEachFeature: ((feature, layer) => {
 						layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
 						layer.on("click", (e) => {
+                            if (this.clickedMarker){
+                                this.clickedMarker.setStyle(this.tempSitesIcon);
+                            }
+                            this.clickedMarker = e.target;
+                            e.target.setStyle(this.highlightIcon);
 							this.onFeatureSelection(e)
 						}); 
 					}) 
