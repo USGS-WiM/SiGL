@@ -57,15 +57,7 @@ export class MapviewComponent implements OnInit {
         this.siteClickFlag = false;
         this.filteredProjects = [];
         
-        this.icon = {
-            radius: 5,
-            fillColor: "#ff7800",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5
-        };
-		this.tempSitesIcon = {
+        this.tempSitesIcon = {
             radius: 5,
             fillColor: "#6d7175",
             color: "#000",
