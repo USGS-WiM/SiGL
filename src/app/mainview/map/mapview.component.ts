@@ -14,18 +14,18 @@ import { Ifilteredproject } from 'app/shared/interfaces/filteredproject';
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'mapview',
-	templateUrl: './mapview.component.html',
-	styleUrls: ['./mapview.component.css']
+    selector: 'mapview',
+    templateUrl: './mapview.component.html',
+    styleUrls: ['./mapview.component.css']
 })
 export class MapviewComponent implements OnInit {
-	@ViewChild('t') tabs;
-	// filter modal, opened from sidebar's (click) function that changing show boolean, subscribed to in the filterModalComponent
-	@ViewChild('filtermodal') filtermodal: FilterComponent;
-	public map: any;
+    @ViewChild('t') tabs;
+    // filter modal, opened from sidebar's (click) function that changing show boolean, subscribed to in the filterModalComponent
+    @ViewChild('filtermodal') filtermodal: FilterComponent;
+    public map: any;
     public wmsLayer: any;
-	public icon: any;
-	public tempSitesIcon: any;
+    public icon: any;
+    public tempSitesIcon: any;
     public highlightIcon: any;
 	public geoJsonLayer: L.GeoJSON;
 	public tempGeoJsonLayer: L.GeoJSON;
@@ -37,8 +37,8 @@ export class MapviewComponent implements OnInit {
 	public fullProj: Ifullproject;
     public fullProjSites: Array<Ifullsite>;
     public filteredProjects: Array<Ifilteredproject>;
-	public fullSite: Ifullsite;
-	public showBottomBar: Boolean;
+    public fullSite: Ifullsite;
+    public showBottomBar: Boolean;
     public fullSiteFlag: Boolean;
     public siteClickFlag: Boolean;
 	private AllShowingProjIDArray: Array<number>;
@@ -61,7 +61,7 @@ export class MapviewComponent implements OnInit {
             radius: 5,
             fillColor: "#6d7175",
             color: "#000",
-            weight: 1,
+            weight: 0,
             opacity: 1,
             fillOpacity: 0.5
         };
@@ -168,72 +168,109 @@ export class MapviewComponent implements OnInit {
 				}
 			});
         });
-        
+        this._siglService.sitePointClickBool.subscribe((val: boolean) => {
+            this.siteClickFlag = val;
+        })
+        //for single site info.
+        this._siglService.fullSite.subscribe((FS: Ifullsite) => {
+            //clear GroupedParams
+            this.groupedParams = { BioArray: [], ChemArray: [], MicroBioArray: [], PhysArray: [], ToxicArray: [] };
+
+            this.fullSite = FS;
+            this.fullSiteFlag = true;
+            this.tabs.select('site');
+
+            FS.Parameters.forEach(param => {
+                switch (param.parameter_group) {
+                    case "Biological":
+                        this.groupedParams.BioArray.push(param);
+                        console.log(this.groupedParams);
+                        break;
+                    case "Chemical":
+                        this.groupedParams.ChemArray.push(param);
+                        console.log(this.groupedParams);
+                        break;
+                    case "Microbiological":
+                        this.groupedParams.MicroBioArray.push(param);
+                        console.log(this.groupedParams);
+                        break;
+                    case "Physical":
+                        this.groupedParams.PhysArray.push(param);
+                        console.log(this.groupedParams);
+                        break;
+                    case "Toxicological":
+                        this.groupedParams.ToxicArray.push(param);
+                        console.log(this.groupedParams);
+                        break;
+                }
+            });
+        });
+
         this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
             this.filteredProjects = projects;
         });
 
-		this.map = L.map("map", {
-			center: L.latLng(44.2, -88.01),
-			zoom: 6,
-			minZoom: 4,
-			maxZoom: 19,
-			layers: [this._mapService.baseMaps.Topo]
+        this.map = L.map("map", {
+            center: L.latLng(44.2, -88.01),
+            zoom: 6,
+            minZoom: 4,
+            maxZoom: 19,
+            layers: [this._mapService.baseMaps.Topo]
         });
-        
+
         L.control.scale().addTo(this.map);
-		// this._mapService.map = map;       
+        // this._mapService.map = map;       
         //L.control.scale().addTo(this.map);
-        
-		this._mapService.map = this.map;
+
+        this._mapService.map = this.map;
 
         //initial style for bottom bar
-		this.style = {
-			position: 'fixed',
-			bottom: '0px',
-			'z-index': '1001',
-			display: 'flex',
-			width: '100%',
-			height: '150px',
-			'background-color': '#f7f7f9',
-			color: '#121621',
-			margin: 'auto',
-			left: '400px'
-		}
-	}//END ngOnInit
+        this.style = {
+            position: 'fixed',
+            bottom: '0px',
+            'z-index': '1001',
+            display: 'flex',
+            width: '100%',
+            height: '150px',
+            'background-color': '#f7f7f9',
+            color: '#121621',
+            margin: 'auto',
+            left: '400px'
+        }
+    }//END ngOnInit
 
-	// response from filter modal closing
-	public FilterModalResponse(r) {
-		let test = "what";
+    // response from filter modal closing
+    public FilterModalResponse(r) {
+        let test = "what";
     }
-    
-	public onResizeEnd(event: ResizeEvent): void {
-		this.style = {
-			'z-index': '1001',
-			position: 'fixed',
-			left: `400px`,
-			bottom: '0px',
-			top: `${event.rectangle.top}px`,
-			width: `${event.rectangle.width}px`,
-			height: `${event.rectangle.height}px`,
-			'background-color': '#f7f7f9',
-			color: '#121621',
-			margin: 'auto'
-		};
+
+    public onResizeEnd(event: ResizeEvent): void {
+        this.style = {
+            'z-index': '1001',
+            position: 'fixed',
+            left: `400px`,
+            bottom: '0px',
+            top: `${event.rectangle.top}px`,
+            width: `${event.rectangle.width}px`,
+            height: `${event.rectangle.height}px`,
+            'background-color': '#f7f7f9',
+            color: '#121621',
+            margin: 'auto'
+        };
     }
-    
+
     public onFeatureSelection(event): void {
-        
-        if (this.filteredProjects.length > 0){
+
+        if (this.filteredProjects.length > 0) {
             //need to find site and highlight it in the sidebar project--> site list 
-			console.log("fired if there are filtered projects")
-			this.siteClickFlag = false;
-			this._siglService.setsitePointClickBool(false);
+            console.log("fired if there are filtered projects")
+            this.siteClickFlag = false;
+            this._siglService.setsitePointClickBool(false);
         } else {
-			console.log("fired if NO filtered projects and single site clicked");
-			this.siteClickFlag = true;
-			this._siglService.setsitePointClickBool(true);
-			
+            console.log("fired if NO filtered projects and single site clicked");
+            this.siteClickFlag = true;
+            this._siglService.setsitePointClickBool(true);
+
             //there are no filtered projects, and single site was clicked
             //will need to get  full site and full project w/all sites, activate "Filter Results" slideout, populate slideout
         }

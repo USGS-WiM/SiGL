@@ -51,8 +51,9 @@ export class SidebarComponent implements OnInit {
 		});
 
 		//for the results accordion panel
-		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {			
-			this.accordion.activeIds = ['projList'];
+		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {	
+			if (projects.length > 0){
+				this.accordion.activeIds = ['projList'];
 			projects.forEach((p:Ifilteredproject) => {
 				p.isCollapsed = true;					
 				p.filteredSiteCount = 0;
@@ -62,6 +63,11 @@ export class SidebarComponent implements OnInit {
 				});
 				this.filteredProjects.push(p);
 			});
+			} else {
+				//clear it all
+				this.filteredProjects = [];
+			}	
+			
 		});
 	}
 

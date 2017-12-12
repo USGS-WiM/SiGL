@@ -8,8 +8,8 @@ import { Subject } from "rxjs/Subject";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { CONFIG } from "./config";
-import { Http, Response } from '@angular/http';
-import { IchosenFilters } from 'app/shared/interfaces/chosenFilters.interface';
+import { Http, Response, RequestOptions } from '@angular/http';
+import { IchosenFilters } from '../../shared/interfaces/chosenFilters.interface';
 import { isPending } from 'q';
 
 
@@ -61,6 +61,7 @@ export class MapService {
     private _filteredSiteIDsSubject: BehaviorSubject<Array<number>> = new BehaviorSubject([]); //used to let sidebar know which sites are the filtered results for styling
     private _tempSiteSubject: Subject<any> = new Subject<any>();
     private _allShowingProjectIDs: Subject<Array<number>> = new Subject<Array<number>>();
+    private _allOrgSystems: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
 
     //initial set of all geojson sites. keep for resetting
     public setAllSiteView(geoJson: any) {
@@ -103,28 +104,31 @@ export class MapService {
     }
     //called after filtered modal closes and filters have been chosen
     public updateFilteredSites(filters: IchosenFilters) {
-        this.newFilteredGeoJsonArray = [];
-        this.newFilteredGeoJson = new L.GeoJSON();
-        this.filtersPassed = filters;
-        let isPresent: boolean = false;
-        let filteredSiteIds: Array<number> = [];
-        // loop through all the geojson features to find filter matching properties
-        this._filteredSiteViewSubject.getValue().features.forEach(feature => {
-            // isPresent = false;
-            isPresent = this.findPresentProps(feature);
-            if (isPresent) {
-                filteredSiteIds.push(feature.properties.site_id);
-                this.newFilteredGeoJsonArray.push(feature);
-            }
-        }, this);
-
-        // set the filteredSiteView to be the new geojson
-        //this.newFilteredGeoJson.addData(this.newFilteredGeoJsonArray);
-        this.setFilteredSiteIDs(filteredSiteIds);
-        this.setFilteredSiteView(this.newFilteredGeoJsonArray);
-
+        if (Object.keys(filters).length > 0) {
+            this.newFilteredGeoJsonArray = [];
+            this.newFilteredGeoJson = new L.GeoJSON();
+            this.filtersPassed = filters;
+            let isPresent: boolean = false;
+            let filteredSiteIds: Array<number> = [];
+            // loop through all the geojson features to find filter matching properties
+            this._filteredSiteViewSubject.getValue().features.forEach(feature => {
+                // isPresent = false;
+                isPresent = this.findPresentProps(feature, this.filtersPassed);
+                if (isPresent) {
+                    filteredSiteIds.push(feature.properties.site_id);
+                    this.newFilteredGeoJsonArray.push(feature);
+                }
+            }, this);
+            // set the filteredSiteView to be the new geojson
+            //this.newFilteredGeoJson.addData(this.newFilteredGeoJsonArray);
+            this.setFilteredSiteIDs(filteredSiteIds);
+            this.setFilteredSiteView(this.newFilteredGeoJsonArray);
+        } else {
+            //repopulate map with all the sites
+            this._filteredSiteViewSubject.next(this._allSiteView);
+        }
     }
-    private findPresentProps(aFeature): boolean {
+    private findPresentProps(aFeature, filters): boolean {
         let isPresent = false;
         let parameterArray = aFeature.properties.parameter_type_id ? aFeature.properties.parameter_type_id.split(",") : [];
         let projDurationArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
@@ -134,64 +138,95 @@ export class MapService {
         let lakeArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
         let stateArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
         let monArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
-        let org;
+        let org = aFeature.properties.organization_system_id;
         let objectiveArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
 
         // loop through to find if filters are in geojson
-        for (let p of this.filtersPassed.s_parameters) {
-            if (parameterArray.includes(p.toString())) {
-                isPresent = true;
-                break;
+        if (filters.s_parameters) {
+            for (let p of filters.s_parameters) {
+                if (parameterArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
             }
         }
-        for (let p of this.filtersPassed.s_projDuration) {
-            if (projDurationArray.includes(p.toString())) {
-                isPresent = true;
-                break;
+        if (filters.s_projDuration) {
+            for (let p of filters.s_projDuration) {
+                if (projDurationArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
             }
         }
-        for (let p of this.filtersPassed.s_projStatus) {
-            if (projStatusArray.includes(p.toString())) {
-                isPresent = true;
-                break;
+        if (filters.s_projStatus) {
+            for (let p of filters.s_projStatus) {
+                if (projStatusArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
             }
         }
-        for (let p of this.filtersPassed.s_resources) {
-            if (resArray.includes(p.toString())) {
-                isPresent = true;
-                break;
+        if (filters.s_resources) {
+            for (let p of filters.s_resources) {
+                if (resArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
             }
         }
-        for (let p of this.filtersPassed.s_media) {
-            if (mediaArray.includes(p.toString())) {
-                isPresent = true;
-                break;
+        if (filters.s_media) {
+            for (let p of filters.s_media) {
+                if (mediaArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
             }
         }
-        for (let p of this.filtersPassed.s_lakes) {
-            if (lakeArray.includes(p.toString())) {
-                isPresent = true;
-                break;
-            }
-        } 
-        for (let p of this.filtersPassed.s_states) {
-            if (stateArray.includes(p.toString())) {
-                isPresent = true;
-                break;
+        if (filters.s_lakes) {
+            for (let p of filters.s_lakes) {
+                if (lakeArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
             }
         }
-        for (let p of this.filtersPassed.s_monitorEffect) {
-            if (monArray.includes(p.toString())) {
-                isPresent = true;
-                break;
+        if (filters.s_states) {
+            for (let p of filters.s_states) {
+                if (stateArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
             }
         }
-        for (let p of this.filtersPassed.p_objectives) {
-            if (objectiveArray.includes(p.toString())) {
-                isPresent = true;
-                break;
+        if (filters.s_monitorEffect) {
+            for (let p of filters.s_monitorEffect) {
+                if (monArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
             }
-        } // finish all loops
+        }
+        if (filters.p_objectives) {
+            for (let p of filters.p_objectives) {
+                if (objectiveArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
+            }
+        }
+        if (filters.ORG) {
+            // all orgSystems that have this orgId
+            let orgSystemsWithThisOrg = this._allOrgSystems.getValue().filter(function (orgsSys) { return orgsSys.org_id == filters.ORG.organization_id; })
+            // loop through and see if any of them include this filters.ORG.organization_id
+            let stophere = "hey!";
+            orgSystemsWithThisOrg.forEach(sys => {
+                if (org == sys.organization_system_id) {
+                    isPresent = true;
+                };
+            });
+        }
+        // finish all loops
+
         return isPresent;
 
 
@@ -199,8 +234,15 @@ export class MapService {
     // takes in projectID, loops thru this.AllSiteView and grab all sites with matching projectIDs, hit setter for mapview.component's getter to get
     public AddTempSites(projectID: number) {
         let theseNewTemps = this._allSiteView.features.filter(function (feature) { return feature.properties.project_id == projectID; });
-        if (this.temporarySites.length > 0) Array.prototype.push.apply(this.temporarySites, theseNewTemps);// this.temporarySites.concat(theseNewTemps);
-        else this.temporarySites = theseNewTemps;
+        
+        if (this.temporarySites.length > 0) {
+            // first see if these are already showing
+            let test = this.temporarySites.filter(ts=> {return ts.properties.project_id == projectID});
+            if (test.length == 0)   
+                Array.prototype.push.apply(this.temporarySites, theseNewTemps);
+        } else {
+            this.temporarySites = theseNewTemps;
+        }
         /*  this._allSiteView.features.forEach(feature => {     
               if (feature.properties.project_id == projectID)
                   this.temporarySites.push(feature);
@@ -220,6 +262,12 @@ export class MapService {
 
     //initial http get of all geojson sites
     private httpRequest(): void {
+        let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
+        this._http.get(CONFIG.ORG_SYSTEM_URL, options)
+            .map(res => <any>res.json())
+            .subscribe(orgSys => {
+                this._allOrgSystems.next(orgSys);
+            });
         this._http.get(CONFIG.SITE_URL + "/GetSiteView.geojson")
             .map(res => <any>res.json())
             .subscribe(geoj => {

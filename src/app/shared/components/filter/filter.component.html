@@ -1,6 +1,9 @@
-<ng-template #filtermodal  id="filter" let-c="close" let-d="dismiss">  
+<ng-template #filtermodal id="filter" let-c="close" let-d="dismiss">  
     <div class="modal-header">
         <h4 class="modal-title">Filter Map</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('cancel')">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     <div class="modal-body">
         <div id="filterContent">
@@ -79,7 +82,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button (click)="c('Clear')" style="color:black;">Clear All</button>
-        <button (click)="c('Search')" style="color:black;">Search</button>
+        <button type="button" (click)="c('Clear')" style="color:black;">Clear All</button>
+        <button type="button" (click)="c('Search')" style="color:black;">Search</button>
+        <button type="button" (click)="d('clickedCancel')">Cancel</button>
     </div>
 </ng-template>

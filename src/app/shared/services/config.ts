@@ -19,6 +19,7 @@ export class CONFIG {
     public static get PROJECT_URL(): string { return this.baseURL + "projects"; };
     public static get SITE_URL(): string { return this.baseURL + "sites"; };
     public static get ORGANIZATION_URL(): string { return this.baseURL + "organizations"; };
+    public static get ORG_SYSTEM_URL(): string{return this.baseURL + "OrganizationSystems"}
     public static get OBJECTIVE_URL(): string {return this.baseURL + "objectives";};
     public static get MIN_JSON_HEADERS() { return new Headers({ "Accept": "application/json" }); };
     public static get JSON_HEADERS() { return new Headers({ "Accept": "application/json", "Content-Type": "application/json" }); };
