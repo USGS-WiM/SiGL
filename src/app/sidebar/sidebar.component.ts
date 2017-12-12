@@ -19,7 +19,7 @@ import { MapService } from '../shared/services/map.service';
 export class SidebarComponent implements OnInit {
 	@ViewChild('acc') accordion;
 	public chosenFilters: IchosenFilters;
-	//public filteredSites: Array<Isite>;
+	private AllShowingProjIds: Array<number>;
 	public filteredProjects: Array<Ifilteredproject>;
 	private selectedProjectId: Number;
 	public siteWasClicked: boolean;
@@ -29,6 +29,7 @@ export class SidebarComponent implements OnInit {
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService, private _formBuilder: FormBuilder) { }
 
 	ngOnInit() {
+		this.AllShowingProjIds = []; //holder of projects that are toggled to show all for mapview to use
 		//site toggle button group form
 		this.siteCountForm = this._formBuilder.group({
 			'model': 'filtered'
@@ -59,7 +60,6 @@ export class SidebarComponent implements OnInit {
 					if (s.isDisplayed)
 						p.filteredSiteCount++;
 				});
-
 				this.filteredProjects.push(p);
 			});
 		});
@@ -90,6 +90,16 @@ export class SidebarComponent implements OnInit {
 	public toggleSiteList(value: string, projectId: number) {
 		this.filteredProjects.forEach((p:Ifilteredproject) => {
 			if (p.project_id == projectId) {
+				//is this project_id in our AllShowingProjIds array? 
+				if (value == 'all') {
+					if (this.AllShowingProjIds.indexOf(projectId) < 0) {
+						this.AllShowingProjIds.push(projectId);
+					}
+				} else {
+					if (this.AllShowingProjIds.indexOf(projectId) > -1) {						
+						this.AllShowingProjIds.splice(this.AllShowingProjIds.indexOf(projectId), 1);
+					}
+				}
 				p.projectSites.forEach((s:Isimplesite) => {
 					if (value == 'all'){						
 						//show me only filtered
@@ -105,7 +115,13 @@ export class SidebarComponent implements OnInit {
 				});
 			}
 		});		
-		//now add or remove from the map
-		value == 'all' ? this._mapService.AddTempSites(projectId) : this._mapService.RemoveTempSites(projectId);
+		//now add or remove from the map and let know the AllShowingProjIds updated (if so)
+		if (value == 'all') {
+			this._mapService.AddTempSites(projectId);
+			this._mapService.setAllShowingProjectIds(this.AllShowingProjIds);
+		 } else {
+			 this._mapService.RemoveTempSites(projectId);
+		 }
+
 	}
 }
