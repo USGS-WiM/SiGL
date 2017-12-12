@@ -80,8 +80,10 @@ export class MapviewComponent implements OnInit {
 		})
 		//for project info
 		this._siglService.fullProject.subscribe((FP: Ifullproject) => {			
-			this.fullProj = FP;
-			this.highlightProjSites(this.fullProj.ProjectId);
+            this.fullProj = FP;
+            if (this.siteClickFlag == false){
+                this.highlightProjSites(this.fullProj.ProjectId);
+            }
 			this.showBottomBar = true;
 			let tabID = this.siteClickFlag ? 'site' : 'project';
 			this.tabs.select(tabID);
@@ -104,7 +106,7 @@ export class MapviewComponent implements OnInit {
 								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
 							}
 							this.clickedMarker = e.target;
-							e.target.setStyle(this.highlightIcon);
+                            e.target.setStyle(this.highlightIcon);
 							this.onFeatureSelection(e)
 						}); 
 					}) 
@@ -262,10 +264,13 @@ export class MapviewComponent implements OnInit {
     public onFeatureSelection(event): void {
 
         if (this.filteredProjects.length > 0) {
-            //need to find site and highlight it in the sidebar project--> site list 
             console.log("fired if there are filtered projects")
-            this.siteClickFlag = false;
-            this._siglService.setsitePointClickBool(false);
+            //need to find site and highlight it in the sidebar project--> site list 
+            
+            //remove any highlighted projects before highighting clicked site.
+            if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
+            this.siteClickFlag = true;
+            this._siglService.setsitePointClickBool(true);
         } else {
             console.log("fired if NO filtered projects and single site clicked");
             this.siteClickFlag = true;
