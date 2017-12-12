@@ -59,6 +59,7 @@ export class MapService {
     private _filteredSiteViewSubject: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
     private _filteredSiteIDsSubject: BehaviorSubject<Array<number>> = new BehaviorSubject([]); //used to let sidebar know which sites are the filtered results for styling
     private _tempSiteSubject: Subject<any> = new Subject<any>();
+    private _allShowingProjectIDs: Subject<Array<number>> = new Subject<Array<number>>();
 
     //initial set of all geojson sites. keep for resetting
     public setAllSiteView(geoJson: any) { 
@@ -76,7 +77,9 @@ export class MapService {
     public setTempSites(tempSites: any) {
         this._tempSiteSubject.next(tempSites);
     }
-
+    public setAllShowingProjectIds(projIDs: Array<number>){
+        this._allShowingProjectIDs.next(projIDs);
+    }
     // clear filters and give back all
     public get AllSiteView(): Observable<any> { 
         return this._allSiteView;// this._allSiteViewSubject.asObservable(); 
@@ -94,7 +97,9 @@ export class MapService {
     public get tempSites(): Observable<any> {
         return this._tempSiteSubject.asObservable();
     }
-
+    public get allShowingProjectIds(): Observable<Array<number>> {
+        return this._allShowingProjectIDs.asObservable();
+    }
     //called after filtered modal closes and filters have been chosen
     public updateFilteredSites(filters: IchosenFilters){
         this.newFilteredGeoJsonArray = [];
@@ -123,13 +128,13 @@ export class MapService {
                     break;
                 }
             }
-/*            for (let p of this.filtersPassed.s_projDuration) {
+            /*            for (let p of this.filtersPassed.s_projDuration) {
                 if (projDurationArray.includes(p.toString())){
                     isPresent= true;
                     break;
                 }
             } // finish all loops
-*/
+            */
             if (isPresent) {
                 filteredSiteIds.push(feature.properties.site_id);
                 this.newFilteredGeoJsonArray.push(feature);

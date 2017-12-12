@@ -27,18 +27,30 @@ export class MapviewComponent implements OnInit {
     public icon: any;
     public tempSitesIcon: any;
     public highlightIcon: any;
+<<<<<<< HEAD
     public geoJsonLayer: L.GeoJSON;
     public tempGeoJsonLayer: L.GeoJSON;
     public geoj: any;
     public popup: any;
     public style: Object = {};
     public fullProj: Ifullproject;
+=======
+	public geoJsonLayer: L.GeoJSON;
+	public tempGeoJsonLayer: L.GeoJSON;
+	public selectedProjGeoJsonLayer: L.GeoJSON;
+	private geoj: any;
+	private tempGeoj: any;
+	public popup: any;
+	public style: Object = {};
+	public fullProj: Ifullproject;
+>>>>>>> 83ef06407da298473d41cbdb1ec2790c94f726ed
     public fullProjSites: Array<Ifullsite>;
     public filteredProjects: Array<Ifilteredproject>;
     public fullSite: Ifullsite;
     public showBottomBar: Boolean;
     public fullSiteFlag: Boolean;
     public siteClickFlag: Boolean;
+<<<<<<< HEAD
     public clickedMarker: any;
     //public selectedTab: String;
 
@@ -46,13 +58,26 @@ export class MapviewComponent implements OnInit {
 
     public groupedParams: Igroupedparameters;
     //public groupedParams: Object;
+=======
+	private AllShowingProjIDArray: Array<number>;
+	private clickedMarker: any;
+	public groupedParams: Igroupedparameters;
+	//public groupedParams: Object;
+>>>>>>> 83ef06407da298473d41cbdb1ec2790c94f726ed
 
 
     constructor(private _mapService: MapService, private _siglService: SiglService) { }
 
+<<<<<<< HEAD
     ngOnInit() {
         //set defaults on init
         this.showBottomBar = false;
+=======
+	ngOnInit() {
+		this.AllShowingProjIDArray = [];
+		//set defaults on init
+		this.showBottomBar = false;
+>>>>>>> 83ef06407da298473d41cbdb1ec2790c94f726ed
         this.fullSiteFlag = false;
         this.siteClickFlag = false;
         this.filteredProjects = [];
@@ -74,6 +99,7 @@ export class MapviewComponent implements OnInit {
             fillColor: 'green',
             fillOpacity: 0.9
         };
+<<<<<<< HEAD
 
         this.groupedParams = { BioArray: [], ChemArray: [], MicroBioArray: [], PhysArray: [], ToxicArray: [] };
 
@@ -139,6 +165,104 @@ export class MapviewComponent implements OnInit {
                     })
                 }).addTo(this.map);
             }
+=======
+		
+		this.groupedParams = {BioArray:[], ChemArray:[], MicroBioArray:[], PhysArray:[], ToxicArray:[]};
+		
+		//for knowing which projects are showing all their sites on the map
+		this._mapService.allShowingProjectIds.subscribe((projIds: Array<number>) => {
+			this.AllShowingProjIDArray = projIds;
+		})
+		//for project info
+		this._siglService.fullProject.subscribe((FP: Ifullproject) => {			
+			this.fullProj = FP;
+			this.highlightProjSites(this.fullProj.ProjectId);
+			this.showBottomBar = true;
+			let tabID = this.siteClickFlag ? 'site' : 'project';
+			this.tabs.select(tabID);
+        });
+        //every time geojson gets updated (initially its all, after depends on filters chosen)
+        this._mapService.filteredSiteView.subscribe((geoj: any) => {
+			if (geoj !== ""){	
+				if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
+				if (this.geoJsonLayer) this.geoJsonLayer.remove();
+							
+				this.geoj = geoj; //use this to filter later
+				this.geoJsonLayer = L.geoJSON(geoj, {
+					pointToLayer: ((feature, latlng) => {
+						return L.circleMarker(latlng, this.setMarker(feature));																	
+					}),
+					onEachFeature: ((feature, layer) => {
+						layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
+						layer.on("click", (e) => {
+							if (this.clickedMarker){
+								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
+							}
+							this.clickedMarker = e.target;
+							e.target.setStyle(this.highlightIcon);
+							this.onFeatureSelection(e)
+						}); 
+					}) 
+				}).addTo(this.map);
+			}
+		});            
+		//temporary sites when user clicks toggle between show all and only filteres sites from sidebar
+        this._mapService.tempSites.subscribe((tempGeoj: any) => {
+			if (tempGeoj !== ""){
+				if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
+				if (this.tempGeoJsonLayer) this.tempGeoJsonLayer.remove();
+							
+				this.tempGeoj = tempGeoj; //use this to filter later
+				this.tempGeoJsonLayer = L.geoJSON(tempGeoj, {
+					pointToLayer: ((feature, latlng) => {
+						return L.circleMarker(latlng, this.tempSitesIcon);
+					}),
+					onEachFeature: ((feature, layer) => {
+						layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
+						layer.on("click", (e) => {
+							this.onFeatureSelection(e)
+						}); 
+					}) 
+				}).addTo(this.map);
+			}
+        });            
+		this._siglService.sitePointClickBool.subscribe((val:boolean) => {
+			this.siteClickFlag = val;
+		})
+		//for single site info.
+		this._siglService.fullSite.subscribe((FS: Ifullsite) => {
+			//clear GroupedParams
+			this.groupedParams = {BioArray:[], ChemArray:[], MicroBioArray:[], PhysArray:[], ToxicArray:[]};
+			
+			this.fullSite = FS;
+			this.fullSiteFlag = true;
+			this.tabs.select('site');
+
+			FS.Parameters.forEach( param => {
+				switch(param.parameter_group){
+					case "Biological":
+						this.groupedParams.BioArray.push(param);
+						console.log(this.groupedParams);
+						break;
+					case "Chemical":
+						this.groupedParams.ChemArray.push(param);
+						console.log(this.groupedParams);
+						break;
+					case "Microbiological":
+						this.groupedParams.MicroBioArray.push(param);
+						console.log(this.groupedParams);
+						break;
+					case "Physical":
+						this.groupedParams.PhysArray.push(param);
+						console.log(this.groupedParams);
+						break;
+					case "Toxicological":
+						this.groupedParams.ToxicArray.push(param);
+						console.log(this.groupedParams);
+						break;
+				}
+			});
+>>>>>>> 83ef06407da298473d41cbdb1ec2790c94f726ed
         });
         this._siglService.sitePointClickBool.subscribe((val: boolean) => {
             this.siteClickFlag = val;
@@ -300,8 +424,79 @@ export class MapviewComponent implements OnInit {
 
         }
         console.log('mouseover ' + event.target.feature.properties.site_id); */
+<<<<<<< HEAD
 
 
     }
+=======
+        
+        
+	}
+
+	//project name was selected from sidebar. add highlight marker to all sites belonging to this project
+	public highlightProjSites(projId) {
+		if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
+		let highlightedProjSites = []; let geoJholder: any;
+
+		if (this.AllShowingProjIDArray.indexOf(projId) > -1) {
+			geoJholder = this.tempGeoj;
+		 } else {
+			 geoJholder = this.geoj;
+		 }
+		
+		//now add to map as highlighted thing
+		geoJholder.forEach(feature => {
+			if (feature.properties.project_id == projId) {
+				highlightedProjSites.push(feature);
+			}
+		});
+		this.selectedProjGeoJsonLayer = L.geoJSON(<any>highlightedProjSites, {
+			pointToLayer: ((feature, latlng) => {
+				return L.circleMarker(latlng, this.highlightIcon);
+			}),
+			onEachFeature: ((feature, layer) => {
+				layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
+				layer.on("click", (e) => {
+					this.onFeatureSelection(e)
+				}); 
+			}) 
+		}).addTo(this.map);
+		
+	}
+	//select fillcolor for leaflet circleMakers
+	public setMarker(feature){
+		let fillColor = "";
+		switch(feature.properties.lake_type_id){
+			case 1:
+				//Erie
+				fillColor = "#B6BB44";
+				break;
+			case 2:
+				//Huron
+				fillColor =  "#8A3133";
+				break;
+			case 3:
+				//Michigan
+				fillColor = "#927F56";
+				break;
+			case 4:
+				//Ontario
+				fillColor =  "#6A318F";
+				break;
+			case 5:
+				//Superior
+				fillColor = "#349074"; 
+				break;
+		}
+		return {
+			radius: 3,
+			fillColor: fillColor,
+			color: "#000",
+			weight: 0,
+			opacity: 1,
+			fillOpacity: 0.5
+		}
+	}
+>>>>>>> 83ef06407da298473d41cbdb1ec2790c94f726ed
 
 }
