@@ -86,6 +86,9 @@ export class MapviewComponent implements OnInit {
 		this._siglService.fullProject.subscribe((FP: Ifullproject) => {			
             this.fullProj = FP;
             if (this.siteClickFlag == false){
+                if (this.clickedMarker){
+                    this.map.closePopup();
+                }
                 this.highlightProjSites(this.fullProj.ProjectId);
             }
 			this.showBottomBar = true;
