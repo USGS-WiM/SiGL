@@ -195,18 +195,22 @@ export class FilterComponent implements OnInit {
                 this.projectSelected = undefined;
                 //clear sidebar
                 this.chosenFiltersObj = {};
-                this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services
-                this._siglService.chosenFilters = this.chosenFiltersObj;
-                this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-            } else{
+              /*  this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services
+                this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen
+                this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson*/
+            }/* else{
                 //results == 'Search'
                 this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
                 this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services
-            }
+            }*/
+            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services
+            this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen
+            this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
+            
             this.modalResponseEvent.emit(results);
         }, (reason) => {
             let closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        })
+        });
     }//end showFilterModal
     private getDismissReason(reason: any): string {
         if (reason === ModalDismissReasons.ESC) {

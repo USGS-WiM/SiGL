@@ -1,15 +1,19 @@
 <div class="sidebar sidebar-left" id="sidebar">
     <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-1">
+
+        <!-- Basemaps -->
         <ngb-panel title="Basemaps">
             <ng-template ngbPanelContent>
                 <basemaps></basemaps>
-            </ng-template>
+            </ng-template>            
         </ngb-panel>
+
+        <!-- Filters -->
         <ngb-panel title="Filters">
             <ng-template ngbPanelContent>
                 <button type="button" class="btn btn-primary" (click)="showFilterModal()">Change filters</button>
                 <br/>
-                <h4 *ngIf="chosenFilters">Map filterd by</h4>
+                <h4 *ngIf="filterCount > 0">Map filterd by</h4>
                 <ul>
                     <!-- Parameters -->
                     <li *ngIf="chosenFilters?.PARAMETERS">
@@ -26,7 +30,7 @@
                     <li *ngIf="chosenFilters?.DURATIONS">
                         <input type="checkbox" checked>
                         <i></i>
-                        <span *ngIf="chosenFilters.DURATIONS.length > 0"><b>Duration</b><span *ngIf="chosenFilters.DURATIONS.length > 1"><b>s</b></span>:</span>
+                        <span *ngIf="chosenFilters.DURATIONS.length > 0"><b>Project Duration</b><span *ngIf="chosenFilters.DURATIONS.length > 1"><b>s</b></span>:</span>
                         <p class="contained">
                             <span *ngFor="let d of chosenFilters.DURATIONS">{{d.name}}
                                 <br/>
@@ -37,7 +41,7 @@
                     <li *ngIf="chosenFilters?.STATUSES">
                         <input type="checkbox" checked>
                         <i></i>
-                        <span *ngIf="chosenFilters.STATUSES.length > 0"><b>Status:</b></span>
+                        <span *ngIf="chosenFilters.STATUSES.length > 0"><b>Project Status:</b></span>
                         <p class="contained">
                             <span *ngFor="let s of chosenFilters.STATUSES">{{s.name}}
                                 <br/>
@@ -122,7 +126,12 @@
                 </ul>
             </ng-template>
         </ngb-panel>
+
+        <!-- Project List (based on Filters or on Map click) -->
         <ngb-panel title="Project List" id="projList">
+            <ng-template ngbPanelTitle>
+                <span>Project List</span><div class="pull-right" *ngIf="filteredProjects.length > 1"><span class="badge badge-secondary">Count: {{filteredProjects.length}}</span></div>
+            </ng-template>
             <ng-template ngbPanelContent>
                 <!--If filtered Projects have been requested (from dropdown selection)-->
                 <div *ngIf="filteredProjects?.length > 0">
@@ -148,7 +157,6 @@
                                         </label>
                                     </div>
                                 </form>
-                                <!-- -->
                             </span>
                         </div>
                         <div id="collapseExample" [ngbCollapse]="proj.isCollapsed">
@@ -162,9 +170,9 @@
                             </div>
                         </div>
                         <hr />
-                    </div>
-                    <!-- end ngFor each filteredProjects -->
-                </div>
+                    </div> <!-- end ngFor each filteredProjects -->
+                </div> <!-- end ngIf filteredProjects.length > 0 -->
+
                 <!--If no filtered Projects have been requested (but a site has been clicked on the map)-->
                 <div *ngIf="filteredProjects?.length == 0 && siteClickFullProj">
                     <div> Click on a project name or site to highlight it on the map.</div>
@@ -178,7 +186,7 @@
                             <span>
                                 <a (click)="showProjectDetails(siteClickFullProj)">{{siteClickFullProj.Name}}</a>
                             </span>
-                            <span class="pull-right">{{siteClickFullProj.projectSites.length}}</span>
+                            <span class="pull-right"><span class="badge badge-secondary">All {{siteClickFullProj.projectSites.length}}</span></span>                          
                         </div>
                         <div id="collapseExample" [ngbCollapse]="siteClickFullProj.isCollapsed">
                             <div *ngFor="let s of siteClickFullProj.projectSites" class="marginLeft">

@@ -132,14 +132,14 @@ export class MapService {
         let isPresent = false;
         let parameterArray = aFeature.properties.parameter_type_id ? aFeature.properties.parameter_type_id.split(",") : [];
         let projDurationArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
-        let projStatusArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
-        let resArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
+        let projStatusArray = aFeature.properties.proj_status_id ? aFeature.properties.proj_status_id.split(",") : [];
+        let resArray = aFeature.properties.resource_type_id ? aFeature.properties.resource_type_id.split(",") : [];
         let mediaArray = aFeature.properties.media_type_id ? aFeature.properties.media_type_id.split(",") : [];
-        let lakeArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
-        let stateArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
-        let monArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
+        let lakeVal = aFeature.properties.lake_type_id ? aFeature.properties.lake_type_id : 0;
+        let stateVal = aFeature.properties.state_province ? aFeature.properties.state_province : "";
+        let monArray = aFeature.properties.monitoring_coordination_id ? aFeature.properties.monitoring_coordination_id.split(",") : [];
         let org = aFeature.properties.organization_system_id;
-        let objectiveArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
+        let objectiveArray = aFeature.properties.objective_id ? aFeature.properties.objective_id.split(",") : [];
 
         // loop through to find if filters are in geojson
         if (filters.s_parameters) {
@@ -184,7 +184,7 @@ export class MapService {
         }
         if (filters.s_lakes) {
             for (let p of filters.s_lakes) {
-                if (lakeArray.includes(p.toString())) {
+                if (lakeVal == p) {
                     isPresent = true;
                     break;
                 }
@@ -192,7 +192,7 @@ export class MapService {
         }
         if (filters.s_states) {
             for (let p of filters.s_states) {
-                if (stateArray.includes(p.toString())) {
+                if (stateVal == p.toString) {
                     isPresent = true;
                     break;
                 }
