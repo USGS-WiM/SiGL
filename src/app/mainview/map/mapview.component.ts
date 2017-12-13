@@ -53,35 +53,44 @@ export class MapviewComponent implements OnInit {
 		this.AllShowingProjIDArray = [];
 		//set defaults on init
 		this.showBottomBar = false;
-		this.fullSiteFlag = false;
-		this.siteClickFlag = false;
-		this.filteredProjects = [];
+        this.fullSiteFlag = false;
+        this.siteClickFlag = false;
+        this.filteredProjects = [];
 
-		this.tempSitesIcon = {
-			radius: 5,
-			fillColor: "#6d7175",
-			color: "#000",
-			weight: 0,
-			opacity: 1,
-			fillOpacity: 0.5
-		};
-		this.highlightIcon = {
-			radius: 8,
-			color: 'green',
-			fillColor: 'green',
-			fillOpacity: 0.9
-		};
-
-		this.groupedParams = { BioArray: [], ChemArray: [], MicroBioArray: [], PhysArray: [], ToxicArray: [] };
-
+        this.tempSitesIcon = {
+            radius: 4,
+            fillColor: "#6d7175",
+            color: "#000",
+            weight: 0,
+            opacity: 1,
+            fillOpacity: 0.5
+        };
+        this.highlightIcon = {
+            radius: 8,
+            weight: 5,
+            opacity: 0.2,
+            fill: 'Orange',
+            color: 'orange',
+            fillColor: 'orange',
+            fillOpacity: 0.5,
+            pane: "mainSiglLayer"
+        };
+		
+		this.groupedParams = {BioArray:[], ChemArray:[], MicroBioArray:[], PhysArray:[], ToxicArray:[]};
+		
 		//for knowing which projects are showing all their sites on the map
 		this._mapService.allShowingProjectIds.subscribe((projIds: Array<number>) => {
 			this.AllShowingProjIDArray = projIds;
 		})
 		//for project info
-		this._siglService.fullProject.subscribe((FP: Ifullproject) => {
-			this.fullProj = FP;
-			this.highlightProjSites(this.fullProj.ProjectId);
+		this._siglService.fullProject.subscribe((FP: Ifullproject) => {			
+            this.fullProj = FP;
+            if (this.siteClickFlag == false){
+                if (this.clickedMarker){
+                    this.map.closePopup();
+                }
+                this.highlightProjSites(this.fullProj.ProjectId);
+            }
 			this.showBottomBar = true;
 			let tabID = this.siteClickFlag ? 'site' : 'project';
 			this.tabs.select(tabID);
@@ -98,13 +107,21 @@ export class MapviewComponent implements OnInit {
 						return L.circleMarker(latlng, this.setMarker(feature));
 					}),
 					onEachFeature: ((feature, layer) => {
-						layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
+                        layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
+                        layer.on('popupclose', (e) => {
+                            if (this.clickedMarker){
+								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
+							}
+                            this.clickedMarker = e.target;
+                            e.target.setStyle(this.setMarker(e.target.feature));
+                        });
+                        //changed from on 'click' to on 'popupopen' to test
 						layer.on("click", (e) => {
 							if (this.clickedMarker) {
 								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
 							}
 							this.clickedMarker = e.target;
-							e.target.setStyle(this.highlightIcon);
+                            e.target.setStyle(this.highlightIcon);
 							this.onFeatureSelection(e)
 						});
 					})
@@ -119,6 +136,7 @@ export class MapviewComponent implements OnInit {
 
 				this.tempGeoj = tempGeoj; //use this to filter later
 				this.tempGeoJsonLayer = L.geoJSON(tempGeoj, {
+                    pane: "subSiglLayer",
 					pointToLayer: ((feature, latlng) => {
 						return L.circleMarker(latlng, this.tempSitesIcon);
 					}),
@@ -167,124 +185,133 @@ export class MapviewComponent implements OnInit {
 						break;
 				}
 			});
-		});
-		this._siglService.sitePointClickBool.subscribe((val: boolean) => {
-			this.siteClickFlag = val;
-		})
-		//for single site info.
-		this._siglService.fullSite.subscribe((FS: Ifullsite) => {
-			//clear GroupedParams
-			this.groupedParams = { BioArray: [], ChemArray: [], MicroBioArray: [], PhysArray: [], ToxicArray: [] };
+        });
+        this._siglService.sitePointClickBool.subscribe((val: boolean) => {
+            this.siteClickFlag = val;
+        })
+        //for single site info.
+        this._siglService.fullSite.subscribe((FS: Ifullsite) => {
+            //clear GroupedParams
+            this.groupedParams = { BioArray: [], ChemArray: [], MicroBioArray: [], PhysArray: [], ToxicArray: [] };
 
-			this.fullSite = FS;
-			this.fullSiteFlag = true;
-			this.tabs.select('site');
+            this.fullSite = FS;
+            this.fullSiteFlag = true;
+            this.tabs.select('site');
 
-			FS.Parameters.forEach(param => {
-				switch (param.parameter_group) {
-					case "Biological":
-						this.groupedParams.BioArray.push(param);
-						console.log(this.groupedParams);
-						break;
-					case "Chemical":
-						this.groupedParams.ChemArray.push(param);
-						console.log(this.groupedParams);
-						break;
-					case "Microbiological":
-						this.groupedParams.MicroBioArray.push(param);
-						console.log(this.groupedParams);
-						break;
-					case "Physical":
-						this.groupedParams.PhysArray.push(param);
-						console.log(this.groupedParams);
-						break;
-					case "Toxicological":
-						this.groupedParams.ToxicArray.push(param);
-						console.log(this.groupedParams);
-						break;
-				}
-			});
-		});
+            FS.Parameters.forEach(param => {
+                switch (param.parameter_group) {
+                    case "Biological":
+                        this.groupedParams.BioArray.push(param);
+                        console.log(this.groupedParams);
+                        break;
+                    case "Chemical":
+                        this.groupedParams.ChemArray.push(param);
+                        console.log(this.groupedParams);
+                        break;
+                    case "Microbiological":
+                        this.groupedParams.MicroBioArray.push(param);
+                        console.log(this.groupedParams);
+                        break;
+                    case "Physical":
+                        this.groupedParams.PhysArray.push(param);
+                        console.log(this.groupedParams);
+                        break;
+                    case "Toxicological":
+                        this.groupedParams.ToxicArray.push(param);
+                        console.log(this.groupedParams);
+                        break;
+                }
+            });
+        });
 
-		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
-			this.filteredProjects = projects;
-		});
+        this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
+            this.filteredProjects = projects;
+        });
 
-		this.map = L.map("map", {
-			center: L.latLng(44.2, -88.01),
-			zoom: 6,
-			minZoom: 4,
-			maxZoom: 19,
-			layers: [this._mapService.baseMaps.Topo]
-		});
+        this.map = L.map("map", {
+            center: L.latLng(44.2, -88.01),
+            zoom: 6,
+            minZoom: 4,
+            maxZoom: 19,
+            layers: [this._mapService.baseMaps.Topo]
+        });
 
-		L.control.scale().addTo(this.map);
-		// this._mapService.map = map;       
-		//L.control.scale().addTo(this.map);
+        this.map.createPane('mainSiglLayer');
+        this.map.getPane('mainSiglLayer').style.zIndex = 1000;
 
-		this._mapService.map = this.map;
+        this.map.createPane('subSiglLayer');
+        this.map.getPane('subSiglLayer').style.zIndex = 1;
 
-		//initial style for bottom bar
-		this.style = {
-			position: 'fixed',
-			bottom: '0px',
-			'z-index': '1001',
-			display: 'flex',
-			width: '100%',
-			height: '150px',
-			'background-color': '#f7f7f9',
-			color: '#121621',
-			margin: 'auto',
-			left: '400px'
-		}
-	}//END ngOnInit
+        L.control.scale().addTo(this.map);
+        // this._mapService.map = map;       
+        //L.control.scale().addTo(this.map);
 
-	// response from filter modal closing
-	public FilterModalResponse(r) {
-		let test = "what";
-	}
+        this._mapService.map = this.map;
 
-	public onResizeEnd(event: ResizeEvent): void {
-		this.style = {
-			'z-index': '1001',
-			position: 'fixed',
-			left: `400px`,
-			bottom: '0px',
-			top: `${event.rectangle.top}px`,
-			width: `${event.rectangle.width}px`,
-			height: `${event.rectangle.height}px`,
-			'background-color': '#f7f7f9',
-			color: '#121621',
-			margin: 'auto'
-		};
-	}
+        //initial style for bottom bar
+        this.style = {
+            position: 'fixed',
+            bottom: '0px',
+            'z-index': '1001',
+            display: 'flex',
+            width: '100%',
+            height: '150px',
+            'background-color': '#f7f7f9',
+            color: '#121621',
+            margin: 'auto',
+            left: '400px'
+        }
+    }//END ngOnInit
 
-	public onFeatureSelection(event): void {
+    // response from filter modal closing
+    public FilterModalResponse(r) {
+        let test = "what";
+    }
 
-		if (this.filteredProjects.length > 0) {
-			//need to find site and highlight it in the sidebar project--> site list 
-			console.log("fired if there are filtered projects")
-			this.siteClickFlag = false;
-			this._siglService.setsitePointClickBool(false);
-		} else {
-			console.log("fired if NO filtered projects and single site clicked");
-			this.siteClickFlag = true;
-			this._siglService.setsitePointClickBool(true);
+    public onResizeEnd(event: ResizeEvent): void {
+        this.style = {
+            'z-index': '1001',
+            position: 'fixed',
+            left: `400px`,
+            bottom: '0px',
+            top: `${event.rectangle.top}px`,
+            width: `${event.rectangle.width}px`,
+            height: `${event.rectangle.height}px`,
+            'background-color': '#f7f7f9',
+            color: '#121621',
+            margin: 'auto'
+        };
+    }
 
-			//there are no filtered projects, and single site was clicked
-			//will need to get  full site and full project w/all sites, activate "Filter Results" slideout, populate slideout
-		}
-		console.log(" SITE ID: " + event.target.feature.properties.site_id + " PROJECT ID: " + event.target.feature.properties.project_id);
-		this._siglService.setFullProject(event.target.feature.properties.project_id);
-		this._siglService.setFullSite(event.target.feature.properties.site_id);
-		this.tabs.select('site');
-		//event.target.resetIcon(event.layer);
-		//event.target.feature.setIcon(this.highlightIcon);
-		//event.layer.bringToFront();
-		//event.target.setStyle(highlightStyle);
-	}
+    public onFeatureSelection(event): void {
 
-	public onFeatureMouseover(event): void {
+        if (this.filteredProjects.length > 0) {
+            console.log("fired if there are filtered projects")
+            //need to find site and highlight it in the sidebar project--> site list 
+            
+            //remove any highlighted projects before highighting clicked site.
+            if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
+            this.siteClickFlag = true;
+            this._siglService.setsitePointClickBool(true);
+        } else {
+            console.log("fired if NO filtered projects and single site clicked");
+            this.siteClickFlag = true;
+            this._siglService.setsitePointClickBool(true);
+
+            //there are no filtered projects, and single site was clicked
+            //will need to get  full site and full project w/all sites, activate "Filter Results" slideout, populate slideout
+        }
+        console.log(" SITE ID: " + event.target.feature.properties.site_id + " PROJECT ID: " + event.target.feature.properties.project_id);
+        this._siglService.setFullProject(event.target.feature.properties.project_id);
+        this._siglService.setFullSite(event.target.feature.properties.site_id);
+        this.tabs.select('site');
+        //event.target.resetIcon(event.layer);
+        //event.target.feature.setIcon(this.highlightIcon);
+        //event.layer.bringToFront();
+        //event.target.setStyle(highlightStyle);
+    }
+
+    public onFeatureMouseover(event): void {
 
         /* let highlightStyle = {
             radius: 8,
