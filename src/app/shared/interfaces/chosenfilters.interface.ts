@@ -1,5 +1,6 @@
 import { IMultiSelectOption  } from "angular-2-dropdown-multiselect";
 import {Iorganization} from "./organization.interface";
+import { Isimpleproject } from "app/shared/interfaces/simpleproject.interface";
 
 export interface IchosenFilters {
     s_parameters?: Array<number>;
@@ -22,4 +23,5 @@ export interface IchosenFilters {
     ORG?: Iorganization;
     p_objectives?: Array<number>;
     OBJS?:Array<IMultiSelectOption>;
+    ProjectName?: Isimpleproject;
 }

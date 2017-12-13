@@ -14,121 +14,119 @@
                 <button type="button" class="btn btn-primary" (click)="showFilterModal()">Change filters</button>
                 <br/>
                 <h4 *ngIf="filterCount > 0">Map filterd by</h4>
-                <ul>
-                    <!-- Parameters -->
-                    <li *ngIf="chosenFilters?.PARAMETERS">
-                        <input type="checkbox" checked>
-                        <i></i>
-                        <span *ngIf="chosenFilters.PARAMETERS.length > 0"><b>Parameter</b><span *ngIf="chosenFilters.PARAMETERS.length > 1"><b>s</b></span>:</span>
-                        <p class="contained">
-                            <span *ngFor="let p of chosenFilters.PARAMETERS;">{{p.name}}
+                
+                <!-- Parameters -->
+                <div *ngIf="chosenFilters?.PARAMETERS">
+                    <i class="pull-left down4" [ngClass]="ParamCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ParamCollapsed=!ParamCollapsed"></i>
+                    <span *ngIf="chosenFilters.PARAMETERS.length > 0"><b>Parameter</b><span *ngIf="chosenFilters.PARAMETERS.length > 1"><b>s</b></span></span>
+                    <p class="contained" [hidden]="ParamCollapsed">
+                        <span *ngFor="let p of chosenFilters.PARAMETERS;">{{p.name}}
+                            <br/>
+                        </span>
+                    </p>
+                </div>
+                <!-- Durations -->
+                <div *ngIf="chosenFilters?.DURATIONS">
+                    <i class="pull-left down4" [ngClass]="DurCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="DurCollapsed=!DurCollapsed"></i>
+                    <span *ngIf="chosenFilters.DURATIONS.length > 0"><b>Project Duration</b><span *ngIf="chosenFilters.DURATIONS.length > 1"><b>s</b></span></span>
+                    <p class="contained" [hidden]="DurCollapsed">
+                        <span *ngFor="let d of chosenFilters.DURATIONS">{{d.name}}
+                            <br/>
+                        </span>
+                    </p>
+                </div>
+                <!-- Status -->
+                <div *ngIf="chosenFilters?.STATUSES">
+                    <i class="pull-left down4" [ngClass]="StatCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="StatCollapsed=!StatCollapsed"></i>
+                    <span *ngIf="chosenFilters.STATUSES.length > 0"><b>Project Status</b></span>
+                    <p class="contained" [hidden]="StatCollapsed">
+                        <span *ngFor="let s of chosenFilters.STATUSES">{{s.name}}
+                            <br/>
+                        </span>
+                    </p>
+                </div>
+                <!-- Resources -->
+                <div *ngIf="chosenFilters?.RESOURCES">
+                    <i class="pull-left down4" [ngClass]="ResCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ResCollapsed=!ResCollapsed"></i>
+                    <span *ngIf="chosenFilters.RESOURCES.length > 0"><b>Resource Component</b><span *ngIf="chosenFilters.RESOURCES.length > 1"><b>s</b></span></span>
+                    <p class="contained" [hidden]="ResCollapsed">
+                        <span *ngFor="let r of chosenFilters.RESOURCES">{{r.name}}
+                            <br/>
+                        </span>
+                    </p>
+                </div>
+                <!-- Media -->
+                <div *ngIf="chosenFilters?.MEDIA">
+                    <i class="pull-left down4" [ngClass]="MedCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="MedCollapsed=!MedCollapsed"></i>
+                    <span *ngIf="chosenFilters.MEDIA.length > 0"><b>Media</b></span>
+                    <p class="contained" [hidden]="MedCollapsed">
+                        <span *ngFor="let m of chosenFilters.MEDIA">{{m.name}}
+                            <br/>
+                        </span>
+                    </p>
+                </div>
+                <!-- Lake -->
+                <div *ngIf="chosenFilters?.LAKES">
+                    <i class="pull-left down4" [ngClass]="LakeCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="LakeCollapsed=!LakeCollapsed"></i>
+                    <span *ngIf="chosenFilters.LAKES.length > 0"><b>Great Lake</b><span *ngIf="chosenFilters.LAKES.length > 1"><b>s</b></span></span>
+                    <p class="contained" [hidden]="LakeCollapsed">
+                        <span *ngFor="let l of chosenFilters.LAKES">{{l.name}}
+                            <br/>
+                        </span>
+                    </p>
+                </div>
+                <!-- State -->
+                <div *ngIf="chosenFilters?.STATES">
+                    <i class="pull-left down4" [ngClass]="StateCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="StateCollapsed=!StateCollapsed"></i>
+                    <span *ngIf="chosenFilters.STATES.length > 0"><b>State</b><span *ngIf="chosenFilters.STATES.length > 1"><b>s</b></span><b>/Province</b><span *ngIf="chosenFilters.STATES.length > 1"><b>s</b></span></span>
+                    <p class="contained" [hidden]="StateCollapsed">
+                        <span *ngFor="let st of chosenFilters.STATES">{{st.name}}
+                            <br/>
+                        </span>
+                    </p>
+                </div>
+                <!-- monitoring effort -->
+                <div *ngIf="chosenFilters?.MONITORS">
+                    <i class="pull-left down4" [ngClass]="MonCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="MonCollapsed=!MonCollapsed"></i>
+                    <span *ngIf="chosenFilters.MONITORS.length > 0"><b>Monitoring effort or coordination</b></span>
+                    <p class="contained" [hidden]="MonCollapsed">
+                        <span *ngFor="let m of chosenFilters.MONITORS">{{m.name}}
+                            <br/>
+                        </span>
+                    </p>
+                </div>
+                <!-- org -->
+                <div *ngIf="chosenFilters?.ORG">
+                    <i class="pull-left down4" [ngClass]="OrgCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="OrgCollapsed=!OrgCollapsed"></i>
+                    <span><b>Organization</b></span>
+                    <p class="contained" [hidden]="OrgCollapsed">
+                        <span>{{chosenFilters.ORG.organization_name}}</span>
+                    </p>
+                </div>
+                <!-- objective -->
+                <div *ngIf="chosenFilters?.OBJS">
+                    <i class="pull-left down4" [ngClass]="ObjCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ObjCollapsed=!ObjCollapsed"></i>
+                    <span *ngIf="chosenFilters.OBJS.length > 0"><b>Project Objective</b><span *ngIf="chosenFilters.OBJS.length > 1"><b>s</b></span></span>
+                    <p class="contained" [hidden]="ObjCollapsed">
+                        <span *ngFor="let ob of chosenFilters.OBJS">{{ob.name}}
+                            <br/>
+                        </span>
+                    </p>
+                </div>          
+                <div *ngIf="chosenFilters?.ProjectName">
+                        <i class="pull-left down4" [ngClass]="ProjCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ProjCollapsed=!ObjCollaProjCollapsedpsed"></i>
+                        <span><b>Project Name</b></span>
+                        <p class="contained" [hidden]="ProjCollapsed">
+                            <span>{{chosenFilters?.ProjectName.name}}
                                 <br/>
                             </span>
                         </p>
-                    </li>
-                    <!-- Durations -->
-                    <li *ngIf="chosenFilters?.DURATIONS">
-                        <input type="checkbox" checked>
-                        <i></i>
-                        <span *ngIf="chosenFilters.DURATIONS.length > 0"><b>Project Duration</b><span *ngIf="chosenFilters.DURATIONS.length > 1"><b>s</b></span>:</span>
-                        <p class="contained">
-                            <span *ngFor="let d of chosenFilters.DURATIONS">{{d.name}}
-                                <br/>
-                            </span>
-                        </p>
-                    </li>
-                    <!-- Status -->
-                    <li *ngIf="chosenFilters?.STATUSES">
-                        <input type="checkbox" checked>
-                        <i></i>
-                        <span *ngIf="chosenFilters.STATUSES.length > 0"><b>Project Status:</b></span>
-                        <p class="contained">
-                            <span *ngFor="let s of chosenFilters.STATUSES">{{s.name}}
-                                <br/>
-                            </span>
-                        </p>
-                    </li>
-                    <!-- Resources -->
-                    <li *ngIf="chosenFilters?.RESOURCES">
-                        <input type="checkbox" checked>
-                        <i></i>
-                        <span *ngIf="chosenFilters.RESOURCES.length > 0"><b>Resource Component</b><span *ngIf="chosenFilters.RESOURCES.length > 1"><b>s</b></span>:</span>
-                        <p class="contained">
-                            <span *ngFor="let r of chosenFilters.RESOURCES">{{r.name}}
-                                <br/>
-                            </span>
-                        </p>
-                    </li>
-                    <!-- Media -->
-                    <li *ngIf="chosenFilters?.MEDIA">
-                        <input type="checkbox" checked>
-                        <i></i>
-                        <span *ngIf="chosenFilters.MEDIA.length > 0"><b>Media:</b></span>
-                        <p class="contained">
-                            <span *ngFor="let m of chosenFilters.MEDIA">{{m.name}}
-                                <br/>
-                            </span>
-                        </p>
-                    </li>
-                    <!-- Lake -->
-                    <li *ngIf="chosenFilters?.LAKES">
-                        <input type="checkbox" checked>
-                        <i></i>
-                        <span *ngIf="chosenFilters.LAKES.length > 0"><b>Great Lake</b><span *ngIf="chosenFilters.LAKES.length > 1"><b>s</b></span>:</span>
-                        <p class="contained">
-                            <span *ngFor="let l of chosenFilters.LAKES">{{l.name}}
-                                <br/>
-                            </span>
-                        </p>
-                    </li>
-                    <!-- State -->
-                    <li *ngIf="chosenFilters?.STATES">
-                        <input type="checkbox" checked>
-                        <i></i>
-                        <span *ngIf="chosenFilters.STATES.length > 0"><b>State</b><span *ngIf="chosenFilters.STATES.length > 1"><b>s</b></span><b>/Province</b><span *ngIf="chosenFilters.STATES.length > 1"><b>s</b></span>:</span>
-                        <p class="contained">
-                            <span *ngFor="let st of chosenFilters.STATES">{{st.name}}
-                                <br/>
-                            </span>
-                        </p>
-                    </li>
-                    <!-- monitoring effort -->
-                    <li *ngIf="chosenFilters?.MONITORS">
-                        <input type="checkbox" checked>
-                        <i></i>
-                        <span *ngIf="chosenFilters.MONITORS.length > 0"><b>Monitoring effort or coordination:</b></span>
-                        <p class="contained">
-                            <span *ngFor="let m of chosenFilters.MONITORS">{{m.name}}
-                                <br/>
-                            </span>
-                        </p>
-                    </li>
-                    <!-- org -->
-                    <li *ngIf="chosenFilters?.ORG">
-                        <input type="checkbox" checked>
-                        <i></i>
-                        <span><b>Organization:</b></span>
-                        <p class="contained">
-                            <span>{{chosenFilters.ORG.organization_name}}</span>
-                        </p>
-                    </li>
-                    <!-- objective -->
-                    <li *ngIf="chosenFilters?.OBJS">
-                        <input type="checkbox" checked>
-                        <i></i>
-                        <span *ngIf="chosenFilters.OBJS.length > 0"><b>Project Objective</b><span *ngIf="chosenFilters.OBJS.length > 1"><b>s</b></span>:</span>
-                        <p class="contained">
-                            <span *ngFor="let ob of chosenFilters.OBJS">{{ob.name}}
-                                <br/>
-                            </span>
-                        </p>
-                    </li>
-                </ul>
+                    </div>              
             </ng-template>
         </ngb-panel>
 
         <!-- Project List (based on Filters or on Map click) -->
-        <ngb-panel title="Project List" id="projList">
+        <ngb-panel id="projList">
             <ng-template ngbPanelTitle>
                 <span>Project List</span><div class="pull-right" *ngIf="filteredProjects.length > 1"><span class="badge badge-secondary">Count: {{filteredProjects.length}}</span></div>
             </ng-template>

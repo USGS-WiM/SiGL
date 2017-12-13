@@ -16,6 +16,7 @@ import { Iorganization } from "../../../shared/interfaces/organization.interface
 import { Iobjective } from "../../../shared/interfaces/objective.interface";
 import { IchosenFilters } from "../../../shared/interfaces/chosenFilters.interface";
 import { MapService } from '../../../shared/services/map.service';
+import { prepareProfile } from 'selenium-webdriver/firefox';
 
 
 @Component({
@@ -194,17 +195,11 @@ export class FilterComponent implements OnInit {
                 this.objectiveSelected = [];
                 this.projectSelected = undefined;
                 //clear sidebar
-                this.chosenFiltersObj = {};
-              /*  this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services
-                this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen
-                this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson*/
-            }/* else{
-                //results == 'Search'
-                this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-                this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services
-            }*/
-            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services
-            this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen
+                this.chosenFiltersObj = {};             
+            }
+
+            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
+            this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list
             this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
             
             this.modalResponseEvent.emit(results);
@@ -287,7 +282,7 @@ export class FilterComponent implements OnInit {
             case "organization":
                 this.chosenFiltersObj.p_organization = e.organization_id;
                 this.chosenFiltersObj.ORG = e;
-                break;
+                break;            
             case "objective":
                 this.chosenFiltersObj.p_objectives = e;
                 this.chosenFiltersObj.OBJS = [];
@@ -299,6 +294,10 @@ export class FilterComponent implements OnInit {
     }//end filterChange
 
     public onProjectSelect(project: Iproject){
+        // clear out all chosenFiltersObj because this is project only filter
+        this.chosenFiltersObj = {};
+        this.chosenFiltersObj.ProjectName = { name: project.name, project_id: project.project_id };
+        this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list
         //handle selected project
     } //end onProjectSelect
     

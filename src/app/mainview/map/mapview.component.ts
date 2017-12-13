@@ -84,12 +84,20 @@ export class MapviewComponent implements OnInit {
 		})
 		//for project info
 		this._siglService.fullProject.subscribe((FP: Ifullproject) => {			
-            this.fullProj = FP;
-            if (this.siteClickFlag == false){
+			this.fullProj = FP;
+			
+            if (this.siteClickFlag == false) {
                 if (this.clickedMarker){
                     this.map.closePopup();
-                }
-                this.highlightProjSites(this.fullProj.ProjectId);
+				}
+				
+				if (this.filtermodal.chosenFiltersObj) {
+					if (this.filtermodal.chosenFiltersObj.ProjectName == undefined) {		
+						this.highlightProjSites(this.fullProj.ProjectId);
+					}
+				}
+					
+				
             }
 			this.showBottomBar = true;
 			let tabID = this.siteClickFlag ? 'site' : 'project';
@@ -98,8 +106,10 @@ export class MapviewComponent implements OnInit {
 		//every time geojson gets updated (initially its all, after depends on filters chosen)
 		this._mapService.filteredSiteView.subscribe((geoj: any) => {
 			if (geoj !== "") {
+				//remove all layers and start fresh everytime this updates
 				if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
 				if (this.geoJsonLayer) this.geoJsonLayer.remove();
+				if (this.tempGeoJsonLayer) this.tempGeoJsonLayer.remove();
 
 				this.geoj = geoj; //use this to filter later
 				this.geoJsonLayer = L.geoJSON(geoj, {

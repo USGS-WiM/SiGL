@@ -114,10 +114,7 @@ export class SiglService {
 	}
 	public get fullProject(): Observable<Ifullproject>{
 		return this._fullProjectSubject.asObservable();
-	}
-	/*public get fullProjectSites(): Observable<Array<Ifullsite>>{
-		return this._fullProjectSitesSubject.asObservable();
-	}*/
+	}	
 	public get fullSite(): Observable<Ifullsite>{
 		return this._singleSiteSubject.asObservable();
 	}
@@ -230,9 +227,11 @@ export class SiglService {
 			if (filters.s_lakes) sitesParam.set("Lake", filters.s_lakes.join(","));
 			if (filters.s_states) sitesParam.set("State", filters.s_states.join(","));
 			if (filters.s_monitorEffect) sitesParam.set("ProjMonitorCoords", filters.s_monitorEffect.join(","));
-
-			let options = new RequestOptions( { headers: CONFIG.MIN_JSON_HEADERS, search: sitesParam });
-			this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
+			
+			if (sitesParam.paramsMap.size > 0) {
+				//hit the filtered projects url
+				let options = new RequestOptions( { headers: CONFIG.MIN_JSON_HEADERS, search: sitesParam });
+				this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
 				.map(res => <Array<Ifilteredproject>>res.json())
 				.subscribe(proj => {
 					//HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
@@ -248,6 +247,11 @@ export class SiglService {
 					}
 					this._filteredProjectSubject.next(proj);
 				}, error => this.handleError);
+			} else {
+				// project name search
+				this.setFullProject(filters.ProjectName.project_id.toString());
+			}
+			
 		} else {
 			//clear it all
 			this._filteredProjectSubject.next([]);
