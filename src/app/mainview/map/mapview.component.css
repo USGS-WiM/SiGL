@@ -26,3 +26,16 @@
     color: orange;
     font-weight: bolder;
 }
+
+/*
+to style leafle markers to look like circles (NOT cirlcleMarker)
+..this is required in order to use leaflet overlapping spyderfier.
+*/
+.sigldivicon {
+    width: 12px;
+    height: 12px;
+    border-radius: 10px;
+    background: #ff7800;
+    border: 1px solid #000;
+    opacity: 0.1
+}

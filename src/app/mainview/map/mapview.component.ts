@@ -9,7 +9,8 @@ import { Iparameter } from "app/shared/interfaces/parameter.interface";
 import { Igroupedparameters } from "app/shared/interfaces/groupedparameters";
 import * as L from 'leaflet';
 import { Ifilteredproject } from 'app/shared/interfaces/filteredproject';
-//import * as WMS from 'leaflet.wms';
+
+declare var OverlappingMarkerSpiderfier: any;
 
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
@@ -19,6 +20,7 @@ import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 	styleUrls: ['./mapview.component.css']
 })
 export class MapviewComponent implements OnInit {
+    
 	@ViewChild('t') tabs;
 	// filter modal, opened from sidebar's (click) function that changing show boolean, subscribed to in the filterModalComponent
 	@ViewChild('filtermodal') filtermodal: FilterComponent;
@@ -44,7 +46,10 @@ export class MapviewComponent implements OnInit {
 	private AllShowingProjIDArray: Array<number>;
 	private clickedMarker: any;
 	public groupedParams: Igroupedparameters;
-	//public groupedParams: Object;
+    //public groupedParams: Object;
+    
+    public markerIcon: any;
+    public oms: any;
 
 
 	constructor(private _mapService: MapService, private _siglService: SiglService) { }
@@ -56,6 +61,11 @@ export class MapviewComponent implements OnInit {
         this.fullSiteFlag = false;
         this.siteClickFlag = false;
         this.filteredProjects = [];
+
+        //this.markerIcon = L.divIcon({className: 'sigldivicon'});
+        this.markerIcon = L.divIcon({
+            iconSize: new L.Point(10, 10)
+        });
 
         this.tempSitesIcon = {
             radius: 4,
@@ -104,13 +114,14 @@ export class MapviewComponent implements OnInit {
 				this.geoj = geoj; //use this to filter later
 				this.geoJsonLayer = L.geoJSON(geoj, {
 					pointToLayer: ((feature, latlng) => {
-						return L.circleMarker(latlng, this.setMarker(feature));
+						return L.marker(latlng, {icon: this.markerIcon});
 					}),
 					onEachFeature: ((feature, layer) => {
+                        test.addMarker(layer);
                         layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
                         layer.on('popupclose', (e) => {
                             if (this.clickedMarker){
-								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
+								//this.clickedMarker.setStyle(this.setMarker(e.target.feature));
 							}
                             this.clickedMarker = e.target;
                             e.target.setStyle(this.setMarker(e.target.feature));
@@ -118,12 +129,12 @@ export class MapviewComponent implements OnInit {
                         //changed from on 'click' to on 'popupopen' to test
 						layer.on("click", (e) => {
 							if (this.clickedMarker) {
-								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
+								//this.clickedMarker.setStyle(this.setMarker(e.target.feature));
 							}
 							this.clickedMarker = e.target;
-                            e.target.setStyle(this.highlightIcon);
+                            //e.target.setStyle(this.highlightIcon);
 							this.onFeatureSelection(e)
-						});
+						}); 
 					})
 				}).addTo(this.map);
 			}
@@ -236,6 +247,7 @@ export class MapviewComponent implements OnInit {
             layers: [this._mapService.baseMaps.Topo]
         });
 
+        let test = new OverlappingMarkerSpiderfier(this.map);
         this.map.createPane('mainSiglLayer');
         this.map.getPane('mainSiglLayer').style.zIndex = 1000;
 
@@ -284,16 +296,18 @@ export class MapviewComponent implements OnInit {
     }
 
     public onFeatureSelection(event): void {
+        //remove any highlighted projects before highighting clicked site.
+        if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
 
         if (this.filteredProjects.length > 0) {
             console.log("fired if there are filtered projects")
             //need to find site and highlight it in the sidebar project--> site list 
             
-            //remove any highlighted projects before highighting clicked site.
-            if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
+            
             this.siteClickFlag = true;
             this._siglService.setsitePointClickBool(true);
         } else {
+
             console.log("fired if NO filtered projects and single site clicked");
             this.siteClickFlag = true;
             this._siglService.setsitePointClickBool(true);
@@ -366,7 +380,7 @@ export class MapviewComponent implements OnInit {
 	}
 	//select fillcolor for leaflet circleMakers
 	public setMarker(feature) {
-		let fillColor = "";
+		/* let fillColor = "";
 		switch (feature.properties.lake_type_id) {
 			case 1:
 				//Erie
@@ -396,7 +410,11 @@ export class MapviewComponent implements OnInit {
 			weight: 0,
 			opacity: 1,
 			fillOpacity: 0.5
-		}
+        } */
+        
+        return L.divIcon({
+            iconSize: new L.Point(10, 10)
+        });
 	}
 
 }
