@@ -67,9 +67,13 @@ export class MapviewComponent implements OnInit {
         };
         this.highlightIcon = {
             radius: 8,
-            color: 'green',
-            fillColor: 'green',
-            fillOpacity: 0.9
+            weight: 5,
+            opacity: 0.2,
+            fill: 'Orange',
+            color: 'orange',
+            fillColor: 'orange',
+            fillOpacity: 0.5,
+            pane: "mainSiglLayer"
         };
 		
 		this.groupedParams = {BioArray:[], ChemArray:[], MicroBioArray:[], PhysArray:[], ToxicArray:[]};
@@ -100,7 +104,15 @@ export class MapviewComponent implements OnInit {
 						return L.circleMarker(latlng, this.setMarker(feature));																	
 					}),
 					onEachFeature: ((feature, layer) => {
-						layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
+                        layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
+                        layer.on('popupclose', (e) => {
+                            if (this.clickedMarker){
+								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
+							}
+                            this.clickedMarker = e.target;
+                            e.target.setStyle(this.setMarker(e.target.feature));
+                        });
+                        //changed from on 'click' to on 'popupopen' to test
 						layer.on("click", (e) => {
 							if (this.clickedMarker){
 								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
@@ -121,6 +133,7 @@ export class MapviewComponent implements OnInit {
 							
 				this.tempGeoj = tempGeoj; //use this to filter later
 				this.tempGeoJsonLayer = L.geoJSON(tempGeoj, {
+                    pane: "subSiglLayer",
 					pointToLayer: ((feature, latlng) => {
 						return L.circleMarker(latlng, this.tempSitesIcon);
 					}),
@@ -219,6 +232,12 @@ export class MapviewComponent implements OnInit {
             maxZoom: 19,
             layers: [this._mapService.baseMaps.Topo]
         });
+
+        this.map.createPane('mainSiglLayer');
+        this.map.getPane('mainSiglLayer').style.zIndex = 1000;
+
+        this.map.createPane('subSiglLayer');
+        this.map.getPane('subSiglLayer').style.zIndex = 1;
 
         L.control.scale().addTo(this.map);
         // this._mapService.map = map;       
