@@ -1,150 +1,204 @@
 <div class="sidebar sidebar-left" id="sidebar">
     <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-1">
-    <ngb-panel title="Basemaps">
-        <ng-template ngbPanelContent>
-            <basemaps></basemaps>
-        </ng-template>
-    </ngb-panel>
-    <ngb-panel title="Filters">
-        <ng-template ngbPanelContent>
-            <button type="button" class="btn btn-primary" (click)="showFilterModal()">Change filters</button>
-            
-            <div *ngIf="chosenFilters?.PARAMETERS">
-                <span *ngIf="chosenFilters.PARAMETERS.length > 0">Parameter<span *ngIf="chosenFilters.PARAMETERS.length > 1">s</span>:</span>
+
+        <!-- Basemaps -->
+        <ngb-panel title="Basemaps">
+            <ng-template ngbPanelContent>
+                <basemaps></basemaps>
+            </ng-template>            
+        </ngb-panel>
+
+        <!-- Filters -->
+        <ngb-panel title="Filters">
+            <ng-template ngbPanelContent>
+                <button type="button" class="btn btn-primary" (click)="showFilterModal()">Change filters</button>
+                <br/>
+                <h4 *ngIf="filterCount > 0">Map filterd by</h4>
                 <ul>
-                    <li *ngFor="let p of chosenFilters.PARAMETERS;">{{p.name}}</li>
+                    <!-- Parameters -->
+                    <li *ngIf="chosenFilters?.PARAMETERS">
+                        <input type="checkbox" checked>
+                        <i></i>
+                        <span *ngIf="chosenFilters.PARAMETERS.length > 0"><b>Parameter</b><span *ngIf="chosenFilters.PARAMETERS.length > 1"><b>s</b></span>:</span>
+                        <p class="contained">
+                            <span *ngFor="let p of chosenFilters.PARAMETERS;">{{p.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </li>
+                    <!-- Durations -->
+                    <li *ngIf="chosenFilters?.DURATIONS">
+                        <input type="checkbox" checked>
+                        <i></i>
+                        <span *ngIf="chosenFilters.DURATIONS.length > 0"><b>Project Duration</b><span *ngIf="chosenFilters.DURATIONS.length > 1"><b>s</b></span>:</span>
+                        <p class="contained">
+                            <span *ngFor="let d of chosenFilters.DURATIONS">{{d.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </li>
+                    <!-- Status -->
+                    <li *ngIf="chosenFilters?.STATUSES">
+                        <input type="checkbox" checked>
+                        <i></i>
+                        <span *ngIf="chosenFilters.STATUSES.length > 0"><b>Project Status:</b></span>
+                        <p class="contained">
+                            <span *ngFor="let s of chosenFilters.STATUSES">{{s.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </li>
+                    <!-- Resources -->
+                    <li *ngIf="chosenFilters?.RESOURCES">
+                        <input type="checkbox" checked>
+                        <i></i>
+                        <span *ngIf="chosenFilters.RESOURCES.length > 0"><b>Resource Component</b><span *ngIf="chosenFilters.RESOURCES.length > 1"><b>s</b></span>:</span>
+                        <p class="contained">
+                            <span *ngFor="let r of chosenFilters.RESOURCES">{{r.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </li>
+                    <!-- Media -->
+                    <li *ngIf="chosenFilters?.MEDIA">
+                        <input type="checkbox" checked>
+                        <i></i>
+                        <span *ngIf="chosenFilters.MEDIA.length > 0"><b>Media:</b></span>
+                        <p class="contained">
+                            <span *ngFor="let m of chosenFilters.MEDIA">{{m.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </li>
+                    <!-- Lake -->
+                    <li *ngIf="chosenFilters?.LAKES">
+                        <input type="checkbox" checked>
+                        <i></i>
+                        <span *ngIf="chosenFilters.LAKES.length > 0"><b>Great Lake</b><span *ngIf="chosenFilters.LAKES.length > 1"><b>s</b></span>:</span>
+                        <p class="contained">
+                            <span *ngFor="let l of chosenFilters.LAKES">{{l.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </li>
+                    <!-- State -->
+                    <li *ngIf="chosenFilters?.STATES">
+                        <input type="checkbox" checked>
+                        <i></i>
+                        <span *ngIf="chosenFilters.STATES.length > 0"><b>State</b><span *ngIf="chosenFilters.STATES.length > 1"><b>s</b></span><b>/Province</b><span *ngIf="chosenFilters.STATES.length > 1"><b>s</b></span>:</span>
+                        <p class="contained">
+                            <span *ngFor="let st of chosenFilters.STATES">{{st.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </li>
+                    <!-- monitoring effort -->
+                    <li *ngIf="chosenFilters?.MONITORS">
+                        <input type="checkbox" checked>
+                        <i></i>
+                        <span *ngIf="chosenFilters.MONITORS.length > 0"><b>Monitoring effort or coordination:</b></span>
+                        <p class="contained">
+                            <span *ngFor="let m of chosenFilters.MONITORS">{{m.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </li>
+                    <!-- org -->
+                    <li *ngIf="chosenFilters?.ORG">
+                        <input type="checkbox" checked>
+                        <i></i>
+                        <span><b>Organization:</b></span>
+                        <p class="contained">
+                            <span>{{chosenFilters.ORG.organization_name}}</span>
+                        </p>
+                    </li>
+                    <!-- objective -->
+                    <li *ngIf="chosenFilters?.OBJS">
+                        <input type="checkbox" checked>
+                        <i></i>
+                        <span *ngIf="chosenFilters.OBJS.length > 0"><b>Project Objective</b><span *ngIf="chosenFilters.OBJS.length > 1"><b>s</b></span>:</span>
+                        <p class="contained">
+                            <span *ngFor="let ob of chosenFilters.OBJS">{{ob.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </li>
                 </ul>
+            </ng-template>
+        </ngb-panel>
 
-            </div>
-
-            <div *ngIf="chosenFilters?.DURATIONS">
-                <span *ngIf="chosenFilters.DURATIONS.length > 0">Duration<span *ngIf="chosenFilters.DURATIONS.length > 1">s</span>:</span>
-                <ul>
-                    <li *ngFor="let d of chosenFilters.DURATIONS">{{d.name}}</li>
-                </ul>
-            </div>
-
-            <div *ngIf="chosenFilters?.STATUSES">
-                <span *ngIf="chosenFilters.STATUSES.length > 0">Status:</span>
-                <ul>
-                    <li *ngFor="let s of chosenFilters.STATUSES">{{s.name}}</li>
-                </ul>
-            </div>
-
-            <div *ngIf="chosenFilters?.RESOURCES">
-                <span *ngIf="chosenFilters.RESOURCES.length > 0">Resource Component<span *ngIf="chosenFilters.RESOURCES.length > 1">s</span>:</span>
-                <ul>
-                    <li *ngFor="let r of chosenFilters.RESOURCES">{{r.name}}</li>
-                </ul>
-            </div>
-            
-            <div *ngIf="chosenFilters?.MEDIA">
-                <span *ngIf="chosenFilters.MEDIA.length > 0">Media:</span>
-                <ul>
-                    <li *ngFor="let m of chosenFilters.MEDIA">{{m.name}}</li>
-                </ul>
-            </div>
-
-             <div *ngIf="chosenFilters?.LAKES">
-                <span *ngIf="chosenFilters.LAKES.length > 0">Great Lake<span *ngIf="chosenFilters.LAKES.length > 1">s</span>:</span>
-                <ul>
-                    <li *ngFor="let l of chosenFilters.LAKES">{{l.name}}</li>
-                </ul>
-            </div>
-
-            <div *ngIf="chosenFilters?.STATES">
-                <span *ngIf="chosenFilters.STATES.length > 0">State<span *ngIf="chosenFilters.STATES.length > 1">s</span>/Province<span *ngIf="chosenFilters.STATES.length > 1">s</span>:</span>
-                <ul>
-                    <li *ngFor="let st of chosenFilters.STATES">{{st.name}}</li>
-                </ul>
-            </div>
-
-            <div *ngIf="chosenFilters?.MONITORS">
-                <span *ngIf="chosenFilters.MONITORS.length > 0">Monitoring effort or coordination:</span>
-                <ul>
-                    <li *ngFor="let m of chosenFilters.MONITORS">{{m.name}}</li>
-                </ul>
-            </div>
-
-            <div *ngIf="chosenFilters?.ORG">
-                <span>Organization:</span>
-                <ul>
-                    <li>{{chosenFilters.ORG.organization_name}}</li>
-                </ul>
-            </div>
-
-            <div *ngIf="chosenFilters?.OBJS">
-                <span *ngIf="chosenFilters.OBJS.length > 0">Project Objective<span *ngIf="chosenFilters.OBJS.length > 1">s</span>:</span>
-                <ul>
-                    <li *ngFor="let ob of chosenFilters.OBJS">{{ob.name}}</li>
-                </ul>
-            </div>
-
-
-        </ng-template>
-    </ngb-panel> 
-    <ngb-panel title="Project List" id="projList">
-        <ng-template ngbPanelContent>
-            <!--If filtered Projects have been requested (from dropdown selection)-->
-            <div *ngIf="filteredProjects?.length > 0">
-                <div> Click on a project name or site to highlight it on the map.</div>
-                <hr />
-                <div *ngFor="let proj of filteredProjects;let i = index;">
-                    <div>
-                        <a *ngIf="proj.projectSites.length > 0" (click)="proj.isCollapsed = !proj.isCollapsed" [attr.aria-expanded]="!proj.isCollapsed" aria-controls="collapseExample">
-                            <i [ngClass]="proj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
-                        </a>
-                        <span>                            
-                            <a (click)="showProjectDetails(proj)">{{proj.name}}</a>
-                        </span>
-                        <span class="pull-right">
-                            <form [formGroup]="siteCountForm">
-                                <div class="btn-group" ngbRadioGroup name="radioBasic" formControlName="model">                                    
-                                    <label ngbButtonLabel class="btn-primary siteFormLabel all">
-                                        <input ngbButton type="radio" (click)="toggleSiteList('all', proj.project_id)" [value]="'all'">All ({{proj.projectSites.length}})
-                                    </label>
-                                    <label ngbButtonLabel class="btn-primary siteFormLabel filtered">
-                                        <input ngbButton type="radio" (click)="toggleSiteList('filtered', proj.project_id)" [value]="'filtered'"> Filtered ({{proj.filteredSiteCount}})
-                                    </label>
+        <!-- Project List (based on Filters or on Map click) -->
+        <ngb-panel title="Project List" id="projList">
+            <ng-template ngbPanelTitle>
+                <span>Project List</span><div class="pull-right" *ngIf="filteredProjects.length > 1"><span class="badge badge-secondary">Count: {{filteredProjects.length}}</span></div>
+            </ng-template>
+            <ng-template ngbPanelContent>
+                <!--If filtered Projects have been requested (from dropdown selection)-->
+                <div *ngIf="filteredProjects?.length > 0">
+                    <div> Click on a project name or site to highlight it on the map.</div>
+                    <hr />
+                    <div *ngFor="let proj of filteredProjects;let i = index;">
+                        <div>
+                            <a *ngIf="proj.projectSites.length > 0" (click)="proj.isCollapsed = !proj.isCollapsed" [attr.aria-expanded]="!proj.isCollapsed"
+                                aria-controls="collapseExample">
+                                <i [ngClass]="proj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
+                            </a>
+                            <span>
+                                <a (click)="showProjectDetails(proj)">{{proj.name}}</a>
+                            </span>
+                            <span class="pull-right">
+                                <form [formGroup]="siteCountForm">
+                                    <div class="btn-group" ngbRadioGroup name="radioBasic" formControlName="model">
+                                        <label ngbButtonLabel class="btn-primary siteFormLabel all">
+                                            <input ngbButton type="radio" (click)="toggleSiteList('all', proj.project_id)" [value]="'all'">All ({{proj.projectSites.length}})
+                                        </label>
+                                        <label ngbButtonLabel class="btn-primary siteFormLabel filtered">
+                                            <input ngbButton type="radio" (click)="toggleSiteList('filtered', proj.project_id)" [value]="'filtered'"> Filtered ({{proj.filteredSiteCount}})
+                                        </label>
+                                    </div>
+                                </form>
+                            </span>
+                        </div>
+                        <div id="collapseExample" [ngbCollapse]="proj.isCollapsed">
+                            <div *ngFor="let s of proj.projectSites" class="marginLeft">
+                                <div *ngIf="s.isDisplayed">
+                                    <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" (click)="showSiteDetails(s)">{{s.name}}</a>
                                 </div>
-                            </form> <!-- -->
-                        </span>
-                    </div>
-                    <div id="collapseExample" [ngbCollapse]="proj.isCollapsed">
-                        <div *ngFor="let s of proj.projectSites" class="marginLeft">
-                            <div *ngIf="s.isDisplayed">
-                                <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" (click)="showSiteDetails(s)">{{s.name}}</a>
-                            </div>
-                            <div *ngIf="s.isTempDisplayed">
-                                <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" (click)="showSiteDetails(s)">{{s.name}}</a>
+                                <div *ngIf="s.isTempDisplayed">
+                                    <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" (click)="showSiteDetails(s)">{{s.name}}</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <hr />
+                    </div> <!-- end ngFor each filteredProjects -->
+                </div> <!-- end ngIf filteredProjects.length > 0 -->
+
+                <!--If no filtered Projects have been requested (but a site has been clicked on the map)-->
+                <div *ngIf="filteredProjects?.length == 0 && siteClickFullProj">
+                    <div> Click on a project name or site to highlight it on the map.</div>
                     <hr />
-                </div> <!-- end ngFor each filteredProjects -->
-            </div>
-             <!--If no filtered Projects have been requested (but a site has been clicked on the map)-->
-            <div *ngIf="filteredProjects?.length == 0 && siteClickFullProj">
-                <div> Click on a project name or site to highlight it on the map.</div>
-                <hr />               
-                <div>
                     <div>
-                        <a *ngIf="siteClickFullProj.projectSites.length > 0" (click)="siteClickFullProj.isCollapsed = !siteClickFullProj.isCollapsed" [attr.aria-expanded]="!siteClickFullProj.isCollapsed" aria-controls="collapseExample">
-                            <i [ngClass]="siteClickFullProj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
-                        </a>
-                        <span><a (click)="showProjectDetails(siteClickFullProj)">{{siteClickFullProj.Name}}</a></span><span class="pull-right">{{siteClickFullProj.projectSites.length}}</span>
-                    </div>
-                    <div id="collapseExample" [ngbCollapse]="siteClickFullProj.isCollapsed">
-                        <div *ngFor="let s of siteClickFullProj.projectSites" class="marginLeft">
-                            <a (click)="showSiteDetails(s)">{{s.name}} -- {{s.site_id}}</a>
+                        <div>
+                            <a *ngIf="siteClickFullProj.projectSites.length > 0" (click)="siteClickFullProj.isCollapsed = !siteClickFullProj.isCollapsed"
+                                [attr.aria-expanded]="!siteClickFullProj.isCollapsed" aria-controls="collapseExample">
+                                <i [ngClass]="siteClickFullProj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
+                            </a>
+                            <span>
+                                <a (click)="showProjectDetails(siteClickFullProj)">{{siteClickFullProj.Name}}</a>
+                            </span>
+                            <span class="pull-right"><span class="badge badge-secondary">All {{siteClickFullProj.projectSites.length}}</span></span>                          
                         </div>
+                        <div id="collapseExample" [ngbCollapse]="siteClickFullProj.isCollapsed">
+                            <div *ngFor="let s of siteClickFullProj.projectSites" class="marginLeft">
+                                <a (click)="showSiteDetails(s)">{{s.name}} -- {{s.site_id}}</a>
+                            </div>
+                        </div>
+                        <hr />
                     </div>
-                    <hr />
                 </div>
-            </div>
-        </ng-template>
-    </ngb-panel>
+            </ng-template>
+        </ngb-panel>
     </ngb-accordion>
 
-    
+
 </div>

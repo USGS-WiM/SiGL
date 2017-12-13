@@ -14,19 +14,19 @@ import { Ifilteredproject } from 'app/shared/interfaces/filteredproject';
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'mapview',
-    templateUrl: './mapview.component.html',
-    styleUrls: ['./mapview.component.css']
+	selector: 'mapview',
+	templateUrl: './mapview.component.html',
+	styleUrls: ['./mapview.component.css']
 })
 export class MapviewComponent implements OnInit {
-    @ViewChild('t') tabs;
-    // filter modal, opened from sidebar's (click) function that changing show boolean, subscribed to in the filterModalComponent
-    @ViewChild('filtermodal') filtermodal: FilterComponent;
-    public map: any;
-    public wmsLayer: any;
-    public icon: any;
-    public tempSitesIcon: any;
-    public highlightIcon: any;
+	@ViewChild('t') tabs;
+	// filter modal, opened from sidebar's (click) function that changing show boolean, subscribed to in the filterModalComponent
+	@ViewChild('filtermodal') filtermodal: FilterComponent;
+	public map: any;
+	public wmsLayer: any;
+	public icon: any;
+	public tempSitesIcon: any;
+	public highlightIcon: any;
 	public geoJsonLayer: L.GeoJSON;
 	public tempGeoJsonLayer: L.GeoJSON;
 	public selectedProjGeoJsonLayer: L.GeoJSON;
@@ -35,19 +35,19 @@ export class MapviewComponent implements OnInit {
 	public popup: any;
 	public style: Object = {};
 	public fullProj: Ifullproject;
-    public fullProjSites: Array<Ifullsite>;
-    public filteredProjects: Array<Ifilteredproject>;
-    public fullSite: Ifullsite;
-    public showBottomBar: Boolean;
-    public fullSiteFlag: Boolean;
-    public siteClickFlag: Boolean;
+	public fullProjSites: Array<Ifullsite>;
+	public filteredProjects: Array<Ifilteredproject>;
+	public fullSite: Ifullsite;
+	public showBottomBar: Boolean;
+	public fullSiteFlag: Boolean;
+	public siteClickFlag: Boolean;
 	private AllShowingProjIDArray: Array<number>;
 	private clickedMarker: any;
 	public groupedParams: Igroupedparameters;
 	//public groupedParams: Object;
 
 
-    constructor(private _mapService: MapService, private _siglService: SiglService) { }
+	constructor(private _mapService: MapService, private _siglService: SiglService) { }
 
 	ngOnInit() {
 		this.AllShowingProjIDArray = [];
@@ -94,17 +94,17 @@ export class MapviewComponent implements OnInit {
 			this.showBottomBar = true;
 			let tabID = this.siteClickFlag ? 'site' : 'project';
 			this.tabs.select(tabID);
-        });
-        //every time geojson gets updated (initially its all, after depends on filters chosen)
-        this._mapService.filteredSiteView.subscribe((geoj: any) => {
-			if (geoj !== ""){	
+		});
+		//every time geojson gets updated (initially its all, after depends on filters chosen)
+		this._mapService.filteredSiteView.subscribe((geoj: any) => {
+			if (geoj !== "") {
 				if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
 				if (this.geoJsonLayer) this.geoJsonLayer.remove();
-							
+
 				this.geoj = geoj; //use this to filter later
 				this.geoJsonLayer = L.geoJSON(geoj, {
 					pointToLayer: ((feature, latlng) => {
-						return L.circleMarker(latlng, this.setMarker(feature));																	
+						return L.circleMarker(latlng, this.setMarker(feature));
 					}),
 					onEachFeature: ((feature, layer) => {
                         layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
@@ -117,23 +117,23 @@ export class MapviewComponent implements OnInit {
                         });
                         //changed from on 'click' to on 'popupopen' to test
 						layer.on("click", (e) => {
-							if (this.clickedMarker){
+							if (this.clickedMarker) {
 								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
 							}
 							this.clickedMarker = e.target;
                             e.target.setStyle(this.highlightIcon);
 							this.onFeatureSelection(e)
-						}); 
-					}) 
+						});
+					})
 				}).addTo(this.map);
 			}
-		});            
+		});
 		//temporary sites when user clicks toggle between show all and only filteres sites from sidebar
-        this._mapService.tempSites.subscribe((tempGeoj: any) => {
-			if (tempGeoj !== ""){
+		this._mapService.tempSites.subscribe((tempGeoj: any) => {
+			if (tempGeoj !== "") {
 				if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
 				if (this.tempGeoJsonLayer) this.tempGeoJsonLayer.remove();
-							
+
 				this.tempGeoj = tempGeoj; //use this to filter later
 				this.tempGeoJsonLayer = L.geoJSON(tempGeoj, {
                     pane: "subSiglLayer",
@@ -144,25 +144,25 @@ export class MapviewComponent implements OnInit {
 						layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
 						layer.on("click", (e) => {
 							this.onFeatureSelection(e)
-						}); 
-					}) 
+						});
+					})
 				}).addTo(this.map);
 			}
-        });            
-		this._siglService.sitePointClickBool.subscribe((val:boolean) => {
+		});
+		this._siglService.sitePointClickBool.subscribe((val: boolean) => {
 			this.siteClickFlag = val;
 		})
 		//for single site info.
 		this._siglService.fullSite.subscribe((FS: Ifullsite) => {
 			//clear GroupedParams
-			this.groupedParams = {BioArray:[], ChemArray:[], MicroBioArray:[], PhysArray:[], ToxicArray:[]};
-			
+			this.groupedParams = { BioArray: [], ChemArray: [], MicroBioArray: [], PhysArray: [], ToxicArray: [] };
+
 			this.fullSite = FS;
 			this.fullSiteFlag = true;
 			this.tabs.select('site');
 
-			FS.Parameters.forEach( param => {
-				switch(param.parameter_group){
+			FS.Parameters.forEach(param => {
+				switch (param.parameter_group) {
 					case "Biological":
 						this.groupedParams.BioArray.push(param);
 						console.log(this.groupedParams);
@@ -321,8 +321,8 @@ export class MapviewComponent implements OnInit {
 
         }
         console.log('mouseover ' + event.target.feature.properties.site_id); */
-        
-        
+
+
 	}
 
 	//project name was selected from sidebar. add highlight marker to all sites belonging to this project
@@ -332,16 +332,25 @@ export class MapviewComponent implements OnInit {
 
 		if (this.AllShowingProjIDArray.indexOf(projId) > -1) {
 			geoJholder = this.tempGeoj;
-		 } else {
-			 geoJholder = this.geoj;
-		 }
-		
-		//now add to map as highlighted thing
-		geoJholder.forEach(feature => {
-			if (feature.properties.project_id == projId) {
-				highlightedProjSites.push(feature);
-			}
-		});
+		} else {
+			geoJholder = this.geoj;
+		}
+		// now add to map as highlighted thing
+		if (Array.isArray(geoJholder)) {
+
+			geoJholder.forEach(feature => {
+				if (feature.properties.project_id == projId) {
+					highlightedProjSites.push(feature);
+				}
+			});
+		} else {
+			geoJholder.features.forEach(feature => {
+				if (feature.properties.project_id == projId) {
+					highlightedProjSites.push(feature);
+				}
+			});
+		}
+
 		this.selectedProjGeoJsonLayer = L.geoJSON(<any>highlightedProjSites, {
 			pointToLayer: ((feature, latlng) => {
 				return L.circleMarker(latlng, this.highlightIcon);
@@ -350,22 +359,22 @@ export class MapviewComponent implements OnInit {
 				layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
 				layer.on("click", (e) => {
 					this.onFeatureSelection(e)
-				}); 
-			}) 
+				});
+			})
 		}).addTo(this.map);
-		
+
 	}
 	//select fillcolor for leaflet circleMakers
-	public setMarker(feature){
+	public setMarker(feature) {
 		let fillColor = "";
-		switch(feature.properties.lake_type_id){
+		switch (feature.properties.lake_type_id) {
 			case 1:
 				//Erie
 				fillColor = "#B6BB44";
 				break;
 			case 2:
 				//Huron
-				fillColor =  "#8A3133";
+				fillColor = "#8A3133";
 				break;
 			case 3:
 				//Michigan
@@ -373,11 +382,11 @@ export class MapviewComponent implements OnInit {
 				break;
 			case 4:
 				//Ontario
-				fillColor =  "#6A318F";
+				fillColor = "#6A318F";
 				break;
 			case 5:
 				//Superior
-				fillColor = "#349074"; 
+				fillColor = "#349074";
 				break;
 		}
 		return {

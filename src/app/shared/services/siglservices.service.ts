@@ -217,35 +217,41 @@ export class SiglService {
 	}
 	//called when filters modal closes and passes chosen filters
 	public setFilteredSites(filters: IchosenFilters): void {
-		let sitesParam: URLSearchParams = new URLSearchParams();
-		if (filters.p_organization) sitesParam.set("ProjOrg", filters.p_organization.toString());
-		if (filters.p_objectives) sitesParam.set("ProjObjs", filters.p_objectives.join(','));
-		if(filters.s_parameters) sitesParam.set("Parameters", filters.s_parameters.join(","));
-		if (filters.s_projDuration) sitesParam.set("Duration", filters.s_projDuration.join(","));
-		if (filters.s_projStatus) sitesParam.set("Status", filters.s_projStatus.join(","));
-		if (filters.s_resources) sitesParam.set("ResComp", filters.s_resources.join(","));
-		if (filters.s_media) sitesParam.set("Media", filters.s_media.join(","));
-		if (filters.s_lakes) sitesParam.set("Lake", filters.s_lakes.join(","));
-		if (filters.s_states) sitesParam.set("State", filters.s_states.join(","));
-		if (filters.s_monitorEffect) sitesParam.set("ProjMonitorCoords", filters.s_monitorEffect.join(","));
+		if (Object.keys(filters).length > 0) {
+			//filter it
+			let sitesParam: URLSearchParams = new URLSearchParams();
+			if (filters.p_organization) sitesParam.set("ProjOrg", filters.p_organization.toString());
+			if (filters.p_objectives) sitesParam.set("ProjObjs", filters.p_objectives.join(','));
+			if(filters.s_parameters) sitesParam.set("Parameters", filters.s_parameters.join(","));
+			if (filters.s_projDuration) sitesParam.set("Duration", filters.s_projDuration.join(","));
+			if (filters.s_projStatus) sitesParam.set("Status", filters.s_projStatus.join(","));
+			if (filters.s_resources) sitesParam.set("ResComp", filters.s_resources.join(","));
+			if (filters.s_media) sitesParam.set("Media", filters.s_media.join(","));
+			if (filters.s_lakes) sitesParam.set("Lake", filters.s_lakes.join(","));
+			if (filters.s_states) sitesParam.set("State", filters.s_states.join(","));
+			if (filters.s_monitorEffect) sitesParam.set("ProjMonitorCoords", filters.s_monitorEffect.join(","));
 
-		let options = new RequestOptions( { headers: CONFIG.MIN_JSON_HEADERS, search: sitesParam });
-		this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
-			.map(res => <Array<Ifilteredproject>>res.json())
-			.subscribe(proj => {
-				//HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
-				for (let p of proj) {
-					for (let s of p.projectSites) {
-						if (this.filteredSiteIDArray.includes(s.site_id))
-						{
-							s.isDisplayed = true;
-						} else {
-							s.isTempDisplayed = false; //set rest to hold isTempDisplayed property
-						}						
+			let options = new RequestOptions( { headers: CONFIG.MIN_JSON_HEADERS, search: sitesParam });
+			this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
+				.map(res => <Array<Ifilteredproject>>res.json())
+				.subscribe(proj => {
+					//HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
+					for (let p of proj) {
+						for (let s of p.projectSites) {
+							if (this.filteredSiteIDArray.includes(s.site_id))
+							{
+								s.isDisplayed = true;
+							} else {
+								s.isTempDisplayed = false; //set rest to hold isTempDisplayed property
+							}						
+						}
 					}
-				}
-				this._filteredProjectSubject.next(proj);
-			}, error => this.handleError);
+					this._filteredProjectSubject.next(proj);
+				}, error => this.handleError);
+		} else {
+			//clear it all
+			this._filteredProjectSubject.next([]);
+		}
 	}
 
 	//  /GetFullProject?ByProject=

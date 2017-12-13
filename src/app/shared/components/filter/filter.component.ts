@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from "../../../shared/services/modal.service";
 import { SiglService } from "../../../shared/services/siglservices.service";
 import { IMultiSelectOption } from "angular-2-dropdown-multiselect";
@@ -178,7 +178,8 @@ export class FilterComponent implements OnInit {
     }//end ngOnInit()
 
     public showFilterModal(): void {
-        this._ngbService.open(this.modalElement, { backdrop: 'static', keyboard: false, size: 'lg' }).result.then((results) => {
+        this._ngbService.open(this.modalElement, { backdrop: 'static', keyboard: false, size: 'lg' }).result.then((results) => {                  
+            let closeResult = `Closed with: ${results}`;
             if (results == 'Clear'){
                 //reset all selects in the modal
                 this.parameterSelected = [];
@@ -194,16 +195,32 @@ export class FilterComponent implements OnInit {
                 this.projectSelected = undefined;
                 //clear sidebar
                 this.chosenFiltersObj = {};
-                this._siglService.chosenFilters = this.chosenFiltersObj;
-            } else{
+              /*  this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services
+                this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen
+                this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson*/
+            }/* else{
                 //results == 'Search'
                 this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
                 this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services
-            }
+            }*/
+            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services
+            this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen
+            this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
+            
             this.modalResponseEvent.emit(results);
-        })
+        }, (reason) => {
+            let closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
     }//end showFilterModal
-
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+          return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+          return 'by clicking on a backdrop';
+        } else {
+          return  `with: ${reason}`;
+        }
+      }
     public filterChange(which: string, e: any): void {
         switch (which) {
             case "parameters":
@@ -284,4 +301,5 @@ export class FilterComponent implements OnInit {
     public onProjectSelect(project: Iproject){
         //handle selected project
     } //end onProjectSelect
+    
 }//end FilterComponent Class

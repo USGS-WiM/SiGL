@@ -8,13 +8,14 @@ import { Subject } from "rxjs/Subject";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { CONFIG } from "./config";
-import { Http, Response } from '@angular/http';
-import { IchosenFilters } from 'app/shared/interfaces/chosenFilters.interface';
+import { Http, Response, RequestOptions } from '@angular/http';
+import { IchosenFilters } from '../../shared/interfaces/chosenFilters.interface';
+import { isPending } from 'q';
 
 
 @Injectable()
 export class MapService {
-    
+
     private _allSiteView: any;
     public map: Map;
     public baseMaps: any;
@@ -51,22 +52,23 @@ export class MapService {
         //this.temporarySites = [];
         this.httpRequest();
         this.setFilteredSiteIDs([]);
-        
+
     }
-    
+
     //subject
-  //  private _allSiteViewSubject: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
+    //  private _allSiteViewSubject: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
     private _filteredSiteViewSubject: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
     private _filteredSiteIDsSubject: BehaviorSubject<Array<number>> = new BehaviorSubject([]); //used to let sidebar know which sites are the filtered results for styling
     private _tempSiteSubject: Subject<any> = new Subject<any>();
     private _allShowingProjectIDs: Subject<Array<number>> = new Subject<Array<number>>();
+    private _allOrgSystems: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
 
     //initial set of all geojson sites. keep for resetting
-    public setAllSiteView(geoJson: any) { 
+    public setAllSiteView(geoJson: any) {
         this._allSiteView = geoJson;//this._allSiteViewSubject.next(geoJSON); 
     }
     //set array of filtered site id's 
-    public setFilteredSiteIDs(siteIds: Array<number>) { 
+    public setFilteredSiteIDs(siteIds: Array<number>) {
         this._filteredSiteIDsSubject.next(siteIds);
     }
     // setter for filtered geojson sites based on filters chosen
@@ -77,18 +79,18 @@ export class MapService {
     public setTempSites(tempSites: any) {
         this._tempSiteSubject.next(tempSites);
     }
-    public setAllShowingProjectIds(projIDs: Array<number>){
+    public setAllShowingProjectIds(projIDs: Array<number>) {
         this._allShowingProjectIDs.next(projIDs);
     }
     // clear filters and give back all
-    public get AllSiteView(): Observable<any> { 
+    public get AllSiteView(): Observable<any> {
         return this._allSiteView;// this._allSiteViewSubject.asObservable(); 
     }
 
     // siglServices wants array of filtered site id's 
-    public get filteredSiteIDs(): Observable<Array<number>> { 
-        return this._filteredSiteIDsSubject; 
-    }    
+    public get filteredSiteIDs(): Observable<Array<number>> {
+        return this._filteredSiteIDsSubject;
+    }
     // mainview subscribed to this for filtered sites
     public get filteredSiteView(): Observable<any> {
         return this._filteredSiteViewSubject.asObservable();
@@ -101,82 +103,176 @@ export class MapService {
         return this._allShowingProjectIDs.asObservable();
     }
     //called after filtered modal closes and filters have been chosen
-    public updateFilteredSites(filters: IchosenFilters){
-        this.newFilteredGeoJsonArray = [];
-        this.newFilteredGeoJson = new L.GeoJSON();
-        this.filtersPassed = filters;
-        let isPresent: boolean = false;
-        let filteredSiteIds: Array<number> = [];
-        // loop through all the geojson features to find filter matching properties
-        this._filteredSiteViewSubject.getValue().features.forEach(feature => {            
-            isPresent = false;
-            let parameterArray = feature.properties.parameter_type_id ? feature.properties.parameter_type_id.split(",") : [];
-            let projDurationArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
-            let projStatusArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
-            let resArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
-            let mediaArray = feature.properties.media_type_id ? feature.properties.media_type_id.split(",") : [];
-            let lakeArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
-            let stateArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
-            let monArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
-            let org;
-            let objectiveArray = feature.properties.proj_duration_id ? feature.properties.proj_duration_id.split(",") : [];
-
-            // loop through to find if filters are in geojson
-            for (let p of this.filtersPassed.s_parameters) {
-                if (parameterArray.includes(p.toString())){
-                    isPresent= true;
-                    break;
+    public updateFilteredSites(filters: IchosenFilters) {
+        if (Object.keys(filters).length > 0) {
+            this.newFilteredGeoJsonArray = [];
+            this.newFilteredGeoJson = new L.GeoJSON();
+            this.filtersPassed = filters;
+            let isPresent: boolean = false;
+            let filteredSiteIds: Array<number> = [];
+            // loop through all the geojson features to find filter matching properties
+            this._filteredSiteViewSubject.getValue().features.forEach(feature => {
+                // isPresent = false;
+                isPresent = this.findPresentProps(feature, this.filtersPassed);
+                if (isPresent) {
+                    filteredSiteIds.push(feature.properties.site_id);
+                    this.newFilteredGeoJsonArray.push(feature);
                 }
-            }
-            /*            for (let p of this.filtersPassed.s_projDuration) {
-                if (projDurationArray.includes(p.toString())){
-                    isPresent= true;
-                    break;
-                }
-            } // finish all loops
-            */
-            if (isPresent) {
-                filteredSiteIds.push(feature.properties.site_id);
-                this.newFilteredGeoJsonArray.push(feature);
-            }
-        }, this);
-        let test = "hi";
-        // set the filteredSiteView to be the new geojson
-        //this.newFilteredGeoJson.addData(this.newFilteredGeoJsonArray);
-        this.setFilteredSiteIDs(filteredSiteIds);
-        this.setFilteredSiteView(this.newFilteredGeoJsonArray);
-        
+            }, this);
+            // set the filteredSiteView to be the new geojson
+            //this.newFilteredGeoJson.addData(this.newFilteredGeoJsonArray);
+            this.setFilteredSiteIDs(filteredSiteIds);
+            this.setFilteredSiteView(this.newFilteredGeoJsonArray);
+        } else {
+            //repopulate map with all the sites
+            this._filteredSiteViewSubject.next(this._allSiteView);
+        }
     }
-    
+    private findPresentProps(aFeature, filters): boolean {
+        let isPresent = false;
+        let parameterArray = aFeature.properties.parameter_type_id ? aFeature.properties.parameter_type_id.split(",") : [];
+        let projDurationArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
+        let projStatusArray = aFeature.properties.proj_status_id ? aFeature.properties.proj_status_id.split(",") : [];
+        let resArray = aFeature.properties.resource_type_id ? aFeature.properties.resource_type_id.split(",") : [];
+        let mediaArray = aFeature.properties.media_type_id ? aFeature.properties.media_type_id.split(",") : [];
+        let lakeVal = aFeature.properties.lake_type_id ? aFeature.properties.lake_type_id : 0;
+        let stateVal = aFeature.properties.state_province ? aFeature.properties.state_province : "";
+        let monArray = aFeature.properties.monitoring_coordination_id ? aFeature.properties.monitoring_coordination_id.split(",") : [];
+        let org = aFeature.properties.organization_system_id;
+        let objectiveArray = aFeature.properties.objective_id ? aFeature.properties.objective_id.split(",") : [];
+
+        // loop through to find if filters are in geojson
+        if (filters.s_parameters) {
+            for (let p of filters.s_parameters) {
+                if (parameterArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
+            }
+        }
+        if (filters.s_projDuration) {
+            for (let p of filters.s_projDuration) {
+                if (projDurationArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
+            }
+        }
+        if (filters.s_projStatus) {
+            for (let p of filters.s_projStatus) {
+                if (projStatusArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
+            }
+        }
+        if (filters.s_resources) {
+            for (let p of filters.s_resources) {
+                if (resArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
+            }
+        }
+        if (filters.s_media) {
+            for (let p of filters.s_media) {
+                if (mediaArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
+            }
+        }
+        if (filters.s_lakes) {
+            for (let p of filters.s_lakes) {
+                if (lakeVal == p) {
+                    isPresent = true;
+                    break;
+                }
+            }
+        }
+        if (filters.s_states) {
+            for (let p of filters.s_states) {
+                if (stateVal == p.toString) {
+                    isPresent = true;
+                    break;
+                }
+            }
+        }
+        if (filters.s_monitorEffect) {
+            for (let p of filters.s_monitorEffect) {
+                if (monArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
+            }
+        }
+        if (filters.p_objectives) {
+            for (let p of filters.p_objectives) {
+                if (objectiveArray.includes(p.toString())) {
+                    isPresent = true;
+                    break;
+                }
+            }
+        }
+        if (filters.ORG) {
+            // all orgSystems that have this orgId
+            let orgSystemsWithThisOrg = this._allOrgSystems.getValue().filter(function (orgsSys) { return orgsSys.org_id == filters.ORG.organization_id; })
+            // loop through and see if any of them include this filters.ORG.organization_id
+            let stophere = "hey!";
+            orgSystemsWithThisOrg.forEach(sys => {
+                if (org == sys.organization_system_id) {
+                    isPresent = true;
+                };
+            });
+        }
+        // finish all loops
+
+        return isPresent;
+
+
+    }
     // takes in projectID, loops thru this.AllSiteView and grab all sites with matching projectIDs, hit setter for mapview.component's getter to get
     public AddTempSites(projectID: number) {
         let theseNewTemps = this._allSiteView.features.filter(function (feature) { return feature.properties.project_id == projectID; });
-        if (this.temporarySites.length > 0) Array.prototype.push.apply(this.temporarySites,theseNewTemps);// this.temporarySites.concat(theseNewTemps);
-        else this.temporarySites = theseNewTemps;
-      /*  this._allSiteView.features.forEach(feature => {     
-            if (feature.properties.project_id == projectID)
-                this.temporarySites.push(feature);
-        });*/
-        this.setTempSites(this.temporarySites);      
+        
+        if (this.temporarySites.length > 0) {
+            // first see if these are already showing
+            let test = this.temporarySites.filter(ts=> {return ts.properties.project_id == projectID});
+            if (test.length == 0)   
+                Array.prototype.push.apply(this.temporarySites, theseNewTemps);
+        } else {
+            this.temporarySites = theseNewTemps;
+        }
+        /*  this._allSiteView.features.forEach(feature => {     
+              if (feature.properties.project_id == projectID)
+                  this.temporarySites.push(feature);
+          });*/
+        this.setTempSites(this.temporarySites);
     }
 
     //loop thru tempsites, remove all sites that are in projectID
-    public RemoveTempSites(projectID:number){
+    public RemoveTempSites(projectID: number) {
         var i = this.temporarySites.length;
         while (i--) {
-            if (this.temporarySites[i].properties.project_id == projectID) 
-                this.temporarySites.splice(i, 1);            
-        };        
-        this.setTempSites(this.temporarySites);   
+            if (this.temporarySites[i].properties.project_id == projectID)
+                this.temporarySites.splice(i, 1);
+        };
+        this.setTempSites(this.temporarySites);
     }
 
     //initial http get of all geojson sites
     private httpRequest(): void {
+        let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
+        this._http.get(CONFIG.ORG_SYSTEM_URL, options)
+            .map(res => <any>res.json())
+            .subscribe(orgSys => {
+                this._allOrgSystems.next(orgSys);
+            });
         this._http.get(CONFIG.SITE_URL + "/GetSiteView.geojson")
             .map(res => <any>res.json())
             .subscribe(geoj => {
                 this._allSiteView = geoj;
-               // this.setAllSiteView(geoj);
+                // this.setAllSiteView(geoj);
                 this.setFilteredSiteView(geoj);
             }, error => this.handleError);
     }

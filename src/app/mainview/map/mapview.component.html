@@ -208,19 +208,19 @@
                             <span class="dataLabel" >Status: </span>
                             <span>{{fullSite.Status}}</span>
                         </div>
-                        <div *ngIf="fullSite.Resources.length > 1">
+                        <div *ngIf="fullSite.Resources.length > 0">
                             <span class="dataLabel" >Resource Component: </span>
                             <ul>
                                 <li *ngFor="let R of fullSite.Resources">{{R.resource_name}}</li>
                             </ul>
                         </div>
-                        <div *ngIf="fullSite.Media.length > 1">
+                        <div *ngIf="fullSite.Media.length > 0">
                             <span class="dataLabel" >Media: </span>
                             <ul>
                                 <li *ngFor="let M of fullSite.Media">{{M.media}}</li>
                             </ul>
                         </div>
-                        <div *ngIf="fullSite.Frequencies.length > 1">
+                        <div *ngIf="fullSite.Frequencies.length > 0">
                             <span class="dataLabel" >Sampling Frequency: </span>
                             <ul>
                                 <li *ngFor="let F of fullSite.Frequencies">{{F.frequency}}</li>

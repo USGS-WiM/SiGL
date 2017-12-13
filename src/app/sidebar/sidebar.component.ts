@@ -19,6 +19,7 @@ import { MapService } from '../shared/services/map.service';
 export class SidebarComponent implements OnInit {
 	@ViewChild('acc') accordion;
 	public chosenFilters: IchosenFilters;
+	public filterCount: number;
 	private AllShowingProjIds: Array<number>;
 	public filteredProjects: Array<Ifilteredproject>;
 	private selectedProjectId: Number;
@@ -30,6 +31,7 @@ export class SidebarComponent implements OnInit {
 
 	ngOnInit() {
 		this.AllShowingProjIds = []; //holder of projects that are toggled to show all for mapview to use
+		this.filterCount = 0;
 		//site toggle button group form
 		this.siteCountForm = this._formBuilder.group({
 			'model': 'filtered'
@@ -40,6 +42,10 @@ export class SidebarComponent implements OnInit {
 		//for the filtered choices accordion panel
 		this._siglService.chosenFilters.subscribe((choices: IchosenFilters) => {
 			this.chosenFilters = choices;
+			this.filterCount = Object.keys(this.chosenFilters).length;
+			if (this.filterCount == 0) {
+				this.siteClickFullProj = undefined;
+			}
 		});
 		this._siglService.sitePointClickBool.subscribe((val: boolean) => {
 			this.siteWasClicked = val;
@@ -51,8 +57,9 @@ export class SidebarComponent implements OnInit {
 		});
 
 		//for the results accordion panel
-		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {			
-			this.accordion.activeIds = ['projList'];
+		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {	
+			if (projects.length > 0){
+				this.accordion.activeIds = ['projList'];
 			projects.forEach((p:Ifilteredproject) => {
 				p.isCollapsed = true;					
 				p.filteredSiteCount = 0;
@@ -62,6 +69,11 @@ export class SidebarComponent implements OnInit {
 				});
 				this.filteredProjects.push(p);
 			});
+			} else {
+				//clear it all
+				this.filteredProjects = [];
+			}	
+			
 		});
 	}
 
@@ -73,6 +85,7 @@ export class SidebarComponent implements OnInit {
 
 	public showProjectDetails(project: any): void{
 		this._siglService.setsitePointClickBool(false); //let mainview know proj name was clicked (not site point anymore)
+		
 		let projID = project.project_id || project.ProjectId;
 		this.selectedProjectId = projID;
 		this._siglService.setFullProject(this.selectedProjectId.toString());
