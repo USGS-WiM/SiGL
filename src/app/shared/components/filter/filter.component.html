@@ -79,6 +79,7 @@
                 <label class="col-xs-3">Search by project name: </label>
                 <div class="col-xs-6">
                     <select class="form-control" [(ngModel)]="projectSelected" (ngModelChange)="onProjectSelect($event)" name="project">
+                        <option value=""></option>
                         <option [ngValue]="p" *ngFor="let p of projectList">{{p.name}}</option>
                     </select>
                 </div>

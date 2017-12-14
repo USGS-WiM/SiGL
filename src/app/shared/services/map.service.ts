@@ -112,6 +112,7 @@ export class MapService {
             let filteredSiteIds: Array<number> = [];
             // loop through all the geojson features to find filter matching properties
             if (Array.isArray(this._filteredSiteViewSubject.getValue())) {
+                let stop = "stopHere to see what this._filteredSiteViewSubject is and why it's getting an error";
                 this._filteredSiteViewSubject.getValue().forEach(feature => {
                     // isPresent = false;
                     isPresent = this.findPresentProps(feature, this.filtersPassed);

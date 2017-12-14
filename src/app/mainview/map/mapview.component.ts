@@ -96,8 +96,6 @@ export class MapviewComponent implements OnInit {
 						this.highlightProjSites(this.fullProj.ProjectId);
 					}
 				}
-					
-				
             }
 			this.showBottomBar = true;
 			let tabID = this.siteClickFlag ? 'site' : 'project';

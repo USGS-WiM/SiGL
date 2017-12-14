@@ -293,10 +293,14 @@ export class FilterComponent implements OnInit {
         this._siglService.chosenFilters = this.chosenFiltersObj;
     }//end filterChange
 
-    public onProjectSelect(project: Iproject){
-        // clear out all chosenFiltersObj because this is project only filter
-        this.chosenFiltersObj = {};
-        this.chosenFiltersObj.ProjectName = { name: project.name, project_id: project.project_id };
+    public onProjectSelect(project: any){
+        if (project != "") {
+            // clear out all chosenFiltersObj because this is project only filter
+            this.chosenFiltersObj = {};
+            this.chosenFiltersObj.ProjectName = { name: project.name, project_id: project.project_id };            
+        } else {
+            this.chosenFiltersObj = {};
+        }
         this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list
         //handle selected project
     } //end onProjectSelect
