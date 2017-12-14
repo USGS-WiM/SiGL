@@ -171,7 +171,7 @@ export class FilterComponent implements OnInit {
         });
 
         //show the filter modal == Change Filters button was clicked in sidebar
-        this._modalService.showModal.subscribe((show: boolean) => {
+        this._modalService.showFilterModal.subscribe((show: boolean) => {
             if (show) this.showFilterModal();
         });
 

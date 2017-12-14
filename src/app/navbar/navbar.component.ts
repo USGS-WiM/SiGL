@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalService } from 'app/shared/services/modal.service';
 
 @Component({
   selector: 'navbar',
@@ -13,7 +14,7 @@ import { Component, OnInit } from '@angular/core';
                     <div id="titleSeparator">:</div>
                     <div id="subTitle">
                       {{subtitle}}
-                      <img id="helpIcon" src="assets/MoreInfo.png" title="Help" />
+                      <a (click)="showAboutModal()"><img id="helpIcon" src="assets/MoreInfo.png" title="Help" /></a>
                     </div>
                   </div>
                 </div>
@@ -23,11 +24,14 @@ import { Component, OnInit } from '@angular/core';
 export class NavbarComponent implements OnInit {
   public title: string;
   public subtitle: string;
-  constructor() { }
+  constructor(private _modalService: ModalService) { }
 
   ngOnInit() {
     this.title = "SiGL";
     this.subtitle = "Science in the Great Lakes"
+  }
+  public showAboutModal(){
+    this._modalService.showAboutModal = true;
   }
 
 }

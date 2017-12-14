@@ -94,7 +94,7 @@ export class SidebarComponent implements OnInit {
 	// show filter button click
 	public showFilterModal(): void {
 		// change boolean value to show the modal (filter)
-		this._modalService.showModal = true;
+		this._modalService.showFilterModal = true;
 	}
 
 	public showProjectDetails(project: any): void{
