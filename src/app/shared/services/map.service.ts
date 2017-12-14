@@ -150,7 +150,7 @@ export class MapService {
         let lakeVal = aFeature.properties.lake_type_id ? aFeature.properties.lake_type_id : 0;
         let stateVal = aFeature.properties.state_province ? aFeature.properties.state_province : "";
         let monArray = aFeature.properties.monitoring_coordination_id ? aFeature.properties.monitoring_coordination_id.split(",") : [];
-        let org = aFeature.properties.organization_system_id;
+        let orgSysArray = aFeature.properties.organization_system_id ? aFeature.properties.organization_system_id.split(",") : [];
         let objectiveArray = aFeature.properties.objective_id ? aFeature.properties.objective_id.split(",") : [];
         let projectVal = aFeature.properties.project_id;
         if (filters.ProjectName) {
@@ -237,7 +237,7 @@ export class MapService {
                 // loop through and see if any of them include this filters.ORG.organization_id
                 let stophere = "hey!";
                 orgSystemsWithThisOrg.forEach(sys => {
-                    if (org == sys.organization_system_id) {
+                    if (orgSysArray.includes(sys.organization_system_id.toString())) {
                         isPresent = true;
                     };
                 });

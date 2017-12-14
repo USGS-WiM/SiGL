@@ -115,7 +115,7 @@ export class MapviewComponent implements OnInit {
 						return L.circleMarker(latlng, this.setMarker(feature));
 					}),
 					onEachFeature: ((feature, layer) => {
-                        layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
+                        layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
                         layer.on('popupclose', (e) => {
                             if (this.clickedMarker){
 								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
@@ -194,44 +194,7 @@ export class MapviewComponent implements OnInit {
 				}
 			});
         });
-        this._siglService.sitePointClickBool.subscribe((val: boolean) => {
-            this.siteClickFlag = val;
-        })
-        //for single site info.
-        this._siglService.fullSite.subscribe((FS: Ifullsite) => {
-            //clear GroupedParams
-            this.groupedParams = { BioArray: [], ChemArray: [], MicroBioArray: [], PhysArray: [], ToxicArray: [] };
-
-            this.fullSite = FS;
-            this.fullSiteFlag = true;
-            this.tabs.select('site');
-
-            FS.Parameters.forEach(param => {
-                switch (param.parameter_group) {
-                    case "Biological":
-                        this.groupedParams.BioArray.push(param);
-                        console.log(this.groupedParams);
-                        break;
-                    case "Chemical":
-                        this.groupedParams.ChemArray.push(param);
-                        console.log(this.groupedParams);
-                        break;
-                    case "Microbiological":
-                        this.groupedParams.MicroBioArray.push(param);
-                        console.log(this.groupedParams);
-                        break;
-                    case "Physical":
-                        this.groupedParams.PhysArray.push(param);
-                        console.log(this.groupedParams);
-                        break;
-                    case "Toxicological":
-                        this.groupedParams.ToxicArray.push(param);
-                        console.log(this.groupedParams);
-                        break;
-                }
-            });
-        });
-
+        
         this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
             this.filteredProjects = projects;
         });
@@ -335,6 +298,10 @@ export class MapviewComponent implements OnInit {
 
 	//project name was selected from sidebar. add highlight marker to all sites belonging to this project
 	public highlightProjSites(projId) {
+		//clear fullSite (empties site info tab in lower div)
+		this.fullSite = undefined;
+		this.fullSiteFlag = false;
+
 		if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
 		let highlightedProjSites = []; let geoJholder: any;
 

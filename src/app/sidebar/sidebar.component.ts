@@ -71,6 +71,7 @@ export class SidebarComponent implements OnInit {
 
 		//for the results accordion panel
 		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {	
+			this.filteredProjects = []; 
 			if (projects.length > 0){
 				this.accordion.activeIds = ['projList'];
 			projects.forEach((p:Ifilteredproject) => {
