@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import 'rxjs/Rx';
 
 import { BasemapsComponent } from "../mainview/basemaps/basemaps.component";
 import { ModalService } from "../shared/services/modal.service";
@@ -207,4 +208,59 @@ export class SidebarComponent implements OnInit {
 		}
 	}
 		
+	public downloadCSV(){
+		let csvDataHolder = this.filteredProjects.map(x => Object.assign({}, x));
+		csvDataHolder.forEach(d => {
+			delete d.filteredSiteCount;
+			delete d.isCollapsed;
+			
+			d.projectSites.forEach(s=>{
+				delete s.isDisplayed;
+				delete s.isTempDisplayed;
+
+			});			
+		});
+		
+		let csvData = this.ConvertToCSV(csvDataHolder);
+		let a = document.createElement("a");
+		a.setAttribute('style', 'display:none;');
+		document.body.appendChild(a);
+		let blob = new Blob([csvData], { type: 'text/csv' });
+		let url= window.URL.createObjectURL(blob);
+		a.href = url;
+		a.download = 'SampleExport.csv';
+		a.click();
+	}
+	// convert Json to CSV data in Angular2
+    private ConvertToCSV(objArray) {
+		let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+		let str = '';
+		let row = "";
+		row = "Project Name, project_id, projectSites__site_id, projectSites__name, projectSites__latitude, projectSites__longitude, projectSites__project_id"
+		// append Label row with line break
+		str += row + '\r\n';
+
+		for (let i = 0; i < array.length; i++) {
+			let line = '';
+			for (let index in array[i]) {
+				if (line != '') line += ','
+				if (Array.isArray(array[i][index])) {
+					//for each site in this project, make a new line
+					for (let s = 0; s < array[i][index].length; s++) {
+						if (s == 0)
+							line += array[i][index][s].site_id + "," + array[i][index][s].name.replace(","," ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].project_id+ '\r\n';
+						else 
+							line += ",," +array[i][index][s].site_id + "," + array[i][index][s].name.replace(","," ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].project_id+ '\r\n';
+					 }
+				} else {
+					if (isNaN(array[i][index])) 
+						line += array[i][index].replace(/,/g," ");
+					else 
+						line += array[i][index]
+				}
+			}
+			str += line + '\r\n';
+		}		
+		return str;
+	}
 }

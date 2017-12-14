@@ -145,6 +145,7 @@
                     </div>
                     <div class="row down10">
                         <label class="col-md-12"><a (click)="toggleSiteProjects()" style="color: #007bff;">Toggle&nbsp;</a> projects with Sites&nbsp;<span *ngIf="projectsWithSitesShowing">off</span><span *ngIf="!projectsWithSitesShowing">on</span>.</label>  
+                        <button type="button" (click)="downloadCSV()" class="pull-right"><i class="fa fa-download" aria-hidden="true"></i> Filtered Data</button>
                     </div>
                     
                     <hr />
