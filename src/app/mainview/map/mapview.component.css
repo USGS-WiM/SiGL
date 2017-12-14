@@ -31,11 +31,53 @@
 to style leafle markers to look like circles (NOT cirlcleMarker)
 ..this is required in order to use leaflet overlapping spyderfier.
 */
-.sigldivicon {
+.superiorDivicon{
     width: 12px;
     height: 12px;
     border-radius: 10px;
-    background: #ff7800;
-    border: 1px solid #000;
-    opacity: 0.1
+    color: 'red';
+    background: #478D6F;
+    opacity: 0.85
+}
+
+.michiganDivicon{
+    width: 12px;
+    height: 12px;
+    border-radius: 10px;
+    background: #998B66;
+    opacity: 0.85
+}
+
+.huronDivicon{
+    width: 12px;
+    height: 12px;
+    border-radius: 10px;
+    background: #81221F;
+    opacity: 0.85
+}
+
+.erieDivicon{
+    width: 12px;
+    height: 12px;
+    border-radius: 10px;
+    background: #B7B85D;
+    /*border: 1px solid #000;*/
+    opacity: 0.85
+}
+
+.ontarioDivicon{
+    width: 12px;
+    height: 12px;
+    border-radius: 10px;
+    background: #693491;
+
+    opacity: 0.85
+}
+
+.otherDivicon{
+    width: 12px;
+    height: 12px;
+    border-radius: 10px;
+    background: red;
+    opacity: 0.85
 }

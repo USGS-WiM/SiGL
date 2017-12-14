@@ -114,14 +114,14 @@ export class MapviewComponent implements OnInit {
 				this.geoj = geoj; //use this to filter later
 				this.geoJsonLayer = L.geoJSON(geoj, {
 					pointToLayer: ((feature, latlng) => {
-						return L.marker(latlng, {icon: this.markerIcon});
+						return L.marker(latlng, {icon: new L.DivIcon({className: this.setMarker(feature), iconSize: [10,10]})});
 					}),
 					onEachFeature: ((feature, layer) => {
                         test.addMarker(layer);
                         layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
                         layer.on('popupclose', (e) => {
                             if (this.clickedMarker){
-								//this.clickedMarker.setStyle(this.setMarker(e.target.feature));
+								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
 							}
                             this.clickedMarker = e.target;
                             e.target.setStyle(this.setMarker(e.target.feature));
@@ -129,10 +129,10 @@ export class MapviewComponent implements OnInit {
                         //changed from on 'click' to on 'popupopen' to test
 						layer.on("click", (e) => {
 							if (this.clickedMarker) {
-								//this.clickedMarker.setStyle(this.setMarker(e.target.feature));
+								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
 							}
 							this.clickedMarker = e.target;
-                            //e.target.setStyle(this.highlightIcon);
+                            e.target.setStyle(this.highlightIcon);
 							this.onFeatureSelection(e)
 						}); 
 					})
@@ -247,7 +247,7 @@ export class MapviewComponent implements OnInit {
             layers: [this._mapService.baseMaps.Topo]
         });
 
-        let test = new OverlappingMarkerSpiderfier(this.map);
+        let test = new OverlappingMarkerSpiderfier(this.map, {keepSpiderfied:true});
         this.map.createPane('mainSiglLayer');
         this.map.getPane('mainSiglLayer').style.zIndex = 1000;
 
@@ -379,8 +379,8 @@ export class MapviewComponent implements OnInit {
 
 	}
 	//select fillcolor for leaflet circleMakers
-	public setMarker(feature) {
-		/* let fillColor = "";
+	/* public setMarker(feature) {
+		let fillColor = "";
 		switch (feature.properties.lake_type_id) {
 			case 1:
 				//Erie
@@ -410,11 +410,36 @@ export class MapviewComponent implements OnInit {
 			weight: 0,
 			opacity: 1,
 			fillOpacity: 0.5
-        } */
-        
-        return L.divIcon({
-            iconSize: new L.Point(10, 10)
-        });
+        } 
+    } */
+    
+    public setMarker(feature) {
+		let className = "";
+		switch (feature.properties.lake_type_id) {
+			case 1:
+				//Erie
+                //return L.divIcon({className:'erieDivicon'});
+                return 'erieDivicon';
+			case 2:
+				//Huron
+                //return L.divIcon({className:'huronDivicon'});
+                return 'huronDivicon';
+			case 3:
+				//Michigan
+                //return L.divIcon({className:'michiganDivicon'});
+                return 'michiganDivicon';
+			case 4:
+				//Ontario
+                //return L.divIcon({className:'ontarioDivicon'});
+                return 'ontarioDivicon';
+			case 5:
+				//Superior
+                //return L.divIcon({className:'superiorDivicon'});
+                return 'superiorDivicon';
+            default:
+                //return L.divIcon({className: 'otherLakeDivicon'});
+                return 'otherLakeDivicon';
+        }
 	}
 
 }
