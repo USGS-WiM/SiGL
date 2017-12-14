@@ -44,7 +44,7 @@ to style leafle markers to look like circles (NOT cirlcleMarker)
     width: 12px;
     height: 12px;
     border-radius: 10px;
-    background: #998B66;
+    background-color: #998B66;
     opacity: 0.85
 }
 

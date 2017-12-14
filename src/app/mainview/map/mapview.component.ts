@@ -94,18 +94,12 @@ export class MapviewComponent implements OnInit {
 		})
 		//for project info
 		this._siglService.fullProject.subscribe((FP: Ifullproject) => {			
-			this.fullProj = FP;
-			
-            if (this.siteClickFlag == false) {
+            this.fullProj = FP;
+            if (this.siteClickFlag == false){
                 if (this.clickedMarker){
                     this.map.closePopup();
-				}
-				
-				if (this.filtermodal.chosenFiltersObj) {
-					if (this.filtermodal.chosenFiltersObj.ProjectName == undefined) {		
-						this.highlightProjSites(this.fullProj.ProjectId);
-					}
-				}
+                }
+                this.highlightProjSites(this.fullProj.ProjectId);
             }
 			this.showBottomBar = true;
 			let tabID = this.siteClickFlag ? 'site' : 'project';
@@ -114,18 +108,21 @@ export class MapviewComponent implements OnInit {
 		//every time geojson gets updated (initially its all, after depends on filters chosen)
 		this._mapService.filteredSiteView.subscribe((geoj: any) => {
 			if (geoj !== "") {
-				//remove all layers and start fresh everytime this updates
 				if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
 				if (this.geoJsonLayer) this.geoJsonLayer.remove();
-				if (this.tempGeoJsonLayer) this.tempGeoJsonLayer.remove();
 
 				this.geoj = geoj; //use this to filter later
 				this.geoJsonLayer = L.geoJSON(geoj, {
 					pointToLayer: ((feature, latlng) => {
-						return L.marker(latlng, {icon: new L.DivIcon({className: this.setMarker(feature), iconSize: [10,10]})});
+                        var smallIcon = L.DivIcon.extend({
+                            options: {
+                              iconSize: [10, 10]
+                            }
+                          });
+						return L.marker(latlng, {icon: new smallIcon()});
 					}),
 					onEachFeature: ((feature, layer) => {
-                        test.addMarker(layer);
+                        test.addMarker(layer);          
                         layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
                         layer.on('popupclose', (e) => {
                             if (this.clickedMarker){
@@ -422,7 +419,8 @@ export class MapviewComponent implements OnInit {
     } */
     
     public setMarker(feature) {
-		let className = "";
+        let className = "";
+        //let icon;
 		switch (feature.properties.lake_type_id) {
 			case 1:
 				//Erie
@@ -430,7 +428,7 @@ export class MapviewComponent implements OnInit {
                 return 'erieDivicon';
 			case 2:
 				//Huron
-                //return L.divIcon({className:'huronDivicon'});
+                //icon = new L.divIcon({className:'huronDivicon'});
                 return 'huronDivicon';
 			case 3:
 				//Michigan
