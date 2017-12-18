@@ -1,11 +1,11 @@
 <filter #filtermodal (modalResponseEvent)="FilterModalResponse($event)"></filter>
 <about #aboutmodal></about>
 <div id="map"></div>
-<div id="bottomBar" [hidden]="!showBottomBar" [ngStyle]="style" mwlResizable [enableGhostResize]="true" [resizeCursorPrecision]="30" (resizeEnd)="onResizeEnd($event)" [resizeEdges]="{bottom: false, right: right, top: true, left: false}">
+<div id="bottomBar" [hidden]="!showBottomBar" [ngStyle]="style" mwlResizable [enableGhostResize]="true" [resizeCursorPrecision]="30" (resizeEnd)="onResizeEnd($event)" [resizeEdges]="{bottom: false, right: false, top: true, left: false}">
     <div id="handle"><i class="fa fa-arrows-v" aria-hidden="true"></i></div>
 
     <div id="tabContainer">
-        <ngb-tabset [activeId]="selectedTab" #t>
+        <ngb-tabset #t> <!-- [activeId]="selectedTab" #t> -->
             <ngb-tab title="Project Summary" id="project">
                 <ng-template ngbTabContent>
                     <div>

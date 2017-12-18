@@ -67,15 +67,13 @@ export class FilterComponent implements OnInit {
 
     public chosenFiltersObj: IchosenFilters;
 
-
-
     //injects services into this component
     constructor(private _ngbService: NgbModal, private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService) { }
 
     ngOnInit() {
         //instantiate object
         this.chosenFiltersObj = {};
-        
+
         this.modalElement = this.FilterComponent;
         this._siglService.parameters.subscribe((params: Array<Iparameter>) => {
             this.parameterMulti = [];
@@ -174,14 +172,12 @@ export class FilterComponent implements OnInit {
         this._modalService.showFilterModal.subscribe((show: boolean) => {
             if (show) this.showFilterModal();
         });
-
-
     }//end ngOnInit()
 
     public showFilterModal(): void {
-        this._ngbService.open(this.modalElement, { backdrop: 'static', keyboard: false, size: 'lg' }).result.then((results) => {                  
+        this._ngbService.open(this.modalElement, { backdrop: 'static', keyboard: false, size: 'lg' }).result.then((results) => {
             let closeResult = `Closed with: ${results}`;
-            if (results == 'Clear'){
+            if (results == 'Clear') {
                 //reset all selects in the modal
                 this.parameterSelected = [];
                 this.projDurationSelected = [];
@@ -195,13 +191,13 @@ export class FilterComponent implements OnInit {
                 this.objectiveSelected = [];
                 this.projectSelected = undefined;
                 //clear sidebar
-                this.chosenFiltersObj = {};             
+                this.chosenFiltersObj = {};
             }
 
-            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
-            this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list
-            this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-            
+          //  this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
+          //  this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list
+          //  this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
+
             this.modalResponseEvent.emit(results);
         }, (reason) => {
             let closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -209,100 +205,163 @@ export class FilterComponent implements OnInit {
     }//end showFilterModal
     private getDismissReason(reason: any): string {
         if (reason === ModalDismissReasons.ESC) {
-          return 'by pressing ESC';
+            return 'by pressing ESC';
         } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-          return 'by clicking on a backdrop';
+            return 'by clicking on a backdrop';
         } else {
-          return  `with: ${reason}`;
+            return `with: ${reason}`;
         }
-      }
+    }
     public filterChange(which: string, e: any): void {
         switch (which) {
             case "parameters":
-                this.chosenFiltersObj.s_parameters = [];
-                this.chosenFiltersObj.PARAMETERS = [];
-                e.forEach((eachParam) => {
-                    if (eachParam !== 1000 && eachParam !== 2000 && eachParam !== 3000 && eachParam !== 4000 && eachParam !== 5000) {
-                        //for the request
-                        this.chosenFiltersObj.s_parameters.push(eachParam);
-                        //for adding to the siebar
-                        this.chosenFiltersObj.PARAMETERS.push(this.parameterMulti.filter((p: IMultiSelectOption) => { return p.id == eachParam; })[0]);
-                    }
-                });
+                if (e.length > 0) {
+                    this.chosenFiltersObj.s_parameters = [];
+                    this.chosenFiltersObj.PARAMETERS = [];
+                    e.forEach((eachParam) => {
+                        if (eachParam !== 1000 && eachParam !== 2000 && eachParam !== 3000 && eachParam !== 4000 && eachParam !== 5000) {
+                            //for the request
+                            this.chosenFiltersObj.s_parameters.push(eachParam);
+                            //for adding to the siebar
+                            this.chosenFiltersObj.PARAMETERS.push(this.parameterMulti.filter((p: IMultiSelectOption) => { return p.id == eachParam; })[0]);
+                        }
+                    });
+                } else {
+                    //remove it
+                    delete this.chosenFiltersObj.s_parameters;
+                    delete this.chosenFiltersObj.PARAMETERS;
+                }
                 break;
             case "duration":
-                this.chosenFiltersObj.s_projDuration = e;
-                this.chosenFiltersObj.DURATIONS = [];
-                e.forEach(eachParam => {
-                    this.chosenFiltersObj.DURATIONS.push(this.projDurationMulti.filter((d: IMultiSelectOption) => { return d.id == eachParam; })[0]);
-                });
+                if (e.length > 0) {
+                    this.chosenFiltersObj.s_projDuration = e;
+                    this.chosenFiltersObj.DURATIONS = [];
+                    e.forEach(eachParam => {
+                        this.chosenFiltersObj.DURATIONS.push(this.projDurationMulti.filter((d: IMultiSelectOption) => { return d.id == eachParam; })[0]);
+                    });
+                } else {
+                    //remove it
+                    delete this.chosenFiltersObj.s_projDuration;
+                    delete this.chosenFiltersObj.DURATIONS;
+                }
                 break;
             case "status":
-                this.chosenFiltersObj.s_projStatus = e;
-                this.chosenFiltersObj.STATUSES = [];
-                e.forEach(eachParam => {
-                    this.chosenFiltersObj.STATUSES.push(this.projStatusMulti.filter((s: IMultiSelectOption) => { return s.id == eachParam; })[0]);
-                });
+                if (e.length > 0) {
+                    this.chosenFiltersObj.s_projStatus = e;
+                    this.chosenFiltersObj.STATUSES = [];
+                    e.forEach(eachParam => {
+                        this.chosenFiltersObj.STATUSES.push(this.projStatusMulti.filter((s: IMultiSelectOption) => { return s.id == eachParam; })[0]);
+                    });
+                } else {
+                    //remove it
+                    delete this.chosenFiltersObj.s_projStatus;
+                    delete this.chosenFiltersObj.STATUSES;
+                }
                 break;
             case "resource":
-                this.chosenFiltersObj.s_resources = e;
-                this.chosenFiltersObj.RESOURCES = [];
-                e.forEach(eachParam => {
-                    this.chosenFiltersObj.RESOURCES.push(this.resourceMulti.filter((re: IMultiSelectOption) => { return re.id == eachParam; })[0]);
-                });
+                if (e.length > 0) {
+                    this.chosenFiltersObj.s_resources = e;
+                    this.chosenFiltersObj.RESOURCES = [];
+                    e.forEach(eachParam => {
+                        this.chosenFiltersObj.RESOURCES.push(this.resourceMulti.filter((re: IMultiSelectOption) => { return re.id == eachParam; })[0]);
+                    });
+                } else {
+                    //remove it
+                    delete this.chosenFiltersObj.s_resources;
+                    delete this.chosenFiltersObj.RESOURCES;
+                }
                 break;
             case "media":
-                this.chosenFiltersObj.s_media = e;
-                this.chosenFiltersObj.MEDIA = [];
-                e.forEach(eachParam => {
-                    this.chosenFiltersObj.MEDIA.push(this.mediaMulti.filter((m: IMultiSelectOption) => { return m.id == eachParam; })[0]);
-                });
+                if (e.length > 0) {
+                    this.chosenFiltersObj.s_media = e;
+                    this.chosenFiltersObj.MEDIA = [];
+                    e.forEach(eachParam => {
+                        this.chosenFiltersObj.MEDIA.push(this.mediaMulti.filter((m: IMultiSelectOption) => { return m.id == eachParam; })[0]);
+                    });
+                } else {
+                    //remove it
+                    delete this.chosenFiltersObj.s_media;
+                    delete this.chosenFiltersObj.MEDIA;
+                }
                 break;
             case "lake":
-                this.chosenFiltersObj.s_lakes = e;
-                this.chosenFiltersObj.LAKES = [];
-                e.forEach(eachParam => {
-                    this.chosenFiltersObj.LAKES.push(this.lakeMulti.filter((l: IMultiSelectOption) => { return l.id == eachParam; })[0]);
-                });
+                if (e.length > 0) {
+                    this.chosenFiltersObj.s_lakes = e;
+                    this.chosenFiltersObj.LAKES = [];
+                    e.forEach(eachParam => {
+                        this.chosenFiltersObj.LAKES.push(this.lakeMulti.filter((l: IMultiSelectOption) => { return l.id == eachParam; })[0]);
+                    });
+                } else {
+                    //remove it
+                    delete this.chosenFiltersObj.s_lakes;
+                    delete this.chosenFiltersObj.LAKES;
+                }
                 break;
             case "state":
-                this.chosenFiltersObj.s_states = e;
-                this.chosenFiltersObj.STATES = [];
-                e.forEach(eachParam => {
-                    this.chosenFiltersObj.STATES.push(this.stateMulti.filter((st: IMultiSelectOption) => { return st.id == eachParam; })[0]);
-                });
+                if (e.length > 0) {
+                    this.chosenFiltersObj.s_states = e;
+                    this.chosenFiltersObj.STATES = [];
+                    e.forEach(eachParam => {
+                        this.chosenFiltersObj.STATES.push(this.stateMulti.filter((st: IMultiSelectOption) => { return st.id == eachParam; })[0]);
+                    });
+                } else {
+                    //remove it
+                    delete this.chosenFiltersObj.s_states;
+                    delete this.chosenFiltersObj.STATES;
+                }
                 break;
             case "monitoring":
-                this.chosenFiltersObj.s_monitorEffect = e;
-                this.chosenFiltersObj.MONITORS = [];
-                e.forEach(eachParam => {
-                    this.chosenFiltersObj.MONITORS.push(this.monitoringEffortMulti.filter((me: IMultiSelectOption) => { return me.id == eachParam; })[0]);
-                });
+                if (e.length > 0) {
+                    this.chosenFiltersObj.s_monitorEffect = e;
+                    this.chosenFiltersObj.MONITORS = [];
+                    e.forEach(eachParam => {
+                        this.chosenFiltersObj.MONITORS.push(this.monitoringEffortMulti.filter((me: IMultiSelectOption) => { return me.id == eachParam; })[0]);
+                    });
+                } else {
+                    //remove it
+                    delete this.chosenFiltersObj.s_monitorEffect;
+                    delete this.chosenFiltersObj.MONITORS;
+                }
                 break;
             case "organization":
-                this.chosenFiltersObj.p_organization = e.organization_id;
-                this.chosenFiltersObj.ORG = e;
-                break;            
+                if (e.length > 0) {
+                    this.chosenFiltersObj.p_organization = e.organization_id;
+                    this.chosenFiltersObj.ORG = e;
+                } else {
+                    //remove it
+                    delete this.chosenFiltersObj.p_organization;
+                    delete this.chosenFiltersObj.ORG;
+                }
+                break;
             case "objective":
-                this.chosenFiltersObj.p_objectives = e;
-                this.chosenFiltersObj.OBJS = [];
-                e.forEach(eachParam => {
-                    this.chosenFiltersObj.OBJS.push(this.objectiveMulti.filter((ob: IMultiSelectOption) => { return ob.id == eachParam; })[0]);
-                });
+                if (e.length > 0) {
+                    this.chosenFiltersObj.p_objectives = e;
+                    this.chosenFiltersObj.OBJS = [];
+                    e.forEach(eachParam => {
+                        this.chosenFiltersObj.OBJS.push(this.objectiveMulti.filter((ob: IMultiSelectOption) => { return ob.id == eachParam; })[0]);
+                    });
+                } else {
+                    //remove it
+                    delete this.chosenFiltersObj.p_objectives;
+                    delete this.chosenFiltersObj.OBJS;
+                }
+                break;
         }//end switch
-        this._siglService.chosenFilters = this.chosenFiltersObj;
+        this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
+        this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
+        this._siglService.chosenFilters = this.chosenFiltersObj; //update the sidebar's filters chosen list
     }//end filterChange
 
-    public onProjectSelect(project: any){
+    public onProjectSelect(project: any) {
         if (project != "") {
             // clear out all chosenFiltersObj because this is project only filter
             this.chosenFiltersObj = {};
-            this.chosenFiltersObj.ProjectName = { name: project.name, project_id: project.project_id };            
+            this.chosenFiltersObj.ProjectName = { name: project.name, project_id: project.project_id };
         } else {
             this.chosenFiltersObj = {};
         }
         this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list
         //handle selected project
     } //end onProjectSelect
-    
+
 }//end FilterComponent Class

@@ -82,6 +82,11 @@ export class MapviewComponent implements OnInit {
 		this._mapService.allShowingProjectIds.subscribe((projIds: Array<number>) => {
 			this.AllShowingProjIDArray = projIds;
 		})
+		// for highlighting selected site based on sidebar site name click
+		this._mapService.siteClicked.subscribe(site=>{
+			this.highlightSingleSite(site);
+			//this.map.closePopup();
+		});
 		//for project info
 		this._siglService.fullProject.subscribe((FP: Ifullproject) => {			
 			this.fullProj = FP;
@@ -125,6 +130,7 @@ export class MapviewComponent implements OnInit {
                         });
                         //changed from on 'click' to on 'popupopen' to test
 						layer.on("click", (e) => {
+							this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id});
 							if (this.clickedMarker) {
 								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
 							}
@@ -149,8 +155,16 @@ export class MapviewComponent implements OnInit {
 						return L.circleMarker(latlng, this.tempSitesIcon);
 					}),
 					onEachFeature: ((feature, layer) => {
-						layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
+						layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
 						layer.on("click", (e) => {
+							this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id});
+							
+							if (this.clickedMarker) {
+								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
+							}
+							this.clickedMarker = e.target;
+							e.target.setStyle(this.highlightIcon);
+							
 							this.onFeatureSelection(e)
 						});
 					})
@@ -173,23 +187,23 @@ export class MapviewComponent implements OnInit {
 				switch (param.parameter_group) {
 					case "Biological":
 						this.groupedParams.BioArray.push(param);
-						console.log(this.groupedParams);
+						//console.log(this.groupedParams);
 						break;
 					case "Chemical":
 						this.groupedParams.ChemArray.push(param);
-						console.log(this.groupedParams);
+						//console.log(this.groupedParams);
 						break;
 					case "Microbiological":
 						this.groupedParams.MicroBioArray.push(param);
-						console.log(this.groupedParams);
+						//console.log(this.groupedParams);
 						break;
 					case "Physical":
 						this.groupedParams.PhysArray.push(param);
-						console.log(this.groupedParams);
+						//console.log(this.groupedParams);
 						break;
 					case "Toxicological":
 						this.groupedParams.ToxicArray.push(param);
-						console.log(this.groupedParams);
+						//console.log(this.groupedParams);
 						break;
 				}
 			});
@@ -331,8 +345,66 @@ export class MapviewComponent implements OnInit {
 				return L.circleMarker(latlng, this.highlightIcon);
 			}),
 			onEachFeature: ((feature, layer) => {
-				layer.bindPopup("SiteId: " + feature.properties.site_id + ", ProjectId: " + feature.properties.project_id);
+				layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
 				layer.on("click", (e) => {
+					this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id});
+
+					if (this.clickedMarker) {
+						this.clickedMarker.setStyle(this.setMarker(e.target.feature));
+					}
+					this.clickedMarker = e.target;
+					e.target.setStyle(this.highlightIcon);
+
+					this.onFeatureSelection(e)
+				});
+			})
+		}).addTo(this.map);
+
+	}
+	private highlightSingleSite(site){
+		//clear fullSite (empties site info tab in lower div)
+		this.fullSite = undefined;
+		this.fullSiteFlag = false;
+
+		if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
+		let highlightedSite = []; let geoJholder: any;
+
+		if (this.AllShowingProjIDArray.indexOf(site.project_id) > -1) {
+			geoJholder = this.tempGeoj;
+		} else {
+			geoJholder = this.geoj;
+		}
+		// now add to map as highlighted thing
+		if (Array.isArray(geoJholder)) {
+
+			geoJholder.forEach(feature => {
+				if (feature.properties.site_id == site.site_id) {
+					highlightedSite.push(feature);
+				}
+			});
+		} else {
+			geoJholder.features.forEach(feature => {
+				if (feature.properties.site_id == site.site_id) {
+					highlightedSite.push(feature);
+				}
+			});
+		}
+
+		this.selectedProjGeoJsonLayer = L.geoJSON(<any>highlightedSite, {
+			pointToLayer: ((feature, latlng) => {
+				return L.circleMarker(latlng, this.highlightIcon);
+			}),
+			onEachFeature: ((feature, layer) => {
+				layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
+				layer.on("click", (e) => {
+					this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id});
+
+					if (this.clickedMarker) {
+						this.clickedMarker.setStyle(this.setMarker(e.target.feature));
+					}
+					this.clickedMarker = e.target;
+					e.target.setStyle(this.highlightIcon);
+
 					this.onFeatureSelection(e)
 				});
 			})
