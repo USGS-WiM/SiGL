@@ -139,7 +139,7 @@ export class SidebarComponent implements OnInit {
 			this.selectedProjectId = site.project_id;
 		}
 		//this.selectedSite = 
-		this._mapService.setSiteClicked({ "site_id": site.site_id, "project_id": site.project_id });
+		this._mapService.setSiteClicked({ "site_id": site.site_id, "project_id": site.project_id, "fromMap": false });
 		this._siglService.setFullSite(site.site_id.toString());
 	}
 

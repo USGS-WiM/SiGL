@@ -248,8 +248,12 @@ export class SiglService {
 					this._filteredProjectSubject.next(proj);
 				}, error => this.handleError);
 			} else {
-				// project name search
-				this.setFullProject(filters.ProjectName.project_id.toString());
+				if (filters.ProjectName) {
+					// project name search
+					this.setFullProject(filters.ProjectName.project_id.toString());
+				} else {
+					this._filteredProjectSubject.next([]);
+				}
 			}
 			
 		} else {

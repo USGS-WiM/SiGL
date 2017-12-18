@@ -5,7 +5,7 @@
     <div id="handle"><i class="fa fa-arrows-v" aria-hidden="true"></i></div>
 
     <div id="tabContainer">
-        <ngb-tabset #t> <!-- [activeId]="selectedTab" #t> -->
+        <ngb-tabset #t> 
             <ngb-tab title="Project Summary" id="project">
                 <ng-template ngbTabContent>
                     <div>
@@ -18,9 +18,12 @@
                                 <li *ngFor="let org of fullProj?.Organizations">{{org.OrganizationName}}</li>
                             </ul>
                         </div>
-                        <div *ngIf="fullProj?.ProjectWebsite">
-                            <span class="dataLabel">Project Website:</span> 
-                            <a target="blank" [href]="fullProj?.ProjectWebsite">{{fullProj.ProjectWebsite}}</a> 
+                        <div *ngIf="fullProj?.ProjectURLs">
+                            <span class="dataLabel">Project Website<span *ngIf="fullProj.ProjectURLs.length > 1">s</span>:</span> 
+                                <ul>
+                                    <li *ngFor="let u of fullProj?.ProjectURLs">
+                                        <a target="blank" [href]="u">{{u}}</a></li>
+                                </ul>
                         </div>
                         <div *ngIf="fullProj?.Status">
                             <span class="dataLabel">Project Status: </span> 
@@ -28,11 +31,11 @@
                         </div>
                         <div *ngIf="fullProj?.StartDate">
                             <span class="dataLabel">Start Date: </span> 
-                            <span>{{fullProj.StartDate}}</span>
+                            <span>{{fullProj.StartDate | date: 'MM/dd/yyyy'}}</span>
                         </div>
                         <div *ngIf="fullProj?.EndDate">
                             <span class="dataLabel">End Date: </span> 
-                            <span>{{fullProj.EndDate}} </span>
+                            <span>{{fullProj.EndDate | date: 'MM/dd/yyyy'}} </span>
                         </div>
                         <div *ngIf="fullProj?.Objectives.length > 0">
                            <span class="dataLabel">Objectives:</span>
@@ -170,11 +173,11 @@
                 <ng-template ngbTabContent>
                     <span *ngIf="fullSite">
                         <div>
-                            <span class="dataLabel" >Location: </span>
+                            <span class="dataLabel">Location: </span>
                             <span class="dataLabel">Lat. </span><span>{{fullSite.latitude}}, </span><span class="dataLabel">Long. </span><span>{{fullSite.longitude}}</span>
                         </div>
                         <div>
-                            <span class="dataLabel" >State: </span>
+                            <span class="dataLabel">State: </span>
                             <span>{{fullSite.State}}</span>
                         </div>
                         <div *ngIf="fullSite.Country">
@@ -186,50 +189,58 @@
                             <span>{{fullSite.Lake}}</span>
                         </div>
                          <div *ngIf="fullSite.Waterbody">
-                            <span class="dataLabel" >Waterbody: </span>
+                            <span class="dataLabel">Waterbody: </span>
                             <span>{{fullSite.Waterbody}}</span>
                         </div>
                          <div *ngIf="fullSite.Watershed">
-                            <span class="dataLabel" >Watershed (HUC8): </span>
+                            <span class="dataLabel">Watershed (HUC8): </span>
                             <span>{{fullSite.Watershed}}</span>
                         </div>
                          <div *ngIf="fullSite.Description">
-                            <span class="dataLabel" >Site Description: </span>
+                            <span class="dataLabel">Site Description: </span>
                             <span>{{fullSite.Description}}</span>
                         </div>
                          <div *ngIf="fullSite.StartDate">
-                            <span class="dataLabel" >Start Date: </span>
-                            <span>{{fullSite.StartDate}}</span>
+                            <span class="dataLabel">Start Date: </span>
+                            <span>{{fullSite.StartDate | date: 'MM/dd/yyyy'}}</span>
                         </div>
                          <div *ngIf="fullSite.EndDate">
-                            <span class="dataLabel" >End Date: </span>
-                            <span>{{fullSite.EndDate}}</span>
+                            <span class="dataLabel">End Date: </span>
+                            <span>{{fullSite.EndDate | date: 'MM/dd/yyyy'}}</span>
                         </div>
                          <div *ngIf="fullSite.Status">
-                            <span class="dataLabel" >Status: </span>
+                            <span class="dataLabel">Status: </span>
                             <span>{{fullSite.Status}}</span>
                         </div>
                         <div *ngIf="fullSite.Resources.length > 0">
-                            <span class="dataLabel" >Resource Component: </span>
+                            <span class="dataLabel">Resource Component: </span>
                             <ul>
                                 <li *ngFor="let R of fullSite.Resources">{{R.resource_name}}</li>
                             </ul>
                         </div>
                         <div *ngIf="fullSite.Media.length > 0">
-                            <span class="dataLabel" >Media: </span>
+                            <span class="dataLabel">Media: </span>
                             <ul>
                                 <li *ngFor="let M of fullSite.Media">{{M.media}}</li>
                             </ul>
                         </div>
                         <div *ngIf="fullSite.Frequencies.length > 0">
-                            <span class="dataLabel" >Sampling Frequency: </span>
+                            <span class="dataLabel">Sampling Frequency: </span>
                             <ul>
                                 <li *ngFor="let F of fullSite.Frequencies">{{F.frequency}}</li>
                             </ul>
                         </div>
                         <div *ngIf="fullSite.SamplePlatform">
-                            <span class="dataLabel" >Sampling Platform: </span>
+                            <span class="dataLabel">Sampling Platform: </span>
                             <span>{{fullSite.SamplePlatform}}</span>
+                        </div>
+                        <div *ngIf="fullSite.AdditionalInfo">
+                            <span class="dataLabel">Additional Site Information: </span>
+                            <span>{{fullSite.AdditionalInfo}}</span>
+                        </div>
+                        <div *ngIf="fullSite.url">
+                            <span class="dataLabel">Site Website: </span>
+                            <a target="blank" [href]="fullSite?.url">{{fullSite.url}}</a> 
                         </div>
                     </span>
                 </ng-template>

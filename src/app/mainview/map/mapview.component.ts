@@ -85,11 +85,15 @@ export class MapviewComponent implements OnInit {
 		// for highlighting selected site based on sidebar site name click
 		this._mapService.siteClicked.subscribe(site=>{
 			this.highlightSingleSite(site);
-			//this.map.closePopup();
+			//close popup if this siteClick is from the sidebar only
+			if (site.fromMap == false)
+				this.map.closePopup();
 		});
 		//for project info
 		this._siglService.fullProject.subscribe((FP: Ifullproject) => {			
 			this.fullProj = FP;
+			if (FP.ProjectWebsite)
+				this.fullProj.ProjectURLs = FP.ProjectWebsite.split("|");
 			
             if (this.siteClickFlag == false) {
                 if (this.clickedMarker){
@@ -130,7 +134,7 @@ export class MapviewComponent implements OnInit {
                         });
                         //changed from on 'click' to on 'popupopen' to test
 						layer.on("click", (e) => {
-							this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id});
+							this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id, "fromMap": true});
 							if (this.clickedMarker) {
 								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
 							}
@@ -157,7 +161,7 @@ export class MapviewComponent implements OnInit {
 					onEachFeature: ((feature, layer) => {
 						layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
 						layer.on("click", (e) => {
-							this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id});
+							this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id, "fromMap": true});
 							
 							if (this.clickedMarker) {
 								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
@@ -347,7 +351,7 @@ export class MapviewComponent implements OnInit {
 			onEachFeature: ((feature, layer) => {
 				layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
 				layer.on("click", (e) => {
-					this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id});
+					this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id, "fromMap": true});
 
 					if (this.clickedMarker) {
 						this.clickedMarker.setStyle(this.setMarker(e.target.feature));
@@ -397,7 +401,7 @@ export class MapviewComponent implements OnInit {
 			onEachFeature: ((feature, layer) => {
 				layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
 				layer.on("click", (e) => {
-					this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id});
+					this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id, "fromMap": true});
 
 					if (this.clickedMarker) {
 						this.clickedMarker.setStyle(this.setMarker(e.target.feature));

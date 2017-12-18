@@ -25,6 +25,7 @@ export interface Ifullproject {
     MonitoringCoords: Array<ImonitorEffort>;    
     Keywords: Array<Ikeyword>;
     ProjectWebsite: string;
+    ProjectURLs: Array<string>;
     DataHosts: Array<Idatahost>;
     Organizations: Array<Iorganizationresource>;
     Contacts: Array<Icontactresource>;
