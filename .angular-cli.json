@@ -24,7 +24,7 @@
         "../node_modules/leaflet/dist/leaflet.css",
         "styles.css"
       ],
-      "scripts": [ "../node_modules/leaflet/dist/leaflet.js" ],
+      "scripts": [ "../node_modules/leaflet/dist/leaflet.js", "../src/assets/js/oms.min.js"],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
