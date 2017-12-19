@@ -37,11 +37,14 @@ export class SidebarComponent implements OnInit {
 	public chosenSortBy: any;
 	public projectsWithSitesShowing: boolean;
 	public selectedSite: number; // change this every time a site name is clicked in the list of sites
+	public NoMatches: boolean; // if filteredProjects come back empty, flag this true so message shows instead of emptiness
 
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService,
 		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService) { }
 
 	ngOnInit() {
+		this.chosenSortBy = undefined;
+		this.NoMatches = false;
 		// update selected site when point is clicked in map
 		this._mapService.siteClicked.subscribe(site => {
 			this.selectedSite = site.site_id || 0;
@@ -94,7 +97,9 @@ export class SidebarComponent implements OnInit {
 			this.filterCount = Object.keys(this.chosenFilters).length;
 			if (this.filterCount == 0) {
 				this.siteClickFullProj = undefined;
+				this.chosenSortBy = undefined;
 			}
+			
 		});
 		this._siglService.sitePointClickBool.subscribe((val: boolean) => {
 			this.siteWasClicked = val;
@@ -109,6 +114,7 @@ export class SidebarComponent implements OnInit {
 		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
 			this.filteredProjects = [];
 			if (projects.length > 0) {
+				this.NoMatches = false;
 				this.accordion.activeIds = ['projList'];
 				projects.forEach((p: Ifilteredproject) => {
 					p.isCollapsed = true;
@@ -119,10 +125,15 @@ export class SidebarComponent implements OnInit {
 					});
 					this.filteredProjects.push(p);
 				});
+				if (this.chosenSortBy){
+					this.sortProjListBy(this.chosenSortBy);
+				}
 			} else {
 				//clear it all
 				this.filteredProjects = [];
+				this.NoMatches = true;
 			}
+			
 			this.allFilteredProjectsHolder = this.filteredProjects.map(x => Object.assign({}, x));
 		});
 	}

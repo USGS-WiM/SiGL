@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { CONFIG } from "./config";
 import { Http, Response, RequestOptions } from '@angular/http';
 import { IchosenFilters } from '../../shared/interfaces/chosenFilters.interface';
+import { isPending } from 'q';
 //import { isPending } from 'q';
 
 @Injectable()
@@ -151,8 +152,8 @@ export class MapService {
 
     // used in updateFilteredSites function above
     private findPresentProps(aFeature, filters): boolean {
-        let isPresent = false;
-        let parameterArray = aFeature.properties.parameter_type_id ? aFeature.properties.parameter_type_id.split(",") : [];
+        let isPresent: Array<boolean> = [];
+        let parameterArray = aFeature.properties.parameter_type_id ? aFeature.properties.parameter_type_id.split(",") : [];        
         let projDurationArray = aFeature.properties.proj_duration_id ? aFeature.properties.proj_duration_id.split(",") : [];
         let projStatusArray = aFeature.properties.proj_status_id ? aFeature.properties.proj_status_id.split(",") : [];
         let resArray = aFeature.properties.resource_type_id ? aFeature.properties.resource_type_id.split(",") : [];
@@ -164,97 +165,111 @@ export class MapService {
         let objectiveArray = aFeature.properties.objective_id ? aFeature.properties.objective_id.split(",") : [];
         let projectVal = aFeature.properties.project_id;
         if (filters.ProjectName) {
-            if (filters.ProjectName.project_id == projectVal)
-                isPresent = true;
-                
+            let projHere: boolean = false;
+            if (filters.ProjectName.project_id == projectVal) {
+                projHere = true;
+            }
+            isPresent.push(projHere);
         } else {
             // loop through to find if filters are in geojson
             if (filters.s_parameters) {
+                let paramHere: boolean = false;
                 for (let p of filters.s_parameters) {
                     if (parameterArray.includes(p.toString())) {
-                        isPresent = true;
-                        break;
+                        paramHere = true;
                     }
                 }
+                isPresent.push(paramHere);
             }
             if (filters.s_projDuration) {
+                let durHere: boolean = false;
                 for (let p of filters.s_projDuration) {
                     if (projDurationArray.includes(p.toString())) {
-                        isPresent = true;
-                        break;
+                       durHere = true;
                     }
                 }
+                isPresent.push(durHere);
             }
             if (filters.s_projStatus) {
+                let statHere: boolean = false;
                 for (let p of filters.s_projStatus) {
                     if (projStatusArray.includes(p.toString())) {
-                        isPresent = true;
-                        break;
+                        statHere = true;
                     }
                 }
+                isPresent.push(statHere);
             }
-            if (filters.s_resources) {
+            if (filters.s_resources) {           
+                let resHere: boolean = false;
                 for (let p of filters.s_resources) {
                     if (resArray.includes(p.toString())) {
-                        isPresent = true;
-                        break;
+                        resHere = true;
                     }
                 }
+                isPresent.push(resHere);
             }
             if (filters.s_media) {
+                let medHere: boolean = false;
                 for (let p of filters.s_media) {
                     if (mediaArray.includes(p.toString())) {
-                        isPresent = true;
-                        break;
+                        medHere = true;
                     }
                 }
+                isPresent.push(medHere);
             }
             if (filters.s_lakes) {
+                let lakeHere: boolean = false;
                 for (let p of filters.s_lakes) {
                     if (lakeVal == p) {
-                        isPresent = true;
-                        break;
+                        lakeHere = true;
                     }
                 }
+                isPresent.push(lakeHere);
             }
             if (filters.s_states) {
+                let stateHere: boolean = false;
                 for (let p of filters.s_states) {
                     if (stateVal == p.toString()) {
-                        isPresent = true;
-                        break;
+                        stateHere = true;
                     }
                 }
+                isPresent.push(stateHere);
             }
             if (filters.s_monitorEffect) {
+                let monHere: boolean = false;
                 for (let p of filters.s_monitorEffect) {
                     if (monArray.includes(p.toString())) {
-                        isPresent = true;
-                        break;
+                        monHere = true;
                     }
                 }
+                isPresent.push(monHere);
             }
             if (filters.p_objectives) {
+                let objHere: boolean = false;
                 for (let p of filters.p_objectives) {
                     if (objectiveArray.includes(p.toString())) {
-                        isPresent = true;
-                        break;
+                        objHere = true;
                     }
                 }
+                isPresent.push(objHere);
             }
             if (filters.ORG) {
+                let orgHere: boolean = false;
                 // all orgSystems that have this orgId
                 let orgSystemsWithThisOrg = this._allOrgSystems.getValue().filter(function (orgsSys) { return orgsSys.org_id == filters.ORG.organization_id; })
                 // loop through and see if any of them include this filters.ORG.organization_id
                 let stophere = "hey!";
                 orgSystemsWithThisOrg.forEach(sys => {
                     if (orgSysArray.includes(sys.organization_system_id.toString())) {
-                        isPresent = true;
+                        orgHere = true;
                     };
                 });
+                isPresent.push(orgHere);
             }
             // finish all loops
         }
-        return isPresent;
+        let finalTruth = isPresent.filter(p=> {return p == false;}).length;
+        return finalTruth > 0 ? false : true;
 
 
     }
