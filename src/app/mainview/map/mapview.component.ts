@@ -8,6 +8,7 @@ import { Ifullsite } from "app/shared/interfaces/fullsite.interface";
 import { Iparameter } from "app/shared/interfaces/parameter.interface";
 import { Igroupedparameters } from "app/shared/interfaces/groupedparameters";
 import * as L from 'leaflet';
+import esri from 'esri-leaflet';
 import { Ifilteredproject } from 'app/shared/interfaces/filteredproject';
 //import * as WMS from 'leaflet.wms';
 
@@ -44,7 +45,14 @@ export class MapviewComponent implements OnInit {
 	private AllShowingProjIDArray: Array<number>;
 	private clickedMarker: any;
 	public groupedParams: Igroupedparameters;
-	//public groupedParams: Object;
+    //public groupedParams: Object;
+    
+    public lakeLayer: any;
+    public epaLayer: any;
+    public glriLayer: any;
+    public TribalBoundsLayer: any;
+    public TribalTerritoriesLayer: any;
+    public auxLayers: any;
 
 
 	constructor(private _mapService: MapService, private _siglService: SiglService) { }
@@ -224,6 +232,61 @@ export class MapviewComponent implements OnInit {
             maxZoom: 19,
             layers: [this._mapService.baseMaps.Topo]
         });
+
+        this.lakeLayer = esri.featureLayer({
+            url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/3",
+            style: function(feature){
+                if (feature.properties.LAKE == "ls"){
+                    return {color: 'DarkCyan', weight:0};
+                }
+                if (feature.properties.LAKE == "lm"){
+                    return {color: 'DarkKhaki', weight:0};
+                }
+                if (feature.properties.LAKE == "lh"){
+                    return {color: 'IndianRed', weight:0};
+                }
+                if (feature.properties.LAKE == "le"){
+                    return {color: 'Olive', weight:0};
+                }
+                if (feature.properties.LAKE == "lo"){
+                    return {color: 'MediumPurple', weight:0};
+                }
+            }
+        });
+
+        this.epaLayer = esri.featureLayer({
+            url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/1",
+            style: function(){
+                return {color: 'DarkOrange', weight: 0.5 };
+            }
+        });
+        this.glriLayer = esri.featureLayer({
+            url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/2",
+            style: function(){
+                return {weight:0};
+            }
+        });
+        this.TribalBoundsLayer = esri.featureLayer({
+            url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/4",
+            style: function(){
+                return {color: 'green', weight: 0.25 };
+            }
+        });
+        this.TribalTerritoriesLayer = esri.featureLayer({
+            url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/5",
+            style: function(){
+                return {color: '#f4dfa8', weight: 0.25 };
+            }
+        });
+
+        this.auxLayers = {
+            "EPA Areas of Conern": this.epaLayer,
+            "USGS GLRI Nutrient and Contaminants of Emerging Concern Monitoring Basins": this.glriLayer,
+            "Ceded Tribal Boundaries": this.TribalBoundsLayer,
+            "Tribal Reservation Boundaries": this.TribalTerritoriesLayer
+        }
+
+        L.control.layers(null, this.auxLayers).addTo(this.map);
 
         this.map.createPane('mainSiglLayer');
         this.map.getPane('mainSiglLayer').style.zIndex = 1000;
@@ -451,3 +514,4 @@ export class MapviewComponent implements OnInit {
 	}
 
 }
+
