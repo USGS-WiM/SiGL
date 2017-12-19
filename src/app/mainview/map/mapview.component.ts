@@ -9,7 +9,8 @@ import { Iparameter } from "app/shared/interfaces/parameter.interface";
 import { Igroupedparameters } from "app/shared/interfaces/groupedparameters";
 import * as L from 'leaflet';
 import { Ifilteredproject } from 'app/shared/interfaces/filteredproject';
-//import * as WMS from 'leaflet.wms';
+
+declare var OverlappingMarkerSpiderfier: any;
 
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
@@ -19,6 +20,7 @@ import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 	styleUrls: ['./mapview.component.css']
 })
 export class MapviewComponent implements OnInit {
+    
 	@ViewChild('t') tabs;
 	// filter modal, opened from sidebar's (click) function that changing show boolean, subscribed to in the filterModalComponent
 	@ViewChild('filtermodal') filtermodal: FilterComponent;
@@ -44,7 +46,10 @@ export class MapviewComponent implements OnInit {
 	private AllShowingProjIDArray: Array<number>;
 	private clickedMarker: any;
 	public groupedParams: Igroupedparameters;
-	//public groupedParams: Object;
+    //public groupedParams: Object;
+    
+    public markerIcon: any;
+    public oms: any;
 
 
 	constructor(private _mapService: MapService, private _siglService: SiglService) { }
@@ -56,6 +61,11 @@ export class MapviewComponent implements OnInit {
         this.fullSiteFlag = false;
         this.siteClickFlag = false;
         this.filteredProjects = [];
+
+        //this.markerIcon = L.divIcon({className: 'sigldivicon'});
+        this.markerIcon = L.divIcon({
+            iconSize: new L.Point(10, 10)
+        });
 
         this.tempSitesIcon = {
             radius: 4,
@@ -98,13 +108,8 @@ export class MapviewComponent implements OnInit {
             if (this.siteClickFlag == false) {
                 if (this.clickedMarker){
                     this.map.closePopup();
-				}
-				
-				if (this.filtermodal.chosenFiltersObj) {
-					if (this.filtermodal.chosenFiltersObj.ProjectName == undefined) {		
-						this.highlightProjSites(this.fullProj.ProjectId);
-					}
-				}
+                }
+                this.highlightProjSites(this.fullProj.ProjectId);
             }
 			this.showBottomBar = true;
 			let tabID = this.siteClickFlag ? 'site' : 'project';
@@ -113,15 +118,18 @@ export class MapviewComponent implements OnInit {
 		//every time geojson gets updated (initially its all, after depends on filters chosen)
 		this._mapService.filteredSiteView.subscribe((geoj: any) => {
 			if (geoj !== "") {
-				//remove all layers and start fresh everytime this updates
 				if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
 				if (this.geoJsonLayer) this.geoJsonLayer.remove();
-				if (this.tempGeoJsonLayer) this.tempGeoJsonLayer.remove();
 
 				this.geoj = geoj; //use this to filter later
 				this.geoJsonLayer = L.geoJSON(geoj, {
 					pointToLayer: ((feature, latlng) => {
-						return L.circleMarker(latlng, this.setMarker(feature));
+                        var smallIcon = L.DivIcon.extend({
+                            options: {
+                              iconSize: [10, 10]
+                            }
+                          });
+						return L.marker(latlng, {icon: new smallIcon()});
 					}),
 					onEachFeature: ((feature, layer) => {
                         layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
@@ -141,7 +149,7 @@ export class MapviewComponent implements OnInit {
 							this.clickedMarker = e.target;
                             e.target.setStyle(this.highlightIcon);
 							this.onFeatureSelection(e)
-						});
+						}); 
 					})
 				}).addTo(this.map);
 			}
@@ -225,6 +233,7 @@ export class MapviewComponent implements OnInit {
             layers: [this._mapService.baseMaps.Topo]
         });
 
+        let test = new OverlappingMarkerSpiderfier(this.map, {keepSpiderfied:true});
         this.map.createPane('mainSiglLayer');
         this.map.getPane('mainSiglLayer').style.zIndex = 1000;
 
@@ -273,16 +282,18 @@ export class MapviewComponent implements OnInit {
     }
 
     public onFeatureSelection(event): void {
+        //remove any highlighted projects before highighting clicked site.
+        if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
 
         if (this.filteredProjects.length > 0) {
             console.log("fired if there are filtered projects")
             //need to find site and highlight it in the sidebar project--> site list 
             
-            //remove any highlighted projects before highighting clicked site.
-            if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
+            
             this.siteClickFlag = true;
             this._siglService.setsitePointClickBool(true);
         } else {
+
             console.log("fired if NO filtered projects and single site clicked");
             this.siteClickFlag = true;
             this._siglService.setsitePointClickBool(true);
@@ -416,7 +427,7 @@ export class MapviewComponent implements OnInit {
 
 	}
 	//select fillcolor for leaflet circleMakers
-	public setMarker(feature) {
+	/* public setMarker(feature) {
 		let fillColor = "";
 		switch (feature.properties.lake_type_id) {
 			case 1:
@@ -447,7 +458,37 @@ export class MapviewComponent implements OnInit {
 			weight: 0,
 			opacity: 1,
 			fillOpacity: 0.5
-		}
+        } 
+    } */
+    
+    public setMarker(feature) {
+        let className = "";
+        //let icon;
+		switch (feature.properties.lake_type_id) {
+			case 1:
+				//Erie
+                //return L.divIcon({className:'erieDivicon'});
+                return 'erieDivicon';
+			case 2:
+				//Huron
+                //icon = new L.divIcon({className:'huronDivicon'});
+                return 'huronDivicon';
+			case 3:
+				//Michigan
+                //return L.divIcon({className:'michiganDivicon'});
+                return 'michiganDivicon';
+			case 4:
+				//Ontario
+                //return L.divIcon({className:'ontarioDivicon'});
+                return 'ontarioDivicon';
+			case 5:
+				//Superior
+                //return L.divIcon({className:'superiorDivicon'});
+                return 'superiorDivicon';
+            default:
+                //return L.divIcon({className: 'otherLakeDivicon'});
+                return 'otherLakeDivicon';
+        }
 	}
 
 }
