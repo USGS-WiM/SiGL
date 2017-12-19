@@ -57,7 +57,7 @@ export class SidebarComponent implements OnInit {
 					}
 				});
 			}
-			// scroll down to the site id chosen =======NOT WORKING
+			// scroll down to the site id chosen
 			if (site.fromMap == true) {
 				let idName: string = "#site_"+site.site_id.toString();
 				let sideBARContent = this.sidebarContainer.nativeElement;
