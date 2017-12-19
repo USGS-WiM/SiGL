@@ -1,4 +1,4 @@
-<div class="sidebar sidebar-left" id="sidebar">
+<div #sidebarContainer class="sidebar sidebar-left" id="sidebar">
     <div class="scrollable">
         <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-1">
 
@@ -145,8 +145,8 @@
                         </div>
                     </div>
                     <div class="row down10">
-                        <label class="col-md-12"><a (click)="toggleSiteProjects()" title="Toggle projects" style="color: #007bff;">Toggle&nbsp;</a> projects with Sites&nbsp;<span *ngIf="projectsWithSitesShowing">off</span><span *ngIf="!projectsWithSitesShowing">on</span></label>  
-                        <label class="col-md-12"><a (click)="downloadCSV()" title="Download data" style="color: #007bff;"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download&nbsp;</a> data</label>                         
+                        <label class="col-md-12"><a (click)="toggleSiteProjects()" title="Toggle projects" style="color: #007bff;"><span *ngIf="!projectsWithSitesShowing">Show</span><span *ngIf="projectsWithSitesShowing">Hide</span>&nbsp;</a> projects with no sites&nbsp;</label>  
+                        <label class="col-md-12"><a (click)="downloadCSV()" title="Download data" style="color: #007bff;"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download&nbsp;</a> current results</label>
                     </div>
                     
                     <hr />
@@ -173,10 +173,10 @@
                         </div>
                         <div id="collapseExample" [ngbCollapse]="proj.isCollapsed">
                             <div *ngFor="let s of proj.projectSites" class="marginLeft">
-                                <div [id]="s.site_id" *ngIf="s.isDisplayed">
+                                <div [id]="'site_'+s.site_id" *ngIf="s.isDisplayed">
                                     <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
-                                </div>
-                                <div [id]="s.site_id" *ngIf="s.isTempDisplayed">
+                                </div> 
+                                <div [id]="'site_'+s.site_id" *ngIf="s.isTempDisplayed">
                                     <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'"  (click)="showSiteDetails(s)">{{s.name}}</a>
                                 </div>
                             </div>
@@ -188,7 +188,7 @@
                 <!--If no filtered Projects have been requested (but a site has been clicked on the map)-->
                 <div *ngIf="filteredProjects?.length == 0 && siteClickFullProj">
                     <div> Click on a project name or site to highlight it on the map.</div>
-                    <label class="col-md-12"><a (click)="downloadCSV()" title="Download data" style="color: #007bff;"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download&nbsp;</a> data</label>                         
+                    <label class="col-md-12"><a (click)="downloadCSV()" title="Download data" style="color: #007bff;"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download&nbsp;</a> current results</label>                         
                     <hr />
                     <div>
                         <div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, ElementRef } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import 'rxjs/Rx';
@@ -23,6 +23,7 @@ import { Event } from '@angular/router/src/events';
 })
 export class SidebarComponent implements OnInit {
 	@ViewChild('acc') accordion;
+	@ViewChild('sidebarContainer') private sidebarContainer: ElementRef;
 	public chosenFilters: IchosenFilters;
 	public filterCount: number;
 	private AllShowingProjIds: Array<number>;
@@ -54,13 +55,19 @@ export class SidebarComponent implements OnInit {
 				});
 			}
 			// scroll down to the site id chosen =======NOT WORKING
-			/*let idName:string = "#"+site.site_id.toString();			
-			let where = this._document.body.children[0].children[1];
-			setTimeout(() => {
-				let pageScrollInstance: PageScrollInstance = PageScrollInstance.simpleInstance(this._document, idName);
-				this._pageScrollService.start(pageScrollInstance);
-			},1000);*/
-
+			if (site.fromMap == true) {
+				let idName: string = "#site_"+site.site_id.toString();
+				let sideBARContent = this.sidebarContainer.nativeElement;
+				setTimeout(() => {
+					let pageScrollInstance: PageScrollInstance = PageScrollInstance.newInstance(
+						{
+							document: this._document,
+							scrollTarget: idName,
+							scrollingViews: [sideBARContent]
+						});
+					this._pageScrollService.start(pageScrollInstance);
+				}, 1000);
+			}
 		});
 		this.sortByObject = [
 			{ title: "Project Name A-Z", sortBy: "ProjectName", direction: "asc" },
@@ -230,9 +237,11 @@ export class SidebarComponent implements OnInit {
 
 	public toggleSiteProjects(onOrOff) {
 		if (this.projectsWithSitesShowing) {
+			// only show projects with sites
 			this.projectsWithSitesShowing = false;
 			this.filteredProjects = this.allFilteredProjectsHolder.filter((proj: Ifilteredproject) => { return proj.projectSites.length > 0; });
 		} else {
+			// show all projects (with and without sites)
 			this.projectsWithSitesShowing = true;
 			this.filteredProjects = this.allFilteredProjectsHolder.map(x => Object.assign({}, x));
 		}
@@ -243,7 +252,7 @@ export class SidebarComponent implements OnInit {
 		let csvData: string;
 		if (this.filteredProjects.length > 0) {
 			// filtered projects download
-			csvDataHolder = this.filteredProjects.map(x => Object.assign({}, x));
+			csvDataHolder = this.filteredProjects.map(x => Object.assign({}, x)); //deep copy
 			csvDataHolder.forEach(d => {
 				delete d.filteredSiteCount;
 				delete d.isCollapsed;

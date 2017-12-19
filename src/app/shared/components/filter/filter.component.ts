@@ -192,9 +192,9 @@ export class FilterComponent implements OnInit {
                 this.projectSelected = undefined;
                 //clear sidebar
                 this.chosenFiltersObj = {};
-                this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
-                this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list
                 this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
+                this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
+               // this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list                
             }
             this.modalResponseEvent.emit(results);
         }, (reason) => {
@@ -214,9 +214,9 @@ export class FilterComponent implements OnInit {
         if (this.chosenFiltersObj.ProjectName) {
             this.projectSelected = undefined;
             delete this.chosenFiltersObj.ProjectName;
-            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
             this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-            this._siglService.chosenFilters = this.chosenFiltersObj; //update the sidebar's filters chosen list
+            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
+           // this._siglService.chosenFilters = this.chosenFiltersObj; //update the sidebar's filters chosen list
         }
         switch (which) {
             case "parameters":
@@ -329,7 +329,7 @@ export class FilterComponent implements OnInit {
                 }
                 break;
             case "organization":
-                if (e.length > 0) {
+                if (e.organization_id) {
                     this.chosenFiltersObj.p_organization = e.organization_id;
                     this.chosenFiltersObj.ORG = e;
                 } else {
@@ -353,10 +353,10 @@ export class FilterComponent implements OnInit {
                 break;
         }//end switch
        
-        this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
         this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-        this._siglService.chosenFilters = this.chosenFiltersObj; //update the sidebar's filters chosen list
-    }//end filterChange
+        this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects        
+      //  this._siglService.chosenFilters = this.chosenFiltersObj; //update the sidebar's filters chosen list
+    } // end filterChange
 
     public onProjectSelect(project: any) {
         if (project != "") {
@@ -374,17 +374,17 @@ export class FilterComponent implements OnInit {
             this.orgSelected = undefined;
             this.objectiveSelected = [];
             //reset everything just in case (so that the filters apply to all and not a previous subset)
-            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
             this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-            this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list
+            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
+           // this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list
             this.chosenFiltersObj.ProjectName = { name: project.name, project_id: project.project_id };
         } else {
             this.chosenFiltersObj = {};
         }
         // now update with this project
-        this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
         this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-        this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list
+        this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
+       // this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list
         //handle selected project
     } //end onProjectSelect
 

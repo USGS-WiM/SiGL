@@ -61,10 +61,8 @@ export class SiglService {
 	private _organizationSubject: Subject<Array<Iorganization>> = new Subject<Array<Iorganization>>();
 	private _objectiveSubject: Subject<Array<Iobjective>> = new Subject<Array<Iobjective>>();
 	private _chosenFilterSubject: Subject<any> = new Subject<any>();
-	//private _filteredSitesSubject: Subject<Array<Isite>> = new Subject<Array<Isite>>();
 	private _filteredProjectSubject: Subject<Array<Ifilteredproject>> = new Subject<Array<Ifilteredproject>>();
 	private _fullProjectSubject: Subject<Ifullproject> = new Subject<Ifullproject>();
-	//private _fullProjectSitesSubject: Subject<Array<Ifullsite>> = new Subject<Array<Ifullsite>>();
 	private _singleSiteSubject: Subject<Ifullsite> = new Subject<Ifullsite>();
 	private _sitePointClick: Subject<boolean> = new Subject<boolean>();
 
@@ -214,6 +212,7 @@ export class SiglService {
 	}
 	//called when filters modal closes and passes chosen filters
 	public setFilteredSites(filters: IchosenFilters): void {
+		this.chosenFilters = filters;
 		if (Object.keys(filters).length > 0) {
 			//filter it
 			let sitesParam: URLSearchParams = new URLSearchParams();
