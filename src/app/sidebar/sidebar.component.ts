@@ -86,7 +86,7 @@ export class SidebarComponent implements OnInit {
 		this.filterCount = 0;
 		//site toggle button group form
 		this.siteCountForm = this._formBuilder.group({
-			'model': 'filtered'
+			'siteToggle': 'filtered'
 		});
 		this.filteredProjects = []; this.allFilteredProjectsHolder = [];
 		//initialize selected project Id first time.
@@ -113,6 +113,7 @@ export class SidebarComponent implements OnInit {
 		//for the results accordion panel
 		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
 			this.filteredProjects = [];
+			this.siteCountForm.controls['siteToggle'].setValue('filtered');
 			if (projects.length > 0) {
 				this.NoMatches = false;
 				this.accordion.activeIds = ['projList'];
@@ -131,7 +132,8 @@ export class SidebarComponent implements OnInit {
 			} else {
 				//clear it all
 				this.filteredProjects = [];
-				this.NoMatches = true;
+				if (this.filterCount > 0)
+					this.NoMatches = true;
 			}
 			
 			this.allFilteredProjectsHolder = this.filteredProjects.map(x => Object.assign({}, x));

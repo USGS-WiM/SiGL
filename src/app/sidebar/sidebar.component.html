@@ -160,7 +160,7 @@
                             </span>
                             <span class="pull-right">
                                 <form [formGroup]="siteCountForm">
-                                    <div class="btn-group" ngbRadioGroup name="radioBasic" formControlName="model">
+                                    <div class="btn-group" ngbRadioGroup name="radioBasic" formControlName="siteToggle">
                                         <label ngbButtonLabel class="btn-primary siteFormLabel all">
                                             <input ngbButton type="radio" (click)="toggleSiteList('all', proj.project_id)" [value]="'all'">All ({{proj.projectSites.length}})
                                         </label>

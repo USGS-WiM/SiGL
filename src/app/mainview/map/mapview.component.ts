@@ -134,7 +134,7 @@ export class MapviewComponent implements OnInit {
 					onEachFeature: ((feature, layer) => {
                         layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
                         layer.on('popupclose', (e) => {
-                            if (this.clickedMarker){
+                            if (this.clickedMarker) {
 								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
 							}
                             this.clickedMarker = e.target;
@@ -148,7 +148,7 @@ export class MapviewComponent implements OnInit {
 							}
 							this.clickedMarker = e.target;
                             e.target.setStyle(this.highlightIcon);
-							this.onFeatureSelection(e)
+							this.onFeatureSelection(e);
 						});
 					})
 				}).addTo(this.map);

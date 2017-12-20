@@ -111,16 +111,18 @@ export class MapService {
     }
     //called after filtered modal closes and filters have been chosen
     public updateFilteredSites(filters: IchosenFilters) {
+        // whenever filters are updated, clear out the temporarySites
+        this.temporarySites = [];
         if (Object.keys(filters).length > 0) {
             this.newFilteredGeoJsonArray = [];
             this.newFilteredGeoJson = new L.GeoJSON();
             this.filtersPassed = filters;
             let isPresent: boolean = false;
             let filteredSiteIds: Array<number> = [];
-            // loop through all the geojson features to find filter matching properties
-            if (Array.isArray(this._filteredSiteViewSubject.getValue())) {
+            // loop through all the geojson features to find filter matching properties (think we need to search through all '_allSiteView' instead of '_filteredSiteViewSubject' here every time)
+            if (Array.isArray(this._allSiteView)) { // if (Array.isArray(this._filteredSiteViewSubject.getValue())) {
                 let stop = "stopHere to see what this._filteredSiteViewSubject is and why it's getting an error";
-                this._filteredSiteViewSubject.getValue().forEach(feature => {
+                this._allSiteView.forEach(feature => { // this._filteredSiteViewSubject.getValue().forEach(feature => {
                     // isPresent = false;
                     isPresent = this.findPresentProps(feature, this.filtersPassed);
                     if (isPresent) {
@@ -129,7 +131,7 @@ export class MapService {
                     }
                 }, this);
             } else {
-                this._filteredSiteViewSubject.getValue().features.forEach(feature => {
+                this._allSiteView.features.forEach(feature => { // this._filteredSiteViewSubject.getValue().features.forEach(feature => {
                     // isPresent = false;
                     isPresent = this.findPresentProps(feature, this.filtersPassed);
                     if (isPresent) {
