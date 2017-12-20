@@ -9,9 +9,11 @@ import { ModalService } from 'app/shared/services/modal.service';
                     <img id="usgsLogo" alt="USGS Logo" title="USGS Links" src="assets/usgsLogo.png" /><!--</a>-->
                   </div>
                   <div id="titles">
-                    <div id="betaTitle"></div>
-                    <div id="title">{{title}}</div>
-                    <div id="titleSeparator">:</div>
+                    <div class="appname">
+                        <div id="betaTitle"></div>
+                        <div id="title">{{title}}</div>
+                        <div id="titleSeparator">:</div>
+                    </div>
                     <div id="subTitle">
                       {{subtitle}}
                       <a (click)="showAboutModal()"><img id="helpIcon" src="assets/MoreInfo.png" title="Help" /></a>

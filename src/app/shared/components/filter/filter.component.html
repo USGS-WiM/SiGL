@@ -1,4 +1,4 @@
-<ng-template #filtermodal id="filter" let-c="close" let-d="dismiss">  
+<ng-template #filtermodal id="filter" let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">Filter Map</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('cancel')">
@@ -57,7 +57,7 @@
                 <div class="col-xs-6">
                     <ss-multiselect-dropdown [options]="monitoringEffortMulti" [(ngModel)]="monitoringEffortSelected" (ngModelChange)="filterChange('monitoring', $event)"></ss-multiselect-dropdown>
                 </div>
-            </div>            
+            </div>
             <div class="row">
                 <label class="col-xs-3">Project Objective: </label>
                 <div class="col-xs-6">
@@ -71,7 +71,7 @@
                     <select class="form-control" [(ngModel)]="orgSelected" (ngModelChange)="filterChange('organization', $event)">
                         <option value=""></option>
                         <option [ngValue]="o" *ngFor="let o of organizationList">{{o.organization_name}}</option>
-                    </select>                
+                    </select>
                 </div>
             </div>
             <br/>
@@ -88,8 +88,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" (click)="c('Clear')" style="color:black;">Clear All</button>
-        <button type="button" (click)="c('Search')" style="color:black;">Search</button>
+        <button type="button" (click)="c('Clear')">Clear All</button>
         <button type="button" (click)="d('clickedCancel')">Cancel</button>
+        <button type="button" (click)="c('Search')" class="actionBtn">Search</button>
     </div>
 </ng-template>

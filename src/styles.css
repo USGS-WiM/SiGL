@@ -1,1 +1,267 @@
 /* You can add global styles to this file, and also import other style files */
+
+/*
+UNIVERSAL
+UNIVERSAL
+UNIVERSAL
+*/
+*{
+  outline:none !important;
+}
+*:hover, *:focus, *:active{
+  outline: none !important;
+}
+a:hover{
+  text-decoration: none;
+}
+button:hover{
+  cursor: pointer;
+}
+button{
+  border: none;
+  background-color: #ECEEF4;
+  padding: 8px 14px;
+  border-radius: 3px;
+  color: rgba(0,0,0,0.6);
+  letter-spacing: -0.25px;
+  font-weight: 500;
+}
+button:hover{
+  color: black;
+}
+
+.actionBtn{
+  background-color: #0F8AFF;
+  color: rgba(255,255,255,0.85);
+}
+.actionBtn:hover{
+  color: white;
+}
+/*
+HEADER
+HEADER
+HEADER
+*/
+#headerLogo{
+  background-color: black;
+}
+
+#titles{
+  color: white;
+  height: 65px;
+  font-size: 29px;
+}
+.appname{
+  color: white;
+}
+
+#helpIcon{
+  filter: brightness(200%);
+  transition: 0.2s;
+}
+#helpIcon:hover{
+  cursor: pointer;
+  opacity: 0.5;
+  transition: 0.2s;
+}
+
+
+/*
+LEFT SIDEBAR
+LEFT SIDEBAR
+LEFT SIDEBAR
+*/
+.sidebar{
+  background-color: #ECEEF4;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+#sidebar .card{
+  border-radius:0;
+  transition: 0.2s;
+  border: none;
+  background-color: transparent;
+}
+#sidebar .card:hover .card-header{
+  background-color: #edf1f4;
+  transition: 0.2s;
+}
+#sidebar .card-header{
+  transition: 0.2s;
+  padding: 0;
+  border-radius: 0 !important;
+}
+#sidebar .card-header.active{
+  background-color: #edf1f4 !important;
+}
+
+
+#sidebar .card-header a{
+  color: black;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  box-sizing: border-box;
+  padding: 25px 20px;
+  display: block;
+}
+.basemapBtn:hover{
+  cursor: pointer;
+}
+.card-header a:hover{
+  text-decoration: none;
+}
+
+#sidebar .card-body{
+  background-color: white;
+}
+
+
+/*
+MODAL
+MODAL
+MODAL
+*/
+.modal-body p{
+  font-size: 14px;
+  line-height: 27px;
+  letter-spacing: 0.25px;
+  color: rgba(0,0,0,0.725);
+}
+.modal-header .close{
+  position: relative;
+  top: 3px;
+}
+.modal-header .close:hover{
+  cursor: pointer;
+}
+
+
+/*
+LEAFLET TWEAKS
+LEAFLET TWEAKS
+LEAFLET TWEAKS
+*/
+.leaflet-control-layers.leaflet-control{
+  background-color: white;
+  border: none !important;
+}
+.leaflet-control-layers-expanded{
+  padding: 25px;
+}
+.leaflet-control-layers-expanded input[type="radio"],
+.leaflet-control-layers-expanded input[type="checkbox"]{
+  position: relative;
+  top: -0.5px;
+  margin: 0 4px 0 0;
+}
+.leaflet-control-layers-list{
+  letter-spacing: -0.25px;
+  font-weight: 500;
+}
+
+.leaflet-control-layers-overlays label:hover{
+  cursor: pointer;
+}
+
+
+
+
+/*
+FILTER MAP
+FILTER MAP
+FILTER MAP
+*/
+.row{
+  margin: 0;
+}
+
+#projList hr{
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+#sidebar .pull-right.btn-group{
+  position: relative;
+  top: 4px;
+}
+
+#filterContent .row{
+  padding: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.125);
+}
+#filterContent .row label{
+  margin-top: 6px;
+  margin-right: 25px;
+}
+
+#filterContent h5{
+  font-size: 24px;
+  font-weight: 600;
+  padding-top: 35px;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+  margin: 0;
+  padding-bottom: 10px;
+}
+
+
+label.filtered{
+  background-color: #F17A4F !important;
+  letter-spacing: -0.25px;
+  font-weight: 500;
+}
+label.filtered:hover,
+label.all:hover{
+  cursor: pointer;
+}
+label.all{
+  background-color: #10152C !important;
+  letter-spacing: -0.25px;
+  font-weight: 500;
+}
+
+#sidebar .pull-right.btn-group active{
+  box-shadow: 0 0 0 1px rgba(15,138,255, 0.95) !important;
+}
+
+/*
+DROPDOWNS
+DROPDOWNS
+DROPDOWNS
+*/
+.dropdown-menu .dropdown-item a{
+  color: black !important;
+}
+.dropdown-menu .dropdown-item:active a,
+.dropdown-menu .dropdown-item.active a{
+  color: white !important;
+  background-color: #0F8AFF;
+}
+.dropdown-toggle{
+  border: none;
+  background-color: #ECEEF4;
+  padding: 8px 14px;
+  border-radius: 3px;
+  color: rgba(0,0,0,0.6);
+  letter-spacing: -0.25px;
+  font-weight: 500;
+}
+
+
+/*
+BOTTOM POPOVER
+BOTTOM POPOVER
+BOTTOM POPOVER
+*/
+#handle{
+  background-color: black !important;
+}
+#tabContainer{
+  box-sizing: border-box;
+  padding: 55px 25px !important;
+}
+.dataHeader{
+  padding: 15px 0;
+  display: block;
+}
+.tab-pane{
+  padding: 15px;
+}

@@ -6,16 +6,16 @@
         <ngb-panel title="Basemaps">
             <ng-template ngbPanelContent>
                 <basemaps></basemaps>
-            </ng-template>            
+            </ng-template>
         </ngb-panel>
 
         <!-- Filters -->
         <ngb-panel title="Filters">
             <ng-template ngbPanelContent>
-                <button type="button" class="btn btn-primary" (click)="showFilterModal()">Change filters</button>
+                <button type="button" class="actionBtn" (click)="showFilterModal()">Change filters</button>
                 <br/>
                 <h4 *ngIf="filterCount > 0">Map filterd by</h4>
-                
+
                 <!-- Parameters -->
                 <div *ngIf="chosenFilters?.PARAMETERS">
                     <i *ngIf="chosenFilters?.PARAMETERS.length > 0" class="pull-left down4" [ngClass]="ParamCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ParamCollapsed=!ParamCollapsed"></i>
@@ -113,7 +113,7 @@
                             <br/>
                         </span>
                     </p>
-                </div>          
+                </div>
                 <div *ngIf="chosenFilters?.ProjectName && chosenFilters?.ProjectName != ''">
                     <i *ngIf="chosenFilters.ProjectName && chosenFilters.ProjectName != ''" class="pull-left down4" [ngClass]="ProjCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ProjCollapsed=!ObjCollaProjCollapsedpsed"></i>
                     <span><b>Project Name</b></span>
@@ -122,7 +122,7 @@
                             <br/>
                         </span>
                     </p>
-                </div>              
+                </div>
             </ng-template>
         </ngb-panel>
 
@@ -141,14 +141,14 @@
                             <select class="form-control" [(ngModel)]="chosenSortBy" (ngModelChange)="sortProjListBy($event)">
                                 <option value=""></option>
                                 <option [ngValue]="o" *ngFor="let o of sortByObject">{{o.title}}</option>
-                            </select>                
+                            </select>
                         </div>
                     </div>
                     <div class="row down10">
-                        <label class="col-md-12"><a (click)="toggleSiteProjects()" title="Toggle projects" style="color: #007bff;"><span *ngIf="!projectsWithSitesShowing">Show</span><span *ngIf="projectsWithSitesShowing">Hide</span>&nbsp;</a> projects with no sites&nbsp;</label>  
+                        <label class="col-md-12"><a (click)="toggleSiteProjects()" title="Toggle projects" style="color: #007bff;"><span *ngIf="!projectsWithSitesShowing">Show</span><span *ngIf="projectsWithSitesShowing">Hide</span>&nbsp;</a> projects with no sites&nbsp;</label>
                         <label class="col-md-12"><a (click)="downloadCSV()" title="Download data" style="color: #007bff;"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download&nbsp;</a> current results</label>
                     </div>
-                    
+
                     <hr />
                     <div *ngFor="let proj of filteredProjects;let i = index;">
                         <div>
@@ -175,7 +175,7 @@
                             <div *ngFor="let s of proj.projectSites" class="marginLeft">
                                 <div [id]="'site_'+s.site_id" *ngIf="s.isDisplayed">
                                     <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
-                                </div> 
+                                </div>
                                 <div [id]="'site_'+s.site_id" *ngIf="s.isTempDisplayed">
                                     <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'"  (click)="showSiteDetails(s)">{{s.name}}</a>
                                 </div>
@@ -188,7 +188,7 @@
                 <!--If no filtered Projects have been requested (but a site has been clicked on the map)-->
                 <div *ngIf="filteredProjects?.length == 0 && siteClickFullProj">
                     <div> Click on a project name or site to highlight it on the map.</div>
-                    <label class="col-md-12"><a (click)="downloadCSV()" title="Download data" style="color: #007bff;"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download&nbsp;</a> current results</label>                         
+                    <label class="col-md-12"><a (click)="downloadCSV()" title="Download data" style="color: #007bff;"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download&nbsp;</a> current results</label>
                     <hr />
                     <div>
                         <div>
@@ -199,7 +199,7 @@
                             <span>
                                 <a (click)="showProjectDetails(siteClickFullProj)">{{siteClickFullProj.Name}}</a>
                             </span>
-                            <span class="pull-right"><span class="badge badge-secondary">All {{siteClickFullProj.projectSites.length}}</span></span>                          
+                            <span class="pull-right"><span class="badge badge-secondary">All {{siteClickFullProj.projectSites.length}}</span></span>
                         </div>
                         <div id="collapseExample" [ngbCollapse]="siteClickFullProj.isCollapsed">
                             <div  *ngFor="let s of siteClickFullProj.projectSites" class="marginLeft">
