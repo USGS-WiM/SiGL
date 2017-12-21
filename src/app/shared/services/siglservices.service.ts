@@ -67,6 +67,7 @@ export class SiglService {
 	private _singleSiteSubject: Subject<Ifullsite> = new Subject<Ifullsite>();
 	private _sitePointClick: Subject<boolean> = new Subject<boolean>();
 
+	
 	//getters
 	public get parameters(): Observable<Array<Iparameter>> {
 		return this._parameterSubject.asObservable();

@@ -11,6 +11,7 @@ import { CONFIG } from "./config";
 import { Http, Response, RequestOptions } from '@angular/http';
 import { IchosenFilters } from '../../shared/interfaces/chosenFilters.interface';
 import { isPending } from 'q';
+import { LoaderService } from 'app/shared/services/loader.service';
 //import { isPending } from 'q';
 
 @Injectable()
@@ -24,7 +25,7 @@ export class MapService {
     private newFilteredGeoJsonArray: Array<any>;
     private temporarySites: any = []; //add/subtract temp sites to show in map
 
-    constructor(private _http: Http) {
+    constructor(private _http: Http, private _loaderService: LoaderService) {
         this.baseMaps = {// {s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png  
             OpenStreetMap: L.tileLayer('https://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', {
                 maxZoom: 20,
@@ -64,6 +65,13 @@ export class MapService {
     private _allOrgSystems: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
     private _siteClicked: Subject<any> = new Subject<any>();
     
+    private showLoader(): void {
+        this._loaderService.show();
+    }
+	private hideLoader(): void {
+        this._loaderService.hide();
+    }
+
     //initial set of all geojson sites. keep for resetting
     public setAllSiteView(geoJson: any) {
         this._allSiteView = geoJson;//this._allSiteViewSubject.next(geoJSON); 
@@ -306,6 +314,7 @@ export class MapService {
 
     //initial http get of all geojson sites
     private httpRequest(): void {
+        this.showLoader();
         let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
         this._http.get(CONFIG.ORG_SYSTEM_URL, options)
             .map(res => <any>res.json())
@@ -315,6 +324,7 @@ export class MapService {
         this._http.get(CONFIG.SITE_URL + "/GetSiteView.geojson")
             .map(res => <any>res.json())
             .subscribe(geoj => {
+                this.hideLoader();
                 this._allSiteView = geoj;
                 // this.setAllSiteView(geoj);
                 this.setFilteredSiteView(geoj);
