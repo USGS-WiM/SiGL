@@ -27,7 +27,8 @@ export class MapviewComponent implements OnInit {
 	public wmsLayer: any;
 	public icon: any;
 	public tempSitesIcon: any;
-	public highlightIcon: any;
+    public highlightIcon: any;
+    public tempHighlightIcon: any;
 	public geoJsonLayer: L.GeoJSON;
 	public tempGeoJsonLayer: L.GeoJSON;
 	public selectedProjGeoJsonLayer: L.GeoJSON;
@@ -80,6 +81,16 @@ export class MapviewComponent implements OnInit {
             fill: 'Orange',
             color: 'orange',
             fillColor: 'orange',
+            fillOpacity: 0.5,
+            pane: "mainSiglLayer"
+        };
+        this.tempHighlightIcon = {
+            radius: 8,
+            weight: 5,
+            opacity: 0.2,
+            fill: 'green',
+            color: 'green',
+            fillColor: 'green',
             fillOpacity: 0.5,
             pane: "mainSiglLayer"
         };
@@ -175,7 +186,7 @@ export class MapviewComponent implements OnInit {
 								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
 							}
 							this.clickedMarker = e.target;
-							e.target.setStyle(this.highlightIcon);
+							e.target.setStyle(this.tempHighlightIcon);
 							
 							this.onFeatureSelection(e)
 						});
