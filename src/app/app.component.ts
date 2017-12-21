@@ -7,6 +7,7 @@ import { MapviewComponent } from "app/mainview/map/mapview.component";
 @Component({
   selector: 'app-root',
   template: `
+      <loader-div></loader-div>     
       <navbar></navbar>
       <sidebar></sidebar>
       <mapview></mapview>
