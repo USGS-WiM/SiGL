@@ -38,13 +38,14 @@ export class SidebarComponent implements OnInit {
 	public projectsWithSitesShowing: boolean;
 	public selectedSite: number; // change this every time a site name is clicked in the list of sites
 	public NoMatches: boolean; // if filteredProjects come back empty, flag this true so message shows instead of emptiness
-
+	public unHighlightProjName:boolean;
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService,
 		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService) { }
 
 	ngOnInit() {
 		this.chosenSortBy = undefined;
 		this.NoMatches = false;
+		this.unHighlightProjName = false;
 		// update selected site when point is clicked in map
 		this._mapService.siteClicked.subscribe(site => {
 			this.selectedSite = site.site_id || 0;
@@ -147,6 +148,7 @@ export class SidebarComponent implements OnInit {
 	}
 
 	public showProjectDetails(project: any): void {
+		this.unHighlightProjName = false;
 		this._siglService.setsitePointClickBool(false); //let mainview know proj name was clicked (not site point anymore)
 		this._mapService.setSiteClicked({});
 		let projID = project.project_id || project.ProjectId;
@@ -158,7 +160,8 @@ export class SidebarComponent implements OnInit {
 		if (site.project_id != this.selectedProjectId) {
 			this.selectedProjectId = site.project_id;
 		}
-		//this.selectedSite = 
+		// if project name has been highlighted, need to unhighlight if single site clicked
+		this.unHighlightProjName = true;
 		this._mapService.setSiteClicked({ "site_id": site.site_id, "project_id": site.project_id, "fromMap": false });
 		this._siglService.setFullSite(site.site_id.toString());
 	}
@@ -248,6 +251,7 @@ export class SidebarComponent implements OnInit {
 		}
 	};
 
+	// turn off/on projects without sites
 	public toggleSiteProjects(onOrOff) {
 		if (this.projectsWithSitesShowing) {
 			// only show projects with sites
@@ -257,6 +261,9 @@ export class SidebarComponent implements OnInit {
 			// show all projects (with and without sites)
 			this.projectsWithSitesShowing = true;
 			this.filteredProjects = this.allFilteredProjectsHolder.map(x => Object.assign({}, x));
+		}
+		if (this.chosenSortBy){
+			this.sortProjListBy(this.chosenSortBy);
 		}
 	}
 

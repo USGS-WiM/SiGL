@@ -63,7 +63,7 @@ export class MapService {
     private _allShowingProjectIDs: Subject<Array<number>> = new Subject<Array<number>>();
     private _allOrgSystems: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
     private _siteClicked: Subject<any> = new Subject<any>();
-
+    
     //initial set of all geojson sites. keep for resetting
     public setAllSiteView(geoJson: any) {
         this._allSiteView = geoJson;//this._allSiteViewSubject.next(geoJSON); 

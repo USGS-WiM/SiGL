@@ -8,12 +8,13 @@ import { ModalService } from '../shared/services/modal.service';
 import { SiglService } from '../shared/services/siglservices.service';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { AboutComponent } from '../shared/components/aboutmodal/about.component';
+import { HighlightDirective } from '../shared/directives/highlight.directive';
 
 
 @NgModule({
 	imports: [CommonModule, NgbModule.forRoot(), MultiselectDropdownModule, FormsModule],
-	exports: [NgbModule, FilterComponent, AboutComponent, MultiselectDropdownModule ],
-	declarations: [FilterComponent, AboutComponent ],
+	exports: [NgbModule, FilterComponent, AboutComponent, MultiselectDropdownModule, HighlightDirective ],
+	declarations: [FilterComponent, AboutComponent, HighlightDirective ],
 	providers: [SiglService, MapService, ModalService ]
 })
 export class SharedModule { }

@@ -28,7 +28,8 @@ import { MapService } from '../../shared/services/map.service';
 @Injectable()
 export class SiglService {
 	private filteredSiteIDArray: any;
-	
+	private filteredSiteSubscription: any;
+
 	constructor(private _http: Http, private _mapService: MapService) {
 		this.setParameters();
 		this.setProjDurations();
@@ -228,9 +229,10 @@ export class SiglService {
 			if (filters.s_monitorEffect) sitesParam.set("ProjMonitorCoords", filters.s_monitorEffect.join(","));
 			
 			if (sitesParam.paramsMap.size > 0) {
+				if (this.filteredSiteSubscription) this.filteredSiteSubscription.unsubscribe();
 				//hit the filtered projects url
 				let options = new RequestOptions( { headers: CONFIG.MIN_JSON_HEADERS, search: sitesParam });
-				this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
+				this.filteredSiteSubscription = this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
 				.map(res => <Array<Ifilteredproject>>res.json())
 				.subscribe(proj => {
 					//HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
