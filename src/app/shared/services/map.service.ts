@@ -63,7 +63,7 @@ export class MapService {
     private _tempSiteSubject: Subject<any> = new Subject<any>();
     private _allShowingProjectIDs: Subject<Array<number>> = new Subject<Array<number>>();
     private _allOrgSystems: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
-    private _siteClicked: Subject<any> = new Subject<any>();
+    private _siteClicked: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject({});
     
     private showLoader(): void {
         this._loaderService.show();
@@ -285,7 +285,9 @@ export class MapService {
     }
     // takes in projectID, loops thru this.AllSiteView and grab all sites with matching projectIDs, hit setter for mapview.component's getter to get
     public AddTempSites(projectID: number) {
-        let theseNewTemps = this._allSiteView.features.filter(function (feature) { return feature.properties.project_id == projectID; });
+        let theseNewTemps = this._allSiteView.features.filter((feature) => { 
+            return feature.properties.project_id == projectID && (this._filteredSiteIDsSubject.getValue()).indexOf(feature.properties.site_id) < 0; 
+        });
 
         if (this.temporarySites.length > 0) {
             // first see if these are already showing
