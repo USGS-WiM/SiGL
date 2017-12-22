@@ -24,13 +24,14 @@ import { Ifullproject } from "../../shared/interfaces/fullproject.interface";
 import { Ifullsite } from "../../shared/interfaces/fullsite.interface";
 
 import { MapService } from '../../shared/services/map.service';
+import { LoaderService } from '../../shared/services/loader.service';
 
 @Injectable()
 export class SiglService {
 	private filteredSiteIDArray: any;
 	private filteredSiteSubscription: any;
 
-	constructor(private _http: Http, private _mapService: MapService) {
+	constructor(private _http: Http, private _mapService: MapService, private _loaderService: LoaderService) {
 		this.setParameters();
 		this.setProjDurations();
 		this.setProjStatuses();
@@ -212,9 +213,10 @@ export class SiglService {
 				this._objectiveSubject.next(ob);
 			}, error => this.handleError);
 	}
-	//called when filters modal closes and passes chosen filters
+	//called when passes chosen filters
 	public setFilteredSites(filters: IchosenFilters): void {
 		this.chosenFilters = filters;
+		this._loaderService.showSidebarLoad();
 		if (Object.keys(filters).length > 0) {
 			//filter it
 			let sitesParam: URLSearchParams = new URLSearchParams();
@@ -247,19 +249,22 @@ export class SiglService {
 							}						
 						}
 					}
+					this._loaderService.hideSidebarLoad();
 					this._filteredProjectSubject.next(proj);
 				}, error => this.handleError);
 			} else {
 				if (filters.ProjectName) {
 					// project name search
+					this._loaderService.hideSidebarLoad();
 					this.setFullProject(filters.ProjectName.project_id.toString());
 				} else {
+					this._loaderService.hideSidebarLoad();
 					this._filteredProjectSubject.next([]);
 				}
-			}
-			
+			}			
 		} else {
 			//clear it all
+			this._loaderService.hideSidebarLoad();
 			this._filteredProjectSubject.next([]);
 		}
 	}
