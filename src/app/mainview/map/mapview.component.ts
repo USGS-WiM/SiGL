@@ -89,7 +89,7 @@ export class MapviewComponent implements OnInit {
 		//for knowing which projects are showing all their sites on the map
 		this._mapService.allShowingProjectIds.subscribe((projIds: Array<number>) => {
 			this.AllShowingProjIDArray = projIds;
-		})
+		});
 		// for highlighting selected site based on sidebar site name click
 		this._mapService.siteClicked.subscribe(site=>{
 			this.showBottomBar = true;
@@ -388,10 +388,11 @@ export class MapviewComponent implements OnInit {
 		let highlightedProjSites = []; let geoJholder: any;
 
 		if (this.AllShowingProjIDArray.indexOf(projId) > -1) {
-			geoJholder = this.tempGeoj;
+			geoJholder = this.tempGeoj; 
 		} else {
 			geoJholder = this.geoj;
 		}
+
 		// now add to map as highlighted thing
 		if (Array.isArray(geoJholder)) {
 

@@ -285,7 +285,7 @@ export class MapService {
     }
     // takes in projectID, loops thru this.AllSiteView and grab all sites with matching projectIDs, hit setter for mapview.component's getter to get
     public AddTempSites(projectID: number) {
-        let theseNewTemps = this._allSiteView.features.filter(function (feature) { return feature.properties.project_id == projectID; });
+        let theseNewTemps = this._allSiteView.features.filter((feature) => { return feature.properties.project_id == projectID; });
 
         if (this.temporarySites.length > 0) {
             // first see if these are already showing

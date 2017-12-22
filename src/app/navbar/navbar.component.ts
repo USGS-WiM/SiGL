@@ -3,7 +3,7 @@ import { ModalService } from 'app/shared/services/modal.service';
 
 @Component({
   selector: 'navbar',
-  template: `<div id="header">
+  template: `<div id="navbar">
                 <div id="headerLogo">
                   <div id="usgsLogoDiv">
                     <img id="usgsLogo" alt="USGS Logo" title="USGS Links" src="assets/usgsLogo.png" /><!--</a>-->
@@ -16,10 +16,12 @@ import { ModalService } from 'app/shared/services/modal.service';
                     </div>
                     <div id="subTitle">
                       {{subtitle}}
-                      <a (click)="showAboutModal()"><img id="helpIcon" src="assets/MoreInfo.png" title="Help" /></a>
-                    </div>
-                  </div>
+                      
+                    </div>                    
+                  </div>                  
                 </div>
+                <button type="button" class="aboutNav pull-right" (click)="showAboutModal()"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;About</button>                      
+                <button type="button" class="aboutNav pull-right" (click)="showUserGuideModal()"><i class="fa fa-book"></i>&nbsp;&nbsp;UserGuide</button>
             </div>`,
   styleUrls: ['./navbar.component.css']
 })
@@ -34,6 +36,9 @@ export class NavbarComponent implements OnInit {
   }
   public showAboutModal(){
     this._modalService.showAboutModal = true;
+  }
+  public showUserGuideModal(){
+    this._modalService.showUserGuideModal = true;
   }
 
 }

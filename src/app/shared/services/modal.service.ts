@@ -6,12 +6,11 @@ export class ModalService {
 
     constructor() {} 
 
-    // show the filter modal in the app.component
+    // filter modal in the app.component
     private _showFilterModal: Subject<boolean> = new Subject<boolean>();
     public set showFilterModal(something:any){
         this._showFilterModal.next(something);
-    }
-    //show the filter modal in the mainview
+    }    
     public get showFilterModal():any{
         return this._showFilterModal.asObservable();
     }
@@ -33,5 +32,15 @@ export class ModalService {
     //show the about modal in the mainview
     public get showAboutModal():any{
         return this._showAboutModal.asObservable();
+    }
+
+    // show the userguide modal in the app.component
+    private _showUserGuideModal: Subject<boolean> = new Subject<boolean>();
+    public set showUserGuideModal(something:any){
+        this._showUserGuideModal.next(something);
+    }
+    //show the about modal in the mainview
+    public get showUserGuideModal():any{
+        return this._showUserGuideModal.asObservable();
     }
 }

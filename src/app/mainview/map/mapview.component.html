@@ -1,5 +1,6 @@
 <filter #filtermodal (modalResponseEvent)="FilterModalResponse($event)"></filter>
 <about #aboutmodal></about>
+<userguide #userguidemodal></userguide>
 <div id="map"></div>
 <div id="bottomBar" [hidden]="!showBottomBar" [ngStyle]="style" mwlResizable [enableGhostResize]="true" [resizeCursorPrecision]="30" (resizeEnd)="onResizeEnd($event)" [resizeEdges]="{bottom: false, right: false, top: true, left: false}">
     <div id="handle"><i class="fa fa-arrows-v" aria-hidden="true"></i></div>

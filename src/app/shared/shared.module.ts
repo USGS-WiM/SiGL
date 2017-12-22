@@ -11,12 +11,13 @@ import { AboutComponent } from '../shared/components/aboutmodal/about.component'
 import { HighlightDirective } from '../shared/directives/highlight.directive';
 import { LoaderService } from '../shared/services/loader.service';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
+import { UserGuideComponent } from '../shared/components/userguide/userguide.component';
 
 
 @NgModule({
 	imports: [CommonModule, NgbModule.forRoot(), MultiselectDropdownModule, FormsModule],
-	exports: [NgbModule, LoaderComponent, FilterComponent, AboutComponent, MultiselectDropdownModule, HighlightDirective ],
-	declarations: [LoaderComponent, FilterComponent, AboutComponent, HighlightDirective ],
+	exports: [NgbModule, LoaderComponent, FilterComponent, AboutComponent, UserGuideComponent, MultiselectDropdownModule, HighlightDirective ],
+	declarations: [LoaderComponent, FilterComponent, AboutComponent, UserGuideComponent, HighlightDirective ],
 	providers: [SiglService, MapService, ModalService, LoaderService ]
 })
 export class SharedModule { }
