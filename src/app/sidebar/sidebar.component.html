@@ -1,5 +1,5 @@
-<div #sidebarContainer class="sidebar sidebar-left" id="sidebar">    
-    
+<div #sidebarContainer class="sidebar sidebar-left" id="sidebar">
+
     <div class="scrollable">
         <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-1">
         <!-- Basemaps -->
@@ -125,9 +125,9 @@
                 </div>
             </ng-template>
         </ngb-panel>
-        
+
         <!-- Project List (based on Filters or on Map click) -->
-        <ngb-panel id="projList">            
+        <ngb-panel id="projList">
             <ng-template ngbPanelTitle>
                 <span>Project List</span><div class="pull-right" *ngIf="filteredProjects.length > 1"><span class="badge badge-secondary">Count: {{filteredProjects.length}}</span></div>
             </ng-template>
@@ -159,7 +159,8 @@
                             <span>
                                 <a [style.font-weight]="selectedProjectId == proj.project_id && !unHighlightProjName ? 'bold': '400'" (click)="showProjectDetails(proj)">{{proj.name}}</a>
                             </span>
-                            <span class="pull-right">
+                            <span class="">
+                            <!-- <span class="pull-right"> -->
                                 <form [formGroup]="siteCountForm">
                                     <div class="btn-group" ngbRadioGroup name="radioBasic" formControlName="siteToggle">
                                         <label ngbButtonLabel class="btn-primary siteFormLabel all">
@@ -183,7 +184,7 @@
                                     <div appHighlight [id]="'site_'+s.site_id" *ngIf="s.isTempDisplayed">
                                         <a  [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'"  (click)="showSiteDetails(s)">{{s.name}}</a>
                                     </div>
-                                </div>    
+                                </div>
                             </div>
                         </div>
                         <hr />
@@ -211,7 +212,7 @@
                                 <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
                                     <div appHighlight>
                                         <a [id]="'site_'+s.site_id" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}} -- {{s.site_id}}</a>
-                                    </div>  
+                                    </div>
                                 </div>
                             </div>
                         </div>
