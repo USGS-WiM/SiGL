@@ -74,12 +74,12 @@ export class SidebarComponent implements OnInit {
 			}
 		});
 		this.sortByObject = [
-			{ title: "Project Name A-Z", sortBy: "ProjectName", direction: "asc" },
-			{ title: "Project Name Z-A", sortBy: "ProjectName", direction: "des" },
-			{ title: "Total Site Count A-Z", sortBy: "TotalSiteCnt", direction: "asc" },
-			{ title: "Total Site Count Z-A", sortBy: "TotalSiteCnt", direction: "des" },
-			{ title: "Filtered Site Count A-Z", sortBy: "FilteredSiteCnt", direction: "asc" },
-			{ title: "Filtered Site Count Z-A", sortBy: "FilteredSiteCnt", direction: "des" }
+			{ title: "Project Name: ", icon: "&#xf15d;", sortBy: "ProjectName", direction: "asc" },
+			{ title: "Project Name: ", icon: "&#xf15e;", sortBy: "ProjectName", direction: "des" },
+			{ title: "Total Site Count: ", icon: "&#xf162;", sortBy: "TotalSiteCnt", direction: "asc" },
+			{ title: "Total Site Count: ", icon: "&#xf163;", sortBy: "TotalSiteCnt", direction: "des" },
+			{ title: "Filtered Site Count: ", icon: "&#xf162;", sortBy: "FilteredSiteCnt", direction: "asc" },
+			{ title: "Filtered Site Count: ", icon: "&#xf163;", sortBy: "FilteredSiteCnt", direction: "des" }
 		];
 		this.projectsWithSitesShowing = true;
 

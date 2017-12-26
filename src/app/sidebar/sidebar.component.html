@@ -141,7 +141,7 @@
                         <div class="col-md-8">
                             <select class="form-control" [(ngModel)]="chosenSortBy" (ngModelChange)="sortProjListBy($event)">
                                 <option value=""></option>
-                                <option [ngValue]="o" *ngFor="let o of sortByObject">{{o.title}}</option>
+                                <option *ngFor="let o of sortByObject" [ngValue]="o">{{o.title}}&nbsp;<span [innerHTML]="o.icon"></span></option>
                             </select>
                         </div>
                     </div>
