@@ -91,7 +91,7 @@ export class MapviewComponent implements OnInit {
 			this.AllShowingProjIDArray = projIds;
 		});
 		// for highlighting selected site based on sidebar site name click
-		this._mapService.siteClicked.subscribe(site=>{
+		this._mapService.siteClicked.subscribe(site=> {
 			this.showBottomBar = true;
 			this.highlightSingleSite(site);
 			//close popup if this siteClick is from the sidebar only
@@ -430,7 +430,7 @@ export class MapviewComponent implements OnInit {
 		}).addTo(this.map);
 
 	}
-	private highlightSingleSite(site){
+	private highlightSingleSite(site) {
 		//clear fullSite (empties site info tab in lower div)
 		this.fullSite = undefined;
 		this.fullSiteFlag = false;

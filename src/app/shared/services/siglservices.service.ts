@@ -236,22 +236,22 @@ export class SiglService {
 				//hit the filtered projects url
 				let options = new RequestOptions( { headers: CONFIG.MIN_JSON_HEADERS, search: sitesParam });
 				this.filteredSiteSubscription = this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
-				.map(res => <Array<Ifilteredproject>>res.json())
-				.subscribe(proj => {
-					//HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
-					for (let p of proj) {
-						for (let s of p.projectSites) {
-							if (this.filteredSiteIDArray.includes(s.site_id))
-							{
-								s.isDisplayed = true;
-							} else {
-								s.isTempDisplayed = false; //set rest to hold isTempDisplayed property
-							}						
+					.map(res => <Array<Ifilteredproject>>res.json())
+					.subscribe(proj => {
+						//HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
+						for (let p of proj) {
+							for (let s of p.projectSites) {
+								if (this.filteredSiteIDArray.includes(s.site_id))
+								{
+									s.isDisplayed = true;
+								} else {
+									s.isTempDisplayed = false; //set rest to hold isTempDisplayed property
+								}						
+							}
 						}
-					}
-					this._loaderService.hideSidebarLoad();
-					this._filteredProjectSubject.next(proj);
-				}, error => this.handleError);
+						this._loaderService.hideSidebarLoad();
+						this._filteredProjectSubject.next(proj);
+					}, error => this.handleError);
 			} else {
 				if (filters.ProjectName) {
 					// project name search
