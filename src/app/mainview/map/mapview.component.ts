@@ -400,7 +400,7 @@ export class MapviewComponent implements OnInit {
                     layer.setStyle(this.setMarker(layer.feature));
                 }
             });
-		} else {
+		} //else {
             geoJholder = this.geoj;
             this.geoJsonLayer.eachLayer((layer:any)=>{
                 if(layer.feature.properties.project_id == projId){
@@ -409,7 +409,7 @@ export class MapviewComponent implements OnInit {
                     layer.setStyle(this.setMarker(layer.feature));
                 }
             });
-		}
+		//}
 		// now add to map as highlighted thing
 		if (Array.isArray(geoJholder)) {
 
