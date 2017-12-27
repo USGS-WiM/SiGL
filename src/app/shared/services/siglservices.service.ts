@@ -25,6 +25,7 @@ import { Ifullsite } from "../../shared/interfaces/fullsite.interface";
 
 import { MapService } from '../../shared/services/map.service';
 import { LoaderService } from '../../shared/services/loader.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class SiglService {
@@ -305,4 +306,13 @@ export class SiglService {
 		console.error(error);
 		return Observable.throw(error.json().error || "Server Error");
 	}
+
+	// -+-+-+-+-+-+-+-+-+ app version (gotten from environment.ts) -+-+-+-+-+-+-+-+
+    private appversion: BehaviorSubject<string> = <BehaviorSubject<string>>new BehaviorSubject("");
+    public setVersion(val: string) {
+        this.appversion.next(val);
+    }
+    public get getVersion(): any {
+        return this.appversion.asObservable();
+    }
 }

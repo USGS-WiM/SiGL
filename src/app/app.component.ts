@@ -1,7 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { SidebarComponent } from "app/sidebar/sidebar.component";
-import { NavbarComponent } from "app/navbar/navbar.component";
-import { MapviewComponent } from "app/mainview/map/mapview.component";
+import { SidebarComponent } from "./sidebar/sidebar.component";
+import { NavbarComponent } from "./navbar/navbar.component";
+import { MapviewComponent } from "./mainview/map/mapview.component";
+import { SiglService } from './shared/services/siglservices.service';
+import { environment } from 'environments/environment';
 
 
 @Component({
@@ -15,6 +17,9 @@ import { MapviewComponent } from "app/mainview/map/mapview.component";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  constructor(private _siglService: SiglService) {
+    this._siglService.setVersion(environment.version);
+  }
   @ViewChild(NavbarComponent) navbarComponent: NavbarComponent;
   @ViewChild(SidebarComponent) sidebarComponent: SidebarComponent;    
   @ViewChild(MapviewComponent) mapviewComponent: MapviewComponent;

@@ -1,20 +1,20 @@
 import { Component, Input,  OnInit, ViewChild } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from "../../../shared/services/modal.service";
+import { SiglService } from '../../../shared/services/siglservices.service';
 
 @Component({
     selector: 'about',
-    templateUrl: './about.component.html',
-    styles: [
-        './about.component.css'
-    ]
+    templateUrl: './about.component.html',    
+    styleUrls: ['about.component.css']
 })
 export class AboutComponent implements OnInit {
     @ViewChild('aboutmodal') public AboutComponent;    
-    private modalElement: any;
-    
+    private modalElement: any;    
+    public appVersion: string;
+
     //injects services into this component
-    constructor(private _ngbService: NgbModal, private _modalService: ModalService) { }
+    constructor(private _ngbService: NgbModal, private _modalService: ModalService, private _siglService: SiglService) { }
 
     ngOnInit() {        
         this.modalElement = this.AboutComponent;
@@ -23,8 +23,9 @@ export class AboutComponent implements OnInit {
         this._modalService.showAboutModal.subscribe((show: boolean) => {
             if (show) this.showAboutModal();
         });
-
-
+        this._siglService.getVersion.subscribe((v: string) => {
+            this.appVersion = v;
+        });
     }//end ngOnInit()
 
     public showAboutModal(): void {

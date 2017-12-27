@@ -1,39 +1,55 @@
-<ng-template #aboutmodal id="about" let-c="close" let-d="dismiss">  
+<ng-template #aboutmodal id="about" let-c="close" let-d="dismiss">
     <div class="modal-header">
-        <h4 class="modal-title">Additional Information</h4>
+        <h4 class="modal-title aboutTitle">About SiGL v{{appVersion}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('cancel')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p>
-            In the Great Lakes basin, there are numerous organizations undertaking scientific monitoring and research efforts with the goal of identifying 
-            threats and evaluating management strategies that will protect and restore the Great Lakes ecosystem. Coordination among all these stakeholders 
-            is a challenge, and having a centralized location where researchers and managers can identify relevant scientific activities and access fundamental 
-            information about these activities is crucial for efficient management.
-        </p>
-        <p>
-            To meet this need, the USGS has developed the Science in the Great Lakes (SiGL) Mapper, a data-discovery tool that captures information about a 
-            wide range of scientific activities and provides details on how to access associated data and products. SiGL helps researchers and managers 
-            strategically plan, implement, and analyze monitoring and restoration activities by providing easy access to current and historical project 
-            metadata, connecting them with project leads and data repositories, and assisting in the identification of spatial and topical gaps in previous 
-            and ongoing monitoring efforts.
-        </p>
-        <p>
-            To access project information, click on any site, and a pop-up will open. Click through the tabs at the top of the pop-up to view information about 
-            the project and its associated data, contacts, and publications, as well as detailed information about each of the project’s sites. To search SiGL, 
-            use the menu on the right side of the mapper. You can search by Site or by Project.
-        </p>
-        <p>
-                SiGL’s goal is to serve the entire Great Lakes community, and we are open to feedback and ideas that will make SiGL a more useful and comprehensive 
-                tool. If you have questions or comments, or would like to have your data included in the SiGL, please contact:
-        </p>
-        <p>
-            Jennifer Bruce<br/>
-            SiGL Project Lead<br/>
-            USGS Wisconsin Water Science Center<br/>
-            jlbruce@usgs.gov<br/>
-            608-821-3906<br/>
-        </p>
-    </div>        
+        <ngb-tabset #aboutTabs>
+            <ngb-tab title="About the project" id="about">
+                <ng-template ngbTabContent>
+                    <p>
+                        In the Great Lakes basin, there are numerous organizations undertaking scientific monitoring and research efforts with the
+                        goal of identifying threats and evaluating management strategies that will protect and restore the
+                        Great Lakes ecosystem. Coordination among all these stakeholders is a challenge, and having a centralized
+                        location where researchers and managers can identify relevant scientific activities and access fundamental
+                        information about these activities is crucial for efficient management.
+                    </p>
+                    <p>
+                        To meet this need, the USGS has developed the Science in the Great Lakes (SiGL) Mapper, a data-discovery tool that captures
+                        information about a wide range of scientific activities and provides details on how to access associated
+                        data and products. SiGL helps researchers and managers strategically plan, implement, and analyze
+                        monitoring and restoration activities by providing easy access to current and historical project
+                        metadata, connecting them with project leads and data repositories, and assisting in the identification
+                        of spatial and topical gaps in previous and ongoing monitoring efforts.
+                    </p>
+                    <p>
+                        To access project information, click on any site, and a pop-up will open. Click through the tabs at the top of the pop-up
+                        to view information about the project and its associated data, contacts, and publications, as well
+                        as detailed information about each of the project’s sites. To search SiGL, use the menu on the right
+                        side of the mapper. You can search by Site or by Project.
+                    </p>
+                    <p>
+                        SiGL’s goal is to serve the entire Great Lakes community, and we are open to feedback and ideas that will make SiGL a more
+                        useful and comprehensive tool. If you have questions or comments, or would like to have your data
+                        included in the SiGL, please contact:
+                    </p>
+                    <p>
+                        Jennifer Bruce
+                        <br/> SiGL Project Lead
+                        <br/> USGS Wisconsin Water Science Center
+                        <br/> jlbruce@usgs.gov
+                        <br/> 608-821-3906
+                        <br/>
+                    </p>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Disclaimers">
+                <ng-template ngbTabContent>
+                    <p>USGS Data Disclaimer</p>
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
+    </div> <!-- end modal-body-->
 </ng-template>
