@@ -14,6 +14,8 @@ import { Ifilteredproject } from 'app/shared/interfaces/filteredproject';
 
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
+declare let gtag: Function;
+
 @Component({
 	selector: 'mapview',
 	templateUrl: './mapview.component.html',
@@ -219,6 +221,7 @@ export class MapviewComponent implements OnInit {
 						//console.log(this.groupedParams);
 						break;
 				}
+				
 			});
         });
         
