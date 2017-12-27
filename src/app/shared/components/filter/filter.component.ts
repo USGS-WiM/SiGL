@@ -17,7 +17,7 @@ import { Iobjective } from "../../../shared/interfaces/objective.interface";
 import { IchosenFilters } from "../../../shared/interfaces/chosenFilters.interface";
 import { MapService } from '../../../shared/services/map.service';
 import { prepareProfile } from 'selenium-webdriver/firefox';
-
+declare let gtag: Function;
 
 @Component({
     selector: 'filter',
@@ -178,6 +178,7 @@ export class FilterComponent implements OnInit {
         this._ngbService.open(this.modalElement, { backdrop: 'static', keyboard: false, size: 'lg' }).result.then((results) => {
             let closeResult = `Closed with: ${results}`;
             if (results == 'Clear') {
+                gtag('event', 'click', {'event_category': 'Filter','event_label': 'filterCleared'});
                 //reset all selects in the modal
                 this.parameterSelected = [];
                 this.projDurationSelected = [];
@@ -214,10 +215,10 @@ export class FilterComponent implements OnInit {
         if (this.chosenFiltersObj.ProjectName) {
             this.projectSelected = undefined;
             delete this.chosenFiltersObj.ProjectName;
+           
             this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
-           // this._siglService.chosenFilters = this.chosenFiltersObj; //update the sidebar's filters chosen list
-        }
+            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects         
+        }        
         switch (which) {
             case "parameters":
                 if (e.length > 0) {
@@ -352,7 +353,8 @@ export class FilterComponent implements OnInit {
                 }
                 break;
         }//end switch
-       
+
+        gtag('event', 'click', {'event_category': 'Filter','event_label': 'filterChange: ' + (which + ": {" + e + "}")});
         this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
         this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects        
       //  this._siglService.chosenFilters = this.chosenFiltersObj; //update the sidebar's filters chosen list
@@ -382,6 +384,7 @@ export class FilterComponent implements OnInit {
             this.chosenFiltersObj = {};
         }
         // now update with this project
+        gtag('event', 'click', {'event_category': 'Filter','event_label': 'filterbyProject: ' + project.name});
         this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
         this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
        // this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list

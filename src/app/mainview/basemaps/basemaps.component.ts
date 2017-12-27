@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MapService } from "app/shared/services/map.service";
 
+declare let gtag: Function;
+
 @Component({
   selector: 'basemaps',
   templateUrl: './basemaps.component.html',
@@ -24,9 +26,13 @@ export class BasemapsComponent implements OnInit {
     this._mapService.map.removeLayer(this._mapService.baseMaps["Terrain"]);
     this._mapService.map.removeLayer(this._mapService.baseMaps["Satellite"]);
     this._mapService.map.removeLayer(this._mapService.baseMaps["Gray"]);
+
+    
     
     // now add the one they want
     this._mapService.map.addLayer(this._mapService.baseMaps[newVal]);
+
+    gtag('event', 'click', {'event_category': 'Basemaps','event_label': 'basemap: ' + newVal});
   }
 
 }

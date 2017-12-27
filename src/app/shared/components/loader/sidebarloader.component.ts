@@ -3,21 +3,21 @@ import { Subscription } from 'rxjs/Subscription';
 import { LoaderService } from '../../services/loader.service';
 
 @Component({
-    selector: 'loader-div',
-    template: `<div [class.loader-hidden]="!show">
-                  <div class="page-loader" id="page-loader"></div>
+    selector: 'sideloader-div',
+    template: `<div [class.sideloader-hidden]="!show">
+                  <div class="side-loader" id="side-loader"></div>
                 </div>`,
     styleUrls: ['loader.component.css']
 })
 
-export class LoaderComponent implements OnInit {
-    public show = true; //start it showing until the geojson comes back
+export class SideLoaderComponent implements OnInit {
+    public show = false; 
     private subscription: Subscription;
 
     constructor(private _loaderService: LoaderService) { }
 
     ngOnInit() {         
-        this.subscription = this._loaderService.loaderState.subscribe((state: boolean) => {
+        this.subscription = this._loaderService.sideloaderState.subscribe((state: boolean) => {
             this.show = state;
         });
     }

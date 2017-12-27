@@ -16,6 +16,8 @@ import { transition } from '@angular/core/src/animation/dsl';
 import { PageScrollInstance, PageScrollService } from 'ng2-page-scroll';
 import { Event } from '@angular/router/src/events';
 
+declare let gtag: Function;
+
 @Component({
 	selector: 'sidebar',
 	templateUrl: 'sidebar.component.html',
@@ -38,7 +40,7 @@ export class SidebarComponent implements OnInit {
 	public projectsWithSitesShowing: boolean;
 	public selectedSite: number; // change this every time a site name is clicked in the list of sites
 	public NoMatches: boolean; // if filteredProjects come back empty, flag this true so message shows instead of emptiness
-	public unHighlightProjName:boolean;
+	public unHighlightProjName: boolean;
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService,
 		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService) { }
 
@@ -60,7 +62,7 @@ export class SidebarComponent implements OnInit {
 			}
 			// scroll down to the site id chosen
 			if (site.fromMap == true) {
-				let idName: string = "#site_"+site.site_id.toString();
+				let idName: string = "#site_" + site.site_id.toString();
 				let sideBARContent = this.sidebarContainer.nativeElement;
 				setTimeout(() => {
 					let pageScrollInstance: PageScrollInstance = PageScrollInstance.newInstance(
@@ -74,12 +76,12 @@ export class SidebarComponent implements OnInit {
 			}
 		});
 		this.sortByObject = [
-			{ title: "Project Name A-Z", sortBy: "ProjectName", direction: "asc" },
-			{ title: "Project Name Z-A", sortBy: "ProjectName", direction: "des" },
-			{ title: "Total Site Count A-Z", sortBy: "TotalSiteCnt", direction: "asc" },
-			{ title: "Total Site Count Z-A", sortBy: "TotalSiteCnt", direction: "des" },
-			{ title: "Filtered Site Count A-Z", sortBy: "FilteredSiteCnt", direction: "asc" },
-			{ title: "Filtered Site Count Z-A", sortBy: "FilteredSiteCnt", direction: "des" }
+			{ title: "Project Name: ", icon: "&#xf15d;", sortBy: "ProjectName", direction: "asc" },
+			{ title: "Project Name: ", icon: "&#xf15e;", sortBy: "ProjectName", direction: "des" },
+			{ title: "Total Site Count: ", icon: "&#xf162;", sortBy: "TotalSiteCnt", direction: "asc" },
+			{ title: "Total Site Count: ", icon: "&#xf163;", sortBy: "TotalSiteCnt", direction: "des" },
+			{ title: "Filtered Site Count: ", icon: "&#xf162;", sortBy: "FilteredSiteCnt", direction: "asc" },
+			{ title: "Filtered Site Count: ", icon: "&#xf163;", sortBy: "FilteredSiteCnt", direction: "des" }
 		];
 		this.projectsWithSitesShowing = true;
 
@@ -100,7 +102,7 @@ export class SidebarComponent implements OnInit {
 				this.siteClickFullProj = undefined;
 				this.chosenSortBy = undefined;
 			}
-			
+
 		});
 		this._siglService.sitePointClickBool.subscribe((val: boolean) => {
 			this.siteWasClicked = val;
@@ -127,8 +129,8 @@ export class SidebarComponent implements OnInit {
 					});
 					this.filteredProjects.push(p);
 				});
-				if (this.chosenSortBy){
-					this.sortProjListBy(this.chosenSortBy);
+				if (this.chosenSortBy) {
+					this.sortProjListBy(this.chosenSortBy, 'redo');
 				}
 			} else {
 				//clear it all
@@ -136,7 +138,7 @@ export class SidebarComponent implements OnInit {
 				if (this.filterCount > 0)
 					this.NoMatches = true;
 			}
-			
+
 			this.allFilteredProjectsHolder = this.filteredProjects.map(x => Object.assign({}, x));
 		});
 	}
@@ -153,6 +155,7 @@ export class SidebarComponent implements OnInit {
 		this._mapService.setSiteClicked({});
 		let projID = project.project_id || project.ProjectId;
 		this.selectedProjectId = projID;
+		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'ProjectNameClick: ' + projID });
 		this._siglService.setFullProject(this.selectedProjectId.toString());
 	}
 
@@ -160,6 +163,7 @@ export class SidebarComponent implements OnInit {
 		if (site.project_id != this.selectedProjectId) {
 			this.selectedProjectId = site.project_id;
 		}
+		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'SiteNameClick: ' + site.site_id });
 		// if project name has been highlighted, need to unhighlight if single site clicked
 		this.unHighlightProjName = true;
 		this._mapService.setSiteClicked({ "site_id": site.site_id, "project_id": site.project_id, "fromMap": false });
@@ -169,6 +173,7 @@ export class SidebarComponent implements OnInit {
 	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'
 	public toggleSiteList(value: string, projectId: number) {
 		this._mapService.setSiteClicked({}); //clear selected site if one
+		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'ProjectId: ' + projectId + ', Toggle: ' + value });
 		this.filteredProjects.forEach((p: Ifilteredproject) => {
 			if (p.project_id == projectId) {
 				//is this project_id in our AllShowingProjIds array? 
@@ -206,7 +211,10 @@ export class SidebarComponent implements OnInit {
 
 	}
 
-	public sortProjListBy(chosenSort: any) {
+	public sortProjListBy(chosenSort: any, fromWhere: string) {
+		if (fromWhere == 'click')
+			gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'SortBy: ' + chosenSort.sortBy + " : " + chosenSort.direction });
+
 		if (chosenSort.sortBy == "ProjectName" && chosenSort.direction == "asc") {
 			this.filteredProjects.sort((leftSide, rightside): number => {
 				if (leftSide.name < rightside.name) return -1;
@@ -262,14 +270,15 @@ export class SidebarComponent implements OnInit {
 			this.projectsWithSitesShowing = true;
 			this.filteredProjects = this.allFilteredProjectsHolder.map(x => Object.assign({}, x));
 		}
-		if (this.chosenSortBy){
-			this.sortProjListBy(this.chosenSortBy);
+		if (this.chosenSortBy) {
+			this.sortProjListBy(this.chosenSortBy, 'redo');
 		}
 	}
 
 	public downloadCSV() {
 		let csvDataHolder: Array<any> = [];
 		let csvData: string;
+		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'Download CSV' });
 		if (this.filteredProjects.length > 0) {
 			// filtered projects download
 			csvDataHolder = this.filteredProjects.map(x => Object.assign({}, x)); //deep copy

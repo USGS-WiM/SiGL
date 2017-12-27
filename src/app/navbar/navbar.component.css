@@ -1,15 +1,15 @@
-#header {
+#navbar {
    top: 0px;
    left: 0px;
    right: 0px;
-   height: 65px;
-   background-color: #59595C;
+   background-color: black;
    color: #E7E4CE;
    position: absolute;
    z-index: 1;
    display: inline;
    font-family: BryantWebRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
    font-size: 40px;
+   padding-right: 15px;
 }
 #usgsLogoDiv {
     float: left;
@@ -21,6 +21,11 @@
     padding-bottom: 5px;
     text-align: center;   
    line-height: 0px !important;
+}
+#headerLogo{
+    background-color: black;
+    width: 70%;
+    float: left;
 }
 #usgsLogo {
    height: 45px;
@@ -42,6 +47,7 @@
 }
 #subTitle {
     padding-top: 10px;
+    width: 60%;
 }
 #betaTitle {
     float: right;
@@ -53,4 +59,17 @@
     float: right;
     cursor: pointer;
     padding-top: 5px;
+}
+.aboutNav {    
+    position: relative;
+    color: rgba(255,255,255,.8);
+    background: 0 0;
+    font-size: 10pt;
+    line-height: 16px;
+    padding: 0 5px;
+    text-transform: uppercase;
+    margin: 0 4px;
+    box-sizing: border-box;
+    letter-spacing: .5px;
+    height: 60px;
 }

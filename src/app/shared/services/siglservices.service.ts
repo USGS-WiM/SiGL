@@ -24,13 +24,14 @@ import { Ifullproject } from "../../shared/interfaces/fullproject.interface";
 import { Ifullsite } from "../../shared/interfaces/fullsite.interface";
 
 import { MapService } from '../../shared/services/map.service';
+import { LoaderService } from '../../shared/services/loader.service';
 
 @Injectable()
 export class SiglService {
 	private filteredSiteIDArray: any;
 	private filteredSiteSubscription: any;
 
-	constructor(private _http: Http, private _mapService: MapService) {
+	constructor(private _http: Http, private _mapService: MapService, private _loaderService: LoaderService) {
 		this.setParameters();
 		this.setProjDurations();
 		this.setProjStatuses();
@@ -212,9 +213,10 @@ export class SiglService {
 				this._objectiveSubject.next(ob);
 			}, error => this.handleError);
 	}
-	//called when filters modal closes and passes chosen filters
+	//called when passes chosen filters
 	public setFilteredSites(filters: IchosenFilters): void {
 		this.chosenFilters = filters;
+		this._loaderService.showSidebarLoad();
 		if (Object.keys(filters).length > 0) {
 			//filter it
 			let sitesParam: URLSearchParams = new URLSearchParams();
@@ -234,32 +236,35 @@ export class SiglService {
 				//hit the filtered projects url
 				let options = new RequestOptions( { headers: CONFIG.MIN_JSON_HEADERS, search: sitesParam });
 				this.filteredSiteSubscription = this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
-				.map(res => <Array<Ifilteredproject>>res.json())
-				.subscribe(proj => {
-					//HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
-					for (let p of proj) {
-						for (let s of p.projectSites) {
-							if (this.filteredSiteIDArray.includes(s.site_id))
-							{
-								s.isDisplayed = true;
-							} else {
-								s.isTempDisplayed = false; //set rest to hold isTempDisplayed property
-							}						
+					.map(res => <Array<Ifilteredproject>>res.json())
+					.subscribe(proj => {
+						//HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
+						for (let p of proj) {
+							for (let s of p.projectSites) {
+								if (this.filteredSiteIDArray.includes(s.site_id))
+								{
+									s.isDisplayed = true;
+								} else {
+									s.isTempDisplayed = false; //set rest to hold isTempDisplayed property
+								}						
+							}
 						}
-					}
-					this._filteredProjectSubject.next(proj);
-				}, error => this.handleError);
+						this._loaderService.hideSidebarLoad();
+						this._filteredProjectSubject.next(proj);
+					}, error => this.handleError);
 			} else {
 				if (filters.ProjectName) {
 					// project name search
+					this._loaderService.hideSidebarLoad();
 					this.setFullProject(filters.ProjectName.project_id.toString());
 				} else {
+					this._loaderService.hideSidebarLoad();
 					this._filteredProjectSubject.next([]);
 				}
-			}
-			
+			}			
 		} else {
 			//clear it all
+			this._loaderService.hideSidebarLoad();
 			this._filteredProjectSubject.next([]);
 		}
 	}

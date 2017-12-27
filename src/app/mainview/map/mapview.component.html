@@ -1,7 +1,9 @@
 <filter #filtermodal (modalResponseEvent)="FilterModalResponse($event)"></filter>
 <about #aboutmodal></about>
+<userguide #userguidemodal></userguide>
 <div id="map"></div>
-<div id="bottomBar" [hidden]="!showBottomBar" [ngStyle]="style" mwlResizable [enableGhostResize]="true" [resizeCursorPrecision]="30" (resizeEnd)="onResizeEnd($event)" [resizeEdges]="{bottom: false, right: false, top: true, left: false}">
+<div id="bottomBar" [hidden]="!showBottomBar" [ngStyle]="style" mwlResizable [enableGhostResize]="true" [resizeCursorPrecision]="30" 
+    (resizeEnd)="onResizeEnd($event)" [resizeEdges]="{bottom: false, right: false, top: true, left: false}">
     <div id="handle"><i class="fa fa-arrows-v" aria-hidden="true"></i></div>
 
     <div id="tabContainer">
@@ -150,7 +152,7 @@
                      <div *ngIf="fullSiteFlag">
                         <div>
                             <!--selecting the first site in the array for now-->
-                            <span *ngIf="fullSite" class="dataHeader">Site Name: {{fullSite.Name}} -- {{fullSite.SiteId}}</span> 
+                            <span *ngIf="fullSite" class="dataHeader">Site Name: {{fullSite.Name}}</span> 
                         </div>
                         <ng-container *ngTemplateOutlet="innerTabset"></ng-container>
                      </div>

@@ -14,6 +14,8 @@ import { Ifilteredproject } from 'app/shared/interfaces/filteredproject';
 
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
+declare let gtag: Function;
+
 @Component({
 	selector: 'mapview',
 	templateUrl: './mapview.component.html',
@@ -98,7 +100,7 @@ export class MapviewComponent implements OnInit {
 		//for knowing which projects are showing all their sites on the map
 		this._mapService.allShowingProjectIds.subscribe((projIds: Array<number>) => {
 			this.AllShowingProjIDArray = projIds;
-		})
+		});
 		// for highlighting selected site based on sidebar site name click
 		this._mapService.siteClicked.subscribe(site=>{
             this.showBottomBar = true;
@@ -154,7 +156,8 @@ export class MapviewComponent implements OnInit {
                         });
                         //changed from on 'click' to on 'popupopen' to test
 						layer.on("click", (e) => {
-							this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id, "fromMap": true});
+							gtag('event', 'click', { 'event_category': 'Map', 'event_label': 'SitePoint in filteredLayer: ' + e.target.feature.properties.site_id });
+							this._mapService.setSiteClicked({"site_id": e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id, "fromMap": true});
 							if (this.clickedMarker) {
 								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
 							}
@@ -180,6 +183,7 @@ export class MapviewComponent implements OnInit {
 					onEachFeature: ((feature, layer) => {
 						layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
 						layer.on("click", (e) => {
+							gtag('event', 'click', { 'event_category': 'Map', 'event_label': 'SitePoint in tempProjectLayer: ' + e.target.feature.properties.site_id });
 							this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id, "fromMap": true});
 							
 							if (this.clickedMarker) {
@@ -229,6 +233,7 @@ export class MapviewComponent implements OnInit {
 						//console.log(this.groupedParams);
 						break;
 				}
+				
 			});
         });
         
@@ -338,7 +343,6 @@ export class MapviewComponent implements OnInit {
     }
 
     public onFeatureSelection(event): void {
-
         if (this.filteredProjects.length > 0) {
             console.log("fired if there are filtered projects")
             //need to find site and highlight it in the sidebar project--> site list 
@@ -359,24 +363,11 @@ export class MapviewComponent implements OnInit {
         this._siglService.setFullProject(event.target.feature.properties.project_id);
         this._siglService.setFullSite(event.target.feature.properties.site_id);
         this.tabs.select('site');
-        //event.target.resetIcon(event.layer);
-        //event.target.feature.setIcon(this.highlightIcon);
-        //event.layer.bringToFront();
-        //event.target.setStyle(highlightStyle);
     }
 
+    //NOT IN USE mouseover event
     public onFeatureMouseover(event): void {
-
-        /* let highlightStyle = {
-            radius: 8,
-            color: 'green',
-            fillColor: 'green',
-            fillOpacity: 0.9
-
-        }
-        console.log('mouseover ' + event.target.feature.properties.site_id); */
-
-
+        /*console.log('mouseover ' + event.target.feature.properties.site_id); */
 	}
 
 	//project name was selected from sidebar. add highlight marker to all sites belonging to this project
@@ -386,11 +377,12 @@ export class MapviewComponent implements OnInit {
         this.fullSiteFlag = false;
         
         //the sites that match the filter
-        this.geoj.filter(function(feature) {return feature.properties.project_id == projId});
+        //this.geoj.filter(function(feature) {return feature.properties.project_id == projId});
 
 		if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
 		let highlightedProjSites = []; let geoJholder: any;
 
+        //check for any projects showing ALL and not just the filtered sites
 		if (this.AllShowingProjIDArray.indexOf(projId) > -1) {
             geoJholder = this.tempGeoj;
             this.tempGeoJsonLayer.eachLayer((layer:any)=>{
@@ -400,16 +392,16 @@ export class MapviewComponent implements OnInit {
                     layer.setStyle(this.setMarker(layer.feature));
                 }
             });
-		} //else {
-            geoJholder = this.geoj;
-            this.geoJsonLayer.eachLayer((layer:any)=>{
-                if(layer.feature.properties.project_id == projId){
-                    layer.setStyle(this.highlightIcon);
-                } else{
-                    layer.setStyle(this.setMarker(layer.feature));
-                }
-            });
-		//}
+		}
+        geoJholder = this.geoj;
+        this.geoJsonLayer.eachLayer((layer:any)=>{
+            if(layer.feature.properties.project_id == projId){
+                layer.setStyle(this.highlightIcon);
+            } else{
+                layer.setStyle(this.setMarker(layer.feature));
+            }
+        });
+		
 		// now add to map as highlighted thing
 		if (Array.isArray(geoJholder)) {
 
@@ -425,32 +417,8 @@ export class MapviewComponent implements OnInit {
 				}
 			});
         }
-        
-        /**************** find sites in geojson layer and set highlight symbol ***********************/
-        /* find sites in TEMP geojson layer and set TEMP highlight symbol */
-
-		/* this.selectedProjGeoJsonLayer = L.geoJSON(<any>highlightedProjSites, {
-			pointToLayer: ((feature, latlng) => {
-				return L.circleMarker(latlng, this.highlightIcon);
-			}),
-			onEachFeature: ((feature, layer) => {
-				layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
-				layer.on("click", (e) => {
-					this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id, "fromMap": true});
-
-					if (this.clickedMarker) {
-						this.clickedMarker.setStyle(this.setMarker(e.target.feature));
-					}
-					this.clickedMarker = e.target;
-					e.target.setStyle(this.tempHighlightIcon);
-
-					this.onFeatureSelection(e)
-				});
-			})
-		}).addTo(this.map); */
-
 	}
-	private highlightSingleSite(site){
+	private highlightSingleSite(site) {
 		//clear fullSite (empties site info tab in lower div)
 		this.fullSite = undefined;
         this.fullSiteFlag = false;
@@ -460,66 +428,24 @@ export class MapviewComponent implements OnInit {
 		let highlightedSite = []; let geoJholder: any;
 
         
-		//if (this.AllShowingProjIDArray.indexOf(site.project_id) > -1) {
+		if (this.tempGeoj) {
             geoJholder = this.tempGeoj;
             this.tempGeoJsonLayer.eachLayer((layer: any) => {
                 if(layer.feature.properties.site_id == site.site_id){
                     layer.setStyle(this.tempHighlightIcon);
                 } else{
-                    layer.setStyle(this.setMarker(layer.feature));
+                    layer.setStyle(this.tempSitesIcon);
                 }
             },site); 
-		//} else {
-            geoJholder = this.geoj;
-            this.geoJsonLayer.eachLayer((layer:any)=>{
-                if(layer.feature.properties.site_id == site.site_id){
-                    layer.setStyle(this.highlightIcon);
-                } else{
-                    layer.setStyle(this.setMarker(layer.feature));
-                }
-            }, site);
-		//}
-		// now add to map as highlighted thing
-		/* if (Array.isArray(geoJholder)) {
-
-			geoJholder.forEach(feature => {
-				if (feature.properties.site_id == site.site_id) {
-					highlightedSite.push(feature);
-				}
-			});
-		} else {
-			geoJholder.features.forEach(feature => {
-				if (feature.properties.site_id == site.site_id) {
-					highlightedSite.push(feature);
-				}
-			});
-        } */
-
-        ///this.clickedMarker.setStyle(this.setMarker(e.target.feature));
-    
-        /******************* find the SINGLE SITE and set symbol ********************/
-        
-
-		/* this.selectedProjGeoJsonLayer = L.geoJSON(<any>highlightedSite, {
-			pointToLayer: ((feature, latlng) => {
-				return L.circleMarker(latlng, this.highlightIcon);
-			}),
-			onEachFeature: ((feature, layer) => {
-				layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
-				layer.on("click", (e) => {
-					this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id, "fromMap": true});
-
-					if (this.clickedMarker) {
-						this.clickedMarker.setStyle(this.setMarker(e.target.feature));
-					}
-					this.clickedMarker = e.target;
-					e.target.setStyle(this.highlightIcon);
-
-					this.onFeatureSelection(e)
-				});
-			})
-		}).addTo(this.map); */
-
+		}
+        geoJholder = this.geoj;
+        this.geoJsonLayer.eachLayer((layer:any)=>{
+            if(layer.feature.properties.site_id == site.site_id){
+                layer.setStyle(this.highlightIcon);
+            } else{
+                layer.setStyle(this.setMarker(layer.feature));
+            }
+        }, site);
 	}
 	//select fillcolor for leaflet circleMakers
 	public setMarker(feature) {
@@ -555,6 +481,5 @@ export class MapviewComponent implements OnInit {
 			fillOpacity: 0.5
 		}
 	}
-
 }
 

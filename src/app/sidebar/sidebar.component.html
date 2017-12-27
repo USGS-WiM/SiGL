@@ -1,7 +1,7 @@
-<div #sidebarContainer class="sidebar sidebar-left" id="sidebar">
+<div #sidebarContainer class="sidebar sidebar-left" id="sidebar">    
+    
     <div class="scrollable">
         <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-1">
-
         <!-- Basemaps -->
         <ngb-panel title="Basemaps">
             <ng-template ngbPanelContent>
@@ -125,22 +125,23 @@
                 </div>
             </ng-template>
         </ngb-panel>
-
+        
         <!-- Project List (based on Filters or on Map click) -->
-        <ngb-panel id="projList">
+        <ngb-panel id="projList">            
             <ng-template ngbPanelTitle>
                 <span>Project List</span><div class="pull-right" *ngIf="filteredProjects.length > 1"><span class="badge badge-secondary">Count: {{filteredProjects.length}}</span></div>
             </ng-template>
             <ng-template ngbPanelContent>
+                <sideloader-div></sideloader-div>
                 <!--If filtered Projects have been requested (from dropdown selection)-->
                 <div *ngIf="filteredProjects?.length > 0">
                     <div> Click on a project name or site to highlight it on the map.</div>
                     <div class="row down10">
                         <label class="col-md-3">Sort by: </label>
                         <div class="col-md-8">
-                            <select class="form-control" [(ngModel)]="chosenSortBy" (ngModelChange)="sortProjListBy($event)">
+                            <select class="form-control" [(ngModel)]="chosenSortBy" (ngModelChange)="sortProjListBy($event, 'click')">
                                 <option value=""></option>
-                                <option [ngValue]="o" *ngFor="let o of sortByObject">{{o.title}}</option>
+                                <option *ngFor="let o of sortByObject" [ngValue]="o">{{o.title}}&nbsp;<span [innerHTML]="o.icon"></span></option>
                             </select>
                         </div>
                     </div>
@@ -217,6 +218,7 @@
                         <hr />
                     </div>
                 </div>
+
                 <div *ngIf="NoMatches && !siteClickFullProj">
                     There are no projects that match the filtered request.
                 </div>
