@@ -103,8 +103,9 @@ export class MapviewComponent implements OnInit {
 		});
 		// for highlighting selected site based on sidebar site name click
 		this._mapService.siteClicked.subscribe(site=>{
-            this.showBottomBar = true;
+            
             if (Object.keys(site).length > 0){
+                this.showBottomBar = true;
                 this.highlightSingleSite(site);
             }
 			//close popup if this siteClick is from the sidebar only
