@@ -139,7 +139,7 @@
                     <div class="row down10">
                         <label class="col-md-3">Sort by: </label>
                         <div class="col-md-8">
-                            <select class="form-control" [(ngModel)]="chosenSortBy" (ngModelChange)="sortProjListBy($event)">
+                            <select class="form-control" [(ngModel)]="chosenSortBy" (ngModelChange)="sortProjListBy($event, 'click')">
                                 <option value=""></option>
                                 <option *ngFor="let o of sortByObject" [ngValue]="o">{{o.title}}&nbsp;<span [innerHTML]="o.icon"></span></option>
                             </select>

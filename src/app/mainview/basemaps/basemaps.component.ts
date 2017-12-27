@@ -32,7 +32,7 @@ export class BasemapsComponent implements OnInit {
     // now add the one they want
     this._mapService.map.addLayer(this._mapService.baseMaps[newVal]);
 
-    gtag('event', 'click', {'event_category': 'Sidebar','event_label': 'basemap: ' + newVal});
+    gtag('event', 'click', {'event_category': 'Basemaps','event_label': 'basemap: ' + newVal});
   }
 
 }
