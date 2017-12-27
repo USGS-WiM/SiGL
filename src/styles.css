@@ -54,6 +54,9 @@ HEADER
 .appname{
   color: white;
 }
+#subTitle{
+  width: 100% !important; 
+}
 
 #helpIcon{
   filter: brightness(200%);
@@ -176,7 +179,7 @@ FILTER MAP
 }
 
 #projList hr{
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
   margin-bottom: 1.5rem;
 }
 #sidebar .pull-right.btn-group{
@@ -184,9 +187,12 @@ FILTER MAP
   top: 4px;
 }
 
+#projList .btn-group{
+  margin-top: 10px;
+}
+
 #filterContent .row{
   padding: 10px;
-  border-bottom: 1px solid rgba(0,0,0,0.125);
 }
 #filterContent .row label{
   margin-top: 6px;
