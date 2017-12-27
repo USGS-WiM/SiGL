@@ -10,7 +10,7 @@ export class HighlightDirective {
         this.highlight('#eaeaea');
     }    
 
-    @HostListener('mouseleave') onMouseLeave() {
+    @HostListener('mouseleave') onMouseLeave() {    
         this.highlight(null);
     }
 
