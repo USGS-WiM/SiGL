@@ -275,7 +275,7 @@ export class MapviewComponent implements OnInit {
         });
 
         this.map = L.map("map", {
-            center: L.latLng(44.2, -88.01),
+            center: L.latLng(44.2, -82.01),
             zoom: 6,
             minZoom: 4,
             maxZoom: 19,

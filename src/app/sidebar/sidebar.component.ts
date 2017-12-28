@@ -49,6 +49,8 @@ export class SidebarComponent implements OnInit {
 	public selectedSite: number; // change this every time a site name is clicked in the list of sites
 	public NoMatches: boolean; // if filteredProjects come back empty, flag this true so message shows instead of emptiness
 	public unHighlightProjName: boolean;
+	public showMobileSidebar: boolean; // for mobile responsiveness, when 3-line menu clicked, show sidebar
+
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService,
 		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService) { }
 
@@ -149,7 +151,12 @@ export class SidebarComponent implements OnInit {
 
 			this.allFilteredProjectsHolder = this.filteredProjects.map(x => Object.assign({}, x));
 		});
-	}
+
+		// to show the sidebar when mobile	subscription that adds the class ([class.sidebar-mobile-show]) on the div to show/hide it
+		this._siglService.showSidebar.subscribe((val: boolean) => {
+            this.showMobileSidebar = val;
+        });
+	} // end ngOnInit()
 
 	// show filter button click
 	public showFilterModal(): void {
