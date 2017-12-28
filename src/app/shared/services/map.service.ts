@@ -69,6 +69,7 @@ export class MapService {
     private _allShowingProjectIDs: Subject<Array<number>> = new Subject<Array<number>>();
     private _allOrgSystems: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
     private _siteClicked: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject({});
+    private _projectNameClicked: BehaviorSubject<boolean> = <BehaviorSubject<boolean>> new BehaviorSubject(false);
     
     //initial set of all geojson sites. keep for resetting
     public setAllSiteView(geoJson: any) {
@@ -92,6 +93,9 @@ export class MapService {
     public setSiteClicked(site: any) {
         this._siteClicked.next(site);
     }
+    public setProjectNameClicked(wasClicked: boolean){
+        this._projectNameClicked.next(wasClicked);
+    }
     // clear filters and give back all
     public get AllSiteView(): Observable<any> {
         return this._allSiteView;
@@ -114,6 +118,9 @@ export class MapService {
     }
     public get siteClicked(): Observable<any>{
         return this._siteClicked.asObservable();
+    }
+    public get projectNameClicked(): Observable<boolean>{
+        return this._projectNameClicked.asObservable();
     }
     //called after filtered modal closes and filters have been chosen
     public updateFilteredSites(filters: IchosenFilters) {
