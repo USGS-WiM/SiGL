@@ -6,21 +6,16 @@ import { ModalService } from 'app/shared/services/modal.service';
   template: `<div id="navbar">
                 <div id="headerLogo">
                   <div id="usgsLogoDiv">
+                    <i class="fa fa-bars" id="mobileMenuBtn"></i>
                     <img id="usgsLogo" alt="USGS Logo" title="USGS Links" src="assets/usgsLogo.png" /><!--</a>-->
                   </div>
                   <div id="titles">
                     <div class="appname">
-                        <div id="betaTitle"></div>
-                        <div id="title">{{title}}</div>
-                        <div id="titleSeparator">:</div>
+                        Science in the Great Lakes (SiGL)
                     </div>
-                    <div id="subTitle">
-                      {{subtitle}}
-                      
-                    </div>                    
-                  </div>                  
+                  </div>
                 </div>
-                <button type="button" class="aboutNav pull-right" (click)="showAboutModal()"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;About</button>                      
+                <button type="button" class="aboutNav pull-right" (click)="showAboutModal()"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;About</button>
                 <button type="button" class="aboutNav pull-right" (click)="showUserGuideModal()"><i class="fa fa-book"></i>&nbsp;&nbsp;UserGuide</button>
             </div>`,
   styleUrls: ['./navbar.component.css']
