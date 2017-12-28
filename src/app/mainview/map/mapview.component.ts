@@ -124,10 +124,12 @@ export class MapviewComponent implements OnInit {
 				}
 				
 				if (this.filtermodal.chosenFiltersObj) {
-					if (this.filtermodal.chosenFiltersObj.ProjectName == undefined) {		
+					/* if (this.filtermodal.chosenFiltersObj.ProjectName == undefined) {		
 						this.highlightProjSites(this.fullProj.ProjectId);
-					}
-				}
+                    } */
+                    this.highlightProjSites(this.fullProj.ProjectId);
+                }
+                
             }
 			this.showBottomBar = true;
 			let tabID = this.siteClickFlag ? 'site' : 'project';
