@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { SiglservicesService } from './siglservices.service';
+import { SiglService } from './siglservices.service';
 
 describe('SiglservicesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SiglservicesService]
+      providers: [SiglService]
     });
   });
 
-  it('should ...', inject([SiglservicesService], (service: SiglservicesService) => {
+  it('should ...', inject([SiglService], (service: SiglService) => {
     expect(service).toBeTruthy();
   }));
 });
