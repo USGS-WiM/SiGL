@@ -1,5 +1,13 @@
+// ------------------------------------------------------------------------------
+// ------------ navbar.component ------------------------------------------------
+// ------------------------------------------------------------------------------
+// copyright:   2017 WiM - USGS
+// authors:     Tonia Roddick USGS Web Informatics and Mapping
+//              Erik Myers USGS Web Informatics and Mapping
+// purpose:     The navbar component is along the top of the application and contains the About and User Guide buttons
+
 import { Component, OnInit } from '@angular/core';
-import { ModalService } from 'app/shared/services/modal.service';
+import { ModalService } from '../shared/services/modal.service';
 
 @Component({
   selector: 'navbar',
@@ -25,6 +33,7 @@ import { ModalService } from 'app/shared/services/modal.service';
             </div>`,
   styleUrls: ['./navbar.component.css']
 })
+
 export class NavbarComponent implements OnInit {
   public title: string;
   public subtitle: string;

@@ -1,20 +1,28 @@
+// ------------------------------------------------------------------------------
+// ------------ sidebar.component -----------------------------------------------
+// ------------------------------------------------------------------------------
+// copyright:   2017 WiM - USGS
+// authors:     Tonia Roddick USGS Web Informatics and Mapping
+//              Erik Myers USGS Web Informatics and Mapping
+// purpose:     The sidebar component contains the basemaps selector, the filters and project list based on map click or filters chosen
+
 import { Component, OnInit, ViewChild, Inject, ElementRef } from '@angular/core';
+import { Event } from '@angular/router/src/events';
 import { DOCUMENT } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
+// import { transition } from '@angular/core/src/animation/dsl';
 import 'rxjs/Rx';
+import { PageScrollInstance, PageScrollService } from 'ng2-page-scroll';
 
 import { BasemapsComponent } from "../mainview/basemaps/basemaps.component";
+
 import { ModalService } from "../shared/services/modal.service";
 import { IchosenFilters } from "../shared/interfaces/chosenFilters.interface";
 import { Ifilteredproject } from "../shared/interfaces/filteredproject";
 import { Isimplesite } from "../shared/interfaces/simplesite";
 import { Ifullproject } from '../shared/interfaces/fullproject.interface';
-
 import { SiglService } from "../shared/services/siglservices.service";
 import { MapService } from '../shared/services/map.service';
-import { transition } from '@angular/core/src/animation/dsl';
-import { PageScrollInstance, PageScrollService } from 'ng2-page-scroll';
-import { Event } from '@angular/router/src/events';
 
 declare let gtag: Function;
 

@@ -1,3 +1,11 @@
+// ------------------------------------------------------------------------------
+// ------------ chosenFilters.interface -----------------------------------------
+// ------------------------------------------------------------------------------
+// copyright:   2017 WiM - USGS
+// authors:     Tonia Roddick USGS Web Informatics and Mapping
+//              Erik Myers USGS Web Informatics and Mapping
+// purpose:     Interface for Filters chosen in Sidebar
+
 import { IMultiSelectOption  } from "angular-2-dropdown-multiselect";
 import {Iorganization} from "./organization.interface";
 import { Isimpleproject } from "app/shared/interfaces/simpleproject.interface";

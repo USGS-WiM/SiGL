@@ -1,3 +1,12 @@
+// ------------------------------------------------------------------------------
+// ------------ filter.component ------------------------------------------------
+// ------------------------------------------------------------------------------
+// copyright:   2017 WiM - USGS
+// authors:     Tonia Roddick USGS Web Informatics and Mapping
+//              Erik Myers USGS Web Informatics and Mapping
+// purpose:     selector component that sits within the mapview.component.html page. 
+//              A modal containing all filter options for viewing projects and project sites. Opens from sidebar. Sends filters to siglService and mapService
+
 import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from "../../../shared/services/modal.service";
@@ -75,6 +84,8 @@ export class FilterComponent implements OnInit {
         this.chosenFiltersObj = {};
 
         this.modalElement = this.FilterComponent;
+
+        // #start subscriptions to get dropdowns
         this._siglService.parameters.subscribe((params: Array<Iparameter>) => {
             this.parameterMulti = [];
             this.parameterMulti.push({ id: 1000, name: "Biological" });
@@ -103,77 +114,71 @@ export class FilterComponent implements OnInit {
                     this.parameterMulti.push({ id: pl.parameter_type_id, name: pl.parameter, parentId: 5000 });
             });
         });
-
         this._siglService.projDurations.subscribe((durations: Array<IprojDuration>) => {
             this.projDurationMulti = [];
             durations.forEach((pd) => {
                 this.projDurationMulti.push({ id: pd.proj_duration_id, name: pd.duration_value });
             });
         });
-
         this._siglService.projStatuses.subscribe((statuses: Array<IprojStatus>) => {
             this.projStatusMulti = [];
             statuses.forEach((ps) => {
                 this.projStatusMulti.push({ id: ps.proj_status_id, name: ps.status_value });
             });
         });
-
         this._siglService.resources.subscribe((resources: Array<Iresource>) => {
             this.resourceMulti = [];
             resources.forEach((r) => {
                 this.resourceMulti.push({ id: r.resource_type_id, name: r.resource_name });
             });
         });
-
         this._siglService.media.subscribe((media: Array<Imedia>) => {
             this.mediaMulti = [];
             media.forEach((m) => {
                 this.mediaMulti.push({ id: m.media_type_id, name: m.media });
             });
         });
-
         this._siglService.lakes.subscribe((lakes: Array<Ilake>) => {
             this.lakeMulti = [];
             lakes.forEach((l) => {
                 this.lakeMulti.push({ id: l.lake_type_id, name: l.lake });
             });
         });
-
         this._siglService.state.subscribe((states: Array<any>) => {
             this.stateMulti = [];
             states.forEach((s) => {
                 this.stateMulti.push({ id: s, name: s });
             });
         });
-
         this._siglService.monitorEffort.subscribe((monitorEfforts: Array<ImonitorEffort>) => {
             this.monitoringEffortMulti = [];
             monitorEfforts.forEach((me) => {
                 this.monitoringEffortMulti.push({ id: me.monitoring_coordination_id, name: me.effort });
             });
         });
-
         this._siglService.project.subscribe((projects: Array<Iproject>) => {
             this.projectList = projects;
         });
-
         this._siglService.organization.subscribe((organizations: Array<Iorganization>) => {
             this.organizationList = organizations;
         });
-
         this._siglService.objective.subscribe((objectives: Array<Iobjective>) => {
             this.objectiveMulti = [];
             objectives.forEach((ob) => {
                 this.objectiveMulti.push({ id: ob.objective_type_id, name: ob.objective });
             });
         });
+        // #end subscriptions to get dropdowns
 
         //show the filter modal == Change Filters button was clicked in sidebar
         this._modalService.showFilterModal.subscribe((show: boolean) => {
-            if (show) this.showFilterModal();
+            if (show) { 
+                this.showFilterModal();
+            }
         });
     }//end ngOnInit()
 
+    // show the Filter Modal and handle when it is closed
     public showFilterModal(): void {
         this._ngbService.open(this.modalElement, { backdrop: 'static', keyboard: false, size: 'lg' }).result.then((results) => {
             let closeResult = `Closed with: ${results}`;
@@ -193,10 +198,11 @@ export class FilterComponent implements OnInit {
                 this.projectSelected = undefined;
                 //clear sidebar
                 this.chosenFiltersObj = {};
+                // let the map and sidebar know everything was cleared
                 this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
                 this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
-               // this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list                
             }
+            // need to emit out since this is a selector component sitting in the mapview.component.html page
             this.modalResponseEvent.emit(results);
         }, (reason) => {
             let closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -211,7 +217,10 @@ export class FilterComponent implements OnInit {
             return `with: ${reason}`;
         }
     }
+
+    // each time a dropdown value (all except for Project Name) changes this happens
     public filterChange(which: string, e: any): void {
+        // if they've previously chosen a Project name to filter, clear it out now and let the map and sidebar know
         if (this.chosenFiltersObj.ProjectName) {
             this.projectSelected = undefined;
             delete this.chosenFiltersObj.ProjectName;
@@ -219,6 +228,7 @@ export class FilterComponent implements OnInit {
             this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
             this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects         
         }        
+        // determine which dropdown is being changed and update the chosenFiltersObj object (add to it or remove it -- check or uncheck)
         switch (which) {
             case "parameters":
                 if (e.length > 0) {
@@ -354,17 +364,19 @@ export class FilterComponent implements OnInit {
                 break;
         }//end switch
 
+        // let google analytics know of the event
         gtag('event', 'click', {'event_category': 'Filter','event_label': 'filterChange: ' + (which + ": {" + e + "}")});
+        // send filters to mapService and siglService to get FilteredProjects listed and update geojson
         this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-        this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects        
-      //  this._siglService.chosenFilters = this.chosenFiltersObj; //update the sidebar's filters chosen list
+        this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
     } // end filterChange
 
+    // Project Name was changed in filters 
     public onProjectSelect(project: any) {
         if (project != "") {
             // clear out all chosenFiltersObj because this is project only filter
             this.chosenFiltersObj = {};
-            //reset all selects in the modal
+            // reset all selects in the modal
             this.parameterSelected = [];
             this.projDurationSelected = [];
             this.projStatusSelected = [];
@@ -375,20 +387,18 @@ export class FilterComponent implements OnInit {
             this.monitoringEffortSelected = [];
             this.orgSelected = undefined;
             this.objectiveSelected = [];
-            //reset everything just in case (so that the filters apply to all and not a previous subset)
+            // reset everything just in case (so that the filters apply to all and not a previous subset)
             this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
             this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
-           // this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list
             this.chosenFiltersObj.ProjectName = { name: project.name, project_id: project.project_id };
         } else {
             this.chosenFiltersObj = {};
         }
-        // now update with this project
+        // let google analytics know of the event
         gtag('event', 'click', {'event_category': 'Filter','event_label': 'filterbyProject: ' + project.name});
+        // send filters to mapService and siglService to get FilteredProjects listed and update geojson
         this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-        this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
-       // this._siglService.chosenFilters = this.chosenFiltersObj; //updates sidebar's filters chosen list
-        //handle selected project
+        this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects       
     } //end onProjectSelect
 
 }//end FilterComponent Class

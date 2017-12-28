@@ -1,10 +1,22 @@
+// ------------------------------------------------------------------------------
+// ------------ siglservices.service --------------------------------------------
+// ------------------------------------------------------------------------------
+// copyright:   2017 WiM - USGS
+// authors:     Tonia Roddick USGS Web Informatics and Mapping
+//              Erik Myers USGS Web Informatics and Mapping
+// purpose:     Service for the whole application. setters/getters needed to communicate information with the mapview.component, sidebar.component, and filter.component
+
 import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, URLSearchParams } from "@angular/http";
+
+import { BehaviorSubject } from 'rxjs';
+import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
-import { Subject } from "rxjs/Subject";
 
 import { CONFIG } from "./config";
+import { MapService } from '../../shared/services/map.service';
+import { LoaderService } from '../../shared/services/loader.service';
 
 import { Iparameter } from "../../shared/interfaces/parameter.interface";
 import { IprojDuration } from "../../shared/interfaces/projduration.interface";
@@ -22,10 +34,6 @@ import { Isite } from "../../shared/interfaces/site.interface";
 import { Ifilteredproject } from "../../shared/interfaces/filteredproject";
 import { Ifullproject } from "../../shared/interfaces/fullproject.interface";
 import { Ifullsite } from "../../shared/interfaces/fullsite.interface";
-
-import { MapService } from '../../shared/services/map.service';
-import { LoaderService } from '../../shared/services/loader.service';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class SiglService {
@@ -68,9 +76,8 @@ export class SiglService {
 	private _fullProjectSubject: Subject<Ifullproject> = new Subject<Ifullproject>();
 	private _singleSiteSubject: Subject<Ifullsite> = new Subject<Ifullsite>();
 	private _sitePointClick: Subject<boolean> = new Subject<boolean>();
-
 	
-	//getters
+	// getters
 	public get parameters(): Observable<Array<Iparameter>> {
 		return this._parameterSubject.asObservable();
 	}
@@ -106,11 +113,8 @@ export class SiglService {
 	}
 	public get chosenFilters(): any {
 		return this._chosenFilterSubject.asObservable();
-	}
-	/*public get filteredSites(): Observable<Array<Isite>>{
-		return this._filteredSitesSubject.asObservable();
-	}*/
-	//returns filtered projects from setFilteredSites()'s call to /FilteredProjects?...params...
+	}	
+	// returns filtered projects from setFilteredSites()'s call to /FilteredProjects?...params...
 	public get filteredProjects(): Observable<Array<Ifilteredproject>>{
 		return this._filteredProjectSubject.asObservable();
 	}
@@ -123,103 +127,114 @@ export class SiglService {
 	public get sitePointClickBool(): Observable<boolean>{
 		return this._sitePointClick.asObservable();
 	}
-	//http requests  
-	//get from services, set subjects
-	//called from constructor only so private
+	// http requests  
+	// get from services, set subjects
+	// called from constructor only so private
 	private setParameters(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.PARAMETERS_URL, options)
 			.map(res => <Array<Iparameter>>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(p => {
 				this._parameterSubject.next(p);
-			}, error => this.handleError);
+			});
 	}
 	private setProjDurations(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.PROJ_DURATIONS_URL, options)
 			.map(res => <Array<IprojDuration>>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(pd => {
 				this._projDurationSubject.next(pd);
-			}, error => this.handleError);
+			});
 	}
 	private setProjStatuses(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.PROJ_STATUS_URL, options)
 			.map(res => <Array<IprojStatus>>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(ps => {
 				this._projStatusSubject.next(ps);
-			}, error => this.handleError);
+			});
 	}
 	private setResources(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.RESOURCES_URL, options)
 			.map(res => <Array<Iresource>>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(r => {
 				this._resourceSubject.next(r);
-			}, error => this.handleError);
+			});
 	}
 	private setMedia(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.MEDIA_URL, options)
 			.map(res => <Array<Imedia>>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(m => {
 				this._mediaSubject.next(m);
-			}, error => this.handleError);
+			});
 	}
 	private setLakes(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.LAKES_URL, options)
 			.map(res => <Array<Ilake>>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(l => {
 				this._lakeSubject.next(l);
-			}, error => this.handleError);
+			});
 	}
 	private setStates(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.STATES_URL, options)
 			.map(res => <Array<Istate>>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(s => {
 				this._stateSubject.next(s);
-			}, error => this.handleError);
+			});
 	}
 	private setMonitorEfforts(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.MONITOR_EFFORTS_URL, options)
 			.map(res => <Array<ImonitorEffort>>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(me => {
 				this._monitorEffortSubject.next(me);
-			}, error => this.handleError);
+			});
 	}
 	private setProjects(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.PROJECT_URL, options)
 			.map(res => <Array<Iproject>>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(pr => {
 				this._projectSubject.next(pr);
-			}, error => this.handleError);
+			});
 	}
 	private setOrganizations(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.ORGANIZATION_URL, options)
 			.map(res => <Array<Iorganization>>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(o => {
 				this._organizationSubject.next(o);
-			}, error => this.handleError);
+			});
 	}
 	private setObjectives(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.OBJECTIVE_URL, options)
 			.map(res => <Array<Iobjective>>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(ob => {
 				this._objectiveSubject.next(ob);
-			}, error => this.handleError);
+			});
 	}
-	//called when passes chosen filters
+	// called when passes chosen filters
 	public setFilteredSites(filters: IchosenFilters): void {
 		this.chosenFilters = filters;
 		this._loaderService.showSidebarLoad();
 		if (Object.keys(filters).length > 0) {
-			//filter it
+			// filter it
 			let sitesParam: URLSearchParams = new URLSearchParams();
 			if (filters.p_organization) sitesParam.set("ProjOrg", filters.p_organization.toString());
 			if (filters.p_objectives) sitesParam.set("ProjObjs", filters.p_objectives.join(','));
@@ -234,14 +249,13 @@ export class SiglService {
 			
 			if (sitesParam.paramsMap.size > 0) {
 				if (this.filteredSiteSubscription) this.filteredSiteSubscription.unsubscribe();
-				//hit the filtered projects url
+				// hit the filtered projects url
 				let options = new RequestOptions( { headers: CONFIG.MIN_JSON_HEADERS, search: sitesParam });
 				this.filteredSiteSubscription = this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
 					.map(res => <Array<Ifilteredproject>>res.json())
 					.catch((err, caught) => this.handleError(err, caught))
-//					.catch(this.handleError)
 					.subscribe(proj => {
-						//HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
+						// HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
 						for (let p of proj) {
 							for (let s of p.projectSites) {
 								if (this.filteredSiteIDArray.includes(s.site_id))
@@ -254,8 +268,7 @@ export class SiglService {
 						}
 						this._loaderService.hideSidebarLoad();
 						this._filteredProjectSubject.next(proj);
-					});//, error => this.handleError);
-					
+					});					
 			} else {
 				if (filters.ProjectName) {
 					// project name search
@@ -267,32 +280,34 @@ export class SiglService {
 				}
 			}			
 		} else {
-			//clear it all
+			// clear it all
 			this._loaderService.hideSidebarLoad();
 			this._filteredProjectSubject.next([]);
 		}
 	}
 
-	//  /GetFullProject?ByProject=
+	// GetFullProject?ByProject=
 	public setFullProject(projectId: string){		
 		let projectParams: URLSearchParams = new URLSearchParams();
 		projectParams.set("ByProject", projectId);
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS, search:projectParams});
 		this._http.get(CONFIG.FULL_PROJECT_URL, options)
 			.map(res => <Ifullproject>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(fullProj => {
 				this._fullProjectSubject.next(fullProj);
-			}, error => this.handleError);
+			});
 	}
 	
 	// /GetFullSite
 	public setFullSite(siteId: string){
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.SITE_URL + "/" + siteId + "/GetFullSite", options)
-			.map(res => <Ifullsite>res.json())
+			.map(res => <Ifullsite>res.json())			
+			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(fs => {
 				this._singleSiteSubject.next(fs);
-			}, error => this.handleError);
+			});
 	}
 
 	//set filters selected by user in the filter modal (filter.component.ts)

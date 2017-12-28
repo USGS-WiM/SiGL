@@ -1,3 +1,11 @@
+// ------------------------------------------------------------------------------
+// ------------ shared.module ---------------------------------------------------
+// ------------------------------------------------------------------------------
+// copyright:   2017 WiM - USGS
+// authors:     Tonia Roddick USGS Web Informatics and Mapping
+//              Erik Myers USGS Web Informatics and Mapping
+// purpose:     The Module containing all shared features used in the application, along with the services
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +20,7 @@ import { HighlightDirective } from '../shared/directives/highlight.directive';
 import { LoaderService } from '../shared/services/loader.service';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
 import { UserGuideComponent } from '../shared/components/userguide/userguide.component';
-import { SideLoaderComponent } from '..//shared/components/loader/sidebarloader.component';
+import { SideLoaderComponent } from '../shared/components/loader/sidebarloader.component';
 
 
 @NgModule({

@@ -1,18 +1,27 @@
+// ------------------------------------------------------------------------------
+// ------------ mapview.component -----------------------------------------------
+// ------------------------------------------------------------------------------
+// copyright:   2017 WiM - USGS
+// authors:     Tonia Roddick USGS Web Informatics and Mapping
+//              Erik Myers USGS Web Informatics and Mapping
+// purpose:     The mapview component contains a leaflet map with site geojson points that get updated depending on filters chosen and highlighted
+//              based on site point click, site name (sidebar) click or project name (sidebar) click.
+
 import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { MapService } from "app/shared/services/map.service";
-import { FilterComponent } from "app/shared/components/filter/filter.component";
-import { ResizeEvent } from "angular-resizable-element/dist/esm/src";
-import { SiglService } from "app/shared/services/siglservices.service";
-import { Ifullproject } from "app/shared/interfaces/fullproject.interface";
-import { Ifullsite } from "app/shared/interfaces/fullsite.interface";
-import { Iparameter } from "app/shared/interfaces/parameter.interface";
-import { Igroupedparameters } from "app/shared/interfaces/groupedparameters";
-import * as L from 'leaflet';
-import esri from 'esri-leaflet';
-import { Ifilteredproject } from 'app/shared/interfaces/filteredproject';
-//import * as WMS from 'leaflet.wms';
 
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
+import { ResizeEvent } from "angular-resizable-element/dist/esm/src";
+import * as L from 'leaflet';
+import esri from 'esri-leaflet';
+
+import { MapService } from "../../shared/services/map.service";
+import { FilterComponent } from "../../shared/components/filter/filter.component";
+import { SiglService } from "../../shared/services/siglservices.service";
+import { Ifullproject } from "../../shared/interfaces/fullproject.interface";
+import { Ifullsite } from "../../shared/interfaces/fullsite.interface";
+import { Iparameter } from "../../shared/interfaces/parameter.interface";
+import { Igroupedparameters } from "../../shared/interfaces/groupedparameters";
+import { Ifilteredproject } from '../../shared/interfaces/filteredproject';
 
 declare let gtag: Function;
 
@@ -21,6 +30,7 @@ declare let gtag: Function;
 	templateUrl: './mapview.component.html',
 	styleUrls: ['./mapview.component.css']
 })
+
 export class MapviewComponent implements OnInit {
 	@ViewChild('t') tabs;
 	// filter modal, opened from sidebar's (click) function that changing show boolean, subscribed to in the filterModalComponent
@@ -48,7 +58,6 @@ export class MapviewComponent implements OnInit {
 	private AllShowingProjIDArray: Array<number>;
 	private clickedMarker: any;  //this is a FEATURE used for finding a previously-clicked marker and resetting style when a new marker is selected.
 	public groupedParams: Igroupedparameters;
-    //public groupedParams: Object;
     
     public lakeLayer: any;
     public epaLayer: any;

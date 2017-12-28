@@ -1,5 +1,13 @@
+// ------------------------------------------------------------------------------
+// ------------ basemaps.component ----------------------------------------------
+// ------------------------------------------------------------------------------
+// copyright:   2017 WiM - USGS
+// authors:     Tonia Roddick USGS Web Informatics and Mapping
+//              Erik Myers USGS Web Informatics and Mapping
+// purpose:     The basemaps component is a selector component that contains the basemap layers.
+
 import { Component, OnInit } from '@angular/core';
-import { MapService } from "app/shared/services/map.service";
+import { MapService } from "../../shared/services/map.service";
 
 declare let gtag: Function;
 

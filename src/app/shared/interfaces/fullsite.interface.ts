@@ -1,3 +1,11 @@
+// ------------------------------------------------------------------------------
+// ------------ fullsite.interface ----------------------------------------------
+// ------------------------------------------------------------------------------
+// copyright:   2017 WiM - USGS
+// authors:     Tonia Roddick USGS Web Informatics and Mapping
+//              Erik Myers USGS Web Informatics and Mapping
+// purpose:     Interface for a full site used in the mapview.component,and siglService
+
 import {Iresource} from "./resource.interface";
 import {Imedia} from "./media.interface";
 import {Ifrequency} from "./frequency.interface";

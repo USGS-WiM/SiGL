@@ -1,4 +1,13 @@
+// ------------------------------------------------------------------------------
+// ------------ map.service -----------------------------------------------------
+// ------------------------------------------------------------------------------
+// copyright:   2017 WiM - USGS
+// authors:     Tonia Roddick USGS Web Informatics and Mapping
+//              Erik Myers USGS Web Informatics and Mapping
+// purpose:     Service for the map. setters/getters needed to communicate information with the mapview.component
+
 import { Injectable } from '@angular/core';
+import { Http, Response, RequestOptions } from '@angular/http';
 import { Map, geoJSON } from 'leaflet'
 import * as L from 'leaflet';
 
@@ -8,14 +17,13 @@ import { Subject } from "rxjs/Subject";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { CONFIG } from "./config";
-import { Http, Response, RequestOptions } from '@angular/http';
 import { IchosenFilters } from '../../shared/interfaces/chosenFilters.interface';
-import { isPending } from 'q';
-import { LoaderService } from 'app/shared/services/loader.service';
+import { LoaderService } from '../../shared/services/loader.service';
+
+// import { isPending } from 'q'; // not sure why this is imported here, maybe started, but not finished?
 
 @Injectable()
 export class MapService {
-
     private _allSiteView: any;
     public map: Map;
     public baseMaps: any;
@@ -54,8 +62,7 @@ export class MapService {
         this.setFilteredSiteIDs([]);
     }
 
-    //subject
-    //  private _allSiteViewSubject: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
+    //subjects
     private _filteredSiteViewSubject: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
     private _filteredSiteIDsSubject: BehaviorSubject<Array<number>> = new BehaviorSubject([]); //used to let sidebar know which sites are the filtered results for styling
     private _tempSiteSubject: Subject<any> = new Subject<any>();
@@ -63,8 +70,6 @@ export class MapService {
     private _allOrgSystems: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject("");
     private _siteClicked: BehaviorSubject<any> = <BehaviorSubject<any>>new BehaviorSubject({});
     
-    
-
     //initial set of all geojson sites. keep for resetting
     public setAllSiteView(geoJson: any) {
         this._allSiteView = geoJson;//this._allSiteViewSubject.next(geoJSON); 
@@ -89,7 +94,7 @@ export class MapService {
     }
     // clear filters and give back all
     public get AllSiteView(): Observable<any> {
-        return this._allSiteView;// this._allSiteViewSubject.asObservable(); 
+        return this._allSiteView;
     }
 
     // siglServices wants array of filtered site id's 
@@ -313,22 +318,27 @@ export class MapService {
         let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
         this._http.get(CONFIG.ORG_SYSTEM_URL, options)
             .map(res => <any>res.json())
+            .catch((err, caught) => this.handleError(err, caught))
             .subscribe(orgSys => {
                 this._allOrgSystems.next(orgSys);
             });
         this._http.get(CONFIG.SITE_URL + "/GetSiteView.geojson")
             .map(res => <any>res.json())
+            .catch((err, caught) => this.handleError(err, caught))
             .subscribe(geoj => {
                 this._loaderService.hideFullPageLoad();
                 this._allSiteView = geoj;
                 // this.setAllSiteView(geoj);
                 this.setFilteredSiteView(geoj);
-            }, error => this.handleError);
+            });
     }
 
     //Error Handler
-    private handleError(error: Response) {
-        console.error(error);
-        return Observable.throw(error.json().error || "Server Error");
+    private handleError(error: any, caught: any) {
+        this._loaderService.hideFullPageLoad();
+		let errMsg = (error.message) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        console.log(errMsg);
+        return Observable.throw(errMsg);		        
     }
 }

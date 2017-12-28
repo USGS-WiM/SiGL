@@ -1,3 +1,11 @@
+// ------------------------------------------------------------------------------
+// ------------ fullproject.interface -------------------------------------------
+// ------------------------------------------------------------------------------
+// copyright:   2017 WiM - USGS
+// authors:     Tonia Roddick USGS Web Informatics and Mapping
+//              Erik Myers USGS Web Informatics and Mapping
+// purpose:     Interface for a fullproject used in the mapview.component, sidebar.component, and siglService
+
 import {Iresource} from "./resource.interface";
 import {Iobjective} from "./objective.interface";
 import {ImonitorEffort} from "./monitoreffort.interface";

@@ -1,3 +1,11 @@
+// ------------------------------------------------------------------------------
+// ------------ modal.service ---------------------------------------------------
+// ------------------------------------------------------------------------------
+// copyright:   2017 WiM - USGS
+// authors:     Tonia Roddick USGS Web Informatics and Mapping
+//              Erik Myers USGS Web Informatics and Mapping
+// purpose:     Service for the the modals (filters, about, user guide)
+
 import { Injectable } from '@angular/core';
 import { Subject } from "rxjs/Subject";
 

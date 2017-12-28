@@ -1,3 +1,11 @@
+// ------------------------------------------------------------------------------
+// ------------ config ----------------------------------------------------------
+// ------------------------------------------------------------------------------
+// copyright:   2017 WiM - USGS
+// authors:     Tonia Roddick USGS Web Informatics and Mapping
+//              Erik Myers USGS Web Informatics and Mapping
+// purpose:     Configuration file for all the url endpoints in siglservices
+
 import {Injectable} from "@angular/core";
 import {Headers} from "@angular/http";
 
