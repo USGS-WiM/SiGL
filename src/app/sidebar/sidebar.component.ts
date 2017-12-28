@@ -152,7 +152,8 @@ export class SidebarComponent implements OnInit {
 	public showProjectDetails(project: any): void {
 		this.unHighlightProjName = false;
 		this._siglService.setsitePointClickBool(false); //let mainview know proj name was clicked (not site point anymore)
-		this._mapService.setSiteClicked({});
+        this._mapService.setSiteClicked({});
+        this._mapService.setProjectNameClicked(true);
 		let projID = project.project_id || project.ProjectId;
 		this.selectedProjectId = projID;
 		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'ProjectNameClick: ' + projID });
@@ -160,8 +161,9 @@ export class SidebarComponent implements OnInit {
 	}
 
 	public showSiteDetails(site: Isimplesite): void {
-		if (site.project_id != this.selectedProjectId) {
-			this.selectedProjectId = site.project_id;
+        this._mapService.setProjectNameClicked(false);
+        if (site.project_id != this.selectedProjectId) {
+            this.selectedProjectId = site.project_id;
 		}
 		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'SiteNameClick: ' + site.site_id });
 		// if project name has been highlighted, need to unhighlight if single site clicked
@@ -172,7 +174,8 @@ export class SidebarComponent implements OnInit {
 
 	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'
 	public toggleSiteList(value: string, projectId: number) {
-		this._mapService.setSiteClicked({}); //clear selected site if one
+        this._mapService.setSiteClicked({}); //clear selected site if one
+        this._mapService.setProjectNameClicked(false);
 		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'ProjectId: ' + projectId + ', Toggle: ' + value });
 		this.filteredProjects.forEach((p: Ifilteredproject) => {
 			if (p.project_id == projectId) {
