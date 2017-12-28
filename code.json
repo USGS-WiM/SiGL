@@ -1,0 +1,48 @@
+[
+  {
+    "name": "SiGL",
+    "organization": "U.S. Geological Survey",
+    "description": "Mapping application for data exploration of monitoring and restoration activities around the Great Lakes",
+    "version": "v0.0.0",
+    "status": "Beta"
+
+    "permissions": {
+      "usageType": "openSource",
+      "licenses": [
+        {
+          "name": "Public Domain, CC0-1.0",
+          "URL": "https://github.com/usgs/best-practices/blob/master/LICENSE.md"
+        }
+      ]
+    },
+
+    "homepageURL": "https://wim.usgs.gov",
+    "downloadURL": "https://github.com/USGS-WiM/SiGL/archive/master.zip",
+    "disclaimerURL": "https://github.com/USGS-WiM/SiGL/blob/master/LICENSE.md",
+    "repositoryUrl": "https://github.com/USGS-WiM/SiGL",
+    "vcs": "git",
+
+    "laborHours": null,
+
+    "tags": [
+      "GLRI",
+      "Great Lakes",
+	  "SiGL"
+    ],
+
+    "languages": [
+      "Javascript",
+	  "Angular",
+	  "Leaflet"
+    ],
+
+    "contact": {
+      "name": "Tonia Roddick",
+      "email": "troddick@usgs.gov"
+    },
+
+    "date": {
+      "metadataLastUpdated": "2017-12-28"
+    }
+  }
+]

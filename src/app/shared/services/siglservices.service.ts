@@ -238,6 +238,8 @@ export class SiglService {
 				let options = new RequestOptions( { headers: CONFIG.MIN_JSON_HEADERS, search: sitesParam });
 				this.filteredSiteSubscription = this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
 					.map(res => <Array<Ifilteredproject>>res.json())
+					.catch((err, caught) => this.handleError(err, caught))
+//					.catch(this.handleError)
 					.subscribe(proj => {
 						//HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
 						for (let p of proj) {
@@ -252,7 +254,8 @@ export class SiglService {
 						}
 						this._loaderService.hideSidebarLoad();
 						this._filteredProjectSubject.next(proj);
-					}, error => this.handleError);
+					});//, error => this.handleError);
+					
 			} else {
 				if (filters.ProjectName) {
 					// project name search
@@ -302,9 +305,12 @@ export class SiglService {
 	} 
 	
 	//Error Handler
-	private handleError(error: Response) {
-		console.error(error);
-		return Observable.throw(error.json().error || "Server Error");
+	private handleError(error: any, caught: any) {
+		this._loaderService.hideSidebarLoad();
+		let errMsg = (error.message) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        console.log(errMsg);
+        return Observable.throw(errMsg);		
 	}
 
 	// -+-+-+-+-+-+-+-+-+ app version (gotten from environment.ts) -+-+-+-+-+-+-+-+
