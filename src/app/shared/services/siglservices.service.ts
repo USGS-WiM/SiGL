@@ -335,5 +335,20 @@ export class SiglService {
     }
     public get getVersion(): any {
         return this.appversion.asObservable();
+	}
+	
+	// -+-+-+-+-+-+-+-+-+ mobile responsive sidebar show/hide -+-+-+-+-+-+-+-+
+	//subject
+	private _showSidebarSubject = new BehaviorSubject<boolean>(false);   
+	
+	//getter
+    public showSidebar = this._showSidebarSubject.asObservable();
+	
+	//setters
+    public showTheSidebar() {
+        this._showSidebarSubject.next(true);
+    }
+    public hideTheSidebar() {
+        this._showSidebarSubject.next(false);
     }
 }

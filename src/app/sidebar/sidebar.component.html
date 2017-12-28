@@ -1,5 +1,4 @@
-<div #sidebarContainer class="sidebar sidebar-left" id="sidebar">
-
+<div #sidebarContainer class="sidebar sidebar-left" [class.sidebar-mobile-show]="!showSidebar" id="sidebar">
     <div class="scrollable">
         <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-1">
         <!-- Basemaps -->

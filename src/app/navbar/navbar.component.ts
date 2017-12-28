@@ -8,6 +8,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ModalService } from '../shared/services/modal.service';
+import { SiglService } from 'app/shared/services/siglservices.service';
 
 @Component({
   selector: 'navbar',
@@ -37,11 +38,14 @@ import { ModalService } from '../shared/services/modal.service';
 export class NavbarComponent implements OnInit {
   public title: string;
   public subtitle: string;
-  constructor(private _modalService: ModalService) { }
+  constructor(private _modalService: ModalService, private _siglService: SiglService) { }
 
   ngOnInit() {
     this.title = "SiGL";
     this.subtitle = "Science in the Great Lakes"
+  }
+  public mobileMenuBtnClick(){
+    this._siglService.showTheSidebar();
   }
   public showAboutModal(){
     this._modalService.showAboutModal = true;
