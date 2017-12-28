@@ -55,7 +55,7 @@ HEADER
   color: white;
 }
 #subTitle{
-  width: 100% !important; 
+  width: 100% !important;
 }
 
 #helpIcon{
@@ -99,19 +99,34 @@ LEFT SIDEBAR
 
 
 #sidebar .card-header a{
-  color: black;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: bolder;
+  opacity: 0.8;
+  color: #10172C;
   letter-spacing: -0.5px;
   box-sizing: border-box;
-  padding: 25px 20px;
-  display: block;
+  padding: 20px 20px;
+  display: flex;
+  justify-content: space-between;
 }
 .basemapBtn:hover{
   cursor: pointer;
 }
 .card-header a:hover{
   text-decoration: none;
+  opacity: 1;
+}
+.card-header a:after {
+  content: '\f0da';
+  font-family: 'FontAwesome';
+}
+.card-header.active a:after {
+    content: '\f0d7';
+    font-family: 'FontAwesome';
+}
+.card-header .badge{
+  position: relative;
+  top: -2px;
 }
 
 #sidebar .card-body{
@@ -270,4 +285,146 @@ BOTTOM POPOVER
 }
 .tab-pane{
   padding: 15px;
+}
+
+
+
+/*
+NAV/MENU
+NAV/MENU
+NAV/MENU
+*/
+#usgsLogoDiv{
+  display: flex !important;
+  width: auto !important;
+  box-sizing: border-box;
+  padding: 17px 15px 0 15px !important;
+  background-color: transparent !important;
+}
+#usgsLogo{
+  height: 30px !important;
+}
+#mobileMenuBtn{
+  font-size: 28px;
+  color: white;
+  margin-right: 30px;
+  margin-left: 10px;
+  display: none;
+  transition: 0.1s;
+}
+#mobileMenuBtn:hover{
+  cursor: pointer;
+  opacity: 0.7;
+  transition: 0.1s;
+}
+#navbar{
+  background-color: #10162C !important;
+}
+#headerLogo{
+  background-color: #10162C !important;
+}
+.aboutNav{
+  color: white !important;
+  margin-top: 2px !important;
+  text-transform: capitalize !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.25px !important;
+}
+
+.appname{
+  font-size: 18px;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  flex-direction: column;
+  line-height: 18px;
+}
+
+/*
+Sidebar Responsiveness
+Sidebar Responsiveness
+Sidebar Responsiveness
+*/
+#map{
+  width: calc(100% - 400px);
+  margin-left: 400px;
+}
+#bottomBar{
+  width: calc(100% - 400px) !important;
+}
+@media (max-width: 1280px) {
+  #sidebar{
+    left: -450%;
+  }
+  #bottomBar{
+    left: 0 !important;
+  }
+  #map{
+    width: 100%;
+    margin-left: 0px;
+  }
+  #bottomBar{
+    width: 100% !important;
+  }
+  #mobileMenuBtn{
+    display: inline-block;
+  }
+}
+
+#sidebar.sidebar-mobile-show{
+  left: 0px !important;
+}
+
+
+
+/*
+  Sidebar Footer
+*/
+.identification{
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 9pt;
+  display: block;
+  width: 100%;
+  margin: 20px 0 0 0;
+  padding: 0;
+  padding-left: 8px;
+  opacity: .75;
+  text-align: center;
+  color: #6e7490;
+}
+.identification img{
+  margin-left: 5px;
+  width: 50px;
+  height: auto;
+}
+.sidebar-footer{
+  display: block;
+  box-sizing: border-box;
+  padding: 15px!important;
+  text-align: center;
+  border-top: 1px dashed rgba(0,0,0,.25);
+  margin-top: 55px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.sidebar-footer a{
+  font-size: 10px;
+  color: rgba(0,0,0,0.5);
+}
+
+/*
+Misc
+Misc
+Misc
+*/
+#handle i{
+  color: white;
+}
+#handle{
+  background-color: #10162C !important;
+}
+#tabContainer{
+  background-color: rgb(247, 247, 249) !important;
 }
