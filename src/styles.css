@@ -413,3 +413,18 @@ Sidebar Responsiveness
   font-size: 10px;
   color: rgba(0,0,0,0.5);
 }
+
+/*
+Misc
+Misc
+Misc
+*/
+#handle i{
+  color: white;
+}
+#handle{
+  background-color: #10162C !important;
+}
+#tabContainer{
+  background-color: rgb(247, 247, 249) !important;
+}
