@@ -44,7 +44,8 @@ export class MapviewComponent implements OnInit {
 	public fullSite: Ifullsite;
 	public showBottomBar: Boolean;
 	public fullSiteFlag: Boolean;
-	public siteClickFlag: Boolean;  //maybe use this?
+    public siteClickFlag: Boolean;
+    public projectNameClickFlag: Boolean;
 	private AllShowingProjIDArray: Array<number>;
 	private clickedMarker: any;  //this is a FEATURE used for finding a previously-clicked marker and resetting style when a new marker is selected.
 	public groupedParams: Igroupedparameters;
@@ -65,7 +66,10 @@ export class MapviewComponent implements OnInit {
 		//set defaults on init
 		this.showBottomBar = false;
         this.fullSiteFlag = false;
+        /*do we need these?************////
         this.siteClickFlag = false;
+        this.projectNameClickFlag = false;
+        /*************////
         this.filteredProjects = [];
 
         this.tempSitesIcon = {
@@ -107,11 +111,30 @@ export class MapviewComponent implements OnInit {
             if (Object.keys(site).length > 0){
                 this.showBottomBar = true;
                 this.highlightSingleSite(site);
+            } else{
+                //remove highlighting
+                if (this.tempGeoJsonLayer){
+                    this.tempGeoJsonLayer.eachLayer((layer:any)=>{
+                        layer.setStyle(this.setMarker(layer.feature));
+                    });
+                }
+                if (this.tempGeoJsonLayer){
+                    this.geoJsonLayer.eachLayer((layer:any)=>{
+                        layer.setStyle(this.setMarker(layer.feature));
+                    });
+                }
             }
+            
 			//close popup if this siteClick is from the sidebar only
 			if (site.fromMap == false)
 				this.map.closePopup();
-		});
+        });
+        
+        //subscribe to sidebar project click changes
+        this._mapService.projectNameClicked.subscribe((wasClicked: boolean) => {
+            this.projectNameClickFlag = wasClicked;
+        });
+
 		//for project info
 		this._siglService.fullProject.subscribe((FP: Ifullproject) => {			
 			this.fullProj = FP;
@@ -121,12 +144,10 @@ export class MapviewComponent implements OnInit {
             if (this.siteClickFlag == false) {
                 if (this.clickedMarker){
                     this.map.closePopup();
-				}
-				
-				if (this.filtermodal.chosenFiltersObj) {
-					/* if (this.filtermodal.chosenFiltersObj.ProjectName == undefined) {		
-						this.highlightProjSites(this.fullProj.ProjectId);
-                    } */
+                }
+                
+                //if sidebar project name was clicked in UI, highlight project sites
+				if (this.projectNameClickFlag) {
                     this.highlightProjSites(this.fullProj.ProjectId);
                 }
                 
