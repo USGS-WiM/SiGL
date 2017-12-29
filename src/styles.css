@@ -346,7 +346,7 @@ Sidebar Responsiveness
 Sidebar Responsiveness
 */
 #map{
-  width: calc(100% - 400px);
+  width: calc(100% - 400px) !important;
   margin-left: 400px;
 }
 #bottomBar{
