@@ -13,18 +13,9 @@
             <ng-template ngbPanelContent>
                 <button type="button" class="actionBtn" (click)="showFilterModal()">Change filters</button>
                 <br/>
-                <h4 *ngIf="filterCount > 0">Map filterd by</h4>
+                <div style="font-size:large" *ngIf="filterCount == 0">Showing all projects with sites.</div>
 
-                <!-- Parameters -->
-                <div *ngIf="chosenFilters?.PARAMETERS">
-                    <i *ngIf="chosenFilters?.PARAMETERS.length > 0" class="pull-left down4" [ngClass]="ParamCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ParamCollapsed=!ParamCollapsed"></i>
-                    <span *ngIf="chosenFilters.PARAMETERS.length > 0"><b>Parameter</b><span *ngIf="chosenFilters.PARAMETERS.length > 1"><b>s</b></span></span>
-                    <p class="contained" [hidden]="ParamCollapsed">
-                        <span *ngFor="let p of chosenFilters.PARAMETERS;">{{p.name}}
-                            <br/>
-                        </span>
-                    </p>
-                </div>
+                <div style="font-size:large" *ngIf="projectFilters"><b>Project filters applied:</b></div>
                 <!-- Durations -->
                 <div *ngIf="chosenFilters?.DURATIONS">
                     <i *ngIf="chosenFilters.DURATIONS.length > 0" class="pull-left down4" [ngClass]="DurCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="DurCollapsed=!DurCollapsed"></i>
@@ -34,8 +25,7 @@
                             <br/>
                         </span>
                     </p>
-                </div>
-                <!-- Status -->
+                </div><!-- Status -->
                 <div *ngIf="chosenFilters?.STATUSES">
                     <i *ngIf="chosenFilters.STATUSES.length > 0" class="pull-left down4" [ngClass]="StatCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="StatCollapsed=!StatCollapsed"></i>
                     <span *ngIf="chosenFilters.STATUSES.length > 0"><b>Project Status</b></span>
@@ -45,6 +35,46 @@
                         </span>
                     </p>
                 </div>
+                <!-- monitoring effort -->
+                <div *ngIf="chosenFilters?.MONITORS">
+                    <i *ngIf="chosenFilters.MONITORS.length > 0" class="pull-left down4" [ngClass]="MonCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="MonCollapsed=!MonCollapsed"></i>
+                    <span *ngIf="chosenFilters.MONITORS.length > 0"><b>Monitoring effort or coordination</b></span>
+                    <p class="contained" [hidden]="MonCollapsed">
+                        <span *ngFor="let m of chosenFilters.MONITORS">{{m.name}}
+                            <br/>
+                        </span>
+                    </p>
+                </div>
+                <!-- objective -->
+                <div *ngIf="chosenFilters?.OBJS">
+                    <i *ngIf="chosenFilters.OBJS.length > 0" class="pull-left down4" [ngClass]="ObjCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ObjCollapsed=!ObjCollapsed"></i>
+                    <span *ngIf="chosenFilters.OBJS.length > 0"><b>Project Objective</b><span *ngIf="chosenFilters.OBJS.length > 1"><b>s</b></span></span>
+                    <p class="contained" [hidden]="ObjCollapsed">
+                        <span *ngFor="let ob of chosenFilters.OBJS">{{ob.name}}
+                            <br/>
+                        </span>
+                    </p>
+                </div>
+                <!-- org -->
+                <div *ngIf="chosenFilters?.ORG">
+                    <i class="pull-left down4" [ngClass]="OrgCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="OrgCollapsed=!OrgCollapsed"></i>
+                    <span><b>Organization</b></span>
+                    <p class="contained" [hidden]="OrgCollapsed">
+                        <span>{{chosenFilters.ORG.organization_name}}</span>
+                    </p>
+                </div>
+                
+                <div style="font-size:large" *ngIf="siteFilters"><b>Site filters applied:</b></div>
+                <!-- Parameters -->
+                <div *ngIf="chosenFilters?.PARAMETERS">
+                    <i *ngIf="chosenFilters?.PARAMETERS.length > 0" class="pull-left down4" [ngClass]="ParamCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ParamCollapsed=!ParamCollapsed"></i>
+                    <span *ngIf="chosenFilters.PARAMETERS.length > 0"><b>Parameter</b><span *ngIf="chosenFilters.PARAMETERS.length > 1"><b>s</b></span></span>
+                    <p class="contained" [hidden]="ParamCollapsed">
+                        <span *ngFor="let p of chosenFilters.PARAMETERS;">{{p.name}}
+                            <br/>
+                        </span>
+                    </p>
+                </div>                
                 <!-- Resources -->
                 <div *ngIf="chosenFilters?.RESOURCES">
                     <i *ngIf="chosenFilters.RESOURCES.length > 0" class="pull-left down4" [ngClass]="ResCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ResCollapsed=!ResCollapsed"></i>
@@ -85,34 +115,7 @@
                         </span>
                     </p>
                 </div>
-                <!-- monitoring effort -->
-                <div *ngIf="chosenFilters?.MONITORS">
-                    <i *ngIf="chosenFilters.MONITORS.length > 0" class="pull-left down4" [ngClass]="MonCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="MonCollapsed=!MonCollapsed"></i>
-                    <span *ngIf="chosenFilters.MONITORS.length > 0"><b>Monitoring effort or coordination</b></span>
-                    <p class="contained" [hidden]="MonCollapsed">
-                        <span *ngFor="let m of chosenFilters.MONITORS">{{m.name}}
-                            <br/>
-                        </span>
-                    </p>
-                </div>
-                <!-- org -->
-                <div *ngIf="chosenFilters?.ORG">
-                    <i class="pull-left down4" [ngClass]="OrgCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="OrgCollapsed=!OrgCollapsed"></i>
-                    <span><b>Organization</b></span>
-                    <p class="contained" [hidden]="OrgCollapsed">
-                        <span>{{chosenFilters.ORG.organization_name}}</span>
-                    </p>
-                </div>
-                <!-- objective -->
-                <div *ngIf="chosenFilters?.OBJS">
-                    <i *ngIf="chosenFilters.OBJS.length > 0" class="pull-left down4" [ngClass]="ObjCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ObjCollapsed=!ObjCollapsed"></i>
-                    <span *ngIf="chosenFilters.OBJS.length > 0"><b>Project Objective</b><span *ngIf="chosenFilters.OBJS.length > 1"><b>s</b></span></span>
-                    <p class="contained" [hidden]="ObjCollapsed">
-                        <span *ngFor="let ob of chosenFilters.OBJS">{{ob.name}}
-                            <br/>
-                        </span>
-                    </p>
-                </div>
+                
                 <div *ngIf="chosenFilters?.ProjectName && chosenFilters?.ProjectName != ''">
                     <i *ngIf="chosenFilters.ProjectName && chosenFilters.ProjectName != ''" class="pull-left down4" [ngClass]="ProjCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ProjCollapsed=!ObjCollaProjCollapsedpsed"></i>
                     <span><b>Project Name</b></span>

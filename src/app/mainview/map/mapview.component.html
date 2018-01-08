@@ -1,4 +1,4 @@
-<filter #filtermodal (modalResponseEvent)="FilterModalResponse($event)"></filter>
+<filter #filtermodal></filter>
 <about #aboutmodal></about>
 <userguide #userguidemodal></userguide>
 <div id="map"></div>
@@ -17,7 +17,7 @@
                         <div *ngIf="fullProj?.Organizations.length > 0">
                             <span class="dataLabel">Organizations: </span>
                             <ul>
-                                <li *ngFor="let org of fullProj?.Organizations">{{org.OrganizationName}}</li>
+                                <li *ngFor="let org of fullProj?.Organizations">{{org.OrganizationName}}<span *ngIf="org.DivisionName != ''">, {{org.DivisionName}}</span><span *ngIf="org.SectionName != ''">, {{org.SectionName}}</span></li>
                             </ul>
                         </div>
                         <div *ngIf="fullProj?.ProjectURLs">
@@ -77,10 +77,7 @@
                     <div>
                         <div *ngIf="fullProj?.DataHosts.length > 0">
                             <span class="dataHeader">Project Data</span>
-                            <div *ngFor="let DH of fullProj?.DataHosts; let i=index">
-                                <div *ngIf="i >= 1">
-                                    <span>Additional Data({{i + 1}})</span>
-                                </div>
+                            <div *ngFor="let DH of fullProj?.DataHosts">                                
                                 <div *ngIf="DH?.description">
                                     <span class="dataLabel">Data Management System: </span>
                                     <span>{{DH.description}}</span>
@@ -99,10 +96,7 @@
                         <div>
                             <div *ngIf="fullProj?.Publications.length > 0">
                                 <span class="dataHeader">Publications</span>
-                                <div *ngFor="let PUB of fullProj?.Publications; let i=index">
-                                    <div *ngIf="i >= 1">
-                                        <span>Publication({{i + 1}})</span>
-                                    </div>
+                                <div *ngFor="let PUB of fullProj?.Publications">                                    
                                     <div *ngIf="PUB?.title">
                                         <span class="dataLabel">Publication Title: </span>
                                         <span>{{PUB.title}}</span>
@@ -126,18 +120,15 @@
                 <ng-template ngbTabContent>
                     <div *ngIf="fullProj?.Contacts.length > 0">
                         <span class="dataHeader">Project Contacts</span>
-                        <div *ngFor="let C of fullProj?.Contacts; let i=index">
-                            <div *ngIf="i >= 1">
-                                <span>Contact({{i + 1}})</span>
-                            </div>
+                        <div *ngFor="let C of fullProj?.Contacts">                            
                             <div *ngIf="C.name">
                                 <span>{{C.name}}</span>
                             </div>
                             <div *ngIf="C.ContactOrgName">
-                                <span>{{C.ContactOrgName}}</span>
+                                <span>{{C.ContactOrgName}}<span *ngIf="C.ContactDivName != ''">, {{C.ContactDivName}}</span><span *ngIf="C.ContactSecName != ''">, {{C.ContactSecName}}</span></span> 
                             </div>
                             <div *ngIf="C.email">
-                                <a target="blank" [href]="'mailto:' + C.email">{{C.email}}</a>
+                                <a target="_blank" [href]="'mailto:' + C.email">{{C.email}}</a>
                             </div>
                             <div *ngIf="C.phone">
                                 <span>{{C.phone}}</span>

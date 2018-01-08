@@ -353,12 +353,7 @@ export class MapviewComponent implements OnInit {
             left: '400px'
         }
     }//END ngOnInit
-
-    // response from filter modal closing
-    public FilterModalResponse(r) {
-        let test = "what";
-    }
-
+    
     //when bottom bar resized
     public onResizeEnd(event: ResizeEvent): void {
         this.style = {

@@ -23,6 +23,7 @@ import { Isimplesite } from "../shared/interfaces/simplesite";
 import { Ifullproject } from '../shared/interfaces/fullproject.interface';
 import { SiglService } from "../shared/services/siglservices.service";
 import { MapService } from '../shared/services/map.service';
+import { checkAndUpdateBinding } from '@angular/core/src/view/util';
 
 declare let gtag: Function;
 
@@ -36,6 +37,8 @@ export class SidebarComponent implements OnInit {
 	@ViewChild('sidebarContainer') private sidebarContainer: ElementRef;
 	public chosenFilters: IchosenFilters;
 	public filterCount: number;
+	public siteFilters: boolean;
+	public projectFilters: boolean;
 	private AllShowingProjIds: Array<number>;
 	public filteredProjects: Array<Ifilteredproject>;
 	public allFilteredProjectsHolder: Array<Ifilteredproject>;
@@ -97,6 +100,7 @@ export class SidebarComponent implements OnInit {
 
 		this.AllShowingProjIds = []; //holder of projects that are toggled to show all for mapview to use
 		this.filterCount = 0;
+		this.siteFilters = false; this.projectFilters = false;
 		//site toggle button group form
 		this.siteCountForm = this._formBuilder.group({
 			'siteToggle': 'filtered'
@@ -107,6 +111,18 @@ export class SidebarComponent implements OnInit {
 		//for the filtered choices accordion panel
 		this._siglService.chosenFilters.subscribe((choices: IchosenFilters) => {
 			this.chosenFilters = choices;
+			// if site filters:
+			/* s_lakes, s_media, s_parameters, s_resources, s_states */
+			if (choices.s_lakes || choices.s_media || choices.s_parameters || choices.s_resources || choices.s_states)
+				this.siteFilters = true;
+			else this.siteFilters = false;
+
+			//if project filters:
+			/* p_objectives, s_monitorEffect, s_projDuration, s_projStatus */
+			if (choices.p_objectives || choices.s_monitorEffect || choices.s_projDuration || choices.s_projStatus)
+				this.projectFilters = true;
+			else this.projectFilters = false;
+
 			this.filterCount = Object.keys(this.chosenFilters).length;
 			if (this.filterCount == 0) {
 				this.siteClickFullProj = undefined;
@@ -189,6 +205,7 @@ export class SidebarComponent implements OnInit {
 
 	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'
 	public toggleSiteList(value: string, projectId: number) {
+		this.unHighlightProjName = true;
         this._mapService.setSiteClicked({}); //clear selected site if one
         this._mapService.setProjectNameClicked(false);
 		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'ProjectId: ' + projectId + ', Toggle: ' + value });

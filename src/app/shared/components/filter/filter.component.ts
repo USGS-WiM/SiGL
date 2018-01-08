@@ -7,7 +7,7 @@
 // purpose:     selector component that sits within the mapview.component.html page. 
 //              A modal containing all filter options for viewing projects and project sites. Opens from sidebar. Sends filters to siglService and mapService
 
-import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, EventEmitter, OnInit, ViewChild } from '@angular/core'; // Output, 
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from "../../../shared/services/modal.service";
 import { SiglService } from "../../../shared/services/siglservices.service";
@@ -38,7 +38,7 @@ declare let gtag: Function;
 })
 export class FilterComponent implements OnInit {
     @ViewChild('filtermodal') public FilterComponent;
-    @Output() modalResponseEvent = new EventEmitter<boolean>(); // when they hit save, emit to calling component
+   // @Output() modalResponseEvent = new EventEmitter<boolean>(); // when they hit save, emit to calling component
     private modalElement: any;
     //parameter
     public parameterMulti: Array<IMultiSelectOption>; //holds the parameter vals for the param groups
@@ -181,29 +181,9 @@ export class FilterComponent implements OnInit {
     // show the Filter Modal and handle when it is closed
     public showFilterModal(): void {
         this._ngbService.open(this.modalElement, { backdrop: 'static', keyboard: false, size: 'lg' }).result.then((results) => {
-            let closeResult = `Closed with: ${results}`;
-            if (results == 'Clear') {
-                gtag('event', 'click', {'event_category': 'Filter','event_label': 'filterCleared'});
-                //reset all selects in the modal
-                this.parameterSelected = [];
-                this.projDurationSelected = [];
-                this.projStatusSelected = [];
-                this.resourceSelected = [];
-                this.mediaSelected = [];
-                this.lakeSelected = [];
-                this.stateSelected = [];
-                this.monitoringEffortSelected = [];
-                this.orgSelected = undefined;
-                this.objectiveSelected = [];
-                this.projectSelected = undefined;
-                //clear sidebar
-                this.chosenFiltersObj = {};
-                // let the map and sidebar know everything was cleared
-                this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-                this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
-            }
+            let closeResult = `Closed with: ${results}`;            
             // need to emit out since this is a selector component sitting in the mapview.component.html page
-            this.modalResponseEvent.emit(results);
+          //  this.modalResponseEvent.emit(results);
         }, (reason) => {
             let closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
@@ -218,6 +198,26 @@ export class FilterComponent implements OnInit {
         }
     }
 
+    public Clear() {
+        gtag('event', 'click', {'event_category': 'Filter','event_label': 'filterCleared'});
+        //reset all selects in the modal
+        this.parameterSelected = [];
+        this.projDurationSelected = [];
+        this.projStatusSelected = [];
+        this.resourceSelected = [];
+        this.mediaSelected = [];
+        this.lakeSelected = [];
+        this.stateSelected = [];
+        this.monitoringEffortSelected = [];
+        this.orgSelected = undefined;
+        this.objectiveSelected = [];
+        this.projectSelected = undefined;
+        //clear sidebar
+        this.chosenFiltersObj = {};
+        // let the map and sidebar know everything was cleared
+        this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
+        this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
+    }
     // each time a dropdown value (all except for Project Name) changes this happens
     public filterChange(which: string, e: any): void {
         // if they've previously chosen a Project name to filter, clear it out now and let the map and sidebar know
