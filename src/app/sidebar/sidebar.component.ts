@@ -24,6 +24,7 @@ import { Ifullproject } from '../shared/interfaces/fullproject.interface';
 import { SiglService } from "../shared/services/siglservices.service";
 import { MapService } from '../shared/services/map.service';
 import { checkAndUpdateBinding } from '@angular/core/src/view/util';
+import { NullAstVisitor } from '@angular/compiler';
 
 declare let gtag: Function;
 
@@ -42,7 +43,8 @@ export class SidebarComponent implements OnInit {
 	private AllShowingProjIds: Array<number>;
 	public filteredProjects: Array<Ifilteredproject>;
 	public allFilteredProjectsHolder: Array<Ifilteredproject>;
-	private selectedProjectId: Number;
+	private selectedProjectId: number;
+	private projectNameClickOnOff: number;
 	public siteWasClicked: boolean;
 	public siteClickFullProj: Ifullproject;
 	public siteCountForm: FormGroup;
@@ -50,6 +52,7 @@ export class SidebarComponent implements OnInit {
 	public chosenSortBy: any;
 	public projectsWithSitesShowing: boolean;
 	public selectedSite: number; // change this every time a site name is clicked in the list of sites
+	private siteNameClickOnOff: number;
 	public NoMatches: boolean; // if filteredProjects come back empty, flag this true so message shows instead of emptiness
 	public unHighlightProjName: boolean;
 	public showMobileSidebar: boolean; // for mobile responsiveness, when 3-line menu clicked, show sidebar
@@ -61,10 +64,21 @@ export class SidebarComponent implements OnInit {
 		this.chosenSortBy = undefined;
 		this.NoMatches = false;
 		this.unHighlightProjName = false;
+		this.projectNameClickOnOff = 0;
+		this.siteNameClickOnOff = 0;
 		// update selected site when point is clicked in map
 		this._mapService.siteClicked.subscribe(site => {
-			this.selectedSite = site.site_id || 0;
+			//determine if they are clicking it to highlight the site or to unhighlight the site
+			if (site.site_id == this.selectedSite) {
+				this.siteNameClickOnOff++;
+			}
+			else { 
+				this.siteNameClickOnOff = 1;
+			};
+
 			if (site.site_id) {
+				// only if they are clicking it to highlight the site set the selectedSite (determines whether it has a gray selected background)
+				this.selectedSite = !(this.siteNameClickOnOff % 2 == 0) ? site.site_id : 0;
 				this.filteredProjects.forEach(proj => {
 					if (site.project_id == proj.project_id) {
 						proj.isCollapsed = false;
@@ -138,7 +152,6 @@ export class SidebarComponent implements OnInit {
 			this.siteClickFullProj = fullProj;
 			//	this.siteClickFullProj.isCollapsed = true;
 		});
-
 		//for the results accordion panel
 		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
 			this.filteredProjects = [];
@@ -167,7 +180,6 @@ export class SidebarComponent implements OnInit {
 
 			this.allFilteredProjectsHolder = this.filteredProjects.map(x => Object.assign({}, x));
 		});
-
 		// to show the sidebar when mobile	subscription that adds the class ([class.sidebar-mobile-show]) on the div to show/hide it
 		this._siglService.showSidebar.subscribe((val: boolean) => {
             this.showMobileSidebar = val;
@@ -186,12 +198,20 @@ export class SidebarComponent implements OnInit {
         this._mapService.setSiteClicked({});
         this._mapService.setProjectNameClicked(true);
 		let projID = project.project_id || project.ProjectId;
-		this.selectedProjectId = projID;
+		if (this.selectedProjectId == projID) {
+			// they clicked it again
+			this.projectNameClickOnOff++;
+		} else {
+			// they clicked a different or new project name
+			this.projectNameClickOnOff = 1;
+		}
+		this.selectedProjectId = !(this.projectNameClickOnOff % 2 == 0) ? projID : 0;
+//		this.selectedProjectId = projID;
 		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'ProjectNameClick: ' + projID });
-		this._siglService.setFullProject(this.selectedProjectId.toString());
+		if (this.selectedProjectId > 0) this._siglService.setFullProject(this.selectedProjectId.toString());
 	}
 
-	public showSiteDetails(site: Isimplesite): void {
+	public showSiteDetails(site: Isimplesite): void {		
         this._mapService.setProjectNameClicked(false);
         if (site.project_id != this.selectedProjectId) {
             this.selectedProjectId = site.project_id;
@@ -205,6 +225,7 @@ export class SidebarComponent implements OnInit {
 
 	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'
 	public toggleSiteList(value: string, projectId: number) {
+		this.selectedProjectId = 0;
 		this.unHighlightProjName = true; // unhighlight project name if it's been clicked
         this._mapService.setSiteClicked({}); //clear selected site if one
         this._mapService.setProjectNameClicked(false);

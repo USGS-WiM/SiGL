@@ -59,7 +59,7 @@ export class MapviewComponent implements OnInit {
 	private AllShowingProjIDArray: Array<number>;
 	private clickedMarker: any;  //this is a FEATURE used for finding a previously-clicked marker and resetting style when a new marker is selected.
 	public groupedParams: Igroupedparameters;
-    
+    private sameProject: any;
     public lakeLayer: any;
     public epaLayer: any;
     public glriLayer: any;
@@ -80,7 +80,7 @@ export class MapviewComponent implements OnInit {
         this.projectNameClickFlag = false;
         /*************////
         this.filteredProjects = [];
-
+        this.sameProject = { same: false, timesInARow: 0};
         this.tempSitesIcon = {
             radius: 4,
             fillColor: "#6d7175",
@@ -115,19 +115,18 @@ export class MapviewComponent implements OnInit {
 			this.AllShowingProjIDArray = projIds;
 		});
 		// for highlighting selected site based on sidebar site name click
-		this._mapService.siteClicked.subscribe(site=>{
-            
+		this._mapService.siteClicked.subscribe(site=> {            
             if (Object.keys(site).length > 0){
                 this.showBottomBar = true;
                 this.highlightSingleSite(site);
-            } else{
+            } else {
                 //remove highlighting
                 if (this.tempGeoJsonLayer){
-                    this.tempGeoJsonLayer.eachLayer((layer:any)=>{
+                    this.tempGeoJsonLayer.eachLayer((layer:any)=>{						
                         layer.setStyle(this.setMarker(layer.feature));
                     });
                 }
-                if (this.tempGeoJsonLayer){
+                if (this.geoJsonLayer){
                     this.geoJsonLayer.eachLayer((layer:any)=>{
                         layer.setStyle(this.setMarker(layer.feature));
                     });
@@ -145,8 +144,18 @@ export class MapviewComponent implements OnInit {
         });
 
 		//for project info
-		this._siglService.fullProject.subscribe((FP: Ifullproject) => {			
-			this.fullProj = FP;
+		this._siglService.fullProject.subscribe((FP: Ifullproject) => {			            
+           
+            if (this.fullProj) {
+                if (FP.ProjectId == this.fullProj.ProjectId) {
+                    this.sameProject.same = FP.ProjectId == this.fullProj.ProjectId;
+                    this.sameProject.timesInARow++;
+                } else { 
+                    this.sameProject = { same: false, timesInARow: 1};
+                }
+            }
+
+            this.fullProj = FP;
 			if (FP.ProjectWebsite)
 				this.fullProj.ProjectURLs = FP.ProjectWebsite.split("|");
 			
@@ -155,8 +164,8 @@ export class MapviewComponent implements OnInit {
                     this.map.closePopup();
                 }
                 
-                //if sidebar project name was clicked in UI, highlight project sites
-				if (this.projectNameClickFlag) {
+                //if sidebar project name was clicked in UI, highlight project sites   TODO:: Something not right here .. works everyother time to highlight
+				if (this.projectNameClickFlag && !this.sameProject.same || !(this.sameProject.timesInARow % 2 == 0)) {
                     this.highlightProjSites(this.fullProj.ProjectId);
                 }
                 
@@ -274,14 +283,15 @@ export class MapviewComponent implements OnInit {
             this.filteredProjects = projects;
         });
 
-        this.map = L.map("map", {
+        this.map = L.map("map", {			
             center: L.latLng(44.2, -82.01),
             zoom: 6,
             minZoom: 4,
-            maxZoom: 19,
+			maxZoom: 19,
             layers: [this._mapService.baseMaps.Topo]
-        });
-        /*BEGIN AUX LAYERS */
+		});
+		
+		/*BEGIN AUX LAYERS */
         this.lakeLayer = esri.featureLayer({
             url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/3",
             style: function(feature){
@@ -414,8 +424,15 @@ export class MapviewComponent implements OnInit {
 		if (this.AllShowingProjIDArray.indexOf(projId) > -1) {
             geoJholder = this.tempGeoj;
             this.tempGeoJsonLayer.eachLayer((layer:any)=>{
-                if(layer.feature.properties.project_id == projId){
-                    layer.setStyle(this.tempHighlightIcon);
+                if(layer.feature.properties.project_id == projId) {
+                    // are they clicking to highlight or to unhighlight. 
+                    if (layer.options.radius < 5) {
+                        // highlight it because it's radius is the radius of a regular icon
+                        layer.setStyle(this.tempHighlightIcon);
+                    } else {
+                        // it is highlighted already (radius == 8), they clicked again to unhighlight
+                        layer.setStyle(this.setMarker(layer.feature));
+                    }                    
                 } else{
                     layer.setStyle(this.setMarker(layer.feature));
                 }
@@ -424,7 +441,14 @@ export class MapviewComponent implements OnInit {
         geoJholder = this.geoj;
         this.geoJsonLayer.eachLayer((layer:any)=>{
             if(layer.feature.properties.project_id == projId){
-                layer.setStyle(this.highlightIcon);
+                // are they clicking to highlight or to unhighlight. 
+                if (layer.options.radius < 5) {
+                    // highlight it because it's radius is the radius of a regular icon
+                    layer.setStyle(this.highlightIcon);
+                } else {
+                    // it is highlighted already (radius == 8), they clicked again to unhighlight
+                    layer.setStyle(this.setMarker(layer.feature));
+                }                
             } else{
                 layer.setStyle(this.setMarker(layer.feature));
             }
@@ -454,13 +478,19 @@ export class MapviewComponent implements OnInit {
         //if a project was already highlighted, remove it
 		if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
 		let highlightedSite = []; let geoJholder: any;
-
         
 		if (this.tempGeoj) {
             geoJholder = this.tempGeoj;
             this.tempGeoJsonLayer.eachLayer((layer: any) => {
-                if(layer.feature.properties.site_id == site.site_id){
-                    layer.setStyle(this.tempHighlightIcon);
+                if(layer.feature.properties.site_id == site.site_id) {
+					// are they clicking to highlight or to unhighlight. 
+					if (layer.options.radius < 5) {
+						// highlight it because it's radius is the radius of a regular icon
+						layer.setStyle(this.tempHighlightIcon);
+					} else {
+						// it is highlighted already (radius == 8), they clicked again to unhighlight
+						layer.setStyle(this.tempSitesIcon)
+					}					
                 } else{
                     layer.setStyle(this.tempSitesIcon);
                 }
@@ -469,7 +499,15 @@ export class MapviewComponent implements OnInit {
         geoJholder = this.geoj;
         this.geoJsonLayer.eachLayer((layer:any)=>{
             if(layer.feature.properties.site_id == site.site_id){
-                layer.setStyle(this.highlightIcon);
+				// are they clicking to highlight or to unhighlight. 
+				if (layer.options.radius < 5) {
+					// highlight it because it's radius is the radius of a regular icon
+					layer.setStyle(this.highlightIcon);
+				}
+				else {
+					// it is highlighted already (radius == 8), they clicked again to unhighlight
+					layer.setStyle(this.setMarker(layer.feature));
+				} 
             } else{
                 layer.setStyle(this.setMarker(layer.feature));
             }
