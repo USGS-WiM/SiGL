@@ -205,7 +205,7 @@ export class SidebarComponent implements OnInit {
 
 	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'
 	public toggleSiteList(value: string, projectId: number) {
-		this.unHighlightProjName = true;
+		this.unHighlightProjName = true; // unhighlight project name if it's been clicked
         this._mapService.setSiteClicked({}); //clear selected site if one
         this._mapService.setProjectNameClicked(false);
 		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'ProjectId: ' + projectId + ', Toggle: ' + value });
