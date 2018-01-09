@@ -11,9 +11,12 @@ import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { ResizeEvent } from "angular-resizable-element/dist/esm/src";
-import * as L from 'leaflet';
-import esri from 'esri-leaflet';
+declare var L: any;
+import 'leaflet.markercluster';
 
+//import * as L from 'leaflet';
+import esri from 'esri-leaflet';
+import 'leaflet.markercluster.freezable';
 import { MapService } from "../../shared/services/map.service";
 import { FilterComponent } from "../../shared/components/filter/filter.component";
 import { SiglService } from "../../shared/services/siglservices.service";
@@ -41,7 +44,8 @@ export class MapviewComponent implements OnInit {
 	public tempSitesIcon: any;
     public highlightIcon: any;
     public tempHighlightIcon: any;
-	public geoJsonLayer: L.GeoJSON;
+    public geoJsonLayer: L.GeoJSON;
+    public clusterGeoJsonMarkers: any;
 	public tempGeoJsonLayer: L.GeoJSON;
 	public selectedProjGeoJsonLayer: L.GeoJSON;
 	private geoj: any;
@@ -189,6 +193,7 @@ export class MapviewComponent implements OnInit {
 					}),
 					onEachFeature: ((feature, layer) => {
                         layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
+                        
                         layer.on('popupclose', (e) => {
                             if (this.clickedMarker) {
 								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
@@ -208,7 +213,25 @@ export class MapviewComponent implements OnInit {
 							this.onFeatureSelection(e);
 						});
 					})
-				}).addTo(this.map);
+                });//.addTo(this.map);
+                this.clusterGeoJsonMarkers = L.markerClusterGroup({
+                    showCoverageOnHover:false, // When you mouse over a cluster it shows the bounds of its markers
+                    maxClusterRadius: .1, // The maximum radius that a cluster will cover from the central marker (in pixels). Default 80. Decreasing will make more, smaller clusters. You can also use a function that accepts the current map zoom and returns the maximum cluster radius in pixels.
+                    spiderfyDistanceMultiplier: 2
+                });
+                
+                this.clusterGeoJsonMarkers.addLayer(this.geoJsonLayer);
+                /*this.clusterGeoJsonMarkers.on('click', function (a) {
+                    console.log('marker ' + a.layer);
+                });
+                this.clusterGeoJsonMarkers.on('clusterclick', (a) => {
+                    // a.layer is actually a cluster                   
+                    console.log('cluster ' + a.layer.getAllChildMarkers().length);
+                });*/
+
+                this.map.addLayer(this.clusterGeoJsonMarkers);
+                
+                this.clusterGeoJsonMarkers.disableClustering();
 			}
 		});
 		//temporary sites when user clicks toggle between show all and only filteres sites from sidebar
@@ -289,8 +312,16 @@ export class MapviewComponent implements OnInit {
             minZoom: 4,
 			maxZoom: 19,
             layers: [this._mapService.baseMaps.Topo]
-		});
-		
+        });
+        // only want clustering to happen when zoomed in, otherwise just show all the points
+		this.map.on('zoomend', (e) =>{
+            console.log(e.target._zoom);
+            if (e.target._zoom >= 14){
+                this.clusterGeoJsonMarkers.enableClustering();
+            } else {
+                this.clusterGeoJsonMarkers.disableClustering();
+            }
+        });
 		/*BEGIN AUX LAYERS */
         this.lakeLayer = esri.featureLayer({
             url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/3",
