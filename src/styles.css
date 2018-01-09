@@ -360,8 +360,8 @@ Sidebar Responsiveness
     left: 0 !important;
   }
   #map{
-    width: 100%;
-    margin-left: 0px;
+    width: 100% !important;
+    margin-left: 0px !important;
   }
   #bottomBar{
     width: 100% !important;
@@ -427,4 +427,12 @@ Misc
 }
 #tabContainer{
   background-color: rgb(247, 247, 249) !important;
+}
+
+
+#bottomBar #tabContainer{
+  height: auto !important;
+  max-height: 100% !important;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
