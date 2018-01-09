@@ -7,7 +7,7 @@
     </div>
     <div class="modal-body">
         <ngb-tabset #aboutTabs>
-            <ngb-tab title="About the project" id="about">
+            <ngb-tab title="About SiGL" id="about">
                 <ng-template ngbTabContent>
                     <p>
                         In the Great Lakes basin, there are numerous organizations undertaking scientific monitoring and research efforts with 
@@ -25,7 +25,8 @@
                     </p>
                     <p>
                         SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes, 
-                        universities, and nonprofit organizations. As of January 1, 2018, SiGL contained 300 projects and 12,241 sites from 106 organizations.
+                        universities, and nonprofit organizations. As of {{nowDate | date: 'yMMMMd'}}, SiGL contained {{projectCount | number}} projects 
+                        and {{siteCount | number}} sites from {{orgCount | number}} organizations.
                     </p>
                     <p>
                         If you would like to submit data to SiGL, or manage data currently residing in SiGL, please visit the 
@@ -63,40 +64,40 @@
                     </p>
                     <p>
                         This web application functions best in Chrome, Firefox, or Safari. Internet Explorer works but with slower performance.
-                    </p>
-                    <p>
-                        This web application has been made possible by several open-source projects:
-                    </p>
-                    <p>
-                        Project: <a href="https://angular.io/" target="_blank">Angular</a>
-                        <br/>
-                        Copyright (c) 2010-2017 Google, Inc.
-                        <br/>
-                        License (<a href="https://angular.io/license" target="_blank">MIT</a>)
-                    </p>
-                    <p>
-                        Project: <a href="http://leafletjs.com/" target="_blank">Leaflet</a>
-                        <br/>
-                        Copyright (c) 2010-2016, Vladimir Agafonkin<br/>
-                        Copyright (c) 2010-2011, CloudMade<br/>
-                        All rights reserved.
-                        <br/>
-                        License (<a href="https://github.com/Leaflet/Leaflet/blob/master/LICENSE" target="_blank">2-Clause BSD</a>)
-                    </p>
-                    <p>
-                        Project: <a href="http://softsimon.github.io/angular-2-dropdown-multiselect/" target="_blank">angular-2-dropdown-multiselect</a>
-                        <br/>
-                        Copyright (c) 2016, softsimon
-                        <br/>
-                        License (<a href="https://github.com/softsimon/angular-2-dropdown-multiselect/blob/master/LICENSE" target="_blank">MIT</a>)
-                    </p>                       
+                    </p>                         
                 </ng-template>
             </ngb-tab>
             <ngb-tab title="Metadata">
                     <ng-template ngbTabContent>
                         <p>
                             Link to SiGL Services Documentation page: <a href="https://sigl.wim.usgs.gov/SiGLServices/Documentation" target="_blank">SiGLServices</a>
-                        </p>                       
+                        </p>        
+                        <p>
+                            This web application has been made possible by several open-source projects:
+                        </p>
+                        <p>
+                            Project: <a href="https://angular.io/" target="_blank">Angular</a>
+                            <br/>
+                            Copyright (c) 2010-2017 Google, Inc.
+                            <br/>
+                            License (<a href="https://angular.io/license" target="_blank">MIT</a>)
+                        </p>
+                        <p>
+                            Project: <a href="http://leafletjs.com/" target="_blank">Leaflet</a>
+                            <br/>
+                            Copyright (c) 2010-2016, Vladimir Agafonkin<br/>
+                            Copyright (c) 2010-2011, CloudMade<br/>
+                            All rights reserved.
+                            <br/>
+                            License (<a href="https://github.com/Leaflet/Leaflet/blob/master/LICENSE" target="_blank">2-Clause BSD</a>)
+                        </p>
+                        <p>
+                            Project: <a href="http://softsimon.github.io/angular-2-dropdown-multiselect/" target="_blank">angular-2-dropdown-multiselect</a>
+                            <br/>
+                            Copyright (c) 2016, softsimon
+                            <br/>
+                            License (<a href="https://github.com/softsimon/angular-2-dropdown-multiselect/blob/master/LICENSE" target="_blank">MIT</a>)
+                        </p>                                 
                     </ng-template>
                 </ngb-tab>
         </ngb-tabset>

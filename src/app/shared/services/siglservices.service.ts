@@ -52,6 +52,7 @@ export class SiglService {
 		this.setProjects();
 		this.setOrganizations();
 		this.setObjectives();
+		this.setSites(); //needed for the About modal
 		// this gets updated everytime a filter is done. the mapServices filters the geojson and stores the filtered
 		// siteIDs in array for sidebar to use for styling the list of sites within each project (and for counts)
 		this._mapService.filteredSiteIDs.subscribe((siteIds: any) => {
@@ -69,6 +70,7 @@ export class SiglService {
 	private _stateSubject: Subject<Array<Istate>> = new Subject<Array<Istate>>();
 	private _monitorEffortSubject: Subject<Array<ImonitorEffort>> = new Subject<Array<ImonitorEffort>>();
 	private _projectSubject: Subject<Array<Iproject>> = new Subject<Array<Iproject>>();
+	private _siteSubject: Subject<Array<Isite>> = new Subject<Array<Isite>>();
 	private _organizationSubject: Subject<Array<Iorganization>> = new Subject<Array<Iorganization>>();
 	private _objectiveSubject: Subject<Array<Iobjective>> = new Subject<Array<Iobjective>>();
 	private _chosenFilterSubject: Subject<any> = new Subject<any>();
@@ -104,6 +106,9 @@ export class SiglService {
 	}
 	public get project(): Observable<Array<Iproject>> {
 		return this._projectSubject.asObservable();
+	}
+	public get sites(): Observable<Array<Isite>> {
+		return this._siteSubject.asObservable();
 	}
 	public get organization(): Observable<Array<Iorganization>> {
 		return this._organizationSubject.asObservable();
@@ -319,6 +324,15 @@ export class SiglService {
 		this._sitePointClick.next(val);
 	} 
 	
+	private setSites(): void {
+		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
+		this._http.get(CONFIG.SITE_URL, options)
+			.map(res => <Array<Isite>>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
+			.subscribe(s => {
+				this._siteSubject.next(s);
+			});
+	}
 	//Error Handler
 	private handleError(error: any, caught: any) {
 		this._loaderService.hideSidebarLoad();

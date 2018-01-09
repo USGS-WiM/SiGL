@@ -165,7 +165,7 @@ export class MapviewComponent implements OnInit {
                 }
                 
                 //if sidebar project name was clicked in UI, highlight project sites   TODO:: Something not right here .. works everyother time to highlight
-				if (this.projectNameClickFlag && !this.sameProject.same || !(this.sameProject.timesInARow % 2 == 0)) {
+				if (this.projectNameClickFlag){ // && !this.sameProject.same || !(this.sameProject.timesInARow % 2 == 0)) {
                     this.highlightProjSites(this.fullProj.ProjectId);
                 }
                 
@@ -424,15 +424,8 @@ export class MapviewComponent implements OnInit {
 		if (this.AllShowingProjIDArray.indexOf(projId) > -1) {
             geoJholder = this.tempGeoj;
             this.tempGeoJsonLayer.eachLayer((layer:any)=>{
-                if(layer.feature.properties.project_id == projId) {
-                    // are they clicking to highlight or to unhighlight. 
-                    if (layer.options.radius < 5) {
-                        // highlight it because it's radius is the radius of a regular icon
-                        layer.setStyle(this.tempHighlightIcon);
-                    } else {
-                        // it is highlighted already (radius == 8), they clicked again to unhighlight
-                        layer.setStyle(this.setMarker(layer.feature));
-                    }                    
+                if(layer.feature.properties.project_id == projId) {                    
+                    layer.setStyle(this.tempHighlightIcon);                                      
                 } else{
                     layer.setStyle(this.setMarker(layer.feature));
                 }
@@ -441,14 +434,7 @@ export class MapviewComponent implements OnInit {
         geoJholder = this.geoj;
         this.geoJsonLayer.eachLayer((layer:any)=>{
             if(layer.feature.properties.project_id == projId){
-                // are they clicking to highlight or to unhighlight. 
-                if (layer.options.radius < 5) {
-                    // highlight it because it's radius is the radius of a regular icon
-                    layer.setStyle(this.highlightIcon);
-                } else {
-                    // it is highlighted already (radius == 8), they clicked again to unhighlight
-                    layer.setStyle(this.setMarker(layer.feature));
-                }                
+                layer.setStyle(this.highlightIcon);                                
             } else{
                 layer.setStyle(this.setMarker(layer.feature));
             }

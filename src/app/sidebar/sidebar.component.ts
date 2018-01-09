@@ -192,23 +192,31 @@ export class SidebarComponent implements OnInit {
 		this._modalService.showFilterModal = true;
 	}
 
-	public showProjectDetails(project: any): void {
-		this.unHighlightProjName = false;
+	public showProjectDetails(project: any): void {		
 		this._siglService.setsitePointClickBool(false); //let mainview know proj name was clicked (not site point anymore)
         this._mapService.setSiteClicked({});
-        this._mapService.setProjectNameClicked(true);
+		this._mapService.setProjectNameClicked(true);
+		let sameProjNameClicked: boolean = false;
 		let projID = project.project_id || project.ProjectId;
 		if (this.selectedProjectId == projID) {
 			// they clicked it again
+			this.unHighlightProjName = true; //turn off gray background and bold font
+			sameProjNameClicked = true;
 			this.projectNameClickOnOff++;
 		} else {
-			// they clicked a different or new project name
+			// they clicked a different or new project name			
+			sameProjNameClicked = false;
 			this.projectNameClickOnOff = 1;
 		}
-		this.selectedProjectId = !(this.projectNameClickOnOff % 2 == 0) ? projID : 0;
-//		this.selectedProjectId = projID;
+		this.selectedProjectId = projID;
+		
+		// only go setFullProject if they are clicking it 'on' and not clicking it 'off'
+		if (!(this.projectNameClickOnOff % 2 == 0)) {
+			this._siglService.setFullProject(this.selectedProjectId.toString());
+			this.unHighlightProjName = false;
+		}
+
 		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'ProjectNameClick: ' + projID });
-		if (this.selectedProjectId > 0) this._siglService.setFullProject(this.selectedProjectId.toString());
 	}
 
 	public showSiteDetails(site: Isimplesite): void {		
