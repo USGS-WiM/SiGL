@@ -46,7 +46,8 @@ export class MapviewComponent implements OnInit {
     public tempHighlightIcon: any;
     public geoJsonLayer: L.GeoJSON;
     public clusterGeoJsonMarkers: any;
-	public tempGeoJsonLayer: L.GeoJSON;
+    public tempGeoJsonLayer: L.GeoJSON;
+    public clusterTempJsonMarkers: any;
 	public selectedProjGeoJsonLayer: L.GeoJSON;
 	private geoj: any;
 	private tempGeoj: any;
@@ -181,7 +182,8 @@ export class MapviewComponent implements OnInit {
 		//every time geojson gets updated (initially its all, after depends on filters chosen)
 		this._mapService.filteredSiteView.subscribe((geoj: any) => {
 			if (geoj !== "") {
-				//remove all layers and start fresh everytime this updates
+                //remove all layers and start fresh everytime this updates
+                if (this.clusterGeoJsonMarkers) this.clusterGeoJsonMarkers.remove();
 				if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
 				if (this.geoJsonLayer) this.geoJsonLayer.remove();
 				if (this.tempGeoJsonLayer) this.tempGeoJsonLayer.remove();
@@ -195,6 +197,7 @@ export class MapviewComponent implements OnInit {
                         layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
                         
                         layer.on('popupclose', (e) => {
+                            this._mapService.setSiteClicked({});
                             if (this.clickedMarker) {
 								this.clickedMarker.setStyle(this.setMarker(e.target.feature));
 							}
@@ -237,6 +240,7 @@ export class MapviewComponent implements OnInit {
 		//temporary sites when user clicks toggle between show all and only filteres sites from sidebar
 		this._mapService.tempSites.subscribe((tempGeoj: any) => {
 			if (tempGeoj !== "") {
+                if (this.clusterTempJsonMarkers) this.clusterTempJsonMarkers.remove();
 				if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
 				if (this.tempGeoJsonLayer) this.tempGeoJsonLayer.remove();
 
@@ -246,7 +250,10 @@ export class MapviewComponent implements OnInit {
 						return L.circleMarker(latlng, this.tempSitesIcon);
 					}),
 					onEachFeature: ((feature, layer) => {
-						layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
+                        layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
+                        layer.on('popupclose', (e) => {
+                            this._mapService.setSiteClicked({}); //clears it being selected from the sidebar list of sites
+                        });
 						layer.on("click", (e) => {
 							gtag('event', 'click', { 'event_category': 'Map', 'event_label': 'SitePoint in tempProjectLayer: ' + e.target.feature.properties.site_id });
 							this._mapService.setSiteClicked({"site_id":e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id, "fromMap": true});
@@ -260,7 +267,17 @@ export class MapviewComponent implements OnInit {
 							this.onFeatureSelection(e)
 						});
 					})
-				}).addTo(this.map);
+                });//.addTo(this.map);
+                this.clusterTempJsonMarkers = L.markerClusterGroup({
+                    showCoverageOnHover:false, // When you mouse over a cluster it shows the bounds of its markers
+                    maxClusterRadius: .1, // The maximum radius that a cluster will cover from the central marker (in pixels). Default 80. Decreasing will make more, smaller clusters. You can also use a function that accepts the current map zoom and returns the maximum cluster radius in pixels.
+                    spiderfyDistanceMultiplier: 2
+                });
+                
+                this.clusterTempJsonMarkers.addLayer(this.tempGeoJsonLayer);
+                this.map.addLayer(this.clusterTempJsonMarkers);
+                
+                this.clusterTempJsonMarkers.disableClustering();
 			}
 		});
 		this._siglService.sitePointClickBool.subscribe((val: boolean) => {
@@ -318,8 +335,10 @@ export class MapviewComponent implements OnInit {
             console.log(e.target._zoom);
             if (e.target._zoom >= 14){
                 this.clusterGeoJsonMarkers.enableClustering();
+                if (this.clusterTempJsonMarkers) this.clusterTempJsonMarkers.enableClustering();
             } else {
                 this.clusterGeoJsonMarkers.disableClustering();
+                if (this.clusterTempJsonMarkers) this.clusterTempJsonMarkers.disableClustering();
             }
         });
 		/*BEGIN AUX LAYERS */

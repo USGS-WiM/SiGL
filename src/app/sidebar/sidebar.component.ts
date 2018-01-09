@@ -68,38 +68,43 @@ export class SidebarComponent implements OnInit {
 		this.siteNameClickOnOff = 0;
 		// update selected site when point is clicked in map
 		this._mapService.siteClicked.subscribe(site => {
-			//determine if they are clicking it to highlight the site or to unhighlight the site
-			if (site.site_id == this.selectedSite) {
-				this.siteNameClickOnOff++;
-			}
-			else { 
-				this.siteNameClickOnOff = 1;
-			};
+			if (Object.keys(site).length > 0){
+				//determine if they are clicking it to highlight the site or to unhighlight the site
+				if (site.site_id == this.selectedSite) {
+					this.siteNameClickOnOff++;
+				}
+				else { 
+					this.siteNameClickOnOff = 1;
+				};
 
-			if (site.site_id) {
-				// only if they are clicking it to highlight the site set the selectedSite (determines whether it has a gray selected background)
-				this.selectedSite = !(this.siteNameClickOnOff % 2 == 0) ? site.site_id : 0;
-				this.filteredProjects.forEach(proj => {
-					if (site.project_id == proj.project_id) {
-						proj.isCollapsed = false;
-					} else {
-						proj.isCollapsed = true;
-					}
-				});
-			}
-			// scroll down to the site id chosen
-			if (site.fromMap == true) {
-				let idName: string = "#site_" + site.site_id.toString();
-				let sideBARContent = this.sidebarContainer.nativeElement;
-				setTimeout(() => {
-					let pageScrollInstance: PageScrollInstance = PageScrollInstance.newInstance(
-						{
-							document: this._document,
-							scrollTarget: idName,
-							scrollingViews: [sideBARContent]
-						});
-					this._pageScrollService.start(pageScrollInstance);
-				}, 1000);
+				if (site.site_id) {
+					// only if they are clicking it to highlight the site set the selectedSite (determines whether it has a gray selected background)
+					this.selectedSite = !(this.siteNameClickOnOff % 2 == 0) ? site.site_id : 0;
+					this.filteredProjects.forEach(proj => {
+						if (site.project_id == proj.project_id) {
+							proj.isCollapsed = false;
+						} else {
+							proj.isCollapsed = true;
+						}
+					});
+				}
+				// scroll down to the site id chosen
+				if (site.fromMap == true) {
+					let idName: string = "#site_" + site.site_id.toString();
+					let sideBARContent = this.sidebarContainer.nativeElement;
+					setTimeout(() => {
+						let pageScrollInstance: PageScrollInstance = PageScrollInstance.newInstance(
+							{
+								document: this._document,
+								scrollTarget: idName,
+								scrollingViews: [sideBARContent]
+							});
+						this._pageScrollService.start(pageScrollInstance);
+					}, 1000);
+				}
+			} else {
+				// this is an empty site because they closed the popup or clicked somewhere else in the map
+				this.selectedSite = 0;
 			}
 		});
 		this.sortByObject = [
