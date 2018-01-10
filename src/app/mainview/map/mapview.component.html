@@ -11,7 +11,12 @@
             <ngb-tab title="Project Summary" id="project">
                 <ng-template ngbTabContent>
                     <div>
-                        <span *ngIf="fullProj" class="dataHeader">Project Name: {{fullProj.Name}}</span> 
+                        <span *ngIf="fullProj" class="dataHeader">Project Name: {{fullProj.Name}}
+                            <br *ngIf="fullProj?.last_edited_stamp" />
+                            <span style="font-size:smaller;color:black;font-weight:normal" *ngIf="fullProj?.last_edited_stamp">
+                                last edited: {{fullProj.last_edited_stamp | date: 'yMMMd'}}
+                            </span> 
+                        </span>
                     </div>
                     <div>
                         <div *ngIf="fullProj?.Organizations.length > 0">

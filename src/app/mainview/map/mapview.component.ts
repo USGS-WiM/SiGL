@@ -220,20 +220,13 @@ export class MapviewComponent implements OnInit {
                 this.clusterGeoJsonMarkers = L.markerClusterGroup({
                     showCoverageOnHover:false, // When you mouse over a cluster it shows the bounds of its markers
                     maxClusterRadius: .1, // The maximum radius that a cluster will cover from the central marker (in pixels). Default 80. Decreasing will make more, smaller clusters. You can also use a function that accepts the current map zoom and returns the maximum cluster radius in pixels.
-                    spiderfyDistanceMultiplier: 2
+                    spiderfyDistanceMultiplier: 2 // increase the distance of the spiderlegs, need this so that all points are clickable
                 });
                 
                 this.clusterGeoJsonMarkers.addLayer(this.geoJsonLayer);
-                /*this.clusterGeoJsonMarkers.on('click', function (a) {
-                    console.log('marker ' + a.layer);
-                });
-                this.clusterGeoJsonMarkers.on('clusterclick', (a) => {
-                    // a.layer is actually a cluster                   
-                    console.log('cluster ' + a.layer.getAllChildMarkers().length);
-                });*/
-
-                this.map.addLayer(this.clusterGeoJsonMarkers);
                 
+                this.map.addLayer(this.clusterGeoJsonMarkers);
+                //disable the clustering until they are zoomed in
                 this.clusterGeoJsonMarkers.disableClustering();
 			}
 		});
@@ -271,12 +264,13 @@ export class MapviewComponent implements OnInit {
                 this.clusterTempJsonMarkers = L.markerClusterGroup({
                     showCoverageOnHover:false, // When you mouse over a cluster it shows the bounds of its markers
                     maxClusterRadius: .1, // The maximum radius that a cluster will cover from the central marker (in pixels). Default 80. Decreasing will make more, smaller clusters. You can also use a function that accepts the current map zoom and returns the maximum cluster radius in pixels.
-                    spiderfyDistanceMultiplier: 2
+                    spiderfyDistanceMultiplier: 2 // increase the distance of the spiderlegs, need this so that all points are clickable
                 });
                 
                 this.clusterTempJsonMarkers.addLayer(this.tempGeoJsonLayer);
                 this.map.addLayer(this.clusterTempJsonMarkers);
-                
+
+                //disable the clustering until they are zoomed in
                 this.clusterTempJsonMarkers.disableClustering();
 			}
 		});
