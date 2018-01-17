@@ -428,7 +428,21 @@ Misc
 #tabContainer{
   background-color: rgb(247, 247, 249) !important;
 }
+#bottomBar #tabContainer{
+  width: 100% !important;
+}
 
+.actionBtn{
+  width: 100%;
+  text-align: center;
+  transition: 0.2s;
+  color:white;
+}
+.actionBtn:hover{
+  transition: 0.2s;
+  color: rgba(255,255,255,0.88);
+  cursor: pointer;
+}
 
 #bottomBar #tabContainer{
   height: auto !important;

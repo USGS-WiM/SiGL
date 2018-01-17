@@ -13,7 +13,7 @@
             <ng-template ngbPanelContent>
                 <button type="button" class="actionBtn" (click)="showFilterModal()">Change filters</button>
                 <br/>
-                <div style="font-size:large" *ngIf="filterCount == 0">Showing all projects with sites.</div>
+                <div style="font-size:14px; font-weight: bolder; width: 100%; text-align:center; opacity:0.35; padding: 10px 0 0 0;" *ngIf="filterCount == 0">Showing all projects with sites.</div>
 
                 <div style="font-size:large" *ngIf="projectFilters"><b>Project filters applied:</b></div>
                 <!-- Durations -->
@@ -63,7 +63,7 @@
                         <span>{{chosenFilters.ORG.organization_name}}</span>
                     </p>
                 </div>
-                
+
                 <div style="font-size:large" *ngIf="siteFilters"><b>Site filters applied:</b></div>
                 <!-- Parameters -->
                 <div *ngIf="chosenFilters?.PARAMETERS">
@@ -74,7 +74,7 @@
                             <br/>
                         </span>
                     </p>
-                </div>                
+                </div>
                 <!-- Resources -->
                 <div *ngIf="chosenFilters?.RESOURCES">
                     <i *ngIf="chosenFilters.RESOURCES.length > 0" class="pull-left down4" [ngClass]="ResCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ResCollapsed=!ResCollapsed"></i>
@@ -115,7 +115,7 @@
                         </span>
                     </p>
                 </div>
-                
+
                 <div *ngIf="chosenFilters?.ProjectName && chosenFilters?.ProjectName != ''">
                     <i *ngIf="chosenFilters.ProjectName && chosenFilters.ProjectName != ''" class="pull-left down4" [ngClass]="ProjCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ProjCollapsed=!ObjCollaProjCollapsedpsed"></i>
                     <span><b>Project Name</b></span>
