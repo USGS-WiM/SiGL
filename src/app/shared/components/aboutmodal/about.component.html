@@ -10,96 +10,128 @@
             <ngb-tab title="About SiGL" id="about">
                 <ng-template ngbTabContent>
                     <p>
-                        In the Great Lakes basin, there are numerous organizations undertaking scientific monitoring and research efforts with 
-                        the goal of identifying threats and evaluating management strategies that will protect and restore the Great Lakes ecosystem. 
-                        Coordination among all these stakeholders is a challenge, and having a centralized location where researchers and managers 
-                        can identify relevant scientific activities and access fundamental information about these activities is crucial for efficient 
-                        management.
+                        In the Great Lakes basin, there are numerous organizations undertaking scientific monitoring and research efforts with the
+                        goal of identifying threats and evaluating management strategies that will protect and restore the
+                        Great Lakes ecosystem. Coordination among all these stakeholders is a challenge, and having a centralized
+                        location where researchers and managers can identify relevant scientific activities and access fundamental
+                        information about these activities is crucial for efficient management.
                     </p>
                     <p>
-                        To meet this need, the USGS has developed the Science in the Great Lakes (SiGL) Mapper, a data-discovery tool that captures 
-                        information about a wide range of scientific activities and provides details on how to access associated data and products. 
-                        SiGL helps researchers and managers strategically plan, implement, and analyze monitoring and restoration activities by 
-                        providing easy access to current and historical project metadata, connecting them with project leads and data repositories, 
-                        and assisting in the identification of spatial and topical gaps in previous and ongoing monitoring efforts.
+                        To meet this need, the USGS has developed the Science in the Great Lakes (SiGL) Mapper, a data-discovery tool that captures
+                        information about a wide range of scientific activities and provides details on how to access associated
+                        data and products. SiGL helps researchers and managers strategically plan, implement, and analyze
+                        monitoring and restoration activities by providing easy access to current and historical project
+                        metadata, connecting them with project leads and data repositories, and assisting in the identification
+                        of spatial and topical gaps in previous and ongoing monitoring efforts.
                     </p>
                     <p>
-                        SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes, 
-                        universities, and nonprofit organizations. As of {{nowDate | date: 'yMMMMd'}}, SiGL contained {{projectCount | number}} projects 
-                        and {{siteCount | number}} sites from {{orgCount | number}} organizations.
+                        SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes,
+                        universities, and nonprofit organizations. As of {{nowDate | date: 'yMMMMd'}}, SiGL contained {{projectCount
+                        | number}} projects and {{siteCount | number}} sites from {{orgCount | number}} organizations.
                     </p>
                     <p>
-                        If you would like to submit data to SiGL, or manage data currently residing in SiGL, please visit the 
+                        If you would like to submit data to SiGL, or manage data currently residing in SiGL, please visit the
                         <a href="https://sigl.wim.usgs.gov/sigldms/" target="_blank">SiGL Data Management System</a> for more information.
                     </p>
-                    <p>If you would like to utilize SiGL’s public web services, please visit our 
+                    <p>If you would like to utilize SiGL’s public web services, please visit our
                         <a href="https://sigl.wim.usgs.gov/SiGLServices/Documentation" target="_blank"></a>SiGL Services Documentation for more information.
                     </p>
                     <p>
-                        SiGL’s goal is to serve the entire Great Lakes community, and we are open to feedback and ideas that will make SiGL a more 
-                        useful and comprehensive tool. If you have questions or comments, or would like to have your data included in the SiGL, 
-                        please contact sigl@usgs.gov
+                        SiGL’s goal is to serve the entire Great Lakes community, and we are open to feedback and ideas that will make SiGL a more
+                        useful and comprehensive tool. If you have questions or comments, or would like to have your data
+                        included in the SiGL, please contact sigl@usgs.gov
                     </p>
                 </ng-template>
             </ngb-tab>
             <ngb-tab title="Disclaimers">
                 <ng-template ngbTabContent>
                     <p>
-                        <strong>USGS Data Disclaimer:</strong><br/>
-                        Unless otherwise stated, all data, metadata and related materials are considered to satisfy the quality standards relative to the purpose for which the 
-                        data were collected. Although these data and associated metadata have been reviewed for accuracy and completeness and approved for release by the 
-                        U.S. Geological Survey (USGS), no warranty expressed or implied is made regarding the display or utility of the data for other purposes, nor on all computer systems, 
-                        nor shall the act of distribution constitute any such warranty.
+                        <strong>USGS Data Disclaimer:</strong>
+                        <br/> Unless otherwise stated, all data, metadata and related materials are considered to satisfy the
+                        quality standards relative to the purpose for which the data were collected. Although these data
+                        and associated metadata have been reviewed for accuracy and completeness and approved for release
+                        by the U.S. Geological Survey (USGS), no warranty expressed or implied is made regarding the display
+                        or utility of the data for other purposes, nor on all computer systems, nor shall the act of distribution
+                        constitute any such warranty.
                     </p>
                     <p>
-                        <strong>USGS Software Disclaimer:</strong><br />
-                        This software has been approved for release by the U.S. Geological Survey (USGS). Although the software has been subjected to rigorous review, the USGS 
-                        reserves the right to update the software as needed pursuant to further analysis and review. No warranty, expressed or implied, is made by the USGS or the U.S. 
-                        Government as to the functionality of the software and related material nor shall the fact of release constitute any such warranty. Furthermore, the software 
-                        is released on condition that neither the USGS nor the U.S. Government shall be held liable for any damages resulting from its authorized or unauthorized use.
+                        <strong>USGS Software Disclaimer:</strong>
+                        <br /> This software has been approved for release by the U.S. Geological Survey (USGS). Although the software
+                        has been subjected to rigorous review, the USGS reserves the right to update the software as needed
+                        pursuant to further analysis and review. No warranty, expressed or implied, is made by the USGS or
+                        the U.S. Government as to the functionality of the software and related material nor shall the fact
+                        of release constitute any such warranty. Furthermore, the software is released on condition that
+                        neither the USGS nor the U.S. Government shall be held liable for any damages resulting from its
+                        authorized or unauthorized use.
                     </p>
                     <p>
-                        <strong>USGS Product Names Disclaimer:</strong><br/>
-                        Any use of trade, firm, or product names is for descriptive purposes only and does not imply endorsement by the U.S. Government.
+                        <strong>USGS Product Names Disclaimer:</strong>
+                        <br/> Any use of trade, firm, or product names is for descriptive purposes only and does not imply endorsement
+                        by the U.S. Government.
                     </p>
                     <p>
                         This web application functions best in Chrome, Firefox, or Safari. Internet Explorer works but with slower performance.
-                    </p>                         
+                    </p>
                 </ng-template>
             </ngb-tab>
-            <ngb-tab title="Metadata">
-                    <ng-template ngbTabContent>
-                        <p>
-                            Link to SiGL Services Documentation page: <a href="https://sigl.wim.usgs.gov/SiGLServices/Documentation" target="_blank">SiGLServices</a>
-                        </p>        
-                        <p>
-                            This web application has been made possible by several open-source projects:
-                        </p>
-                        <p>
-                            Project: <a href="https://angular.io/" target="_blank">Angular</a>
-                            <br/>
-                            Copyright (c) 2010-2017 Google, Inc.
-                            <br/>
-                            License (<a href="https://angular.io/license" target="_blank">MIT</a>)
-                        </p>
-                        <p>
-                            Project: <a href="http://leafletjs.com/" target="_blank">Leaflet</a>
-                            <br/>
-                            Copyright (c) 2010-2016, Vladimir Agafonkin<br/>
-                            Copyright (c) 2010-2011, CloudMade<br/>
-                            All rights reserved.
-                            <br/>
-                            License (<a href="https://github.com/Leaflet/Leaflet/blob/master/LICENSE" target="_blank">2-Clause BSD</a>)
-                        </p>
-                        <p>
-                            Project: <a href="http://softsimon.github.io/angular-2-dropdown-multiselect/" target="_blank">angular-2-dropdown-multiselect</a>
-                            <br/>
-                            Copyright (c) 2016, softsimon
-                            <br/>
-                            License (<a href="https://github.com/softsimon/angular-2-dropdown-multiselect/blob/master/LICENSE" target="_blank">MIT</a>)
-                        </p>                                 
-                    </ng-template>
-                </ngb-tab>
+            <ngb-tab title="Services">
+                <ng-template ngbTabContent>
+                    <p>
+                        <b>Link to SiGL Services Documentation page:</b>
+                        <br/>
+                        <a href="https://sigl.wim.usgs.gov/SiGLServices/Documentation" target="_blank">SiGLServices</a>
+                    </p>
+                    <p>
+                        <b>Link to EPA Areas of Conern REST Services:</b>
+                        <br/>
+                        <a href="https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/1" target="_blank">EPA Areas of Conern REST Services</a>
+                    </p>
+                    <p>
+                        <b>Link to USGS GLRI Nutrient and Contaminants of Emerging Concern Monitoring Basins REST Services:</b>
+                        <br/>
+                        <a href="https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/2" target="_blank">USGS GLRI Nutrient and Contaminants of Emerging Concern Monitoring Basins REST Services</a>
+                    </p>
+                    <p>
+                        <b>Link to Ceded Tribal Boundaries REST Services:</b>
+                        <br/>
+                        <a href="https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/4" target="_blank">Ceded Tribal Boundaries REST Services</a>
+                    </p>
+                    <p>
+                        <b>Link to Tribal Reservation Boundaries REST Services:</b>
+                        <br/>
+                        <a href="https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/5" target="_blank">Tribal Reservation Boundaries REST Services</a>
+                    </p>
+
+                    <p>
+                        This web application has been made possible by several open-source projects:
+                    </p>
+                    <p>
+                        Project:
+                        <a href="https://angular.io/" target="_blank">Angular</a>
+                        <br/> Copyright (c) 2010-2017 Google, Inc.
+                        <br/> License (
+                        <a href="https://angular.io/license" target="_blank">MIT</a>)
+                    </p>
+                    <p>
+                        Project:
+                        <a href="http://leafletjs.com/" target="_blank">Leaflet</a>
+                        <br/> Copyright (c) 2010-2016, Vladimir Agafonkin
+                        <br/> Copyright (c) 2010-2011, CloudMade
+                        <br/> All rights reserved.
+                        <br/> License (
+                        <a href="https://github.com/Leaflet/Leaflet/blob/master/LICENSE" target="_blank">2-Clause BSD</a>)
+                    </p>
+                    <p>
+                        Project:
+                        <a href="http://softsimon.github.io/angular-2-dropdown-multiselect/" target="_blank">angular-2-dropdown-multiselect</a>
+                        <br/> Copyright (c) 2016, softsimon
+                        <br/> License (
+                        <a href="https://github.com/softsimon/angular-2-dropdown-multiselect/blob/master/LICENSE"
+                            target="_blank">MIT</a>)
+                    </p>
+                </ng-template>
+            </ngb-tab>
         </ngb-tabset>
-    </div> <!-- end modal-body-->
+    </div>
+    <!-- end modal-body-->
 </ng-template>

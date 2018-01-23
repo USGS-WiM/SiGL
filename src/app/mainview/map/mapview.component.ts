@@ -7,7 +7,7 @@
 // purpose:     The mapview component contains a leaflet map with site geojson points that get updated depending on filters chosen and highlighted
 //              based on site point click, site name (sidebar) click or project name (sidebar) click.
 
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { ResizeEvent } from "angular-resizable-element/dist/esm/src";
@@ -25,8 +25,10 @@ import { Ifullsite } from "../../shared/interfaces/fullsite.interface";
 import { Iparameter } from "../../shared/interfaces/parameter.interface";
 import { Igroupedparameters } from "../../shared/interfaces/groupedparameters";
 import { Ifilteredproject } from '../../shared/interfaces/filteredproject';
+import { LayersComponent } from '../layers/layers.component';
 
 declare let gtag: Function;
+
 
 @Component({
 	selector: 'mapview',
@@ -37,7 +39,7 @@ declare let gtag: Function;
 export class MapviewComponent implements OnInit {
 	@ViewChild('t') tabs;
 	// filter modal, opened from sidebar's (click) function that changing show boolean, subscribed to in the filterModalComponent
-	@ViewChild('filtermodal') filtermodal: FilterComponent;
+    @ViewChild('filtermodal') filtermodal: FilterComponent;
 	public map: any;
 	public wmsLayer: any;
 	public icon: any;
@@ -66,16 +68,10 @@ export class MapviewComponent implements OnInit {
 	public groupedParams: Igroupedparameters;
     private sameProject: any;
     public lakeLayer: any;
-    public epaLayer: any;
-    public glriLayer: any;
-    public TribalBoundsLayer: any;
-    public TribalTerritoriesLayer: any;
-    public auxLayers: any;
-
-
+    
 	constructor(private _mapService: MapService, private _siglService: SiglService) { }
 
-	ngOnInit() {
+	ngOnInit() {       
 		this.AllShowingProjIDArray = [];
 		//set defaults on init
 		this.showBottomBar = false;
@@ -92,7 +88,8 @@ export class MapviewComponent implements OnInit {
             color: "#000",
             weight: 0,
             opacity: 1,
-            fillOpacity: 0.5
+            fillOpacity: 0.5,
+            pane: 'geojson'
         };
         this.highlightIcon = {
             radius: 8,
@@ -104,7 +101,7 @@ export class MapviewComponent implements OnInit {
             fillOpacity: 0.5
         };
         this.tempHighlightIcon = {
-            radius: 8,
+            radius: 8,            
             weight: 5,
             opacity: 0.2,
             fill: 'green',
@@ -324,6 +321,28 @@ export class MapviewComponent implements OnInit {
 			maxZoom: 19,
             layers: [this._mapService.baseMaps.Topo]
         });
+
+        let legend = L.control({position: 'topright'});
+        
+        legend.onAdd = (map) => {
+            let div = L.DomUtil.create('div', 'info legend');
+            
+            div.innerHTML = '<div><i style="background:rgba(255,165,0,0.2);border:1px solid darkorange"></i> EPA Areas of Concern</div><br clear="all"/>';
+            div.innerHTML += '<div><i style="background:rgba(51,136,255,0.2);border:1px solid #3388ff"></i> USGS GLRI Nutrient and Contaminants of<br/> Emerging Concern Monitoring Basins</div><br clear="all"/>';
+            div.innerHTML += '<div><i style="background:rgba(0,128,0,0.2);border:1px solid green"></i> Ceded Tribal Boundaries</div><br clear="all"/>';
+            div.innerHTML += '<div><i style="background:rgba(244,223,168,0.2);border:1px solid #f4dfa8"></i> Tribal Reservation Boundaries</div><br clear="all"/>';
+                
+            return div;
+        };
+        legend.addTo(this.map);
+
+        //keeps the geojson always on the top of all other layers
+        this.map.createPane('areas');
+        this.map.createPane('glri');
+        this.map.createPane('ceded');
+        this.map.createPane('tribal');
+        this.map.createPane('geojson');
+
         // only want clustering to happen when zoomed in, otherwise just show all the points
 		this.map.on('zoomend', (e) =>{
             console.log(e.target._zoom);
@@ -334,6 +353,10 @@ export class MapviewComponent implements OnInit {
                 this.clusterGeoJsonMarkers.disableClustering();
                 if (this.clusterTempJsonMarkers) this.clusterTempJsonMarkers.disableClustering();
             }
+        });
+        this.map.on('baselayerchange', function (eventLayer) {
+            // Switch to the Population legend...
+            let test = "whatshere";
         });
 		/*BEGIN AUX LAYERS */
         this.lakeLayer = esri.featureLayer({
@@ -356,37 +379,7 @@ export class MapviewComponent implements OnInit {
                 }
             }
         });
-        this.epaLayer = esri.featureLayer({
-            url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/1",
-            style: function(){
-                return {color: 'DarkOrange', weight: 0.5 };
-            }
-        });
-        this.glriLayer = esri.featureLayer({
-            url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/2",
-            style: function(){
-                return {weight:0};
-            }
-        });
-        this.TribalBoundsLayer = esri.featureLayer({
-            url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/4",
-            style: function(){
-                return {color: 'green', weight: 0.25 };
-            }
-        });
-        this.TribalTerritoriesLayer = esri.featureLayer({
-            url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/5",
-            style: function(){
-                return {color: '#f4dfa8', weight: 0.25 };
-            }
-        });
-        this.auxLayers = {
-            "EPA Areas of Conern": this.epaLayer,
-            "USGS GLRI Nutrient and Contaminants of Emerging Concern Monitoring Basins": this.glriLayer,
-            "Ceded Tribal Boundaries": this.TribalBoundsLayer,
-            "Tribal Reservation Boundaries": this.TribalTerritoriesLayer
-        }
-        L.control.layers(null, this.auxLayers).addTo(this.map);
+                
         /*END AUX LAYERS */
 
         L.control.scale().addTo(this.map);
@@ -407,6 +400,17 @@ export class MapviewComponent implements OnInit {
             left: '400px'
         }
     }//END ngOnInit
+   
+    private getColor(d) {
+        return d > 1000 ? '#800026' :
+               d > 500  ? '#BD0026' :
+               d > 200  ? '#E31A1C' :
+               d > 100  ? '#FC4E2A' :
+               d > 50   ? '#FD8D3C' :
+               d > 20   ? '#FEB24C' :
+               d > 10   ? '#FED976' :
+                          '#FFEDA0';
+    }
     
     //when bottom bar resized
     public onResizeEnd(event: ResizeEvent): void {
@@ -574,7 +578,8 @@ export class MapviewComponent implements OnInit {
 			color: "#000",
 			weight: 0,
 			opacity: 1,
-			fillOpacity: 0.5
+            fillOpacity: 0.5,
+            pane: 'geojson'
 		}
 	}
 }

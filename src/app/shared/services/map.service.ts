@@ -10,6 +10,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions } from '@angular/http';
 import { Map, geoJSON } from 'leaflet'
 import * as L from 'leaflet';
+import esri from 'esri-leaflet';
 
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
@@ -27,6 +28,7 @@ export class MapService {
     private _allSiteView: any;
     public map: Map;
     public baseMaps: any;
+    public additionalLayers: any;
     public filtersPassed: IchosenFilters;
     private newFilteredGeoJson: L.GeoJSON;
     private newFilteredGeoJsonArray: Array<any>;
@@ -57,6 +59,36 @@ export class MapService {
                 maxZoom: 16
             })
         };
+        this.additionalLayers = {
+            areas: esri.featureLayer({
+                url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/1",
+                style: function(){
+                    return {color: 'DarkOrange', weight: 0.5 };
+                },
+                pane: 'areas'
+            }),
+            glri: esri.featureLayer({
+                url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/2",
+                style: function(){
+                    return {weight:0};
+                },
+                pane: 'glri'
+            }),
+            ceded: esri.featureLayer({
+                url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/4",
+                style: function(){
+                    return {color: 'green', weight: 0.25 };
+                },
+                pane: 'ceded'
+            }),
+            tribal: esri.featureLayer({
+                url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/5",
+                style: function(){
+                    return {color: '#f4dfa8', weight: 0.25 };
+                },
+                pane: 'tribal'
+            })
+        }
         //this.temporarySites = [];
         this.httpRequest();
         this.setFilteredSiteIDs([]);

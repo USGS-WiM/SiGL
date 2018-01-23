@@ -15,6 +15,7 @@ import 'rxjs/Rx';
 import { PageScrollInstance, PageScrollService } from 'ng2-page-scroll';
 
 import { BasemapsComponent } from "../mainview/basemaps/basemaps.component";
+import { LayersComponent } from "../mainview/layers/layers.component";
 
 import { ModalService } from "../shared/services/modal.service";
 import { IchosenFilters } from "../shared/interfaces/chosenFilters.interface";
@@ -56,6 +57,15 @@ export class SidebarComponent implements OnInit {
 	public NoMatches: boolean; // if filteredProjects come back empty, flag this true so message shows instead of emptiness
 	public unHighlightProjName: boolean;
 	public showMobileSidebar: boolean; // for mobile responsiveness, when 3-line menu clicked, show sidebar
+
+	public additionalLayers: any;
+	public chosenLayers: Array<string>;
+	
+	public sitesCheck:boolean;
+  	public areasCheck: boolean;
+  	public glriCheck:boolean;
+	public cededCheck: boolean;
+  	public tribalCheck: boolean;
 
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService,
 		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService) { }
@@ -188,7 +198,14 @@ export class SidebarComponent implements OnInit {
 		// to show the sidebar when mobile	subscription that adds the class ([class.sidebar-mobile-show]) on the div to show/hide it
 		this._siglService.showSidebar.subscribe((val: boolean) => {
             this.showMobileSidebar = val;
-        });
+		});
+		
+		this.chosenLayers = []; //additional layers names that are checked
+		this.sitesCheck = false;
+		this.areasCheck = false; 
+		this.glriCheck = false;
+		this.cededCheck = false;
+		this.tribalCheck = false;
 	} // end ngOnInit()
 
 	// show filter button click
@@ -453,5 +470,21 @@ export class SidebarComponent implements OnInit {
 			str += line + '\r\n';
 		}
 		return str;
+	}
+
+	//toggle on/off Additional Layers
+	public toggleLayer(newVal: string){
+		let index = this.chosenLayers.indexOf(newVal);
+		
+		if (index > -1) {
+			//already on, turn it off and remove from array
+			this.chosenLayers.splice(index, 1);
+			this._mapService.map.removeLayer(this._mapService.additionalLayers[newVal]);
+		} else {
+			// not in there yet, turn it on and add to array
+			this.chosenLayers.push(newVal);
+			this._mapService.map.addLayer(this._mapService.additionalLayers[newVal]);
+		}
+	
 	}
 }

@@ -1,10 +1,20 @@
 <div #sidebarContainer class="sidebar sidebar-left" [class.sidebar-mobile-show]="showMobileSidebar" id="sidebar">
     <div class="scrollable">
-        <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-1">
+        <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-2">
         <!-- Basemaps -->
         <ngb-panel title="Basemaps">
             <ng-template ngbPanelContent>
                 <basemaps></basemaps>
+            </ng-template>
+        </ngb-panel>
+        <!-- Layers -->
+        <ngb-panel title="Layers">
+            <ng-template ngbPanelContent>
+                    <button class="layersBtn"><input [(ngModel)]="areasCheck" name="areasCheck" (change)="toggleLayer('areas')" type="checkbox"> EPA Areas of Concern</button>
+                    <button class="layersBtn"><input [(ngModel)]="glriCheck" name="glriCheck" (change)="toggleLayer('glri')" type="checkbox"> USGS GLRI Nutrient and Contaminants of Emerging Concern Monitoring Basins</button>
+                    <button class="layersBtn"><input [(ngModel)]="cededCheck" name="cededCheck" (change)="toggleLayer('ceded')" type="checkbox"> Ceded Tribal Boundaries</button>
+                    <button class="layersBtn"><input [(ngModel)]="tribalCheck" name="tribalCheck" (change)="toggleLayer('tribal')" type="checkbox"> Tribal Reservation Boundaries</button>
+               <!-- <layers></layers>-->
             </ng-template>
         </ngb-panel>
 
