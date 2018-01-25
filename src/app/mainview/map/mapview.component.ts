@@ -68,7 +68,7 @@ export class MapviewComponent implements OnInit {
 	public groupedParams: Igroupedparameters;
     private sameProject: any;
     public lakeLayer: any;
-    
+
 	constructor(private _mapService: MapService, private _siglService: SiglService) { }
 
 	ngOnInit() {       
@@ -321,20 +321,6 @@ export class MapviewComponent implements OnInit {
 			maxZoom: 19,
             layers: [this._mapService.baseMaps.Topo]
         });
-
-        let legend = L.control({position: 'topright'});
-        
-        legend.onAdd = (map) => {
-            let div = L.DomUtil.create('div', 'info legend');
-            
-            div.innerHTML = '<div><i style="background:rgba(255,165,0,0.2);border:1px solid darkorange"></i> EPA Areas of Concern</div><br clear="all"/>';
-            div.innerHTML += '<div><i style="background:rgba(51,136,255,0.2);border:1px solid #3388ff"></i> USGS GLRI Nutrient and Contaminants of<br/> Emerging Concern Monitoring Basins</div><br clear="all"/>';
-            div.innerHTML += '<div><i style="background:rgba(0,128,0,0.2);border:1px solid green"></i> Ceded Tribal Boundaries</div><br clear="all"/>';
-            div.innerHTML += '<div><i style="background:rgba(244,223,168,0.2);border:1px solid #f4dfa8"></i> Tribal Reservation Boundaries</div><br clear="all"/>';
-                
-            return div;
-        };
-        legend.addTo(this.map);
 
         //keeps the geojson always on the top of all other layers
         this.map.createPane('areas');

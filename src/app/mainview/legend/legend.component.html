@@ -1,0 +1,21 @@
+<div #sigllegend class="legend" [style.width]="controlCollapsed ? '200px': '300px'"> 
+    <div id="explanationHeader">
+        <i aria-hidden="true" (click)="controlCollapsed=!controlCollapsed">
+            <div id="explanation"><i id="facaret" class="fa fa-list pull-left down4" aria-hidden="true"></i>&nbsp;Explanation</div>
+        </i>
+    </div>
+    <p class="contained" [hidden]="controlCollapsed">
+        <b>Sites</b><br clear="all"/>
+        <i class="legendSite"><span id="superiorDot" class="dot"></span></i>Lake Superior Sites<br clear="all"/>
+        <i class="legendSite"><span id="michiganDot" class="dot"></span></i>Lake Michigan Sites<br clear="all"/>
+        <i  class="legendSite"><span id="huronDot" class="dot"></span></i>Lake Huron Sites<br clear="all"/>
+        <i class="legendSite"><span id="erieDot" class="dot"></span></i>Lake Erie Sites<br clear="all"/>
+        <i class="legendSite"><span id="ontarioDot" class="dot"></span></i>Lake Ontario Sites<br/><br clear="all"/>
+
+        <b>Additional Layers</b><br clear="all"/>
+        <i id="epaLegend"></i> EPA Areas of Concern<br clear="all"/>
+        <i id="glriLegend"></i> USGS GLRI Nutrient and Contaminants of Emerging Concern Monitoring Basins<br clear="all"/>
+        <i id="cededLegend"></i> Ceded Tribal Boundaries<br clear="all"/>
+        <i id="tribalLegend"></i> Tribal Reservation Boundaries<br clear="all"/>
+    </p>               
+</div>           

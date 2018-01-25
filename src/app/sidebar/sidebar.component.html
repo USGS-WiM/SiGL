@@ -1,242 +1,242 @@
 <div #sidebarContainer class="sidebar sidebar-left" [class.sidebar-mobile-show]="showMobileSidebar" id="sidebar">
     <div class="scrollable">
         <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-2">
-        <!-- Basemaps -->
-        <ngb-panel title="Basemaps">
-            <ng-template ngbPanelContent>
-                <basemaps></basemaps>
-            </ng-template>
-        </ngb-panel>
-        <!-- Layers -->
-        <ngb-panel title="Layers">
-            <ng-template ngbPanelContent>
-                    <button class="layersBtn"><input [(ngModel)]="areasCheck" name="areasCheck" (change)="toggleLayer('areas')" type="checkbox"> EPA Areas of Concern</button>
-                    <button class="layersBtn"><input [(ngModel)]="glriCheck" name="glriCheck" (change)="toggleLayer('glri')" type="checkbox"> USGS GLRI Nutrient and Contaminants of Emerging Concern Monitoring Basins</button>
-                    <button class="layersBtn"><input [(ngModel)]="cededCheck" name="cededCheck" (change)="toggleLayer('ceded')" type="checkbox"> Ceded Tribal Boundaries</button>
-                    <button class="layersBtn"><input [(ngModel)]="tribalCheck" name="tribalCheck" (change)="toggleLayer('tribal')" type="checkbox"> Tribal Reservation Boundaries</button>
-               <!-- <layers></layers>-->
-            </ng-template>
-        </ngb-panel>
+            <!-- Basemaps -->
+            <ngb-panel title="Basemaps">
+                <ng-template ngbPanelContent>
+                    <basemaps></basemaps>
+                </ng-template>
+            </ngb-panel>
+            <!-- Layers -->
+            <ngb-panel title="Layers">
+                <ng-template ngbPanelContent>
+                        <button class="layersBtn"><input [(ngModel)]="areasCheck" name="areasCheck" (change)="toggleLayer('areas')" type="checkbox"> EPA Areas of Concern</button>
+                        <button class="layersBtn"><input [(ngModel)]="glriCheck" name="glriCheck" (change)="toggleLayer('glri')" type="checkbox"> USGS GLRI Nutrient and Contaminants of Emerging Concern Monitoring Basins</button>
+                        <button class="layersBtn"><input [(ngModel)]="cededCheck" name="cededCheck" (change)="toggleLayer('ceded')" type="checkbox"> Ceded Tribal Boundaries</button>
+                        <button class="layersBtn"><input [(ngModel)]="tribalCheck" name="tribalCheck" (change)="toggleLayer('tribal')" type="checkbox"> Tribal Reservation Boundaries</button>
+                <!-- <layers></layers>-->
+                </ng-template>
+            </ngb-panel>
 
-        <!-- Filters -->
-        <ngb-panel title="Filters">
-            <ng-template ngbPanelContent>
-                <button type="button" class="actionBtn" (click)="showFilterModal()">Change filters</button>
-                <br/>
-                <div style="font-size:14px; font-weight: bolder; width: 100%; text-align:center; opacity:0.35; padding: 10px 0 0 0;" *ngIf="filterCount == 0">Showing all projects with sites.</div>
+            <!-- Filters -->
+            <ngb-panel title="Filters">
+                <ng-template ngbPanelContent>
+                    <button type="button" class="actionBtn" (click)="showFilterModal()">Change filters</button>
+                    <br/>
+                    <div style="font-size:14px; font-weight: bolder; width: 100%; text-align:center; opacity:0.35; padding: 10px 0 0 0;" *ngIf="filterCount == 0">Showing all projects with sites.</div>
 
-                <div style="font-size:large" *ngIf="projectFilters"><b>Project filters applied:</b></div>
-                <!-- Durations -->
-                <div *ngIf="chosenFilters?.DURATIONS">
-                    <i *ngIf="chosenFilters.DURATIONS.length > 0" class="pull-left down4" [ngClass]="DurCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="DurCollapsed=!DurCollapsed"></i>
-                    <span *ngIf="chosenFilters.DURATIONS.length > 0"><b>Project Duration</b><span *ngIf="chosenFilters.DURATIONS.length > 1"><b>s</b></span></span>
-                    <p class="contained" [hidden]="DurCollapsed">
-                        <span *ngFor="let d of chosenFilters.DURATIONS">{{d.name}}
-                            <br/>
-                        </span>
-                    </p>
-                </div><!-- Status -->
-                <div *ngIf="chosenFilters?.STATUSES">
-                    <i *ngIf="chosenFilters.STATUSES.length > 0" class="pull-left down4" [ngClass]="StatCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="StatCollapsed=!StatCollapsed"></i>
-                    <span *ngIf="chosenFilters.STATUSES.length > 0"><b>Project Status</b></span>
-                    <p class="contained" [hidden]="StatCollapsed">
-                        <span *ngFor="let s of chosenFilters.STATUSES">{{s.name}}
-                            <br/>
-                        </span>
-                    </p>
-                </div>
-                <!-- monitoring effort -->
-                <div *ngIf="chosenFilters?.MONITORS">
-                    <i *ngIf="chosenFilters.MONITORS.length > 0" class="pull-left down4" [ngClass]="MonCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="MonCollapsed=!MonCollapsed"></i>
-                    <span *ngIf="chosenFilters.MONITORS.length > 0"><b>Monitoring effort or coordination</b></span>
-                    <p class="contained" [hidden]="MonCollapsed">
-                        <span *ngFor="let m of chosenFilters.MONITORS">{{m.name}}
-                            <br/>
-                        </span>
-                    </p>
-                </div>
-                <!-- objective -->
-                <div *ngIf="chosenFilters?.OBJS">
-                    <i *ngIf="chosenFilters.OBJS.length > 0" class="pull-left down4" [ngClass]="ObjCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ObjCollapsed=!ObjCollapsed"></i>
-                    <span *ngIf="chosenFilters.OBJS.length > 0"><b>Project Objective</b><span *ngIf="chosenFilters.OBJS.length > 1"><b>s</b></span></span>
-                    <p class="contained" [hidden]="ObjCollapsed">
-                        <span *ngFor="let ob of chosenFilters.OBJS">{{ob.name}}
-                            <br/>
-                        </span>
-                    </p>
-                </div>
-                <!-- org -->
-                <div *ngIf="chosenFilters?.ORG">
-                    <i class="pull-left down4" [ngClass]="OrgCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="OrgCollapsed=!OrgCollapsed"></i>
-                    <span><b>Organization</b></span>
-                    <p class="contained" [hidden]="OrgCollapsed">
-                        <span>{{chosenFilters.ORG.organization_name}}</span>
-                    </p>
-                </div>
-
-                <div style="font-size:large" *ngIf="siteFilters"><b>Site filters applied:</b></div>
-                <!-- Parameters -->
-                <div *ngIf="chosenFilters?.PARAMETERS">
-                    <i *ngIf="chosenFilters?.PARAMETERS.length > 0" class="pull-left down4" [ngClass]="ParamCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ParamCollapsed=!ParamCollapsed"></i>
-                    <span *ngIf="chosenFilters.PARAMETERS.length > 0"><b>Parameter</b><span *ngIf="chosenFilters.PARAMETERS.length > 1"><b>s</b></span></span>
-                    <p class="contained" [hidden]="ParamCollapsed">
-                        <span *ngFor="let p of chosenFilters.PARAMETERS;">{{p.name}}
-                            <br/>
-                        </span>
-                    </p>
-                </div>
-                <!-- Resources -->
-                <div *ngIf="chosenFilters?.RESOURCES">
-                    <i *ngIf="chosenFilters.RESOURCES.length > 0" class="pull-left down4" [ngClass]="ResCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ResCollapsed=!ResCollapsed"></i>
-                    <span *ngIf="chosenFilters.RESOURCES.length > 0"><b>Resource Component</b><span *ngIf="chosenFilters.RESOURCES.length > 1"><b>s</b></span></span>
-                    <p class="contained" [hidden]="ResCollapsed">
-                        <span *ngFor="let r of chosenFilters.RESOURCES">{{r.name}}
-                            <br/>
-                        </span>
-                    </p>
-                </div>
-                <!-- Media -->
-                <div *ngIf="chosenFilters?.MEDIA">
-                    <i *ngIf="chosenFilters.MEDIA.length > 0" class="pull-left down4" [ngClass]="MedCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="MedCollapsed=!MedCollapsed"></i>
-                    <span *ngIf="chosenFilters.MEDIA.length > 0"><b>Media</b></span>
-                    <p class="contained" [hidden]="MedCollapsed">
-                        <span *ngFor="let m of chosenFilters.MEDIA">{{m.name}}
-                            <br/>
-                        </span>
-                    </p>
-                </div>
-                <!-- Lake -->
-                <div *ngIf="chosenFilters?.LAKES">
-                    <i *ngIf="chosenFilters.LAKES.length > 0" class="pull-left down4" [ngClass]="LakeCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="LakeCollapsed=!LakeCollapsed"></i>
-                    <span *ngIf="chosenFilters.LAKES.length > 0"><b>Great Lake</b><span *ngIf="chosenFilters.LAKES.length > 1"><b>s</b></span></span>
-                    <p class="contained" [hidden]="LakeCollapsed">
-                        <span *ngFor="let l of chosenFilters.LAKES">{{l.name}}
-                            <br/>
-                        </span>
-                    </p>
-                </div>
-                <!-- State -->
-                <div *ngIf="chosenFilters?.STATES">
-                    <i *ngIf="chosenFilters.STATES.length > 0" class="pull-left down4" [ngClass]="StateCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="StateCollapsed=!StateCollapsed"></i>
-                    <span *ngIf="chosenFilters.STATES.length > 0"><b>State</b><span *ngIf="chosenFilters.STATES.length > 1"><b>s</b></span><b>/Province</b><span *ngIf="chosenFilters.STATES.length > 1"><b>s</b></span></span>
-                    <p class="contained" [hidden]="StateCollapsed">
-                        <span *ngFor="let st of chosenFilters.STATES">{{st.name}}
-                            <br/>
-                        </span>
-                    </p>
-                </div>
-
-                <div *ngIf="chosenFilters?.ProjectName && chosenFilters?.ProjectName != ''">
-                    <i *ngIf="chosenFilters.ProjectName && chosenFilters.ProjectName != ''" class="pull-left down4" [ngClass]="ProjCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ProjCollapsed=!ObjCollaProjCollapsedpsed"></i>
-                    <span><b>Project Name</b></span>
-                    <p class="contained" [hidden]="ProjCollapsed">
-                        <span>{{chosenFilters.ProjectName.name}}
-                            <br/>
-                        </span>
-                    </p>
-                </div>
-            </ng-template>
-        </ngb-panel>
-
-        <!-- Project List (based on Filters or on Map click) -->
-        <ngb-panel id="projList">
-            <ng-template ngbPanelTitle>
-                <span>Project List</span><div class="pull-right" *ngIf="filteredProjects.length > 1"><span class="badge badge-secondary">Count: {{filteredProjects.length}}</span></div>
-            </ng-template>
-            <ng-template ngbPanelContent>
-                <sideloader-div></sideloader-div>
-                <!--If filtered Projects have been requested (from dropdown selection)-->
-                <div *ngIf="filteredProjects?.length > 0">
-                    <div> Click on a project name or site to highlight it on the map.</div>
-                    <div class="row down10">
-                        <label class="col-md-3">Sort by: </label>
-                        <div class="col-md-8">
-                            <select class="form-control" [(ngModel)]="chosenSortBy" (ngModelChange)="sortProjListBy($event, 'click')">
-                                <option value=""></option>
-                                <option *ngFor="let o of sortByObject" [ngValue]="o">{{o.title}}&nbsp;<span [innerHTML]="o.icon"></span></option>
-                            </select>
-                        </div>
+                    <div style="font-size:large" *ngIf="projectFilters"><b>Project filters applied:</b></div>
+                    <!-- Durations -->
+                    <div *ngIf="chosenFilters?.DURATIONS">
+                        <i *ngIf="chosenFilters.DURATIONS.length > 0" class="pull-left down4" [ngClass]="DurCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="DurCollapsed=!DurCollapsed"></i>
+                        <span *ngIf="chosenFilters.DURATIONS.length > 0"><b>Project Duration</b><span *ngIf="chosenFilters.DURATIONS.length > 1"><b>s</b></span></span>
+                        <p class="contained" [hidden]="DurCollapsed">
+                            <span *ngFor="let d of chosenFilters.DURATIONS">{{d.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </div><!-- Status -->
+                    <div *ngIf="chosenFilters?.STATUSES">
+                        <i *ngIf="chosenFilters.STATUSES.length > 0" class="pull-left down4" [ngClass]="StatCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="StatCollapsed=!StatCollapsed"></i>
+                        <span *ngIf="chosenFilters.STATUSES.length > 0"><b>Project Status</b></span>
+                        <p class="contained" [hidden]="StatCollapsed">
+                            <span *ngFor="let s of chosenFilters.STATUSES">{{s.name}}
+                                <br/>
+                            </span>
+                        </p>
                     </div>
-                    <div class="row down10">
-                        <label class="col-md-12"><a (click)="toggleSiteProjects()" title="Toggle projects" style="color: #007bff;"><span *ngIf="!projectsWithSitesShowing">Show</span><span *ngIf="projectsWithSitesShowing">Hide</span>&nbsp;</a> projects with no sites&nbsp;</label>
+                    <!-- monitoring effort -->
+                    <div *ngIf="chosenFilters?.MONITORS">
+                        <i *ngIf="chosenFilters.MONITORS.length > 0" class="pull-left down4" [ngClass]="MonCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="MonCollapsed=!MonCollapsed"></i>
+                        <span *ngIf="chosenFilters.MONITORS.length > 0"><b>Monitoring effort or coordination</b></span>
+                        <p class="contained" [hidden]="MonCollapsed">
+                            <span *ngFor="let m of chosenFilters.MONITORS">{{m.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </div>
+                    <!-- objective -->
+                    <div *ngIf="chosenFilters?.OBJS">
+                        <i *ngIf="chosenFilters.OBJS.length > 0" class="pull-left down4" [ngClass]="ObjCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ObjCollapsed=!ObjCollapsed"></i>
+                        <span *ngIf="chosenFilters.OBJS.length > 0"><b>Project Objective</b><span *ngIf="chosenFilters.OBJS.length > 1"><b>s</b></span></span>
+                        <p class="contained" [hidden]="ObjCollapsed">
+                            <span *ngFor="let ob of chosenFilters.OBJS">{{ob.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </div>
+                    <!-- org -->
+                    <div *ngIf="chosenFilters?.ORG">
+                        <i class="pull-left down4" [ngClass]="OrgCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="OrgCollapsed=!OrgCollapsed"></i>
+                        <span><b>Organization</b></span>
+                        <p class="contained" [hidden]="OrgCollapsed">
+                            <span>{{chosenFilters.ORG.organization_name}}</span>
+                        </p>
+                    </div>
+
+                    <div style="font-size:large" *ngIf="siteFilters"><b>Site filters applied:</b></div>
+                    <!-- Parameters -->
+                    <div *ngIf="chosenFilters?.PARAMETERS">
+                        <i *ngIf="chosenFilters?.PARAMETERS.length > 0" class="pull-left down4" [ngClass]="ParamCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ParamCollapsed=!ParamCollapsed"></i>
+                        <span *ngIf="chosenFilters.PARAMETERS.length > 0"><b>Parameter</b><span *ngIf="chosenFilters.PARAMETERS.length > 1"><b>s</b></span></span>
+                        <p class="contained" [hidden]="ParamCollapsed">
+                            <span *ngFor="let p of chosenFilters.PARAMETERS;">{{p.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </div>
+                    <!-- Resources -->
+                    <div *ngIf="chosenFilters?.RESOURCES">
+                        <i *ngIf="chosenFilters.RESOURCES.length > 0" class="pull-left down4" [ngClass]="ResCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ResCollapsed=!ResCollapsed"></i>
+                        <span *ngIf="chosenFilters.RESOURCES.length > 0"><b>Resource Component</b><span *ngIf="chosenFilters.RESOURCES.length > 1"><b>s</b></span></span>
+                        <p class="contained" [hidden]="ResCollapsed">
+                            <span *ngFor="let r of chosenFilters.RESOURCES">{{r.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </div>
+                    <!-- Media -->
+                    <div *ngIf="chosenFilters?.MEDIA">
+                        <i *ngIf="chosenFilters.MEDIA.length > 0" class="pull-left down4" [ngClass]="MedCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="MedCollapsed=!MedCollapsed"></i>
+                        <span *ngIf="chosenFilters.MEDIA.length > 0"><b>Media</b></span>
+                        <p class="contained" [hidden]="MedCollapsed">
+                            <span *ngFor="let m of chosenFilters.MEDIA">{{m.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </div>
+                    <!-- Lake -->
+                    <div *ngIf="chosenFilters?.LAKES">
+                        <i *ngIf="chosenFilters.LAKES.length > 0" class="pull-left down4" [ngClass]="LakeCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="LakeCollapsed=!LakeCollapsed"></i>
+                        <span *ngIf="chosenFilters.LAKES.length > 0"><b>Great Lake</b><span *ngIf="chosenFilters.LAKES.length > 1"><b>s</b></span></span>
+                        <p class="contained" [hidden]="LakeCollapsed">
+                            <span *ngFor="let l of chosenFilters.LAKES">{{l.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </div>
+                    <!-- State -->
+                    <div *ngIf="chosenFilters?.STATES">
+                        <i *ngIf="chosenFilters.STATES.length > 0" class="pull-left down4" [ngClass]="StateCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="StateCollapsed=!StateCollapsed"></i>
+                        <span *ngIf="chosenFilters.STATES.length > 0"><b>State</b><span *ngIf="chosenFilters.STATES.length > 1"><b>s</b></span><b>/Province</b><span *ngIf="chosenFilters.STATES.length > 1"><b>s</b></span></span>
+                        <p class="contained" [hidden]="StateCollapsed">
+                            <span *ngFor="let st of chosenFilters.STATES">{{st.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </div>
+
+                    <div *ngIf="chosenFilters?.ProjectName && chosenFilters?.ProjectName != ''">
+                        <i *ngIf="chosenFilters.ProjectName && chosenFilters.ProjectName != ''" class="pull-left down4" [ngClass]="ProjCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true" (click)="ProjCollapsed=!ObjCollaProjCollapsedpsed"></i>
+                        <span><b>Project Name</b></span>
+                        <p class="contained" [hidden]="ProjCollapsed">
+                            <span>{{chosenFilters.ProjectName.name}}
+                                <br/>
+                            </span>
+                        </p>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+
+            <!-- Project List (based on Filters or on Map click) -->
+            <ngb-panel id="projList">
+                <ng-template ngbPanelTitle>
+                    <span>Project List</span><div class="pull-right" *ngIf="filteredProjects.length > 1"><span class="badge badge-secondary">Count: {{filteredProjects.length}}</span></div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <sideloader-div></sideloader-div>
+                    <!--If filtered Projects have been requested (from dropdown selection)-->
+                    <div *ngIf="filteredProjects?.length > 0">
+                        <div> Click on a project name or site to highlight it on the map.</div>
+                        <div class="row down10">
+                            <label class="col-md-3">Sort by: </label>
+                            <div class="col-md-8">
+                                <select class="form-control" [(ngModel)]="chosenSortBy" (ngModelChange)="sortProjListBy($event, 'click')">
+                                    <option value=""></option>
+                                    <option *ngFor="let o of sortByObject" [ngValue]="o">{{o.title}}&nbsp;<span [innerHTML]="o.icon"></span></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row down10">
+                            <label class="col-md-12"><a (click)="toggleSiteProjects()" title="Toggle projects" style="color: #007bff;"><span *ngIf="!projectsWithSitesShowing">Show</span><span *ngIf="projectsWithSitesShowing">Hide</span>&nbsp;</a> projects with no sites&nbsp;</label>
+                            <label class="col-md-12"><a (click)="downloadCSV()" title="Download data" style="color: #007bff;"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download&nbsp;</a> current results</label>
+                        </div>
+
+                        <hr />
+                        <div *ngFor="let proj of filteredProjects;let i = index;">
+                            <div [style.background]="selectedProjectId == proj.project_id && !unHighlightProjName ? '#eaeaea': 'none'">
+                                <a *ngIf="proj.projectSites.length > 0" (click)="proj.isCollapsed = !proj.isCollapsed" [attr.aria-expanded]="!proj.isCollapsed" aria-controls="collapseExample">
+                                    <i [ngClass]="proj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
+                                </a>
+                                <span>
+                                    <a [style.font-weight]="selectedProjectId == proj.project_id && !unHighlightProjName ? 'bold': '400'" (click)="showProjectDetails(proj)">{{proj.name}}</a>
+                                </span>
+                                <span class="">
+                                <!-- <span class="pull-right"> -->
+                                    <form [formGroup]="siteCountForm">
+                                        <div class="btn-group" ngbRadioGroup name="radioBasic" formControlName="siteToggle">
+                                            <label ngbButtonLabel class="btn-primary siteFormLabel all">
+                                                <input ngbButton type="radio" (click)="toggleSiteList('all', proj.project_id)" [value]="'all'">All ({{proj.projectSites.length}})
+                                            </label>
+                                            <label ngbButtonLabel class="btn-primary siteFormLabel filtered">
+                                                <input ngbButton type="radio" (click)="toggleSiteList('filtered', proj.project_id)" [value]="'filtered'"> Filtered ({{proj.filteredSiteCount}})
+                                            </label>
+                                        </div>
+                                    </form>
+                                </span>
+                            </div>
+                            <div id="collapseExample" [ngbCollapse]="proj.isCollapsed">
+                                <div *ngFor="let s of proj.projectSites" class="marginLeft">
+                                    <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
+                                        <div appHighlight [id]="'site_'+s.site_id" *ngIf="s.isDisplayed" >
+                                            <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
+                                        </div>
+                                    </div>
+                                    <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
+                                        <div appHighlight [id]="'site_'+s.site_id" *ngIf="s.isTempDisplayed">
+                                            <a  [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'"  (click)="showSiteDetails(s)">{{s.name}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                        </div> <!-- end ngFor each filteredProjects -->
+                    </div> <!-- end ngIf filteredProjects.length > 0 -->
+
+                    <!--If no filtered Projects have been requested (but a site has been clicked on the map)-->
+                    <div *ngIf="filteredProjects?.length == 0 && siteClickFullProj">
+                        <div> Click on a project name or site to highlight it on the map.</div>
                         <label class="col-md-12"><a (click)="downloadCSV()" title="Download data" style="color: #007bff;"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download&nbsp;</a> current results</label>
-                    </div>
-
-                    <hr />
-                    <div *ngFor="let proj of filteredProjects;let i = index;">
-                        <div [style.background]="selectedProjectId == proj.project_id && !unHighlightProjName ? '#eaeaea': 'none'">
-                            <a *ngIf="proj.projectSites.length > 0" (click)="proj.isCollapsed = !proj.isCollapsed" [attr.aria-expanded]="!proj.isCollapsed" aria-controls="collapseExample">
-                                <i [ngClass]="proj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
-                            </a>
-                            <span>
-                                <a [style.font-weight]="selectedProjectId == proj.project_id && !unHighlightProjName ? 'bold': '400'" (click)="showProjectDetails(proj)">{{proj.name}}</a>
-                            </span>
-                            <span class="">
-                            <!-- <span class="pull-right"> -->
-                                <form [formGroup]="siteCountForm">
-                                    <div class="btn-group" ngbRadioGroup name="radioBasic" formControlName="siteToggle">
-                                        <label ngbButtonLabel class="btn-primary siteFormLabel all">
-                                            <input ngbButton type="radio" (click)="toggleSiteList('all', proj.project_id)" [value]="'all'">All ({{proj.projectSites.length}})
-                                        </label>
-                                        <label ngbButtonLabel class="btn-primary siteFormLabel filtered">
-                                            <input ngbButton type="radio" (click)="toggleSiteList('filtered', proj.project_id)" [value]="'filtered'"> Filtered ({{proj.filteredSiteCount}})
-                                        </label>
-                                    </div>
-                                </form>
-                            </span>
-                        </div>
-                        <div id="collapseExample" [ngbCollapse]="proj.isCollapsed">
-                            <div *ngFor="let s of proj.projectSites" class="marginLeft">
-                                <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
-                                    <div appHighlight [id]="'site_'+s.site_id" *ngIf="s.isDisplayed" >
-                                        <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
-                                    </div>
-                                </div>
-                                <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
-                                    <div appHighlight [id]="'site_'+s.site_id" *ngIf="s.isTempDisplayed">
-                                        <a  [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'"  (click)="showSiteDetails(s)">{{s.name}}</a>
+                        <hr />
+                        <div>
+                            <div [style.background]="siteClickFullProj.ProjectId == selectedProjectId && !unHighlightProjName ? '#eaeaea' : 'none'">
+                                <a *ngIf="siteClickFullProj.projectSites.length > 0" (click)="siteClickFullProj.isCollapsed = !siteClickFullProj.isCollapsed"
+                                    [attr.aria-expanded]="!siteClickFullProj.isCollapsed" aria-controls="collapseExample">
+                                    <i [ngClass]="siteClickFullProj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
+                                </a>
+                                <span>
+                                    <a [style.font-weight]="selectedProjectId == siteClickFullProj.ProjectId && !unHighlightProjName ? 'bold': '400'" (click)="showProjectDetails(siteClickFullProj)">{{siteClickFullProj.Name}}</a>
+                                </span>
+                                <span class="pull-right"><span class="badge badge-secondary">All {{siteClickFullProj.projectSites.length}}</span></span>
+                            </div>
+                            <div id="collapseExample" [ngbCollapse]="siteClickFullProj.isCollapsed">
+                                <div *ngFor="let s of siteClickFullProj.projectSites" class="marginLeft">
+                                    <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
+                                        <div appHighlight>
+                                            <a [id]="'site_'+s.site_id" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <hr />
                         </div>
-                        <hr />
-                    </div> <!-- end ngFor each filteredProjects -->
-                </div> <!-- end ngIf filteredProjects.length > 0 -->
-
-                <!--If no filtered Projects have been requested (but a site has been clicked on the map)-->
-                <div *ngIf="filteredProjects?.length == 0 && siteClickFullProj">
-                    <div> Click on a project name or site to highlight it on the map.</div>
-                    <label class="col-md-12"><a (click)="downloadCSV()" title="Download data" style="color: #007bff;"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download&nbsp;</a> current results</label>
-                    <hr />
-                    <div>
-                        <div [style.background]="siteClickFullProj.ProjectId == selectedProjectId && !unHighlightProjName ? '#eaeaea' : 'none'">
-                            <a *ngIf="siteClickFullProj.projectSites.length > 0" (click)="siteClickFullProj.isCollapsed = !siteClickFullProj.isCollapsed"
-                                [attr.aria-expanded]="!siteClickFullProj.isCollapsed" aria-controls="collapseExample">
-                                <i [ngClass]="siteClickFullProj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
-                            </a>
-                            <span>
-                                <a [style.font-weight]="selectedProjectId == siteClickFullProj.ProjectId && !unHighlightProjName ? 'bold': '400'" (click)="showProjectDetails(siteClickFullProj)">{{siteClickFullProj.Name}}</a>
-                            </span>
-                            <span class="pull-right"><span class="badge badge-secondary">All {{siteClickFullProj.projectSites.length}}</span></span>
-                        </div>
-                        <div id="collapseExample" [ngbCollapse]="siteClickFullProj.isCollapsed">
-                            <div *ngFor="let s of siteClickFullProj.projectSites" class="marginLeft">
-                                <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
-                                    <div appHighlight>
-                                        <a [id]="'site_'+s.site_id" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr />
                     </div>
-                </div>
 
-                <div *ngIf="NoMatches && !siteClickFullProj">
-                    There are no projects that match the filtered request.
-                </div>
-            </ng-template>
-        </ngb-panel>
+                    <div *ngIf="NoMatches && !siteClickFullProj">
+                        There are no projects that match the filtered request.
+                    </div>
+                </ng-template>
+            </ngb-panel>
         </ngb-accordion>
     </div>
 
