@@ -189,92 +189,28 @@ LEAFLET TWEAKS
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   border-radius: 5px;
 }
-/*
-.legend {
-  position: absolute!important;
-  top: 10px!important;
-  right: 10px!important;
-  z-index: 500!important;
-  width: 200px!important;
-  text-align: left;
-  line-height: 18px!important;
-  color: #555;
+
+.leaflet-control-defaultextent-toggle {
+  text-indent: -9999px;
+  white-space: nowrap;
+  background-image: url('./assets/leaflet.defaultextent.png');
+  width: 26px;
+  height: 26px;
+  display: block;
 }
-#facaret {
-  font-size: large;
+
+/* CSS for high-resolution devices */
+@media only screen and (-Webkit-min-device-pixel-ratio: 1.5),
+only screen and (-moz-min-device-pixel-ratio: 1.5),
+only screen and (-o-min-device-pixel-ratio: 3/2),
+only screen and (min-device-pixel-ratio: 1.5) {
+    .leaflet-control-defaultextent-toggle {
+        background-image: url('./assets/leaflet.defaultextent@2X.png');
+        background-size: 26px 26px;
+        background-repeat: no-repeat;
+    }
 }
-.legend .legendSite {
-  width: 18px;
-  height: 18px;
-  float: left;
-  margin-right: 8px;
-  opacity: 0.7;
-}
-#superiorDot {
-  height: 10px;
-  width: 10px;
-  background-color: #349074;
-  opacity: 0.5;
-  border-radius: 50%;
-  display: inline-block;
-}
-#michiganDot{
-  height: 10px;
-  width: 10px;
-  background-color: #927F56;
-  opacity: 0.5;
-  border-radius: 50%;
-  display: inline-block;
-}
-#huronDot{
-  height: 10px;
-  width: 10px;
-  background-color: #8A3133;
-  opacity: 0.5;
-  border-radius: 50%;
-  display: inline-block;
-}
-#erieDot{
-  height: 10px;
-  width: 10px;
-  background-color: #B6BB44;
-  opacity: 0.5;
-  border-radius: 50%;
-  display: inline-block;
-}
-#ontarioDot{
-  height: 10px;
-  width: 10px;
-  background-color: #6A318F;
-  opacity: 0.5;
-  border-radius: 50%;
-  display: inline-block;
-}
-#epaLegend {
-  background:rgba(255,165,0,0.2);
-  border:1px solid darkorange;
-  margin-bottom:5px;
-}
-#glriLegend {
-  background:rgba(51,136,255,0.2);
-  border:1px solid #3388ff;
-  margin-bottom:5px;
-}
-#cededLegend {
-  background:rgba(0,128,0,0.2);
-  border:1px solid green;
-  margin-bottom:5px;
-}
-#tribalLegend {
-  background:rgba(244,223,168,0.2);
-  border:1px solid #f4dfa8;
-  margin-bottom:5px;
-}*/
-/*
-FILTER MAP
-FILTER MAP
-FILTER MAP
-*/
+
 .row{
   margin: 0;
 }
