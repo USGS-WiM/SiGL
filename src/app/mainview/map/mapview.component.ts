@@ -543,7 +543,7 @@ export class MapviewComponent implements OnInit {
 				break;
 			case 2:
 				//Huron
-				fillColor = "#8A3133";
+				fillColor = "#500c0e";//"#8A3133";
 				break;
 			case 3:
 				//Michigan
