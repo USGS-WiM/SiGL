@@ -188,8 +188,8 @@ export class MapviewComponent implements OnInit {
                         return L.circleMarker(latlng, this.setMarker(feature));
                     }),
                     onEachFeature: ((feature, layer) => {
-                        layer.bindPopup("<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name);
-
+                        layer.bindPopup('<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name + '<br/>');    
+                        
                         layer.on('popupclose', (e) => {
                             this._mapService.setSiteClicked({});
                             if (this.clickedMarker) {
@@ -201,6 +201,33 @@ export class MapviewComponent implements OnInit {
                         //changed from on 'click' to on 'popupopen' to test
                         layer.on("click", (e) => {
                             gtag('event', 'click', { 'event_category': 'Map', 'event_label': 'SitePoint in filteredLayer: ' + e.target.feature.properties.site_id });
+                            // are there any overlapping points here
+                            let popupContent: string = "";
+                            let presenceCount: number = 0;
+                            let popup = e.target.getPopup(); // get the popup to override content
+
+                            /* NOT WORKING to add button or anchor tag that is clickable with function (just adding text for now)
+                            let container = L.DomUtil.create('div', 'zoomDiv'); 
+                            let zoombtn = L.DomUtil.create('button', 'zoomTo', container);
+                            zoombtn.setAttribute('type', 'button');
+                            zoombtn.innerHTML = 'Zoom to sites';
+                            */
+                            this.geoj.features.forEach(feature => {
+                                if (feature.properties.latitude == e.target.feature.properties.latitude && feature.properties.longitude == e.target.feature.properties.longitude)
+                                    presenceCount++;
+                            });
+                            // if present more than 1 time, it's overlapping
+                            if (presenceCount > 1) {
+                                popupContent = '<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name + '<br/>' + // container.innerHTML;
+                                                'Overlapping sites here. Zoom in to zoom level ## to see all.';                         
+                            } else {
+                                popupContent = "<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name;
+                            }
+                            // update popup content
+                            popup.setContent(popupContent);
+                            //L.DomEvent.on(zoombtn, 'onclick', this.zoomIn(e));
+                            
+                            // notify mapService of the site clicked
                             this._mapService.setSiteClicked({ "site_id": e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id, "fromMap": true });
                             if (this.clickedMarker) {
                                 this.clickedMarker.setStyle(this.setMarker(e.target.feature));
@@ -243,6 +270,25 @@ export class MapviewComponent implements OnInit {
                         });
                         layer.on("click", (e) => {
                             gtag('event', 'click', { 'event_category': 'Map', 'event_label': 'SitePoint in tempProjectLayer: ' + e.target.feature.properties.site_id });
+                             // are there any overlapping points here
+                            let popupContent: string = "";
+                            let presenceCount: number = 0;
+                            let popup = e.target.getPopup(); // get the popup to override content
+                            
+                            this.tempGeoj.features.forEach(feature => {
+                                if (feature.properties.latitude == e.target.feature.properties.latitude && feature.properties.longitude == e.target.feature.properties.longitude)
+                                    presenceCount++;
+                            });
+                            // if present more than 1 time, it's overlapping
+                            if (presenceCount > 1) {
+                                popupContent = '<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name + '<br/>' + // container.innerHTML;
+                                                'Overlapping sites here. Zoom in to zoom level ## to see all.';                         
+                            } else {
+                                popupContent = "<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name;
+                            }
+                            // update popup content
+                            popup.setContent(popupContent);
+
                             this._mapService.setSiteClicked({ "site_id": e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id, "fromMap": true });
 
                             if (this.clickedMarker) {
@@ -343,6 +389,14 @@ export class MapviewComponent implements OnInit {
             // Switch to the Population legend...
             let test = "whatshere";
         });
+        /* this.map.on('popupopen', (e) => {
+            let element: HTMLElement = document.getElementsByClassName('zoomLink')[0] as HTMLElement;
+            element.addEventListener('click', () => {
+                console.log("zoom" + e.popup._latlng);
+            });
+        });
+        let element: HTMLElement = document.getElementsByClassName('zoomTo')[0] as HTMLElement;
+        element.onclick = this.zoomIn;*/
         /*BEGIN AUX LAYERS */
         this.lakeLayer = esri.featureLayer({
             url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/3",
@@ -385,7 +439,22 @@ export class MapviewComponent implements OnInit {
             left: '400px'
         }
     }//END ngOnInit
-
+    
+    /* tried to dynamically add button to popup with click event. doesn't work
+    public zoomIn(){
+        alert("hi");
+    }
+    
+    private createButton(label: string){//, container: any){
+        let btn = L.DomUtil.create('button');//, '', container);
+        btn.setAttribute('type', 'button');
+        btn.innerHTML = label;
+        /*L.DomEvent.addListener(btn, 'click', ()=> {
+            alert("hi");
+        });*
+        return btn;
+    }*/
+    
     // when bottom bar resized
     public onResizeEnd(event: ResizeEvent): void {
         this.style = {

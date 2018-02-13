@@ -290,7 +290,6 @@ export class SiglService {
 			this._filteredProjectSubject.next([]);
 		}
 	}
-
 	// GetFullProject?ByProject=
 	public setFullProject(projectId: string){		
 		let projectParams: URLSearchParams = new URLSearchParams();
@@ -302,8 +301,7 @@ export class SiglService {
 			.subscribe(fullProj => {
 				this._fullProjectSubject.next(fullProj);
 			});
-	}
-	
+	}	
 	// /GetFullSite
 	public setFullSite(siteId: string){
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
@@ -314,16 +312,13 @@ export class SiglService {
 				this._singleSiteSubject.next(fs);
 			});
 	}
-
 	//set filters selected by user in the filter modal (filter.component.ts)
 	public set chosenFilters(filters: any) {
 		this._chosenFilterSubject.next(filters);
-	} 
-
+	}
 	public setsitePointClickBool(val: boolean) {
 		this._sitePointClick.next(val);
-	} 
-	
+	}	
 	private setSites(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
 		this._http.get(CONFIG.SITE_URL, options)

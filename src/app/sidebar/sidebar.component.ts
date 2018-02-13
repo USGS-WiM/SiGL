@@ -10,7 +10,6 @@ import { Component, OnInit, ViewChild, Inject, ElementRef } from '@angular/core'
 import { Event } from '@angular/router/src/events';
 import { DOCUMENT } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
-// import { transition } from '@angular/core/src/animation/dsl';
 import 'rxjs/Rx';
 import { PageScrollInstance, PageScrollService } from 'ng2-page-scroll';
 
