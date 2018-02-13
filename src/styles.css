@@ -17,6 +17,21 @@ a:hover{
 button:hover{
   cursor: pointer;
 }
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link{
+  color: #10152C !important;
+  border-bottom: 3px solid #0F8AFF !important;
+}
+
+.nav-tabs .nav-link{
+  border-radius: 0px !important;
+  margin: 0 !important;
+  border: none !important;
+  box-sizing: border-box;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid transparent;
+  padding-top: 11px !important;
+  color: #A9A9A9;
+}
 button{
   border: none;
   background-color: #ECEEF4;
