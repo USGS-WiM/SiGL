@@ -139,6 +139,12 @@ MODAL
 MODAL
 MODAL
 */
+
+.modal-body {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
 .modal-body p{
   font-size: 14px;
   line-height: 27px;
