@@ -6,7 +6,7 @@
 //              Erik Myers USGS Web Informatics and Mapping
 // purpose:     The navbar component is along the top of the application and contains the About and User Guide buttons
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalService } from '../shared/services/modal.service';
 import { SiglService } from 'app/shared/services/siglservices.service';
 

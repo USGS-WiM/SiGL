@@ -60,7 +60,7 @@ export class MapService {
             })
         };
         this.additionalLayers = {
-            areas: esri.featureLayer({
+            /*areas: esri.featureLayer({
                 url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/1",
                 style: function(){
                     return {color: 'DarkOrange', weight: 0.5 };
@@ -88,7 +88,7 @@ export class MapService {
                 },
                 pane: 'tribal'
             })
-        }
+        */}
         //this.temporarySites = [];
         this.httpRequest();
         this.setFilteredSiteIDs([]);

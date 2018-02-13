@@ -365,7 +365,7 @@ export class MapviewComponent implements OnInit {
             minZoom: 4,
             maxZoom: 19,
             defaultExtentControl: true,
-            layers: [this._mapService.baseMaps.Topo]
+            layers: [this._mapService.baseMaps.Topo],
         });
 
         //keeps the geojson always on the top of all other layers
@@ -421,10 +421,9 @@ export class MapviewComponent implements OnInit {
 
         /*END AUX LAYERS */
 
-        L.control.scale().addTo(this.map);
+        L.control.scale({position: 'topleft'}).addTo(this.map);
         //  L.control.defaultExtent().addTo(this.map);
         this._mapService.map = this.map;
-
         //initial style for bottom bar
         this.style = {
             position: 'fixed',

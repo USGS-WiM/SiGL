@@ -14,12 +14,13 @@ import { ModalService } from "../../../shared/services/modal.service";
 @Component({
     selector: 'userguide',
     templateUrl: './userguide.component.html',
-    styles: [
+    styleUrls: [
         './userguide.component.css'
     ]
 })
 export class UserGuideComponent implements OnInit {
     @ViewChild('userguidemodal') public UserguideComponent;
+    @ViewChild('t') tabs;
     private modalElement: any;
 
     //injects services into this component

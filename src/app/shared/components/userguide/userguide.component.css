@@ -1,0 +1,72 @@
+/*User Guide Modal*/
+/*supposed to be for tabs in User Guide, not working... cannot find styles that are showing up{
+    border-radius: 0px !important;
+    margin: 0 !important;
+    border: none !important;
+    box-sizing: border-box;
+    border-bottom: 3px solid transparent;
+    border-top: 3px solid transparent;
+    padding-top: 11px !important;
+
+}
+
+.nav-tabs .nav-link {
+    color: #10152C;
+    border-bottom: 3px solid #0F8AFF !important;
+}*/
+
+/*User Guide Modal*/
+.user-guide-header{
+    display: block;
+    text-align: center;
+    font-size: 16pt;
+    box-sizing: border-box;
+    padding: 10px 0 25px 0;
+}
+
+.user-guide-item{
+    display: block;
+    box-sizing: border-box;
+    padding: 35px 15px 35px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.user-guide-item:nth-child(even){
+    background-color: rgba(0,0,0,0.04);
+}
+
+.user-guide-item .user-guide-item-image{
+    display: inline-block;
+    width: 100%;
+    height: 100px;
+}
+.user-guide-item img{
+    display: block;
+    height: 100%;
+    margin: 10px auto;
+    width: auto;
+    max-height: 200px;
+    max-width: 100%;
+    min-height: 70px;
+    min-width: 120px;
+    border: 4px solid rgba(0,0,0,0.15);
+}
+.user-guide-item p{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-flex-grow: 2;
+    flex-grow: 2;
+    padding-left: 15px !important;
+    padding-right: 20px !important;
+    box-sizing: border-box;
+    font-size: 12pt;
+}
+.user-guide-item p b{
+    color: rgba(0,0,0,0.6);
+    display: block;
+    font-weight: bolder;
+    padding-bottom: 10px;
+}
