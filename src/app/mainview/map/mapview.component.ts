@@ -188,8 +188,8 @@ export class MapviewComponent implements OnInit {
                         return L.circleMarker(latlng, this.setMarker(feature));
                     }),
                     onEachFeature: ((feature, layer) => {
-                        layer.bindPopup('<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name + '<br/>');    
-                        
+                        layer.bindPopup('<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name + '<br/>');
+
                         layer.on('popupclose', (e) => {
                             this._mapService.setSiteClicked({});
                             if (this.clickedMarker) {
@@ -212,21 +212,29 @@ export class MapviewComponent implements OnInit {
                             zoombtn.setAttribute('type', 'button');
                             zoombtn.innerHTML = 'Zoom to sites';
                             */
-                            this.geoj.features.forEach(feature => {
-                                if (feature.properties.latitude == e.target.feature.properties.latitude && feature.properties.longitude == e.target.feature.properties.longitude)
-                                    presenceCount++;
-                            });
+                            // check if array or object for looping
+                            if (Array.isArray(this.geoj)) {
+                                this.geoj.forEach(feature => {
+                                    if (feature.properties.latitude == e.target.feature.properties.latitude && feature.properties.longitude == e.target.feature.properties.longitude)
+                                        presenceCount++;
+                                });
+                            } else {
+                                this.geoj.features.forEach(feature => {
+                                    if (feature.properties.latitude == e.target.feature.properties.latitude && feature.properties.longitude == e.target.feature.properties.longitude)
+                                        presenceCount++;
+                                });
+                            }
                             // if present more than 1 time, it's overlapping
                             if (presenceCount > 1) {
                                 popupContent = '<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name + '<br/>' + // container.innerHTML;
-                                                'Overlapping sites here. Zoom in to zoom level ## to see all.';                         
+                                    'Overlapping sites here. Zoom in to zoom level ## to see all.';
                             } else {
                                 popupContent = "<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name;
                             }
                             // update popup content
                             popup.setContent(popupContent);
                             //L.DomEvent.on(zoombtn, 'onclick', this.zoomIn(e));
-                            
+
                             // notify mapService of the site clicked
                             this._mapService.setSiteClicked({ "site_id": e.target.feature.properties.site_id, "project_id": e.target.feature.properties.project_id, "fromMap": true });
                             if (this.clickedMarker) {
@@ -270,19 +278,26 @@ export class MapviewComponent implements OnInit {
                         });
                         layer.on("click", (e) => {
                             gtag('event', 'click', { 'event_category': 'Map', 'event_label': 'SitePoint in tempProjectLayer: ' + e.target.feature.properties.site_id });
-                             // are there any overlapping points here
+                            // are there any overlapping points here
                             let popupContent: string = "";
                             let presenceCount: number = 0;
                             let popup = e.target.getPopup(); // get the popup to override content
-                            
-                            this.tempGeoj.features.forEach(feature => {
-                                if (feature.properties.latitude == e.target.feature.properties.latitude && feature.properties.longitude == e.target.feature.properties.longitude)
-                                    presenceCount++;
-                            });
+
+                            if (Array.isArray(this.geoj)) {
+                                this.tempGeoj.forEach(feature => {
+                                    if (feature.properties.latitude == e.target.feature.properties.latitude && feature.properties.longitude == e.target.feature.properties.longitude)
+                                        presenceCount++;
+                                });
+                            } else {
+                                this.tempGeoj.features.forEach(feature => {
+                                    if (feature.properties.latitude == e.target.feature.properties.latitude && feature.properties.longitude == e.target.feature.properties.longitude)
+                                        presenceCount++;
+                                });
+                            }
                             // if present more than 1 time, it's overlapping
                             if (presenceCount > 1) {
                                 popupContent = '<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name + '<br/>' + // container.innerHTML;
-                                                'Overlapping sites here. Zoom in to zoom level ## to see all.';                         
+                                    'Overlapping sites here. Zoom in to zoom level ## to see all.';
                             } else {
                                 popupContent = "<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name;
                             }
@@ -358,7 +373,8 @@ export class MapviewComponent implements OnInit {
         });
 
         this.instantiateDefaultExtentControl();
-        
+        this.instantiateZoomLevelControl();
+
         this.map = L.map("map", {
             center: L.latLng(44.2, -82.01),
             zoom: 6,
@@ -376,7 +392,7 @@ export class MapviewComponent implements OnInit {
         this.map.createPane('geojson');
 
         // only want clustering to happen when zoomed in, otherwise just show all the points
-        this.map.on('zoomend', (e) => {            
+        this.map.on('zoomend', (e) => {
             if (e.target._zoom >= 14) {
                 this.clusterGeoJsonMarkers.enableClustering();
                 if (this.clusterTempJsonMarkers) this.clusterTempJsonMarkers.enableClustering();
@@ -421,7 +437,7 @@ export class MapviewComponent implements OnInit {
 
         /*END AUX LAYERS */
 
-        L.control.scale({position: 'topleft'}).addTo(this.map);
+        L.control.scale({ position: 'topleft' }).addTo(this.map);
         //  L.control.defaultExtent().addTo(this.map);
         this._mapService.map = this.map;
         //initial style for bottom bar
@@ -438,7 +454,7 @@ export class MapviewComponent implements OnInit {
             left: '400px'
         }
     }//END ngOnInit
-    
+
     /* tried to dynamically add button to popup with click event. doesn't work
     public zoomIn(){
         alert("hi");
@@ -453,7 +469,7 @@ export class MapviewComponent implements OnInit {
         });*
         return btn;
     }*/
-    
+
     // when bottom bar resized
     public onResizeEnd(event: ResizeEvent): void {
         this.style = {
@@ -693,6 +709,51 @@ export class MapviewComponent implements OnInit {
 
         L.control.defaultExtent = function (options) {
             return new L.Control.DefaultExtent(options);
+        };
+    }
+    
+    // L.Control.ZoomDisplay shows the current map zoom level
+    private instantiateZoomLevelControl() {       
+        L.Control.ZoomDisplay = L.Control.extend({
+            options: {
+                position: 'topleft'
+            },
+
+            onAdd: function (map) {
+                this._map = map;
+                this._container = L.DomUtil.create('div', 'leaflet-control-zoom-display leaflet-bar-part leaflet-bar');
+                this.updateMapZoom(map.getZoom());
+                map.on('zoomend', this.onMapZoomEnd, this);
+                return this._container;
+            },
+
+            onRemove: function (map) {
+                map.off('zoomend', this.onMapZoomEnd, this);
+            },
+
+            onMapZoomEnd: function (e) {
+                this.updateMapZoom(this._map.getZoom());
+            },
+
+            updateMapZoom: function (zoom) {
+                if (typeof (zoom) === "undefined") { zoom = "" }
+                this._container.innerHTML = "Zoom Level: " + zoom;
+            }
+        });
+
+        L.Map.mergeOptions({
+            zoomDisplayControl: true
+        });
+
+        L.Map.addInitHook(function () {
+            if (this.options.zoomDisplayControl) {
+                this.zoomDisplayControl = new L.Control.ZoomDisplay();
+                this.addControl(this.zoomDisplayControl);
+            }
+        });
+
+        L.control.zoomDisplay = function (options) {
+            return new L.Control.ZoomDisplay(options);
         };
     }
 }
