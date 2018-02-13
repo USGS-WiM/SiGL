@@ -60,7 +60,7 @@ export class MapService {
             })
         };
         this.additionalLayers = {
-            /*areas: esri.featureLayer({
+            areas: esri.featureLayer({
                 url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/1",
                 style: function(){
                     return {color: 'DarkOrange', weight: 0.5 };
@@ -88,7 +88,7 @@ export class MapService {
                 },
                 pane: 'tribal'
             })
-        */}
+        }
         //this.temporarySites = [];
         this.httpRequest();
         this.setFilteredSiteIDs([]);
@@ -166,7 +166,6 @@ export class MapService {
             let filteredSiteIds: Array<number> = [];
             // loop through all the geojson features to find filter matching properties (think we need to search through all '_allSiteView' instead of '_filteredSiteViewSubject' here every time)
             if (Array.isArray(this._allSiteView)) { // if (Array.isArray(this._filteredSiteViewSubject.getValue())) {
-                let stop = "stopHere to see what this._filteredSiteViewSubject is and why it's getting an error";
                 this._allSiteView.forEach(feature => { // this._filteredSiteViewSubject.getValue().forEach(feature => {
                     // isPresent = false;
                     isPresent = this.findPresentProps(feature, this.filtersPassed);
