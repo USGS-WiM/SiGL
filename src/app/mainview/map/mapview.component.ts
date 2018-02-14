@@ -163,7 +163,7 @@ export class MapviewComponent implements OnInit {
                     this.map.closePopup();
                 }
 
-                //if sidebar project name was clicked in UI, highlight project sites   TODO:: Something not right here .. works everyother time to highlight
+                //if sidebar project name was clicked in UI, highlight project sites 
                 if (this.projectNameClickFlag) { // && !this.sameProject.same || !(this.sameProject.timesInARow % 2 == 0)) {
                     this.highlightProjSites(this.fullProj.ProjectId);
                 }
@@ -227,7 +227,7 @@ export class MapviewComponent implements OnInit {
                             // if present more than 1 time, it's overlapping
                             if (presenceCount > 1) {
                                 popupContent = '<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name + '<br/>' + // container.innerHTML;
-                                    'Overlapping sites here. Zoom in to zoom level ## to see all.';
+                                    'Overlapping sites here. Zoom in to zoom level 14 to see all.';
                             } else {
                                 popupContent = "<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name;
                             }
@@ -297,7 +297,7 @@ export class MapviewComponent implements OnInit {
                             // if present more than 1 time, it's overlapping
                             if (presenceCount > 1) {
                                 popupContent = '<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name + '<br/>' + // container.innerHTML;
-                                    'Overlapping sites here. Zoom in to zoom level ## to see all.';
+                                    'Overlapping sites here. Zoom in to zoom level 14 to see all.';
                             } else {
                                 popupContent = "<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name;
                             }

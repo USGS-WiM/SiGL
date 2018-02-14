@@ -141,7 +141,7 @@ MODAL
 */
 
 .modal-body {
-  max-height: 500px;
+  max-height: 700px;
   overflow-y: auto;
 }
 
@@ -221,10 +221,10 @@ only screen and (min-device-pixel-ratio: 1.5) {
   margin: 0;
 }
 
-#projList hr{
+/*#projList hr{
   margin-top: 1.25rem;
   margin-bottom: 1.5rem;
-}
+}*/
 #sidebar .pull-right.btn-group{
   position: relative;
   top: 4px;
