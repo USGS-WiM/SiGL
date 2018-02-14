@@ -51,6 +51,12 @@ export class AboutComponent implements OnInit {
         this._modalService.showAboutModal.subscribe((show: boolean) => {
             if (show) this.showAboutModal();
         });
+        if (document.cookie.includes("SiGLcookie")){
+			this._modalService.showAboutModal = false;
+		} else {
+			this._modalService.showAboutModal = true;
+			this.checkCookie();
+		}
 
         // application version percolated up from package.json -> environments -> app.module -> app.component -> siglServices -> here to show version #
         this._siglService.getVersion.subscribe((v: string) => {
@@ -76,4 +82,31 @@ export class AboutComponent implements OnInit {
             return `with: ${reason}`;
         }
     }
+    public setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+		var expires = "expires="+d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+	
+	public getCookie(cname) {
+		var name = cname + "=";
+		var ca = document.cookie.split(';');
+		for(var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	public checkCookie() {
+		var user = "You have returned!";
+		this.setCookie("SiGLcookie", user, 365);
+	}
+
 }//end AboutComponent Class
