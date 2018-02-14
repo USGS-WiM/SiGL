@@ -436,7 +436,7 @@ export class MapviewComponent implements OnInit {
         });
 
         /*END AUX LAYERS */
-
+        
         L.control.scale({ position: 'topleft' }).addTo(this.map);
         //  L.control.defaultExtent().addTo(this.map);
         this._mapService.map = this.map;

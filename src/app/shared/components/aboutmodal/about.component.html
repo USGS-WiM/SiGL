@@ -7,6 +7,14 @@
     </div>
     <div class="modal-body">
         <ngb-tabset #aboutTabs>
+            <ngb-tab title="Introduction">
+                <ng-template ngbTabContent>
+                    <p>
+                        Welcome to the new Science in the Great Lakes (SiGL) interface! If you would like help on how to use the application, please see
+                        the User Guide.
+                    </p>
+                </ng-template>
+            </ngb-tab>
             <ngb-tab title="About SiGL" id="about">
                 <ng-template ngbTabContent>
                     <p>
@@ -134,8 +142,7 @@
                         <a href="http://softsimon.github.io/angular-2-dropdown-multiselect/" target="_blank">angular-2-dropdown-multiselect</a>
                         <br/> Copyright (c) 2016, softsimon
                         <br/> License (
-                        <a href="https://github.com/softsimon/angular-2-dropdown-multiselect/blob/master/LICENSE"
-                            target="_blank">MIT</a>)
+                        <a href="https://github.com/softsimon/angular-2-dropdown-multiselect/blob/master/LICENSE" target="_blank">MIT</a>)
                     </p>
                 </ng-template>
             </ngb-tab>
