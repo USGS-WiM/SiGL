@@ -41,12 +41,13 @@ export class SidebarComponent implements OnInit {
 	public siteFilters: boolean;
 	public projectFilters: boolean;
 	private AllShowingProjIds: Array<number>;
+	public allProjects: Array<Ifilteredproject>;
 	public filteredProjects: Array<Ifilteredproject>;
 	public allFilteredProjectsHolder: Array<Ifilteredproject>;
+	public allProjectsHolder: Array<Ifilteredproject>;
 	private selectedProjectId: number;
 	private projectNameClickOnOff: number;
 	public siteWasClicked: boolean;
-	public siteClickFullProj: Ifullproject;
 	public siteCountForm: FormGroup;
 	public sortByObject: any;
 	public chosenSortBy: any;
@@ -56,13 +57,13 @@ export class SidebarComponent implements OnInit {
 	public NoMatches: boolean; // if filteredProjects come back empty, flag this true so message shows instead of emptiness
 	public unHighlightProjName: boolean;
 	public showMobileSidebar: boolean; // for mobile responsiveness, when 3-line menu clicked, show sidebar
-
+	public showAllProjects: boolean; // toggle when all initial load and when filters are cleared so that all Projects show in sidebar
 	public additionalLayers: any;
 	public chosenLayers: Array<string>;
-	
-	public sitesCheck:boolean;
-  	public areasCheck: boolean;
-  	public glriCheck:boolean;
+
+	public sitesCheck: boolean;
+	public areasCheck: boolean;
+	public glriCheck: boolean;
 	public cededCheck: boolean;
     public tribalCheck: boolean;
     public basinsCheck: boolean;
@@ -78,25 +79,36 @@ export class SidebarComponent implements OnInit {
 		this.siteNameClickOnOff = 0;
 		// update selected site when point is clicked in map
 		this._mapService.siteClicked.subscribe(site => {
-			if (Object.keys(site).length > 0){
+			if (Object.keys(site).length > 0) {
 				//determine if they are clicking it to highlight the site or to unhighlight the site
 				if (site.site_id == this.selectedSite) {
 					this.siteNameClickOnOff++;
 				}
-				else { 
+				else {
 					this.siteNameClickOnOff = 1;
 				};
 
 				if (site.site_id) {
 					// only if they are clicking it to highlight the site set the selectedSite (determines whether it has a gray selected background)
 					this.selectedSite = !(this.siteNameClickOnOff % 2 == 0) ? site.site_id : 0;
-					this.filteredProjects.forEach(proj => {
-						if (site.project_id == proj.project_id) {
-							proj.isCollapsed = false;
-						} else {
-							proj.isCollapsed = true;
-						}
-					});
+					if (this.showAllProjects) {
+						// all projects are showing
+						this.allProjects.forEach(proj => {
+							if (site.project_id == proj.project_id) {
+								proj.isCollapsed = false;
+							} else {
+								proj.isCollapsed = true;
+							}
+						});
+					} else {
+						this.filteredProjects.forEach(proj => {
+							if (site.project_id == proj.project_id) {
+								proj.isCollapsed = false;
+							} else {
+								proj.isCollapsed = true;
+							}
+						});
+					}
 				}
 				// scroll down to the site id chosen
 				if (site.fromMap == true) {
@@ -125,16 +137,18 @@ export class SidebarComponent implements OnInit {
 			{ title: "Filtered Site Count: ", icon: "&#xf162;", sortBy: "FilteredSiteCnt", direction: "asc" },
 			{ title: "Filtered Site Count: ", icon: "&#xf163;", sortBy: "FilteredSiteCnt", direction: "des" }
 		];
+		
 		this.projectsWithSitesShowing = true;
 
 		this.AllShowingProjIds = []; //holder of projects that are toggled to show all for mapview to use
+		this.showAllProjects = true; // true by default because on init all projects are showing
 		this.filterCount = 0;
 		this.siteFilters = false; this.projectFilters = false;
 		//site toggle button group form
 		this.siteCountForm = this._formBuilder.group({
 			'siteToggle': 'filtered'
 		});
-		this.filteredProjects = []; this.allFilteredProjectsHolder = [];
+		this.filteredProjects = []; this.allFilteredProjectsHolder = []; this.allProjects = []; this.allProjectsHolder = [];
 		//initialize selected project Id first time.
 		this.selectedProjectId = -1;
 		//for the filtered choices accordion panel
@@ -152,26 +166,26 @@ export class SidebarComponent implements OnInit {
 				this.projectFilters = true;
 			else this.projectFilters = false;
 
-			this.filterCount = Object.keys(this.chosenFilters).length;
-			if (this.filterCount == 0) {
-				this.siteClickFullProj = undefined;
-				this.chosenSortBy = undefined;
-			}
+			this.filterCount = Object.keys(this.chosenFilters).length;			
 
 		});
 		this._siglService.sitePointClickBool.subscribe((val: boolean) => {
 			this.siteWasClicked = val;
 		});
-		this._siglService.fullProject.subscribe((fullProj: Ifullproject) => {
+		this._siglService.allProjects.subscribe((allProjects: Array<Ifilteredproject>) => {
+			allProjects.forEach(p => {
+				p.isCollapsed = true;
+			});
 			this.accordion.activeIds = ['projList'];
-			this.siteClickFullProj = fullProj;
-			//	this.siteClickFullProj.isCollapsed = true;
-		});
+			this.allProjects = allProjects;
+			this.allProjectsHolder = this.allProjects.map(x => Object.assign({}, x));
+		})
 		//for the results accordion panel
 		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
 			this.filteredProjects = [];
 			this.siteCountForm.controls['siteToggle'].setValue('filtered');
 			if (projects.length > 0) {
+				this.showAllProjects = false;
 				this.NoMatches = false;
 				this.accordion.activeIds = ['projList'];
 				projects.forEach((p: Ifilteredproject) => {
@@ -189,20 +203,25 @@ export class SidebarComponent implements OnInit {
 			} else {
 				//clear it all
 				this.filteredProjects = [];
-				if (this.filterCount > 0)
+				// HERE Show all projects only if there are no filters chosen				
+				if (this.filterCount > 0) {
 					this.NoMatches = true;
+					this.showAllProjects = false;
+				}
+				else 
+					this.showAllProjects = true;
 			}
 
 			this.allFilteredProjectsHolder = this.filteredProjects.map(x => Object.assign({}, x));
 		});
 		// to show the sidebar when mobile	subscription that adds the class ([class.sidebar-mobile-show]) on the div to show/hide it
 		this._siglService.showSidebar.subscribe((val: boolean) => {
-            this.showMobileSidebar = val;
+			this.showMobileSidebar = val;
 		});
-		
+
 		this.chosenLayers = []; //additional layers names that are checked
 		this.sitesCheck = false;
-		this.areasCheck = false; 
+		this.areasCheck = false;
 		this.glriCheck = false;
 		this.cededCheck = false;
         this.tribalCheck = false;
@@ -215,9 +234,9 @@ export class SidebarComponent implements OnInit {
 		this._modalService.showFilterModal = true;
 	}
 
-	public showProjectDetails(project: any): void {		
+	public showProjectDetails(project: any): void {
 		this._siglService.setsitePointClickBool(false); //let mainview know proj name was clicked (not site point anymore)
-        this._mapService.setSiteClicked({});
+		this._mapService.setSiteClicked({});
 		this._mapService.setProjectNameClicked(true);
 		let sameProjNameClicked: boolean = false;
 		let projID = project.project_id || project.ProjectId;
@@ -232,7 +251,7 @@ export class SidebarComponent implements OnInit {
 			this.projectNameClickOnOff = 1;
 		}
 		this.selectedProjectId = projID;
-		
+
 		// only go setFullProject if they are clicking it 'on' and not clicking it 'off'
 		if (!(this.projectNameClickOnOff % 2 == 0)) {
 			this._siglService.setFullProject(this.selectedProjectId.toString());
@@ -242,10 +261,10 @@ export class SidebarComponent implements OnInit {
 		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'ProjectNameClick: ' + projID });
 	}
 
-	public showSiteDetails(site: Isimplesite): void {		
-        this._mapService.setProjectNameClicked(false);
-        if (site.project_id != this.selectedProjectId) {
-            this.selectedProjectId = site.project_id;
+	public showSiteDetails(site: Isimplesite): void {
+		this._mapService.setProjectNameClicked(false);
+		if (site.project_id != this.selectedProjectId) {
+			this.selectedProjectId = site.project_id;
 		}
 		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'SiteNameClick: ' + site.site_id });
 		// if project name has been highlighted, need to unhighlight if single site clicked
@@ -258,8 +277,8 @@ export class SidebarComponent implements OnInit {
 	public toggleSiteList(value: string, projectId: number) {
 		this.selectedProjectId = 0;
 		this.unHighlightProjName = true; // unhighlight project name if it's been clicked
-        this._mapService.setSiteClicked({}); //clear selected site if one
-        this._mapService.setProjectNameClicked(false);
+		this._mapService.setSiteClicked({}); //clear selected site if one
+		this._mapService.setProjectNameClicked(false);
 		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'ProjectId: ' + projectId + ', Toggle: ' + value });
 		this.filteredProjects.forEach((p: Ifilteredproject) => {
 			if (p.project_id == projectId) {
@@ -302,47 +321,79 @@ export class SidebarComponent implements OnInit {
 		if (fromWhere == 'click')
 			gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'SortBy: ' + chosenSort.sortBy + " : " + chosenSort.direction });
 
-		if (chosenSort.sortBy == "ProjectName" && chosenSort.direction == "asc") {
-			this.filteredProjects.sort((leftSide, rightside): number => {
-				if (leftSide.name < rightside.name) return -1;
-				if (leftSide.name > rightside.name) return 1;
-				return 0;
-			});
-		}
-		if (chosenSort.sortBy == "ProjectName" && chosenSort.direction == "des") {
-			this.filteredProjects.sort((leftSide, rightside): number => {
-				if (leftSide.name < rightside.name) return 1;
-				if (leftSide.name > rightside.name) return -1;
-				return 0;
-			});
-		}
-		if (chosenSort.sortBy == "TotalSiteCnt" && chosenSort.direction == "asc") {
-			this.filteredProjects.sort((leftSide, rightside): number => {
-				if (leftSide.projectSites.length < rightside.projectSites.length) return -1;
-				if (leftSide.projectSites.length > rightside.projectSites.length) return 1;
-				return 0;
-			});
-		}
-		if (chosenSort.sortBy == "TotalSiteCnt" && chosenSort.direction == "des") {
-			this.filteredProjects.sort((leftSide, rightside): number => {
-				if (leftSide.projectSites.length < rightside.projectSites.length) return 1;
-				if (leftSide.projectSites.length > rightside.projectSites.length) return -1;
-				return 0;
-			});
-		}
-		if (chosenSort.sortBy == "FilteredSiteCnt" && chosenSort.direction == "asc") {
-			this.filteredProjects.sort((leftSide, rightside): number => {
-				if (leftSide.filteredSiteCount < rightside.filteredSiteCount) return -1;
-				if (leftSide.filteredSiteCount > rightside.filteredSiteCount) return 1;
-				return 0;
-			});
-		}
-		if (chosenSort.sortBy == "FilteredSiteCnt" && chosenSort.direction == "des") {
-			this.filteredProjects.sort((leftSide, rightside): number => {
-				if (leftSide.filteredSiteCount < rightside.filteredSiteCount) return 1;
-				if (leftSide.filteredSiteCount > rightside.filteredSiteCount) return -1;
-				return 0;
-			});
+		if (this.showAllProjects){
+			this.chosenSortBy = chosenSort;
+			if (chosenSort.sortBy == "ProjectName" && chosenSort.direction == "asc") {
+				this.allProjects.sort((leftSide, rightside): number => {
+					if (leftSide.name.toLowerCase() < rightside.name.toLowerCase()) return -1;
+					if (leftSide.name.toLowerCase() > rightside.name.toLowerCase()) return 1;
+					return 0;
+				});
+			}
+			if (chosenSort.sortBy == "ProjectName" && chosenSort.direction == "des") {
+				this.allProjects.sort((leftSide, rightside): number => {
+					if (leftSide.name.toLowerCase() < rightside.name.toLowerCase()) return 1;
+					if (leftSide.name.toLowerCase() > rightside.name.toLowerCase()) return -1;
+					return 0;
+				});
+			}
+			if (chosenSort.sortBy == "TotalSiteCnt" && chosenSort.direction == "asc") {
+				this.allProjects.sort((leftSide, rightside): number => {
+					if (leftSide.projectSites.length < rightside.projectSites.length) return -1;
+					if (leftSide.projectSites.length > rightside.projectSites.length) return 1;
+					return 0;
+				});
+			}
+			if (chosenSort.sortBy == "TotalSiteCnt" && chosenSort.direction == "des") {
+				this.allProjects.sort((leftSide, rightside): number => {
+					if (leftSide.projectSites.length < rightside.projectSites.length) return 1;
+					if (leftSide.projectSites.length > rightside.projectSites.length) return -1;
+					return 0;
+				});
+			}			
+		} else {
+			if (chosenSort.sortBy == "ProjectName" && chosenSort.direction == "asc") {
+				this.filteredProjects.sort((leftSide, rightside): number => {
+					if (leftSide.name.toLowerCase() < rightside.name.toLowerCase()) return -1;
+					if (leftSide.name.toLowerCase() > rightside.name.toLowerCase()) return 1;
+					return 0;
+				});
+			}
+			if (chosenSort.sortBy == "ProjectName" && chosenSort.direction == "des") {
+				this.filteredProjects.sort((leftSide, rightside): number => {
+					if (leftSide.name.toLowerCase() < rightside.name.toLowerCase()) return 1;
+					if (leftSide.name.toLowerCase() > rightside.name.toLowerCase()) return -1;
+					return 0;
+				});
+			}
+			if (chosenSort.sortBy == "TotalSiteCnt" && chosenSort.direction == "asc") {
+				this.filteredProjects.sort((leftSide, rightside): number => {
+					if (leftSide.projectSites.length < rightside.projectSites.length) return -1;
+					if (leftSide.projectSites.length > rightside.projectSites.length) return 1;
+					return 0;
+				});
+			}
+			if (chosenSort.sortBy == "TotalSiteCnt" && chosenSort.direction == "des") {
+				this.filteredProjects.sort((leftSide, rightside): number => {
+					if (leftSide.projectSites.length < rightside.projectSites.length) return 1;
+					if (leftSide.projectSites.length > rightside.projectSites.length) return -1;
+					return 0;
+				});
+			}
+			if (chosenSort.sortBy == "FilteredSiteCnt" && chosenSort.direction == "asc") {
+				this.filteredProjects.sort((leftSide, rightside): number => {
+					if (leftSide.filteredSiteCount < rightside.filteredSiteCount) return -1;
+					if (leftSide.filteredSiteCount > rightside.filteredSiteCount) return 1;
+					return 0;
+				});
+			}
+			if (chosenSort.sortBy == "FilteredSiteCnt" && chosenSort.direction == "des") {
+				this.filteredProjects.sort((leftSide, rightside): number => {
+					if (leftSide.filteredSiteCount < rightside.filteredSiteCount) return 1;
+					if (leftSide.filteredSiteCount > rightside.filteredSiteCount) return -1;
+					return 0;
+				});
+			}
 		}
 	};
 
@@ -351,11 +402,14 @@ export class SidebarComponent implements OnInit {
 		if (this.projectsWithSitesShowing) {
 			// only show projects with sites
 			this.projectsWithSitesShowing = false;
-			this.filteredProjects = this.allFilteredProjectsHolder.filter((proj: Ifilteredproject) => { return proj.projectSites.length > 0; });
+			// are we toggling all the project or filtered projects
+			if (this.showAllProjects) this.allProjects = this.allProjectsHolder.filter((proj: Ifilteredproject) => { return proj.projectSites.length > 0; });
+			else this.filteredProjects = this.allFilteredProjectsHolder.filter((proj: Ifilteredproject) => { return proj.projectSites.length > 0; });
 		} else {
 			// show all projects (with and without sites)
 			this.projectsWithSitesShowing = true;
-			this.filteredProjects = this.allFilteredProjectsHolder.map(x => Object.assign({}, x));
+			if (this.showAllProjects) this.allProjects = this.allProjectsHolder.map(x => Object.assign({}, x));
+			else this.filteredProjects = this.allFilteredProjectsHolder.map(x => Object.assign({}, x));
 		}
 		if (this.chosenSortBy) {
 			this.sortProjListBy(this.chosenSortBy, 'redo');
@@ -379,16 +433,20 @@ export class SidebarComponent implements OnInit {
 				});
 			});
 			csvData = this.ConvertToCSV(csvDataHolder);
-		} else {
-			// single site click project download
-			let tempProject = {
-				"name": this.siteClickFullProj.Name,
-				"id": this.siteClickFullProj.ProjectId,
-				"projectSites": this.siteClickFullProj.projectSites
-			}
-			csvDataHolder.push(tempProject);
-			csvData = this.ConvertSingleToCSV(csvDataHolder);
-		}
+		} else if (this.allProjects.length > 0 && this.showAllProjects) {
+			// all projects download
+			csvDataHolder = this.allProjects.map(x => Object.assign({}, x)); //deep copy
+			csvDataHolder.forEach(d => {
+				delete d.filteredSiteCount;
+				delete d.isCollapsed;
+
+				d.projectSites.forEach(s => {
+					//	delete s.isDisplayed;
+					delete s.isTempDisplayed;
+				});
+			});
+			csvData = this.ConvertToCSV(csvDataHolder);
+		} 
 		let a = document.createElement("a");
 		a.setAttribute('style', 'display:none;');
 		document.body.appendChild(a);
@@ -404,7 +462,8 @@ export class SidebarComponent implements OnInit {
 		let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
 		let str = '';
 		let row = "";
-		row = "Project Name, project_id, GetFullProject, projectSites__site_id,projectSites__name,projectSites__filteredResult, projectSites__latitude, projectSites__longitude "
+		if (this.showAllProjects) row = "Project Name, project_id, GetFullProject, projectSites__site_id,projectSites__name, projectSites__latitude, projectSites__longitude";
+		else row = "Project Name, project_id, GetFullProject, projectSites__site_id,projectSites__name,projectSites__filteredResult, projectSites__latitude, projectSites__longitude";
 		// append Label row with line break
 		str += row + '\r\n';
 
@@ -416,16 +475,26 @@ export class SidebarComponent implements OnInit {
 					//for each site in this project, make a new line
 					for (let s = 0; s < array[i][index].length; s++) {
 						if (s == 0) {
-							//is this a filtered site?
-							if (array[i][index][s].isDisplayed)
-								line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
-							else
-								line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+							// is this from AllProjects?
+							if (this.showAllProjects) {
+								line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+							} else {
+								//is this a filtered site?
+								if (array[i][index][s].isDisplayed)
+									line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+								else
+									line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+							}
 						} else {
-							if (array[i][index][s].isDisplayed)
-								line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
-							else
-								line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+							// is this from AllProjects?
+							if (this.showAllProjects) {
+								line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+							} else {
+								if (array[i][index][s].isDisplayed)
+									line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+								else
+									line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+							}
 						}
 					}
 				} else {
@@ -474,9 +543,9 @@ export class SidebarComponent implements OnInit {
 	}
 
 	//toggle on/off Additional Layers
-	public toggleLayer(newVal: string){
+	public toggleLayer(newVal: string) {
 		let index = this.chosenLayers.indexOf(newVal);
-		
+
 		if (index > -1) {
 			//already on, turn it off and remove from array
 			this.chosenLayers.splice(index, 1);
@@ -486,6 +555,6 @@ export class SidebarComponent implements OnInit {
 			this.chosenLayers.push(newVal);
 			this._mapService.map.addLayer(this._mapService.additionalLayers[newVal]);
 		}
-	
+
 	}
 }

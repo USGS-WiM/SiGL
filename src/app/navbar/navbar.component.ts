@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit {
 		this.subtitle = "Science in the Great Lakes";
 		this.mobileMenuToggle = false;
 	}
-
+	
 	public mobileMenuBtnClick() {
 		this.mobileMenuToggle = !this.mobileMenuToggle;
 

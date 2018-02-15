@@ -1,21 +1,4 @@
 /*User Guide Modal*/
-/*supposed to be for tabs in User Guide, not working... cannot find styles that are showing up{
-    border-radius: 0px !important;
-    margin: 0 !important;
-    border: none !important;
-    box-sizing: border-box;
-    border-bottom: 3px solid transparent;
-    border-top: 3px solid transparent;
-    padding-top: 11px !important;
-
-}
-
-.nav-tabs .nav-link {
-    color: #10152C;
-    border-bottom: 3px solid #0F8AFF !important;
-}*/
-
-/*User Guide Modal*/
 .user-guide-header{
     display: block;
     text-align: center;

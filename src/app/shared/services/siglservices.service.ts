@@ -69,6 +69,8 @@ export class SiglService {
 	private _lakeSubject: Subject<Array<Ilake>> = new Subject<Array<Ilake>>();
 	private _stateSubject: Subject<Array<Istate>> = new Subject<Array<Istate>>();
 	private _monitorEffortSubject: Subject<Array<ImonitorEffort>> = new Subject<Array<ImonitorEffort>>();
+	// on init of app (and when filters are all cleared, show this list of all projects in the sidebar Project List)
+	private _allProjectsSubject: Subject<Array<Ifilteredproject>> = new Subject<Array<Ifilteredproject>>(); 
 	private _projectSubject: Subject<Array<Iproject>> = new Subject<Array<Iproject>>();
 	private _siteSubject: Subject<Array<Isite>> = new Subject<Array<Isite>>();
 	private _organizationSubject: Subject<Array<Iorganization>> = new Subject<Array<Iorganization>>();
@@ -106,6 +108,9 @@ export class SiglService {
 	}
 	public get project(): Observable<Array<Iproject>> {
 		return this._projectSubject.asObservable();
+	}
+	public get allProjects(): Observable<Array<Ifilteredproject>>{
+		return this._allProjectsSubject.asObservable();
 	}
 	public get sites(): Observable<Array<Isite>> {
 		return this._siteSubject.asObservable();
@@ -215,6 +220,12 @@ export class SiglService {
 			.subscribe(pr => {
 				this._projectSubject.next(pr);
 			});
+		this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
+			.map(res => <Array<Ifilteredproject>>res.json())
+			.catch((err, caught) => this.handleError(err, caught))
+			.subscribe(pr => {
+				this._allProjectsSubject.next(pr);
+			});
 	}
 	private setOrganizations(): void {
 		let options = new RequestOptions({ headers: CONFIG.MIN_JSON_HEADERS });
@@ -285,9 +296,10 @@ export class SiglService {
 				}
 			}			
 		} else {
-			// clear it all
+			// clear it all and show allProjects in sidebar
 			this._loaderService.hideSidebarLoad();
 			this._filteredProjectSubject.next([]);
+			// HERE show all
 		}
 	}
 	// GetFullProject?ByProject=

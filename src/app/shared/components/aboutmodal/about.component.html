@@ -7,6 +7,14 @@
     </div>
     <div class="modal-body">
         <ngb-tabset #aboutTabs>
+            <ngb-tab title="Introduction">
+                <ng-template ngbTabContent>
+                    <p>
+                        Welcome to the new Science in the Great Lakes (SiGL) interface! If you would like help on how to use the application, please see
+                        the User Guide.
+                    </p>
+                </ng-template>
+            </ngb-tab>
             <ngb-tab title="About SiGL" id="about">
                 <ng-template ngbTabContent>
                     <p>
@@ -33,13 +41,13 @@
                         If you would like to submit data to SiGL, or manage data currently residing in SiGL, please visit the
                         <a href="https://sigl.wim.usgs.gov/sigldms/" target="_blank">SiGL Data Management System</a> for more information.
                     </p>
-                    <p>If you would like to utilize SiGL’s public web services, please visit our
-                        <a href="https://sigl.wim.usgs.gov/SiGLServices/Documentation" target="_blank"></a>SiGL Services Documentation for more information.
+                    <p>If you would like to utilize SiGL’s public web services, please visit our <span style="color: #007bff; cursor:pointer;" class="" (click)="aboutTabs.select('services')">SiGL Services Documentation</span> for more information.
+                       <!-- <a href="https://sigl.wim.usgs.gov/SiGLServices/Documentation" target="_blank">SiGL Services Documentation</a> for more information.-->
                     </p>
                     <p>
                         SiGL’s goal is to serve the entire Great Lakes community, and we are open to feedback and ideas that will make SiGL a more
                         useful and comprehensive tool. If you have questions or comments, or would like to have your data
-                        included in the SiGL, please contact sigl@usgs.gov
+                        included in the SiGL, please contact <a target="_blank" [href]="'mailto:sigl@usgs.gov'">sigl@usgs.gov</a>
                     </p>
                 </ng-template>
             </ngb-tab>
@@ -70,11 +78,16 @@
                         by the U.S. Government.
                     </p>
                     <p>
+                        <strong>SiGL Data Disclaimer:</strong>
+                        <br/> SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes, universities, and nonprofit organizations. 
+                        The USGS assumes no responsibility for the accuracy or completeness of information provided by other entities.
+                    </p>
+                    <p>
                         This web application functions best in Chrome, Firefox, or Safari. Internet Explorer works but with slower performance.
                     </p>
                 </ng-template>
             </ngb-tab>
-            <ngb-tab title="Services">
+            <ngb-tab title="Services" id="services">
                 <ng-template ngbTabContent>
                     <p>
                         <b>Link to SiGL Services Documentation page:</b>
@@ -82,9 +95,12 @@
                         <a href="https://sigl.wim.usgs.gov/SiGLServices/Documentation" target="_blank">SiGLServices</a>
                     </p>
                     <p>
-                        <b>Link to EPA Areas of Conern REST Services:</b>
+                        <b>Link to EPA Areas of Concern REST Services:</b>
                         <br/>
-                        <a href="https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/1" target="_blank">EPA Areas of Conern REST Services</a>
+                        <a href="https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/1" target="_blank">EPA Areas of Concern REST Services</a>
+                        <br/>
+                        U.S Environmental Protection Agency, 2014, Great Lakes Areas of Concern (AOCs) shapefile, no metadata available. Originally downloaded from U.S. EPA website, no 
+                        longer available as a single file. As of February 12, 2018, individual AOC boundary shapefiles were available at <a href="https://www.epa.gov/great-lakes-aocs/list-great-lakes-aocs-and-contacts" target="_blank">https://www.epa.gov/great-lakes-aocs/list-great-lakes-aocs-and-contacts</a>
                     </p>
                     <p>
                         <b>Link to USGS GLRI Nutrient and Contaminants of Emerging Concern Monitoring Basins REST Services:</b>
@@ -105,6 +121,11 @@
                         <b>Link to Great Lakes Basins REST Services:</b>
                         <br/>
                         <a href="https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/3" target="_blank">Great Lakes Basins REST Services</a>
+                        <br/>
+                        U.S. stream networks: Moore, R. B., and Dewald, T. G., 2016, The road to NHDPlus— Advancements in digital stream networks and associated catchments: Journal of the American Water Resources Association 1–10. DOI: 10.1111/1752-1688.12389
+                        Canada stream networks: Ontario Integrated Hydrology Data, 2012, Ontario Ministry of Natural Resources and Forestry, digital data, last accessed on Feb. 13, 2018, at <a href="https://www.ontario.ca/data/ontario-integrated-hydrology-data" target="_blank">https://www.ontario.ca/data/ontario-integrated-hydrology-data</a>
+                        <br/>
+                        Catchments were delineated using <a href="https://pubs.er.usgs.gov/publication/70039555" target="_blank">USGS National Elevation Dataset</a> which included elevation data from the Canada National Topographic Database.
                     </p>
 
                     <p>
@@ -131,8 +152,7 @@
                         <a href="http://softsimon.github.io/angular-2-dropdown-multiselect/" target="_blank">angular-2-dropdown-multiselect</a>
                         <br/> Copyright (c) 2016, softsimon
                         <br/> License (
-                        <a href="https://github.com/softsimon/angular-2-dropdown-multiselect/blob/master/LICENSE"
-                            target="_blank">MIT</a>)
+                        <a href="https://github.com/softsimon/angular-2-dropdown-multiselect/blob/master/LICENSE" target="_blank">MIT</a>)
                     </p>
                 </ng-template>
             </ngb-tab>
