@@ -63,7 +63,6 @@ export class SidebarComponent implements OnInit {
 
 	public sitesCheck: boolean;
 	public areasCheck: boolean;
-	public glriCheck: boolean;
 	public cededCheck: boolean;
     public tribalCheck: boolean;
     public basinsCheck: boolean;
@@ -222,7 +221,6 @@ export class SidebarComponent implements OnInit {
 		this.chosenLayers = []; //additional layers names that are checked
 		this.sitesCheck = false;
 		this.areasCheck = false;
-		this.glriCheck = false;
 		this.cededCheck = false;
         this.tribalCheck = false;
         this.basinsCheck = false;

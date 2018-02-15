@@ -386,7 +386,6 @@ export class MapviewComponent implements OnInit {
 
         //keeps the geojson always on the top of all other layers
         this.map.createPane('areas');
-        this.map.createPane('glri');
         this.map.createPane('ceded');
         this.map.createPane('tribal');
         this.map.createPane('basins');
