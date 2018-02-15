@@ -20,7 +20,6 @@ export class LayersComponent implements OnInit {
   public additionalLayers: any;
   public chosenLayers: Array<string>;
   public areasCheck: boolean;
-  public glriCheck:boolean;
   public cededCheck: boolean;
   public tribalCheck: boolean;
   public basinsCheck: boolean;
@@ -29,7 +28,6 @@ export class LayersComponent implements OnInit {
   ngOnInit() { 
     this.chosenLayers = [];
     this.areasCheck = false;
-    this.glriCheck = false;
     this.cededCheck = false;
     this.tribalCheck = false;
     this.basinsCheck = false;

@@ -75,7 +75,7 @@ export class MapService {
             ceded: esri.featureLayer({
                 url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/4",
                 style: function(){
-                    return {color: '#EFEFEF', weight: 0.5 };
+                    return {color: '#f49541', weight: 0.5 };
                 },
                 pane: 'ceded'
             }),
