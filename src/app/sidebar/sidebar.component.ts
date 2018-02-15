@@ -64,7 +64,8 @@ export class SidebarComponent implements OnInit {
   	public areasCheck: boolean;
   	public glriCheck:boolean;
 	public cededCheck: boolean;
-  	public tribalCheck: boolean;
+    public tribalCheck: boolean;
+    public basinsCheck: boolean;
 
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService,
 		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService) { }
@@ -204,7 +205,8 @@ export class SidebarComponent implements OnInit {
 		this.areasCheck = false; 
 		this.glriCheck = false;
 		this.cededCheck = false;
-		this.tribalCheck = false;
+        this.tribalCheck = false;
+        this.basinsCheck = false;
 	} // end ngOnInit()
 
 	// show filter button click

@@ -389,6 +389,7 @@ export class MapviewComponent implements OnInit {
         this.map.createPane('glri');
         this.map.createPane('ceded');
         this.map.createPane('tribal');
+        this.map.createPane('basins');
         this.map.createPane('geojson');
 
         // only want clustering to happen when zoomed in, otherwise just show all the points
@@ -413,29 +414,7 @@ export class MapviewComponent implements OnInit {
         });
         let element: HTMLElement = document.getElementsByClassName('zoomTo')[0] as HTMLElement;
         element.onclick = this.zoomIn;*/
-        /*BEGIN AUX LAYERS */
-        this.lakeLayer = esri.featureLayer({
-            url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/3",
-            style: function (feature) {
-                if (feature.properties.LAKE == "ls") {
-                    return { color: 'DarkCyan', weight: 0 };
-                }
-                if (feature.properties.LAKE == "lm") {
-                    return { color: 'DarkKhaki', weight: 0 };
-                }
-                if (feature.properties.LAKE == "lh") {
-                    return { color: 'IndianRed', weight: 0 };
-                }
-                if (feature.properties.LAKE == "le") {
-                    return { color: 'Olive', weight: 0 };
-                }
-                if (feature.properties.LAKE == "lo") {
-                    return { color: 'MediumPurple', weight: 0 };
-                }
-            }
-        });
-
-        /*END AUX LAYERS */
+        
 
         L.control.scale({ position: 'topleft' }).addTo(this.map);
         //  L.control.defaultExtent().addTo(this.map);

@@ -74,19 +74,45 @@ export class MapService {
                 },
                 pane: 'glri'
             }),
-            ceded: esri.featureLayer({
+            ceded: L.tileLayer.wms("http://wms.glifwc.org/?", {
+                layers: "ceded_territories_polys",
+                transparent: true,
+                pane: "ceded"
+            }),
+            /* ceded: esri.featureLayer({
                 url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/4",
                 style: function(){
                     return {color: 'green', weight: 0.25 };
                 },
                 pane: 'ceded'
-            }),
+            }), */
             tribal: esri.featureLayer({
                 url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/5",
                 style: function(){
                     return {color: '#f4dfa8', weight: 0.25 };
                 },
                 pane: 'tribal'
+            }),
+            basins: esri.featureLayer({
+                url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/3",
+                style: function (feature) {
+                    if (feature.properties.LAKE == "ls") {
+                        return { color: 'DarkCyan', weight: 0 };
+                    }
+                    if (feature.properties.LAKE == "lm") {
+                        return { color: 'DarkKhaki', weight: 0 };
+                    }
+                    if (feature.properties.LAKE == "lh") {
+                        return { color: 'IndianRed', weight: 0 };
+                    }
+                    if (feature.properties.LAKE == "le") {
+                        return { color: 'Olive', weight: 0 };
+                    }
+                    if (feature.properties.LAKE == "lo") {
+                        return { color: 'MediumPurple', weight: 0 };
+                    }
+                },
+                pane: 'basins'
             })
         }
         //this.temporarySites = [];
