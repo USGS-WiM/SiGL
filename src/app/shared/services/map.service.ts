@@ -67,26 +67,45 @@ export class MapService {
                 },
                 pane: 'areas'
             }),
-            glri: esri.featureLayer({
-                url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/2",
-                style: function(){
-                    return {weight:0};
-                },
-                pane: 'glri'
-            }),
+            /*ceded: L.tileLayer.wms("http://wms.glifwc.org/?", {
+                layers: "ceded_territories_polys",
+                transparent: true,
+                pane: "ceded"
+            }),*/
             ceded: esri.featureLayer({
                 url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/4",
                 style: function(){
-                    return {color: 'green', weight: 0.25 };
+                    return {color: '#EFEFEF', weight: 0.5 };
                 },
                 pane: 'ceded'
             }),
             tribal: esri.featureLayer({
                 url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/5",
                 style: function(){
-                    return {color: '#f4dfa8', weight: 0.25 };
+                    return {color: '#80002a', weight: 0.5 };
                 },
                 pane: 'tribal'
+            }),
+            basins: esri.featureLayer({
+                url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/3",
+                style: function (feature) {
+                    if (feature.properties.MDA2 == "LS") {
+                        return { color: 'DarkCyan', weight: 0 };
+                    }
+                    if (feature.properties.MDA2 == "LM") {
+                        return { color: 'DarkKhaki', weight: 0 };
+                    }
+                    if (feature.properties.MDA2 == "LH") {
+                        return { color: 'IndianRed', weight: 0 };
+                    }
+                    if (feature.properties.MDA2 == "LE") {
+                        return { color: 'Olive', weight: 0 };
+                    }
+                    if (feature.properties.MDA2 == "LO") {
+                        return { color: 'MediumPurple', weight: 0 };
+                    }
+                },
+                pane: 'basins'
             })
         }
         //this.temporarySites = [];

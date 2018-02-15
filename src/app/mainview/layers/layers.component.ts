@@ -23,6 +23,7 @@ export class LayersComponent implements OnInit {
   public glriCheck:boolean;
   public cededCheck: boolean;
   public tribalCheck: boolean;
+  public basinsCheck: boolean;
   constructor(private _mapService: MapService) { }
 
   ngOnInit() { 
@@ -31,6 +32,7 @@ export class LayersComponent implements OnInit {
     this.glriCheck = false;
     this.cededCheck = false;
     this.tribalCheck = false;
+    this.basinsCheck = false;
   }
 
   public toggleLayer(newVal: string){

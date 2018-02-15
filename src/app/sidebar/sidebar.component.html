@@ -10,15 +10,11 @@
             <!-- Layers -->
             <ngb-panel title="Layers">
                 <ng-template ngbPanelContent>
-                    <button class="layersBtn">
-                        <input [(ngModel)]="areasCheck" name="areasCheck" (change)="toggleLayer('areas')" type="checkbox"> EPA Areas of Concern</button>
-                    <button class="layersBtn">
-                        <input [(ngModel)]="glriCheck" name="glriCheck" (change)="toggleLayer('glri')" type="checkbox"> USGS GLRI Nutrient and Contaminants of Emerging Concern Monitoring Basins</button>
-                    <button class="layersBtn">
-                        <input [(ngModel)]="cededCheck" name="cededCheck" (change)="toggleLayer('ceded')" type="checkbox"> Ceded Tribal Boundaries</button>
-                    <button class="layersBtn">
-                        <input [(ngModel)]="tribalCheck" name="tribalCheck" (change)="toggleLayer('tribal')" type="checkbox"> Tribal Reservation Boundaries</button>
-                    <!-- <layers></layers>-->
+                        <button class="layersBtn"><input [(ngModel)]="areasCheck" name="areasCheck" (change)="toggleLayer('areas')" type="checkbox"> EPA Areas of Concern</button>
+                        <button class="layersBtn"><input [(ngModel)]="cededCheck" name="cededCheck" (change)="toggleLayer('ceded')" type="checkbox"> Ceded Tribal Boundaries</button>
+                        <button class="layersBtn"><input [(ngModel)]="tribalCheck" name="tribalCheck" (change)="toggleLayer('tribal')" type="checkbox"> Tribal Reservation Boundaries</button>
+                        <button class="layersBtn"><input [(ngModel)]="basinsCheck" name="basinsCheck" (change)="toggleLayer('basins')" type="checkbox"> Great Lakes Basins</button>
+                <!-- <layers></layers>-->
                 </ng-template>
             </ngb-panel>
 
