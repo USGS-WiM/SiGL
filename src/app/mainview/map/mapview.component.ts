@@ -41,8 +41,7 @@ export class MapviewComponent implements OnInit {
     public wmsLayer: any;
     public icon: any;
     public tempSitesIcon: any;
-    public highlightIcon: any;
-    public tempHighlightIcon: any;
+    public highlightIcon: any;   
     public geoJsonLayer: L.GeoJSON;
     public clusterGeoJsonMarkers: any;
     public tempGeoJsonLayer: L.GeoJSON;
@@ -96,23 +95,14 @@ export class MapviewComponent implements OnInit {
             pane: 'geojson'
         };
         this.highlightIcon = {
-            radius: 8,
-            weight: 5,
-            opacity: 0.2,
-            fill: 'Orange',
+            radius: 3,
+            weight: 12,
+            opacity: .45,
+            fill: true,
             color: 'orange',
-            fillColor: 'orange',
-            fillOpacity: 0.5
-        };
-        this.tempHighlightIcon = {
-            radius: 8,
-            weight: 5,
-            opacity: 0.2,
-            fill: '#868e96',// 'green',
-            color: '868e96',//'green',
-            fillColor: '#868e96',// 'green',
-            fillOpacity: 0.5
-        };
+            fillColor: '#303030',
+            fillOpacity: 0.8
+        };        
 
         this.groupedParams = { BioArray: [], ChemArray: [], MicroBioArray: [], PhysArray: [], ToxicArray: [] };
 
@@ -311,7 +301,7 @@ export class MapviewComponent implements OnInit {
                                 this.clickedMarker.setStyle(this.setMarker(e.target.feature));
                             }
                             this.clickedMarker = e.target;
-                            e.target.setStyle(this.tempHighlightIcon);
+                            e.target.setStyle(this.highlightIcon);
 
                             this.onFeatureSelection(e)
                         });
@@ -406,16 +396,7 @@ export class MapviewComponent implements OnInit {
             // Switch to the Population legend...
             let test = "whatshere";
         });
-        /* this.map.on('popupopen', (e) => {
-            let element: HTMLElement = document.getElementsByClassName('zoomLink')[0] as HTMLElement;
-            element.addEventListener('click', () => {
-                console.log("zoom" + e.popup._latlng);
-            });
-        });
-        let element: HTMLElement = document.getElementsByClassName('zoomTo')[0] as HTMLElement;
-        element.onclick = this.zoomIn;*/
         
-
         L.control.scale({ position: 'topleft' }).addTo(this.map);
         //  L.control.defaultExtent().addTo(this.map);
         this._mapService.map = this.map;
@@ -495,7 +476,7 @@ export class MapviewComponent implements OnInit {
             geoJholder = this.tempGeoj;
             this.tempGeoJsonLayer.eachLayer((layer: any) => {
                 if (layer.feature.properties.project_id == projId) {
-                    layer.setStyle(this.tempHighlightIcon);
+                    layer.setStyle(this.highlightIcon);
                 } else {
                     layer.setStyle(this.setMarker(layer.feature));
                 }
@@ -542,7 +523,7 @@ export class MapviewComponent implements OnInit {
                     // are they clicking to highlight or to unhighlight. 
                     if (layer.options.radius < 5) {
                         // highlight it because it's radius is the radius of a regular icon
-                        layer.setStyle(this.tempHighlightIcon);
+                        layer.setStyle(this.highlightIcon);
                     } else {
                         // it is highlighted already (radius == 8), they clicked again to unhighlight
                         layer.setStyle(this.tempSitesIcon)
