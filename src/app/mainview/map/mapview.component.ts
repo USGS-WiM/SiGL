@@ -466,8 +466,6 @@ export class MapviewComponent implements OnInit {
         this.fullSiteFlag = false;
 
         //the sites that match the filter
-        //this.geoj.filter(function(feature) {return feature.properties.project_id == projId});
-
         if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
         let highlightedProjSites = []; let geoJholder: any;
 
@@ -478,7 +476,7 @@ export class MapviewComponent implements OnInit {
                 if (layer.feature.properties.project_id == projId) {
                     layer.setStyle(this.highlightIcon);
                 } else {
-                    layer.setStyle(this.setMarker(layer.feature));
+                    layer.setStyle(this.tempSitesIcon);
                 }
             });
         }

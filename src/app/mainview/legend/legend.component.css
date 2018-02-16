@@ -77,12 +77,11 @@
     display: inline-block;
 }
 
-#selectedGreenDot {
-    height: 12px;
-    width: 12px;
-    box-shadow: 0px 0px 4px rgba(0, 128, 0, 0.5);
-    background:rgba(0, 128, 0, 0.5);
-    border:2px solid green;    
+#showingGrayDot {
+    height: 10px;
+    width: 10px;
+    box-shadow: 0px 0px 4px rgba(87, 87, 87, 0.5);
+    background:rgba(109, 113, 117, 0.5);    
     border-radius: 50%;
     display: inline-block;
 }
