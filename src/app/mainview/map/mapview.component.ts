@@ -95,11 +95,11 @@ export class MapviewComponent implements OnInit {
             fillOpacity: 0.5,
             pane: 'geojson'
         };
-        this.highlightIcon = {
+       this.highlightIcon = {
             radius: 8,
             weight: 5,
             opacity: 0.2,
-            fill: 'Orange',
+            fill: 'orange',
             color: 'orange',
             fillColor: 'orange',
             fillOpacity: 0.5
