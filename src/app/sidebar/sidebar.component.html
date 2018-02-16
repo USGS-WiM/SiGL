@@ -227,7 +227,7 @@
                         </div>
                         <div class="row down10">
                             <label class="col-md-12">
-                                <a (click)="toggleSiteProjects()" title="Toggle projects" style="color: #007bff;">
+                                <a (click)="toggleProjectsWithSites()" title="Toggle projects" style="color: #007bff;">
                                     <span *ngIf="!projectsWithSitesShowing">Show</span>
                                     <span *ngIf="projectsWithSitesShowing">Hide</span>&nbsp;</a> projects with no sites&nbsp;</label>
                             <label class="col-md-12">
@@ -243,7 +243,7 @@
                                     <i [ngClass]="proj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
                                 </a>
                                 <span>
-                                    <a [style.font-weight]="selectedProjectId == proj.project_id && !unHighlightProjName ? 'bold': '400'" (click)="showProjectDetails(proj)">{{proj.name}}</a>
+                                    <a [style.font-weight]="selectedProjectId == proj.project_id && !unHighlightProjName ? 'bold': '400'" (click)="showProjectDetails(proj, false)">{{proj.name}}</a>
                                 </span>
                                 <span class="">
                                     <!-- <span class="pull-right"> -->
@@ -295,7 +295,7 @@
                         </div>
                         <div class="row down10">
                             <label class="col-md-12">
-                                <a (click)="toggleSiteProjects()" title="Toggle projects" style="color: #007bff;">
+                                <a (click)="toggleProjectsWithSites()" title="Toggle projects" style="color: #007bff;">
                                     <span *ngIf="!projectsWithSitesShowing">Show</span>
                                     <span *ngIf="projectsWithSitesShowing">Hide</span>&nbsp;</a> projects with no sites&nbsp;</label>
                             <label class="col-md-12">
@@ -310,10 +310,10 @@
                                     <i [ngClass]="proj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
                                 </a>
                                 <span>
-                                    <a [style.font-weight]="selectedProjectId == proj.project_id && !unHighlightProjName ? 'bold': '400'" (click)="showProjectDetails(proj)">{{proj.name}}</a>
+                                    <a [style.font-weight]="selectedProjectId == proj.project_id && !unHighlightProjName ? 'bold': '400'" (click)="showProjectDetails(proj, false)">{{proj.name}}</a>
                                 </span>                  
                                 <div class="pull-right"> <!--*ngIf="filteredProjects.length > 1">-->
-                                    <span class="badge badge-secondary">Site Count: {{proj.projectSites.length}}</span>
+                                    <span [style.background-color]="proj.projectSites.length > 0 ? 'blue': '#868e96'" class="badge badge-secondary">Site Count: {{proj.projectSites.length}}</span>
                                 </div>      
                             </div>
                             <div id="collapseExample1" [ngbCollapse]="proj.isCollapsed">

@@ -60,7 +60,6 @@ export class SidebarComponent implements OnInit {
 	public showAllProjects: boolean; // toggle when all initial load and when filters are cleared so that all Projects show in sidebar
 	public additionalLayers: any;
 	public chosenLayers: Array<string>;
-
 	public sitesCheck: boolean;
 	public areasCheck: boolean;
 	public glriCheck: boolean;
@@ -176,8 +175,16 @@ export class SidebarComponent implements OnInit {
 				p.isCollapsed = true;
 			});
 			this.accordion.activeIds = ['projList'];
+			
 			this.allProjects = allProjects;
+			//sort them
+			this.allProjects.sort((leftSide, rightside): number => {
+				if (leftSide.name.toLowerCase() < rightside.name.toLowerCase()) return -1;
+				if (leftSide.name.toLowerCase() > rightside.name.toLowerCase()) return 1;
+				return 0;
+			});
 			this.allProjectsHolder = this.allProjects.map(x => Object.assign({}, x));
+			this.chosenSortBy = this.sortByObject[0];
 		})
 		//for the results accordion panel
 		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
@@ -196,9 +203,7 @@ export class SidebarComponent implements OnInit {
 					});
 					this.filteredProjects.push(p);
 				});
-				if (this.chosenSortBy) {
-					this.sortProjListBy(this.chosenSortBy, 'redo');
-				}
+				
 			} else {
 				//clear it all
 				this.filteredProjects = [];
@@ -210,7 +215,9 @@ export class SidebarComponent implements OnInit {
 				else 
 					this.showAllProjects = true;
 			}
-
+			if (this.chosenSortBy) {
+				this.sortProjListBy(this.chosenSortBy, 'redo');
+			}
 			this.allFilteredProjectsHolder = this.filteredProjects.map(x => Object.assign({}, x));
 		});
 		// to show the sidebar when mobile	subscription that adds the class ([class.sidebar-mobile-show]) on the div to show/hide it
@@ -232,13 +239,13 @@ export class SidebarComponent implements OnInit {
 		this._modalService.showFilterModal = true;
 	}
 
-	public showProjectDetails(project: any): void {
+	public showProjectDetails(project: any, fromToggle:boolean): void {
 		this._siglService.setsitePointClickBool(false); //let mainview know proj name was clicked (not site point anymore)
 		this._mapService.setSiteClicked({});
 		this._mapService.setProjectNameClicked(true);
 		let sameProjNameClicked: boolean = false;
 		let projID = project.project_id || project.ProjectId;
-		if (this.selectedProjectId == projID) {
+		if (this.selectedProjectId == projID && !fromToggle) {
 			// they clicked it again
 			this.unHighlightProjName = true; //turn off gray background and bold font
 			sameProjNameClicked = true;
@@ -273,10 +280,12 @@ export class SidebarComponent implements OnInit {
 
 	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'
 	public toggleSiteList(value: string, projectId: number) {
-		this.selectedProjectId = 0;
-		this.unHighlightProjName = true; // unhighlight project name if it's been clicked
+		// toggling now also highlights
+		this.showProjectDetails(this.filteredProjects.filter(fp => {return fp.project_id == projectId;})[0], true);
+		// don't need this if we are highlighting when toggle ... this.selectedProjectId = 0;
+		// or this ... this.unHighlightProjName = true; // unhighlight project name if it's been clicked
 		this._mapService.setSiteClicked({}); //clear selected site if one
-		this._mapService.setProjectNameClicked(false);
+		// or this ... this._mapService.setProjectNameClicked(false);
 		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'ProjectId: ' + projectId + ', Toggle: ' + value });
 		this.filteredProjects.forEach((p: Ifilteredproject) => {
 			if (p.project_id == projectId) {
@@ -315,12 +324,13 @@ export class SidebarComponent implements OnInit {
 
 	}
 
+	// changing the sort order of the list of projects
 	public sortProjListBy(chosenSort: any, fromWhere: string) {
 		if (fromWhere == 'click')
 			gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'SortBy: ' + chosenSort.sortBy + " : " + chosenSort.direction });
-
+			
+		// need to know which list of projects we are sorting (filtered or all)
 		if (this.showAllProjects){
-			this.chosenSortBy = chosenSort;
 			if (chosenSort.sortBy == "ProjectName" && chosenSort.direction == "asc") {
 				this.allProjects.sort((leftSide, rightside): number => {
 					if (leftSide.name.toLowerCase() < rightside.name.toLowerCase()) return -1;
@@ -396,7 +406,7 @@ export class SidebarComponent implements OnInit {
 	};
 
 	// turn off/on projects without sites
-	public toggleSiteProjects(onOrOff) {
+	public toggleProjectsWithSites(onOrOff) {
 		if (this.projectsWithSitesShowing) {
 			// only show projects with sites
 			this.projectsWithSitesShowing = false;

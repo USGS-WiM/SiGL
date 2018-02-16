@@ -101,9 +101,9 @@ export class MapviewComponent implements OnInit {
             radius: 8,
             weight: 5,
             opacity: 0.2,
-            fill: 'green',
-            color: 'green',
-            fillColor: 'green',
+            fill: '#868e96',// 'green',
+            color: '868e96',//'green',
+            fillColor: '#868e96',// 'green',
             fillOpacity: 0.5
         };
 
@@ -206,12 +206,6 @@ export class MapviewComponent implements OnInit {
                             let presenceCount: number = 0;
                             let popup = e.target.getPopup(); // get the popup to override content
 
-                            /* NOT WORKING to add button or anchor tag that is clickable with function (just adding text for now)
-                            let container = L.DomUtil.create('div', 'zoomDiv'); 
-                            let zoombtn = L.DomUtil.create('button', 'zoomTo', container);
-                            zoombtn.setAttribute('type', 'button');
-                            zoombtn.innerHTML = 'Zoom to sites';
-                            */
                             // check if array or object for looping
                             if (Array.isArray(this.geoj)) {
                                 this.geoj.forEach(feature => {
@@ -405,14 +399,7 @@ export class MapviewComponent implements OnInit {
             // Switch to the Population legend...
             let test = "whatshere";
         });
-        /* this.map.on('popupopen', (e) => {
-            let element: HTMLElement = document.getElementsByClassName('zoomLink')[0] as HTMLElement;
-            element.addEventListener('click', () => {
-                console.log("zoom" + e.popup._latlng);
-            });
-        });
-        let element: HTMLElement = document.getElementsByClassName('zoomTo')[0] as HTMLElement;
-        element.onclick = this.zoomIn;*/
+       
         /*BEGIN AUX LAYERS */
         this.lakeLayer = esri.featureLayer({
             url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/3",
@@ -454,21 +441,6 @@ export class MapviewComponent implements OnInit {
             left: '400px'
         }
     }//END ngOnInit
-
-    /* tried to dynamically add button to popup with click event. doesn't work
-    public zoomIn(){
-        alert("hi");
-    }
-    
-    private createButton(label: string){//, container: any){
-        let btn = L.DomUtil.create('button');//, '', container);
-        btn.setAttribute('type', 'button');
-        btn.innerHTML = label;
-        /*L.DomEvent.addListener(btn, 'click', ()=> {
-            alert("hi");
-        });*
-        return btn;
-    }*/
 
     // when bottom bar resized
     public onResizeEnd(event: ResizeEvent): void {
