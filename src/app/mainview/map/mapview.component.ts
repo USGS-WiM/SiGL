@@ -11,10 +11,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { ResizeEvent } from "angular-resizable-element/dist/esm/src";
-declare var L: any;
 import 'leaflet.markercluster';
-import esri from 'esri-leaflet';
 import 'leaflet.markercluster.freezable';
+import esri from 'esri-leaflet';
 import { MapService } from "../../shared/services/map.service";
 import { FilterComponent } from "../../shared/components/filter/filter.component";
 import { SiglService } from "../../shared/services/siglservices.service";
@@ -25,6 +24,7 @@ import { Igroupedparameters } from "../../shared/interfaces/groupedparameters";
 import { Ifilteredproject } from '../../shared/interfaces/filteredproject';
 import { LayersComponent } from '../layers/layers.component';
 
+declare var L: any;
 declare let gtag: Function;
 
 @Component({
@@ -466,8 +466,6 @@ export class MapviewComponent implements OnInit {
         this.fullSiteFlag = false;
 
         //the sites that match the filter
-        //this.geoj.filter(function(feature) {return feature.properties.project_id == projId});
-
         if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
         let highlightedProjSites = []; let geoJholder: any;
 
@@ -478,7 +476,7 @@ export class MapviewComponent implements OnInit {
                 if (layer.feature.properties.project_id == projId) {
                     layer.setStyle(this.highlightIcon);
                 } else {
-                    layer.setStyle(this.setMarker(layer.feature));
+                    layer.setStyle(this.tempSitesIcon);
                 }
             });
         }
