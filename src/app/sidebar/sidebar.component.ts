@@ -174,7 +174,7 @@ export class SidebarComponent implements OnInit {
 			allProjects.forEach(p => {
 				p.isCollapsed = true;
 			});
-			this.accordion.activeIds = ['projList'];
+			this.accordion.activeIds = ['filter','projList'];
 			
 			this.allProjects = allProjects;
 			//sort them
