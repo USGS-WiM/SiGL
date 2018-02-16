@@ -79,6 +79,13 @@ export class MapviewComponent implements OnInit {
         /*************////
         this.filteredProjects = [];
         this.sameProject = { same: false, timesInARow: 0 };
+        var LeafIcon = L.Icon.extend({
+            options: {
+                shadowUrl: '../assets/blueSelected.png',
+                iconSize:     [20, 20]
+            }
+        });
+        
         this.tempSitesIcon = {
             radius: 4,
             fillColor: "#6d7175",
