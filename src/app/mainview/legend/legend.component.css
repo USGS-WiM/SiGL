@@ -96,8 +96,8 @@
     float: left;
 }
 #cededLegend {
-    background:rgba(0,128,0,0.2);
-    border:1px solid green;
+   
+    border:1.5px solid rgba(147,54,54,0.8);
     margin-bottom:5px;
     width: 13px;
     height: 13px;

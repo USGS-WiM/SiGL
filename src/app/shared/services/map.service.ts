@@ -67,17 +67,11 @@ export class MapService {
                 },
                 pane: 'areas'
             }),
-            /*ceded: L.tileLayer.wms("http://wms.glifwc.org/?", {
+            ceded: L.tileLayer.wms("http://wms.glifwc.org/?", {
                 layers: "ceded_territories_polys",
+                format: 'image/png',
                 transparent: true,
                 pane: "ceded"
-            }),*/
-            ceded: esri.featureLayer({
-                url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/4",
-                style: function(){
-                    return {color: '#f49541', weight: 0.5 };
-                },
-                pane: 'ceded'
             }),
             tribal: esri.featureLayer({
                 url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/5",
