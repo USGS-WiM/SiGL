@@ -4,7 +4,7 @@
     "organization": "U.S. Geological Survey",
     "description": "Mapping application for data exploration of monitoring and restoration activities around the Great Lakes",
     "version": "v0.0.0",
-    "status": "Beta"
+    "status": "Beta",
 
     "permissions": {
       "usageType": "openSource",
