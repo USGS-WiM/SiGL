@@ -16,7 +16,7 @@
       ]
     },
 
-    "homepageURL": "https://wim.usgs.gov",
+    "homepageURL": "https://test.wim.usgs.gov/sigl/",
     "downloadURL": "https://github.com/USGS-WiM/SiGL/archive/master.zip",
     "disclaimerURL": "https://github.com/USGS-WiM/SiGL/blob/master/DISCLAIMER.md",
     "repositoryUrl": "https://github.com/USGS-WiM/SiGL",
