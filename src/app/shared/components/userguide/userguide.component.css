@@ -7,6 +7,9 @@
     padding: 10px 0 25px 0;
 }
 
+.user-guide-tab {
+    min-width: 80px;
+}
 .user-guide-item{
     display: block;
     box-sizing: border-box;

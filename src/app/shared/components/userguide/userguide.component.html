@@ -8,7 +8,8 @@
     <div class="modal-body">
         <ngb-tabset #t>
             <ngb-tab>
-                <ng-template ngbTabTitle><i class="fa fa-search" ></i> Search, Zoom</ng-template>
+                <ng-template ngbTabTitle>
+                    <i class="fa fa-search"></i> Search, Zoom</ng-template>
                 <ng-template ngbTabContent>
                     <div class="user-guide-header">Search and Zoom Capabilities</div>
                     <div class="user-guide-item">
@@ -17,15 +18,25 @@
                         </div>
                         <p>
                             <b>Navigating the Map</b>The scroll wheel on the mouse can be used to zoom, and in the upper left
-                            area of the tool are "+" and "-" icons to zoom in and out, respectively.</p>
+                            area of the tool are "+" and "-" icons to zoom in and out, respectively. The zoom level increases
+                            with each zoom in, and decreases with each zoom out. The scale bar resizes with each zoom.</p>
+                    </div>
+                    <div class="user-guide-item">
+                        <div>
+                            <img src="assets/userguide/zoom_shift.png" />
+                        </div>
+                        <p>
+                            <b>Define an Area to Zoom to</b>In most browsers, the user can hold down the shift key, then click
+                            and drag the map to define the area to zoom in.
+                        </p>
                     </div>
                     <div class="user-guide-item">
                         <div>
                             <img src="assets/userguide/homelocation.png" />
                         </div>
                         <p>
-                            <b>Home Location</b>The crosshair button will zoom the map to your location, and the home button
-                            will center the US on the map.</p>
+                            <b>Home Location</b>The home button will center the US on the map.
+                        </p>
                     </div>
                     <div class="user-guide-item">
                         <div>
@@ -34,15 +45,19 @@
                         <p>
                             <b>Opening a Site Information Box</b>To open up a site information box, zoom in and hover over a
                             site until the mouse hand is pointing at it, then click on the circle at its location on the
-                            map. This will open a popup window containing the site and project name.</p>
+                            map. This will open a pop-up window containing the site and project name. It also opens the Project
+                            List (on the left) and the Project Information pane (below the map).
+                        </p>
                     </div>
                     <div class="user-guide-item">
                         <div>
                             <img src="assets/userguide/mult_sites.png" />
                         </div>
                         <p>
-                            <b>Viewing Overlapping Sites</b>When two or more sites are overlapping, their spots on the map appear
-                            darker.</p>
+                            <b>Viewing Overlapping Sites</b>When two or more sites are overlapping, their circles on the map
+                            appear darker. Clicking on overlapping sites will display a warning in the site information pop-up
+                            box.
+                        </p>
                     </div>
                     <div class="user-guide-item">
                         <div>
@@ -65,7 +80,10 @@
                 </ng-template>
             </ngb-tab>
             <ngb-tab>
-                <ng-template ngbTabTitle><span class="user-guide-tab"><i class="fa fa-list"></i> Explanation</span></ng-template>
+                <ng-template ngbTabTitle>
+                    <span class="user-guide-tab">
+                        <i class="fa fa-list"></i> Explanation</span>
+                </ng-template>
                 <ng-template ngbTabContent>
                     <div class="user-guide-header">Explanation</div>
                     <div class="user-guide-item">
@@ -73,7 +91,7 @@
                             <img src="assets/userguide/explanation.png" />
                         </div>
                         <p>
-                            <b>Explanation display</b>The explanation box can be expanded or collapsed</p>
+                            <b>Explanation display</b>The Explanation box can be expanded or collapsed by clicking on the header.</p>
                     </div>
                     <div class="user-guide-item">
                         <div>
@@ -86,7 +104,10 @@
                 </ng-template>
             </ngb-tab>
             <ngb-tab>
-                <ng-template ngbTabTitle><span class="user-guide-tab"><i class="fa fa-map"></i> Map Selection Options</span></ng-template>
+                <ng-template ngbTabTitle>
+                    <span class="user-guide-tab">
+                        <i class="fa fa-map"></i> Map Selection Options</span>
+                </ng-template>
                 <ng-template ngbTabContent>
                     <div class="user-guide-header">Map Selection Options</div>
                     <div class="user-guide-item">
@@ -102,10 +123,73 @@
                             <img src="assets/userguide/layers_add.png" />
                         </div>
                         <p>
-                            <b>Changing or Adding Layers</b>The "Layers" sidebar allows a user to add or remove each individual
-                            layer.
+                            <b>Changing or Adding Layers</b>The "Layers" sidebar allows a user to add or remove layers of additional
+                            information.
                         </p>
                     </div>
+
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+                <ng-template ngbTabTitle>
+                    <span class="user-guide-tab">
+                        <i class="fa fa-map-marker"></i> Exploring SiGL Projects and Sites</span>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <div class="user-guide-header">Selection Capabilities and Site Information</div>
+                    <div class="user-guide-item">
+                        <div>
+                            <img src="assets/userguide/proj_list.png" />
+                        </div>
+                        <p>
+                            <b>The Project List</b>Upon initial load, the Project List contains all SiGL projects, even those
+                            without sites. The site count to the right of each project name displays how many sites each
+                            project contains.</p>
+                    </div>
+                    <div class="user-guide-item">
+                        <div style="display: inline">
+                            <img src="assets/userguide/proj_highlight.png" />
+                            <img src="assets/userguide/proj_highlight_map.png" />
+                        </div>
+                        <p>
+                            <b>Highlighting Project Sites</b>Clicking on a project title will apply an orange highlight to all
+                            the sites in that project, as well as open the Project Information pane.</p>
+                    </div>
+                    <div class="user-guide-item">
+                        <div>
+                            <img src="assets/userguide/proj_sites1.png" />
+                        </div>
+                        <p>
+                            <b>View Site List</b>Click the small triangle to the left of the project name to expand the site
+                            list.
+                        </p>
+                    </div>
+                    <div class="user-guide-item">
+                        <div>
+                            <img src="assets/userguide/proj_tabs.png" />
+                        </div>
+                        <p>
+                            <b>Explore Project Info</b>Use the Project Information pane to explore detailed information about
+                            a project and its sites. Drag the top of the box to expand, and move between the tabs to view
+                            different project and site information.</p>
+                    </div>
+                    <div class="user-guide-item">
+                        <div>
+                            <img src="assets/userguide/proj_site_toggle.png" />
+                        </div>
+                        <p>
+                            <b>View Site Parameters</b>From the "Site Information" tab, toggle between "Site Details" and Parameters
+                            Sampled" to view additional sampling information.</p>
+                    </div>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+                <ng-template ngbTabTitle>
+                    <span class="user-guide-tab">
+                        <i class="fa fa-filter"></i> Filtering SiGL Projects and Sites</span>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <div class="user-guide-header">Filtering SiGL Projects and Sites</div>
                     <div class="user-guide-item">
                         <div>
                             <img src="assets/userguide/filter_sidebar.png" />
@@ -127,71 +211,83 @@
                             <img src="assets/userguide/filter_projects.png" />
                         </div>
                         <p>
-                            <b>Filter Sites</b>Once the user has selected "Change filters" on the "Filters" sidebar, the "Filter
-                            Projects" portion allows the user to select criteria to filter the project selection.</p>
+                            <b>Filter Projects</b>
+                            Once the user has selected "Change filters" on the "Filters" sidebar, the "Filter Projects" portion allows the user to select
+                            criteria to filter the project selection. These filters may select projects without any sites.
+                        </p>
                     </div>
                     <div class="user-guide-item">
                         <div>
                             <img src="assets/userguide/proj_name_search.png" />
                         </div>
                         <p>
-                            <b>Search by Project Name</b>Alternatively, within the "Change filters" box, the user can filter
-                            sites by choosing the name of the project, which will clear any other selected filters.</p>
+                            <b>Search by Project Name</b>Alternatively, within the "Change filters" box, the user can select
+                            a single project (one with or without sites), which will clear any other selected filters.</p>
+                    </div>
+                    <div class="user-guide-item">
+                        <div>
+                            <img src="assets/userguide/filter_clear.png" />
+                        </div>
+                        <p>
+                            <b>Clear Selected Filters</b>To remove any selected filters, the user should re-select "Change
+                            filters", and click on the "Clear all" button in the bottom left.</p>
                     </div>
                 </ng-template>
             </ngb-tab>
             <ngb-tab>
-                <ng-template ngbTabTitle><span class="user-guide-tab"><i class="fa fa-map"></i> Data Display</span></ng-template>
+                <ng-template ngbTabTitle>
+                    <span class="user-guide-tab">
+                        <i class="fa fa-map-marker"></i> Exploring Filtered Projects and Sites</span>
+                </ng-template>
                 <ng-template ngbTabContent>
-                    <div class="user-guide-header">Selection Capabilities and Site Information</div>
+                    <div class="user-guide-header">Exploring Filtered Projects and Sites</div>
                     <div class="user-guide-item">
                         <div>
                             <img src="assets/userguide/project_list.PNG" />
                         </div>
                         <p>
-                            <b>Using the Project List</b>Once a filter has been applied, information will appear in the "Project
-                            List" sidebar. Here the user can sort the list, hide any projects containing no sites, or download
+                            <b>Using the Project List</b>Once a filter has been applied, the results will appear in the "Project
+                            List" sidebar. Here the user can sort the list, hide projects without any sites, or download
                             a ".csv" file containing the site information.</p>
-                    </div>
-                    <div class="user-guide-item">
-                        <div>
-                            <img src="assets/userguide/proj_sites_expanded.png" />
-                        </div>
-                        <p>
-                            <b>Viewing Project Sites</b>The list of project sites can be expanded or collapsed.</p>
                     </div>
                     <div class="user-guide-item">
                         <div>
                             <img src="assets/userguide/proj_sites_all.png" />
                         </div>
                         <p>
-                            <b>Showing All Sites Within a Project</b>The user can view the sites that meet the filtered criteria
-                            within a project (orange) by selecting "Filtered", or all sites within the project by selecting
-                            "All". Sites that do not meet the filtered criteria show up black.</p>
+                            <b>Site List Options</b>Below each project title is a full count of all the project's sites (left
+                            black toggle), and a count of the filtered sites (right orange toggle). The list of project sites
+                            can be expanded or collapsed by clicking on the small triangle to the left of the project title.
+                            The sites matching the filters appear in orange text, and those that don't match the filter
+                            appear in black text.</p>
                     </div>
                     <div class="user-guide-item">
                         <div>
-                            <img src="assets/userguide/proj_highlight.png" />
+                            <img src="assets/userguide/highlight_site.png" /> </div>
+                        <p>
+                            <b>Highlighting a Site in the Project List</b>Clicking on the name of a site in the Project List
+                            will highlight that site on the map. Sites within the project that do not match the filter show
+                            up as gray circles.</p>
+                    </div>
+                    <div class="user-guide-item">
+                        <div>
+                            <img src="assets/userguide/filtered_sites_highlight.png" />
+                            <img src="assets/userguide/highlight_filteredsites.png" />
                         </div>
                         <p>
-                            <b>Highlighting a Project in the Project List</b>The user can highlight all of the sites within
-                            a project by clicking on its name in the "Project List" sidebar. </p>
+                            <b>Highlighting Filtered Sites from the Project List</b>The user can highlight all project sites
+                            that match the filters on the map by selecting the orange "Filtered Sites" toggle. Clicking on
+                            the project name will toggle the highlights off and on. </p>
                     </div>
                     <div class="user-guide-item">
                         <div>
-                            <img src="assets/userguide/site_highlight.png" /> </div>
-                        <p>
-                            <b>Highlighting a Site in the Project List</b>Likewise, clicking on the name of a site will highlight
-                            that site on the map.</p>
-                    </div>
-                    <div class="user-guide-item">
-                        <div>
-                            <img src="assets/userguide/proj_tabs.png" />
+                            <img src="assets/userguide/all_sites_highlight.png" />
+                            <img src="assets/userguide/highlight_all.png" />
                         </div>
                         <p>
-                            <b>Viewing Project Info</b>When a project is selected, you can view the project information using
-                            the project tabs beneath the map. Drag the top of the box to expand, and move between the tabs
-                            to view different project and site information.</p>
+                            <b>Highlighting All Sites from the Project List</b>The user can highlight all project sites on the
+                            map by selecting the black "All Sites" toggle. Clicking on the project name will toggle the highlights
+                            off and on.</p>
                     </div>
                 </ng-template>
             </ngb-tab>

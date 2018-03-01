@@ -79,7 +79,7 @@
                     </div>
                 </ng-template>
             </ngb-tab>
-            <ngb-tab title="Data/Publications">
+            <ngb-tab title="Data &amp; Publications">
                 <ng-template ngbTabContent>
                     <div>
                         <div *ngIf="fullProj?.DataHosts.length > 0">
@@ -123,7 +123,7 @@
                     </div>
                 </ng-template>
             </ngb-tab>
-            <ngb-tab title="Contact Info.">
+            <ngb-tab title="Contacts">
                 <ng-template ngbTabContent>
                     <div *ngIf="fullProj?.Contacts.length > 0">
                         <span class="dataHeader">Project Contacts</span>
@@ -145,7 +145,7 @@
                     </div>
                 </ng-template>
             </ngb-tab>
-            <ngb-tab title="Project Site" id="site">
+            <ngb-tab title="Site Information" id="site">
                 <ng-template ngbTabContent>
                      <div *ngIf="fullSiteFlag">
                         <div>
@@ -156,7 +156,7 @@
                      </div>
                      <div *ngIf="!fullSiteFlag">
                         <div>
-                            <span >Choose site from sidebar to see site information</span> 
+                            <span >Select a site from the Project List sidebar or on the map to view detailed site information</span> 
                         </div>
                         
                      </div>

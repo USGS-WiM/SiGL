@@ -86,8 +86,8 @@
     display: inline-block;
 }
 #epaLegend {
-    background:rgba(255,165,0,0.2);
-    border:1px solid darkorange;
+    background:rgba(0, 0, 255, 0.2);
+    border:1px solid blue;
     margin-bottom:5px;
     width: 13px;
     height: 13px;
@@ -96,8 +96,8 @@
     float: left;
 }
 #cededLegend {
-    background:rgba(0,128,0,0.2);
-    border:1px solid green;
+    background:rgba(244,223,168,0.2);
+    border:1px solid #f4dfa8;
     margin-bottom:5px;
     width: 13px;
     height: 13px;
@@ -106,8 +106,8 @@
     float: left;
 }
 #tribalLegend {
-    background:rgba(244,223,168,0.2);
-    border:1px solid #f4dfa8;
+    background:rgba(0,128,0,0.2);
+    border:1px solid green;
     margin-bottom:5px;
     width: 13px;
     height: 13px;

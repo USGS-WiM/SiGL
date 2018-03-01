@@ -31,6 +31,9 @@ button:hover{
   border-top: 3px solid transparent;
   padding-top: 11px !important;
   color: #A9A9A9;
+  min-width: 140px;
+  max-width: 200px;
+  text-align: center;
 }
 button{
   border: none;
@@ -51,6 +54,14 @@ button:hover{
 }
 .actionBtn:hover{
   color: white;
+}
+
+#clearButton {
+  min-width: 25%;
+}
+
+#closeButton {
+  max-width: 75%;
 }
 /*
 HEADER
@@ -154,6 +165,10 @@ MODAL
 MODAL
 MODAL
 */
+.modal-content {
+  min-width: 120%;
+  position: absolute;
+}
 
 .modal-body {
   max-height: 700px;

@@ -67,3 +67,10 @@ select{
     border-left: 4px solid transparent;*/
     background-color:#fff;
 }
+
+#changeFilters {
+    max-width: 80%;
+    position: relative;
+    left: 30px;  
+    top: 5px;
+}
