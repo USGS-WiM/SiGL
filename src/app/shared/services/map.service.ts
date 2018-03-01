@@ -63,7 +63,7 @@ export class MapService {
             areas: esri.featureLayer({
                 url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/1",
                 style: function(){
-                    return {color: 'DarkOrange', weight: 0.5 };
+                    return {color: 'blue', weight: 0.5 };
                 },
                 pane: 'areas'
             }),
@@ -74,7 +74,7 @@ export class MapService {
                 pane: "ceded"
             }),
             tribal: esri.featureLayer({
-                url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/5",
+                url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/4",
                 style: function(){
                     return {color: '#80002a', weight: 0.5 };
                 },
@@ -83,11 +83,12 @@ export class MapService {
             basins: esri.featureLayer({
                 url: "https://gis.wim.usgs.gov/arcgis/rest/services/SIGL/SIGLMapper/MapServer/3",
                 style: function (feature) {
+                    
                     if (feature.properties.MDA2 == "LS") {
                         return { color: 'DarkCyan', weight: 0 };
                     }
                     if (feature.properties.MDA2 == "LM") {
-                        return { color: 'DarkKhaki', weight: 0 };
+                        return { color: '#7b7737', weight: 0 };
                     }
                     if (feature.properties.MDA2 == "LH") {
                         return { color: 'IndianRed', weight: 0 };
@@ -97,7 +98,7 @@ export class MapService {
                     }
                     if (feature.properties.MDA2 == "LO") {
                         return { color: 'MediumPurple', weight: 0 };
-                    }
+                    };
                 },
                 pane: 'basins'
             })

@@ -9,7 +9,7 @@
             </ngb-panel>
             <!-- Layers -->
             <ngb-panel title="Layers">
-                <ng-template ngbPanelContent>
+                <ng-template ngbPanelContent style='filter: brightness(120%)'>
                         <button class="layersBtn"><input [(ngModel)]="areasCheck" name="areasCheck" (change)="toggleLayer('areas')" type="checkbox"> EPA Areas of Concern</button>
                         <button class="layersBtn"><input [(ngModel)]="cededCheck" name="cededCheck" (change)="toggleLayer('ceded')" type="checkbox"> Ceded Tribal Boundaries</button>
                         <button class="layersBtn"><input [(ngModel)]="tribalCheck" name="tribalCheck" (change)="toggleLayer('tribal')" type="checkbox"> Tribal Reservation Boundaries</button>
@@ -21,7 +21,7 @@
             <!-- Filters -->
             <ngb-panel title="Filters" id="filter">
                 <ng-template ngbPanelContent>
-                    <button type="button" class="actionBtn" (click)="showFilterModal()">Change filters</button>
+                    <button id="changeFilters" type="button" class="actionBtn" (click)="showFilterModal()">Change filters</button>
                     <br/>
                     <div style="font-size:14px; font-weight: bolder; width: 100%; text-align:center; opacity:0.35; padding: 10px 0 0 0;" *ngIf="filterCount == 0">Showing all projects with sites.</div>
 
@@ -309,7 +309,7 @@
                                     <a [style.font-weight]="selectedProjectId == proj.project_id && !unHighlightProjName ? 'bold': '400'" (click)="showProjectDetails(proj, false)">{{proj.name}}</a>
                                 </span>                  
                                 <div class="pull-right"> <!--*ngIf="filteredProjects.length > 1">-->
-                                    <span [style.background-color]="proj.projectSites.length > 0 ? 'blue': '#868e96'" class="badge badge-secondary">Site Count: {{proj.projectSites.length}}</span>
+                                    <span [style.background-color]="proj.projectSites.length > 0 ? '#0F8AFF': '#868e96'" class="badge badge-secondary">Site Count: {{proj.projectSites.length}}</span>
                                 </div>      
                             </div>
                             <div id="collapseExample1" [ngbCollapse]="proj.isCollapsed">
