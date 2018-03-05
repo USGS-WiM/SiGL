@@ -22,8 +22,9 @@
             <ngb-panel title="Filters" id="filter">
                 <ng-template ngbPanelContent>
                     <button id="changeFilters" type="button" class="actionBtn" (click)="showFilterModal()">Change filters</button>
+                    <!-- <button id="clearFilters" type="button" (click)="Clear()">Clear All</button>-->
                     <br/>
-                    <div style="font-size:14px; font-weight: bolder; width: 100%; text-align:center; opacity:0.35; padding: 10px 0 0 0;" *ngIf="filterCount == 0">Showing all projects with sites.</div>
+                    <div style="font-size:14px; font-weight: bolder; width: 100%; text-align:center; opacity:0.35; padding: 10px;" *ngIf="filterCount == 0">Showing all projects with sites.</div>
 
                     <div style="font-size:large" *ngIf="projectFilters">
                         <b>Project filters applied:</b>
@@ -97,7 +98,7 @@
                         </p>
                     </div>
 
-                    <div style="font-size:large" *ngIf="siteFilters">
+                    <div style="font-size:large; padding: 10px" *ngIf="siteFilters">
                         <b>Site filters applied:</b>
                     </div>
                     <!-- Parameters -->
@@ -105,10 +106,10 @@
                         <i *ngIf="chosenFilters?.PARAMETERS.length > 0" class="pull-left down4" [ngClass]="ParamCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'"
                             aria-hidden="true" (click)="ParamCollapsed=!ParamCollapsed"></i>
                         <span *ngIf="chosenFilters.PARAMETERS.length > 0">
-                            <b>Parameter</b>
-                            <span *ngIf="chosenFilters.PARAMETERS.length > 1">
+                            <b>Parameter(s)</b>
+                            <!--<span *ngIf="chosenFilters.PARAMETERS.length > 1">
                                 <b>s</b>
-                            </span>
+                            </span>-->
                         </span>
                         <p class="contained" [hidden]="ParamCollapsed">
                             <span *ngFor="let p of chosenFilters.PARAMETERS;">{{p.name}}
@@ -202,14 +203,15 @@
                 <ng-template ngbPanelTitle>
                     <span>Project List</span>
                     <div class="pull-right" *ngIf="!NoMatches">
-                        <span class="badge badge-secondary">Count: {{filteredProjects.length || allProjects.length}}</span>
+                        <span [style.background-color]="'#868e96'" class="badge badge-secondary">Count: {{filteredProjects.length || allProjects.length}}</span>
+                        <!--filteredProjects.length > 0 || allProjects.length > 0 ? '#0F8AFF'-->
                     </div>
                 </ng-template>
                 <ng-template ngbPanelContent>
                     <sideloader-div></sideloader-div>
                     <!--If filtered Projects have been requested (from dropdown selection)-->
                     <div *ngIf="filteredProjects?.length > 0">
-                        <div> Click on a project name or site to highlight it on the map.</div>
+                        <div style='padding: 15px'> Click on a project name or site to highlight it on the map.</div>
                         <div class="row down10">
                             <label class="col-md-3">Sort by: </label>
                             <div class="col-md-8">
@@ -232,7 +234,7 @@
                         </div>
 
                         <hr />
-                        <div *ngFor="let proj of filteredProjects;let i = index;">
+                        <div *ngFor="let proj of filteredProjects;let i = index;" class='projDiv'>
                             <div [style.background]="selectedProjectId == proj.project_id && !unHighlightProjName ? '#eaeaea': 'none'">
                                 <a *ngIf="proj.projectSites.length > 0" (click)="proj.isCollapsed = !proj.isCollapsed" [attr.aria-expanded]="!proj.isCollapsed"
                                     aria-controls="collapseExample">
@@ -246,10 +248,10 @@
                                     <form [formGroup]="siteCountForm">
                                         <div class="btn-group" ngbRadioGroup name="radioBasic" formControlName="siteToggle">
                                             <label ngbButtonLabel class="btn-primary siteFormLabel all">
-                                                <input ngbButton type="radio" (click)="toggleSiteList('all', proj.project_id)" [value]="'all'">All ({{proj.projectSites.length}})
+                                                <input ngbButton type="radio" (click)="toggleSiteList('all', proj.project_id)" [value]="'all'">All sites ({{proj.projectSites.length}})
                                             </label>
                                             <label ngbButtonLabel class="btn-primary siteFormLabel filtered">
-                                                <input ngbButton type="radio" (click)="toggleSiteList('filtered', proj.project_id)" [value]="'filtered'"> Filtered ({{proj.filteredSiteCount}})
+                                                <input ngbButton type="radio" (click)="toggleSiteList('filtered', proj.project_id)" [value]="'filtered'"> Filtered sites ({{proj.filteredSiteCount}})
                                             </label>
                                         </div>
                                     </form>
@@ -259,12 +261,12 @@
                                 <div *ngFor="let s of proj.projectSites" class="marginLeft">
                                     <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
                                         <div appHighlight [id]="'site_'+s.site_id" *ngIf="s.isDisplayed">
-                                            <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
+                                            <a [style.color]="s.isDisplayed ? '#ff9e2a' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
                                         </div>
                                     </div>
                                     <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
                                         <div appHighlight [id]="'site_'+s.site_id" *ngIf="s.isTempDisplayed">
-                                            <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
+                                            <a [style.color]="s.isDisplayed ? '#ff9e2a' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -277,7 +279,7 @@
                     
                     <!--If no filtered Projects have been requested ( INITIAL LOAD WHEN ALL SITES ARE SHOWING ON THE MAP ) -->
                     <div *ngIf="showAllProjects">
-                        <div> Click on a project name or site to highlight it on the map.</div>
+                        <div style='padding: 15px'> Click on a project name or site to highlight it on the map.</div>
                         <div class="row down10">
                             <label class="col-md-3">Sort by: </label>
                             <div class="col-md-8">
@@ -299,7 +301,7 @@
                                     <i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download&nbsp;</a> current results</label>
                         </div>
                         <hr />
-                        <div *ngFor="let proj of allProjects;let i = index;">
+                        <div *ngFor="let proj of allProjects;let i = index;" class='projDiv'>
                             <div [style.background]="selectedProjectId == proj.project_id && !unHighlightProjName ? '#eaeaea': 'none'">
                                 <a *ngIf="proj.projectSites.length > 0" (click)="proj.isCollapsed = !proj.isCollapsed" [attr.aria-expanded]="!proj.isCollapsed"
                                     aria-controls="collapseExample1">

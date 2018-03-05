@@ -25,18 +25,22 @@ a {
     cursor: pointer;
 }
 .active{
-    box-shadow: 0 0 0 0.2rem rgba(249, 188, 12, 0.5);
+    box-shadow: 2px 0px 15px 1px #0F8AFF;
 }
 .siteFormLabel {
-    font-size:x-small!important;
-    padding: 0.1rem!important;
-    border-color:black!important;
+    font-size: 12px !important;
+    padding: 0.2rem!important;
+    border: none;
+    text-align: center;
+    padding-left: 0.6rem!important;
+    padding-right: 0.6rem!important;
+    /*border-color:black!important;*/
 }
 .all {
-    background-color:gray;
+    background-color:#58595b !important;
 }
 .filtered {
-    background-color:orange;
+    background-color:#ff9e2a !important;
 }
 .contained {
     padding-left: 10px;
@@ -69,8 +73,22 @@ select{
 }
 
 #changeFilters {
-    max-width: 80%;
+    /*max-width: 70%;
+    left: 10px;*/
     position: relative;
-    left: 30px;  
     top: 5px;
+    left: 35px;
+    max-width: 80%;
+}
+
+/*#clearFilters {
+    max-width: 30%;
+    position: relative;
+    left: 15px;
+    top: 5px;
+}*/
+
+.projDiv {
+    padding-left: 15px;
+    padding-right: 15px;
 }

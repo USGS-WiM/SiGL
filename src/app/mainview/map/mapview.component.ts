@@ -217,8 +217,8 @@ export class MapviewComponent implements OnInit {
                             }
                             // if present more than 1 time, it's overlapping
                             if (presenceCount > 1) {
-                                popupContent = '<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name + '<br/>' + // container.innerHTML;
-                                    'Overlapping sites here. Zoom in to zoom level 14 to see all.';
+                                popupContent = '<div style="color: red"> WARNING: Overlapping sites here. Zoom in to Level 12 to access individual sites. </div>' + '<br/>' +  
+                                '<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name; // container.innerHTML;
                             } else {
                                 popupContent = "<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name;
                             }
@@ -287,8 +287,8 @@ export class MapviewComponent implements OnInit {
                             }
                             // if present more than 1 time, it's overlapping
                             if (presenceCount > 1) {
-                                popupContent = '<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name + '<br/>' + // container.innerHTML;
-                                    'Overlapping sites here. Zoom in to zoom level 14 to see all.';
+                                popupContent = '<div style="color: red"> WARNING: Overlapping sites here. Zoom in to Level 12 to access individual sites. </div>' + '<br/>' + 
+                                '<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name // container.innerHTML;
                             } else {
                                 popupContent = "<b>Project Name:</b> " + feature.properties.project_name + "</br><b>Site Name:</b> " + feature.properties.name;
                             }
@@ -384,7 +384,7 @@ export class MapviewComponent implements OnInit {
 
         // only want clustering to happen when zoomed in, otherwise just show all the points
         this.map.on('zoomend', (e) => {
-            if (e.target._zoom >= 14) {
+            if (e.target._zoom >= 12) {
                 this.clusterGeoJsonMarkers.enableClustering();
                 if (this.clusterTempJsonMarkers) this.clusterTempJsonMarkers.enableClustering();
             } else {
