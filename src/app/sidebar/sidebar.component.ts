@@ -470,8 +470,8 @@ export class SidebarComponent implements OnInit {
 		let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
 		let str = '';
 		let row = "";
-		if (this.showAllProjects) row = "Project Name, project_id, GetFullProject, projectSites__site_id,projectSites__name, projectSites__latitude, projectSites__longitude";
-		else row = "Project Name, project_id, GetFullProject, projectSites__site_id,projectSites__name,projectSites__filteredResult, projectSites__latitude, projectSites__longitude";
+		if (this.showAllProjects) row = "Project Name, Project ID, Full Project Information, Site ID, Site name, Latitude, Longitude, Country";
+		else row = "Project Name, Project ID, Full Project Information, Site ID, Site name, Filtered Result, Latitude, Longitude, Country";
 		// append Label row with line break
 		str += row + '\r\n';
 
@@ -485,23 +485,23 @@ export class SidebarComponent implements OnInit {
 						if (s == 0) {
 							// is this from AllProjects?
 							if (this.showAllProjects) {
-								line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+								line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
 							} else {
 								//is this a filtered site?
 								if (array[i][index][s].isDisplayed)
-									line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+									line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
 								else
-									line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+									line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
 							}
 						} else {
 							// is this from AllProjects?
 							if (this.showAllProjects) {
-								line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+								line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
 							} else {
 								if (array[i][index][s].isDisplayed)
-									line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+									line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
 								else
-									line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+									line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
 							}
 						}
 					}
@@ -521,7 +521,7 @@ export class SidebarComponent implements OnInit {
 		let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
 		let str = '';
 		let row = "";
-		row = "Project Name,project_id,GetFullProject,projectSites__site_id,projectSites__name,projectSites__latitude,projectSites__longitude"
+		row = "Project Name,Project ID,Full Project Information, Site ID,Site name, Latitude, Longitude, Country"
 		// append Label row with line break
 		str += row + '\r\n';
 
@@ -533,9 +533,9 @@ export class SidebarComponent implements OnInit {
 					//for each site in this project, make a new line
 					for (let s = 0; s < array[i][index].length; s++) {
 						if (s == 0) {
-							line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+							line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
 						} else {
-							line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + '\r\n';
+							line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
 						}
 					}
 				} else {

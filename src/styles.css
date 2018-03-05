@@ -58,6 +58,8 @@ button:hover{
 
 #clearButton {
   min-width: 25%;
+  color: white;
+  background-color:rgb(134, 142, 150);
 }
 
 #closeButton {
@@ -292,6 +294,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
 
 #projList .btn-group{
   margin-top: 10px;
+  padding-left: 3px;
 }
 
 #filterContent .row{

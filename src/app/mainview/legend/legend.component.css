@@ -85,9 +85,8 @@
     border-radius: 50%;
     display: inline-block;
 }
-#epaLegend {
-    background:rgba(0, 0, 255, 0.2);
-    border:1px solid blue;
+
+.legendLayers {
     margin-bottom:5px;
     width: 13px;
     height: 13px;
@@ -95,23 +94,40 @@
     margin-right: 8px;    
     float: left;
 }
+#epaLegend {
+    background:rgba(0, 0, 255, 0.2);
+    border:1px solid blue;
+}
 #cededLegend {
     
     border:1.5px solid rgba(147,54,54,0.8);
-    margin-bottom:5px;
-    width: 13px;
-    height: 13px;
-    display: block;
-    margin-right: 8px;
-    float: left;
 }
 #tribalLegend {
-    background:rgba(0,128,0,0.2);
-    border:1px solid green;
-    margin-bottom:5px;
-    width: 13px;
-    height: 13px;
-    display: block;
-    margin-right: 8px;
-    float: left;
+    background:rgba(128,0,42,0.2);
+    border:1px solid #80002a;
+}
+
+#superiorLegend {
+    background-color: rgba(39, 118, 124, 255);
+    opacity: 0.3;
+}
+#michiganLegend {
+    /*background-color: #7b7737;*/
+    background-color: rgba(124, 112, 106, 255);
+    opacity: 0.3;
+}
+#huronLegend {
+    /*background-color: IndianRed;*/
+    background-color: rgba(191, 48, 82, 255);
+    opacity: 0.3;
+}
+#erieLegend {
+    /*background-color: Olive;*/
+    background-color: rgba(135, 135, 38, 255);
+    opacity: 0.3;
+}
+#ontarioLegend {
+    /*background-color: MediumPurple;*/
+    background-color: rgba(129, 89, 155, 255);
+    opacity: 0.3;
 }
