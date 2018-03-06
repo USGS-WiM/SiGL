@@ -169,7 +169,7 @@ MODAL
 */
 .modal-content {
   min-width: 120%;
-  position: absolute;
+  /*position: absolute;*/
 }
 
 .modal-body {
