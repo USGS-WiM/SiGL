@@ -216,7 +216,7 @@ export class MapviewComponent implements OnInit {
                                 });
                             }
                             // if present more than 1 time, it's overlapping
-                            if (presenceCount > 1) {
+                            if (presenceCount > 1 && e.target._zoom < 12) {
                                 popupContent = '<div style="color: red"> WARNING: Overlapping sites here. Zoom in to Level 12 to access individual sites. </div>' + '<br/>' +  
                                 '<b>Project Name: </b> ' + feature.properties.project_name + '<br /><b>Site Name:</b> ' + feature.properties.name; // container.innerHTML;
                             } else {

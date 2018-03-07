@@ -15,6 +15,7 @@ import { PageScrollInstance, PageScrollService } from 'ng2-page-scroll';
 
 import { BasemapsComponent } from "../mainview/basemaps/basemaps.component";
 import { LayersComponent } from "../mainview/layers/layers.component";
+import { FilterComponent } from "../shared/components/filter/filter.component";
 
 import { ModalService } from "../shared/services/modal.service";
 import { IchosenFilters } from "../shared/interfaces/chosenFilters.interface";
@@ -36,6 +37,7 @@ declare let gtag: Function;
 export class SidebarComponent implements OnInit {
 	@ViewChild('acc') accordion;
 	@ViewChild('sidebarContainer') private sidebarContainer: ElementRef;
+	@ViewChild('FilterComponent') filterComp;
 	public chosenFilters: IchosenFilters;
 	public filterCount: number;
 	public siteFilters: boolean;
@@ -276,6 +278,33 @@ export class SidebarComponent implements OnInit {
 		this.unHighlightProjName = true;
 		this._mapService.setSiteClicked({ "site_id": site.site_id, "project_id": site.project_id, "fromMap": false });
 		this._siglService.setFullSite(site.site_id.toString());
+	}
+
+	public ClearFilt() {
+		//below works to clear map and sidebar/project list
+		gtag('event', 'click', {'event_category': 'Filter','event_label': 'filterCleared'});
+		this.chosenFilters = {};
+		this._mapService.updateFilteredSites(this.chosenFilters); //updates map geojson
+		this._siglService.setFilteredSites(this.chosenFilters);
+			//below, trying to import Clear()
+		//this.filterComp.Clear();
+			//below, copying inside of Clear() function
+		/*this.filterComp.parameterSelected = [];
+        this.filterComp.projDurationSelected = [];
+        this.filterComp.projStatusSelected = [];
+        this.filterComp.resourceSelected = [];
+        this.filterComp.mediaSelected = [];
+        this.filterComp.lakeSelected = [];
+        this.filterComp.stateSelected = [];
+        this.filterComp.monitoringEffortSelected = [];
+        this.filterComp.orgSelected = undefined;
+        this.filterComp.objectiveSelected = [];
+        this.filterComp.projectSelected = undefined;
+        //clear sidebar
+        this.filterComp.chosenFiltersObj = {};
+        // let the map and sidebar know everything was cleared
+        this._mapService.updateFilteredSites(this.chosenFilters); //updates map geojson
+		this._siglService.setFilteredSites(this.chosenFilters);*/
 	}
 
 	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'
