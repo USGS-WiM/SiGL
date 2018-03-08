@@ -250,13 +250,13 @@ export class MapviewComponent implements OnInit {
                 this.clusterGeoJsonMarkers.disableClustering();
             }
         });
-        //temporary sites when user clicks toggle between show all and only filteres sites from sidebar
+        //temporary sites when user clicks toggle between show all and only filtered sites from sidebar
         this._mapService.tempSites.subscribe((tempGeoj: any) => {
             if (tempGeoj !== "") {
                 if (this.clusterTempJsonMarkers) this.clusterTempJsonMarkers.remove();
                 if (this.selectedProjGeoJsonLayer) this.selectedProjGeoJsonLayer.remove();
                 if (this.tempGeoJsonLayer) this.tempGeoJsonLayer.remove();
-
+                
                 this.tempGeoj = tempGeoj; //use this to filter later
                 this.tempGeoJsonLayer = L.geoJSON(tempGeoj, {
                     pointToLayer: ((feature, latlng) => {
