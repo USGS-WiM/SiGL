@@ -119,7 +119,7 @@ export class MapviewComponent implements OnInit {
                 //remove highlighting
                 if (this.tempGeoJsonLayer) {
                     this.tempGeoJsonLayer.eachLayer((layer: any) => {
-                        layer.setStyle(this.setMarker(layer.feature));
+                        layer.setStyle(this.tempSitesIcon);
                     });
                 }
                 if (this.geoJsonLayer) {
