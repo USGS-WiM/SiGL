@@ -517,108 +517,118 @@ export class SidebarComponent implements OnInit {
 				if (filt.DURATIONS) {
 					str += "Project Duration: "
 					for (let s = 0; s < this.chosenFilters.DURATIONS.length; s++)  {
-						str += this.chosenFilters.PARAMETERS[s].name + "|"
+						str += this.chosenFilters.PARAMETERS[s].name + "; "
 					};
 				}
 				if (filt.STATUSES) {
 					str += "Project Status: "
 					for (let s = 0; s < this.chosenFilters.STATUSES.length; s++)  {
-						str += this.chosenFilters.STATUSES[s].name + "|"
+						str += this.chosenFilters.STATUSES[s].name + "; "
 					};
 				}
 				if (filt.MONITORS) {
 					str += "Monitoring effort or coordination: "
 					for (let s = 0; s < this.chosenFilters.MONITORS.length; s++)  {
-						str += this.chosenFilters.MONITORS[s].name + "|"
+						str += this.chosenFilters.MONITORS[s].name + "; "
 					};
 				}
 				if (filt.OBJS) {
 					str += "Project Objective: "
 					for (let s = 0; s < this.chosenFilters.OBJS.length; s++)  {
-						str += this.chosenFilters.OBJS[s].name + "|"
+						str += this.chosenFilters.OBJS[s].name + "; "
 					};
 				}
 				if (filt.ORG) {
-					str += "Organization(s): " + filt.ORG + "|"
+					str += "Organization(s): " + filt.ORG + "; "
 				}
 				if (filt.ProjectName) {
-					str += "Project Name: " + filt.ProjectName + "|"
+					str += "Project Name: " + filt.ProjectName + "; "
 				}
 			} else {
-				str += "none "
+				str += "none; "
 			}
 			str += "Site Filters: "
 			if (filt.PARAMETERS || filt.RESOURCES || filt.MEDIA || filt.LAKES || filt.STATES) {
 				if (filt.PARAMETERS) {
 					str += "Parameters: "
 					for (let s = 0; s < this.chosenFilters.PARAMETERS.length; s++)  {
-						str += this.chosenFilters.PARAMETERS[s].name + "|"
+						str += this.chosenFilters.PARAMETERS[s].name + "; "
 					};
 				}
 				if (filt.RESOURCES) {
 					str += "Resource Component: "
 					for (let s = 0; s < this.chosenFilters.RESOURCES.length; s++)  {
-						str += this.chosenFilters.RESOURCES[s].name + "|"
+						str += this.chosenFilters.RESOURCES[s].name + "; "
 					};
 				}
 				if (filt.MEDIA) {
 					str += "Media: "
 					for (let s = 0; s < this.chosenFilters.MEDIA.length; s++)  {
-						str += this.chosenFilters.MEDIA[s].name + "|"
+						str += this.chosenFilters.MEDIA[s].name + "; "
 					};
 				}
 				if (filt.LAKES) {
 					str += "Great Lake: "
 					for (let s = 0; s < this.chosenFilters.LAKES.length; s++)  {
-						str += this.chosenFilters.LAKES[s].name + "|"
+						str += this.chosenFilters.LAKES[s].name + "; "
 					};
 				}
 				if (filt.STATES) {
 					str += "State: "
 					for (let s = 0; s < this.chosenFilters.STATES.length; s++)  {
-						str += this.chosenFilters.STATES[s].name + "|"
+						str += this.chosenFilters.STATES[s].name + "; "
 					};
 				}
 			} else {
-				str += "none";
+				str += "none; ";
 			}
 		}else {
 			str += "none";
 		}
 		str += '\r\n' + '"#If you applied any filters, this document only includes the sites that matched that filter. A project may contain additional sites that did not meet your criteria."' + '\r\n' + '\r\n'
-		if (this.showAllProjects) row = "Project Name, Project ID, Full Project Information, Site ID, Site name, Latitude, Longitude, Country";
-		else row = "Project Name, Project ID, Full Project Information, Site ID, Site name, Filtered Result, Latitude, Longitude, Country, State, Lake";
+		if (this.showAllProjects) row = "Project Name, Project ID, Organization(s), Full Project Information, Site ID, Site name, Latitude, Longitude, Country, State/Province, Lake";
+		else row = "Project Name, Project ID, Organization(s), Full Project Information, Site ID, Site name, Filtered Result, Latitude, Longitude, Country, State/Province, Lake";
 		// append Label row with line break
 		str += row + '\r\n';
 
 		for (let i = 0; i < array.length; i++) {
 			let line = '';
-			//let orgNames = array[i].organizations.organizationName;
 			for (let index in array[i]) {
 				if (line != '') line += ','
 				if (Array.isArray(array[i][index])) {
 					//for each site in this project, make a new line
-					for (let s = 0; s < array[i][index].length; s++) {
-						if (s == 0) {
-							// is this from AllProjects?
-							if (this.showAllProjects) {
-								line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
-							} else {
-								//is this a filtered site?
-								if (array[i][index][s].isDisplayed)
-									line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
-								else
-									line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
+					//trying to get through the Organizations array and the project sites array...
+					if (array[i]["Organizations"] == array[i][index]) {
+						if (array[i][index].length > 1) {
+							for (let org = 0; org < array[i][index].length; org++) {
+								line += array[i][index][org] + "; "
 							}
 						} else {
-							// is this from AllProjects?
-							if (this.showAllProjects) {
-								line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
+							line += array[i][index][0]
+						}
+					} else if (array[i][index] == array[i]["projectSites"]) {
+						for (let s = 0; s < array[i][index].length; s++) {
+							if (s == 0) {
+								// is this from AllProjects?
+								if (this.showAllProjects) {
+									line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
+								} else {
+									//is this a filtered site?
+									if (array[i][index][s].isDisplayed)
+										line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
+									else
+										line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
+								}
 							} else {
-								if (array[i][index][s].isDisplayed)
-									line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
-								else
-									line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
+								// is this from AllProjects?
+								if (this.showAllProjects) {
+									line += ",,,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
+								} else {
+									if (array[i][index][s].isDisplayed)
+										line += ",,,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
+									else
+										line += ",,,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
+								}
 							}
 						}
 					}
@@ -638,8 +648,89 @@ export class SidebarComponent implements OnInit {
 		let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
 		let str = '';
 		let row = "";
-		str = "#U.S. Geological Survey" + '\r\n' + "#Science in the Great Lakes (SiGL) Mapper" + '\r\n' + "#https://sigl.wim.usgs.gov/sigl/" + '\r\n' + '\r\n' + '"#SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes, universities, and nonprofit organizations. The USGS assumes no responsibility for the accuracy or completeness of information provided by other entities."' + '\r\n' + '\r\n' + "#Filters applied: " + this.chosenFilters + '\r\n' + '"#If you applied any filters, this document only includes the sites that matched that filter. A project may contain additional sites that did not meet your criteria."' + '\r\n' + '\r\n'
-		row = "Project Name,Project ID, Full Project Information, Site ID,Site name, Latitude, Longitude, Country, State, Lake"
+		var currentDate = Date.now();
+		var datePipe = new DatePipe("en-US");
+		var filteredDate = datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm:ss Z');
+		var strDate = filteredDate.toString();
+		str = "#U.S. Geological Survey" + '\r\n' + "#Science in the Great Lakes (SiGL) Mapper"  + '\r\n' + "#https://sigl.wim.usgs.gov/sigl/" + '\r\n' + "#Retrieved: " + strDate + '\r\n' + '\r\n' + '"#SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes, universities, and nonprofit organizations. The USGS assumes no responsibility for the accuracy or completeness of information provided by other entities."' + '\r\n' + '\r\n' + "#Filters applied: " 
+		//adding in applied filters in text heading
+		if (this.chosenFilters) {	
+			var filt = this.chosenFilters;
+			str += "Project Filters: "
+			if (filt.DURATIONS || filt.STATUSES || filt.MONITORS || filt.OBJS || filt.ORG || filt.ProjectName) {
+				if (filt.DURATIONS) {
+					str += "Project Duration: "
+					for (let s = 0; s < this.chosenFilters.DURATIONS.length; s++)  {
+						str += this.chosenFilters.PARAMETERS[s].name + "; "
+					};
+				}
+				if (filt.STATUSES) {
+					str += "Project Status: "
+					for (let s = 0; s < this.chosenFilters.STATUSES.length; s++)  {
+						str += this.chosenFilters.STATUSES[s].name + "; "
+					};
+				}
+				if (filt.MONITORS) {
+					str += "Monitoring effort or coordination: "
+					for (let s = 0; s < this.chosenFilters.MONITORS.length; s++)  {
+						str += this.chosenFilters.MONITORS[s].name + "; "
+					};
+				}
+				if (filt.OBJS) {
+					str += "Project Objective: "
+					for (let s = 0; s < this.chosenFilters.OBJS.length; s++)  {
+						str += this.chosenFilters.OBJS[s].name + "; "
+					};
+				}
+				if (filt.ORG) {
+					str += "Organization(s): " + filt.ORG + "; "
+				}
+				if (filt.ProjectName) {
+					str += "Project Name: " + filt.ProjectName + "; "
+				}
+			} else {
+				str += "none; "
+			}
+			str += "Site Filters: "
+			if (filt.PARAMETERS || filt.RESOURCES || filt.MEDIA || filt.LAKES || filt.STATES) {
+				if (filt.PARAMETERS) {
+					str += "Parameters: "
+					for (let s = 0; s < this.chosenFilters.PARAMETERS.length; s++)  {
+						str += this.chosenFilters.PARAMETERS[s].name + "; "
+					};
+				}
+				if (filt.RESOURCES) {
+					str += "Resource Component: "
+					for (let s = 0; s < this.chosenFilters.RESOURCES.length; s++)  {
+						str += this.chosenFilters.RESOURCES[s].name + "; "
+					};
+				}
+				if (filt.MEDIA) {
+					str += "Media: "
+					for (let s = 0; s < this.chosenFilters.MEDIA.length; s++)  {
+						str += this.chosenFilters.MEDIA[s].name + "; "
+					};
+				}
+				if (filt.LAKES) {
+					str += "Great Lake: "
+					for (let s = 0; s < this.chosenFilters.LAKES.length; s++)  {
+						str += this.chosenFilters.LAKES[s].name + "; "
+					};
+				}
+				if (filt.STATES) {
+					str += "State: "
+					for (let s = 0; s < this.chosenFilters.STATES.length; s++)  {
+						str += this.chosenFilters.STATES[s].name + "; "
+					};
+				}
+			} else {
+				str += "none; ";
+			}
+		}else {
+			str += "none";
+		}
+		str += '\r\n' + '"#If you applied any filters, this document only includes the sites that matched that filter. A project may contain additional sites that did not meet your criteria."' + '\r\n' + '\r\n'
+		row = "Project Name,Project ID, Organization(s), Full Project Information, Site ID,Site name, Latitude, Longitude, Country, State/Province, Lake"
 		// append Label row with line break
 		str += row + '\r\n';
 
@@ -651,9 +742,9 @@ export class SidebarComponent implements OnInit {
 					//for each site in this project, make a new line
 					for (let s = 0; s < array[i][index].length; s++) {
 						if (s == 0) {
-							line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
+							line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
 						} else {
-							line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(",", " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].country + '\r\n';
+							line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
 						}
 					}
 				} else {
