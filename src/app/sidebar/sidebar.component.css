@@ -73,20 +73,20 @@ select{
 }
 
 #changeFilters {
-    max-width: 70%;
-    left: 10px;
+    /*max-width: 70%;
+    left: 10px;*/
     position: relative;
     top: 5px;
-    /*left: 35px;
-    max-width: 80%;*/
+    left: 35px;
+    max-width: 80%;
 }
 
-#clearFilters {
+/*#clearFilters {
     max-width: 30%;
     position: relative;
     left: 15px;
     top: 5px;
-}
+}*/
 
 .projDiv {
     padding-left: 15px;
