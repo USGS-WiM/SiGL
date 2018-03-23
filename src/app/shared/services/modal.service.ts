@@ -24,7 +24,7 @@ export class ModalService {
     }
 
     // filters chosen from modal, tell sidebar to show the ones chosen    
-    private _chosenFilters: Subject<any> = new Subject<any>();
+    public _chosenFilters: Subject<any> = new Subject<any>();
     public set chosenFilters(something:any){
         this._chosenFilters.next(something);
     }

@@ -31,6 +31,7 @@ import { NullAstVisitor } from '@angular/compiler';
 declare let gtag: Function;
 
 @Component({
+	providers: [FilterComponent],
 	selector: 'sidebar',
 	templateUrl: 'sidebar.component.html',
 	styleUrls: ['./sidebar.component.css']
@@ -38,7 +39,7 @@ declare let gtag: Function;
 export class SidebarComponent implements OnInit {
 	@ViewChild('acc') accordion;
 	@ViewChild('sidebarContainer') private sidebarContainer: ElementRef;
-	@ViewChild('FilterComponent') filterComp;
+	@ViewChild('FilterComponent') filterComponent: FilterComponent;
 	public chosenFilters: IchosenFilters;
 	public filterCount: number;
 	public siteFilters: boolean;
@@ -70,7 +71,7 @@ export class SidebarComponent implements OnInit {
     public basinsCheck: boolean;
 
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService,
-		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService) { }
+		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService, private filterComp: FilterComponent) { }
 
 	ngOnInit() {
 		this.chosenSortBy = undefined;
@@ -284,11 +285,13 @@ export class SidebarComponent implements OnInit {
 	public ClearFilt() {
 		//below works to clear map and sidebar/project list
 		gtag('event', 'click', {'event_category': 'Filter','event_label': 'filterCleared'});
-		this.chosenFilters = {};
-		this._mapService.updateFilteredSites(this.chosenFilters); //updates map geojson
-		this._siglService.setFilteredSites(this.chosenFilters);
 			//below, trying to import Clear()
-		//this.filterComp.Clear();
+		//this.showFilterModal();
+		/*if (this._modalService.showFilterModal) {
+			this.filterComp.Clear();
+		};*/
+		this.filterComp.Clear(); //going to clear function, but fields undefined b/c modal is closed
+		//this.filterComponent.reset();
 			//below, copying inside of Clear() function
 		/*this.filterComp.parameterSelected = [];
         this.filterComp.projDurationSelected = [];
@@ -300,12 +303,13 @@ export class SidebarComponent implements OnInit {
         this.filterComp.monitoringEffortSelected = [];
         this.filterComp.orgSelected = undefined;
         this.filterComp.objectiveSelected = [];
-        this.filterComp.projectSelected = undefined;
+		this.filterComp.projectSelected = undefined;*/
         //clear sidebar
-        this.filterComp.chosenFiltersObj = {};
+		this.chosenFilters = {};
+		//this.filterComp._modalService._chosenFilters;
         // let the map and sidebar know everything was cleared
         this._mapService.updateFilteredSites(this.chosenFilters); //updates map geojson
-		this._siglService.setFilteredSites(this.chosenFilters);*/
+		this._siglService.setFilteredSites(this.chosenFilters);
 	}
 
 	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'
