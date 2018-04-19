@@ -281,7 +281,7 @@ export class SidebarComponent implements OnInit {
 		this._siglService.setFullSite(site.site_id.toString());
 	}
 
-	/*public ClearFilt() {
+	public ClearFilt() {
 		//below works to clear map and sidebar/project list
 		gtag('event', 'click', {'event_category': 'Filter','event_label': 'filterCleared'});
 		this.chosenFilters = {};
@@ -289,7 +289,7 @@ export class SidebarComponent implements OnInit {
 		this._siglService.setFilteredSites(this.chosenFilters);
 			//below, trying to import Clear(), also tried to copy clear function here...
 		//this.filterComp.Clear();
-}*/
+    }
 
 	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'
 	public toggleSiteList(value: string, projectId: number) {
