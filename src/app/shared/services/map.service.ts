@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions } from '@angular/http';
 import { Map, geoJSON } from 'leaflet'
 import * as L from 'leaflet';
-import esri from 'esri-leaflet';
+import * as esri from 'esri-leaflet';
 
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
