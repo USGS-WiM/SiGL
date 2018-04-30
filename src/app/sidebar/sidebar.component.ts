@@ -37,7 +37,6 @@ declare let gtag: Function;
 export class SidebarComponent implements OnInit {
 	@ViewChild('acc') accordion;
 	@ViewChild('sidebarContainer') private sidebarContainer: ElementRef;
-	//@ViewChild('FilterComponent') filterComp;  delete?
 	public chosenFilters: IchosenFilters;
 	public filterCount: number;
 	public siteFilters: boolean;
@@ -287,8 +286,6 @@ export class SidebarComponent implements OnInit {
 		this._mapService.updateFilteredSites(this.chosenFilters); //updates map geojson
         this._siglService.setFilteredSites(this.chosenFilters);
         this._siglService.setClearAllFilters(true);
-			//below, trying to import Clear(), also tried to copy clear function here...
-		//this.filterComp.Clear();  Delete?
     }
 
 	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'

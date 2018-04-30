@@ -86,17 +86,14 @@ export class SiglService {
 	private _singleSiteSubject: Subject<Ifullsite> = new Subject<Ifullsite>();
     private _sitePointClick: Subject<boolean> = new Subject<boolean>();
     
-    /*NEW ADDITIONS*/
     private _clearAllFilters: BehaviorSubject<boolean> = <BehaviorSubject<boolean>> new BehaviorSubject(false);
     public setClearAllFilters(wasClicked: boolean): void {
-        alert("in setter");
         this._clearAllFilters.next(wasClicked);
     }
     public get clearAllFilters(): Observable<boolean>{
         return this._clearAllFilters.asObservable();
     }
-	/*****END NEW ADDITIONS */
-    
+	
     // getters
 	public get parameters(): Observable<Array<Iparameter>> {
 		return this._parameterSubject.asObservable();
