@@ -15,8 +15,7 @@ import 'rxjs/Rx';
 import { PageScrollInstance, PageScrollService } from 'ng2-page-scroll';
 
 import { BasemapsComponent } from "../mainview/basemaps/basemaps.component";
-import { LayersComponent } from "../mainview/layers/layers.component";
-import { FilterComponent } from "../shared/components/filter/filter.component";
+import { LayersComponent } from "../mainview/layers/layers.component"; 
 
 import { ModalService } from "../shared/services/modal.service";
 import { IchosenFilters } from "../shared/interfaces/chosenFilters.interface";
@@ -38,7 +37,7 @@ declare let gtag: Function;
 export class SidebarComponent implements OnInit {
 	@ViewChild('acc') accordion;
 	@ViewChild('sidebarContainer') private sidebarContainer: ElementRef;
-	@ViewChild('FilterComponent') filterComp;
+	//@ViewChild('FilterComponent') filterComp;  delete?
 	public chosenFilters: IchosenFilters;
 	public filterCount: number;
 	public siteFilters: boolean;
@@ -281,15 +280,16 @@ export class SidebarComponent implements OnInit {
 		this._siglService.setFullSite(site.site_id.toString());
 	}
 
-	/*public ClearFilt() {
+	public ClearFilt() {
 		//below works to clear map and sidebar/project list
 		gtag('event', 'click', {'event_category': 'Filter','event_label': 'filterCleared'});
 		this.chosenFilters = {};
 		this._mapService.updateFilteredSites(this.chosenFilters); //updates map geojson
-		this._siglService.setFilteredSites(this.chosenFilters);
+        this._siglService.setFilteredSites(this.chosenFilters);
+        this._siglService.setClearAllFilters(true);
 			//below, trying to import Clear(), also tried to copy clear function here...
-		//this.filterComp.Clear();
-}*/
+		//this.filterComp.Clear();  Delete?
+    }
 
 	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'
 	public toggleSiteList(value: string, projectId: number) {

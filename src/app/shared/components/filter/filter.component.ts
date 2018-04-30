@@ -176,6 +176,13 @@ export class FilterComponent implements OnInit {
                 this.showFilterModal();
             }
         });
+
+        this._siglService.clearAllFilters.subscribe((buttonClicked: boolean) => {
+            //console.log('in filter component');
+            if (buttonClicked == true){
+                this.Clear();
+            }
+        });
     }//end ngOnInit()
 
     // show the Filter Modal and handle when it is closed

@@ -17,6 +17,7 @@ import "rxjs/add/operator/map";
 import { CONFIG } from "./config";
 import { MapService } from '../../shared/services/map.service';
 import { LoaderService } from '../../shared/services/loader.service';
+//import { FilterComponent } from '../../shared/components/filter/filter.component'; //testing
 
 import { Iparameter } from "../../shared/interfaces/parameter.interface";
 import { IprojDuration } from "../../shared/interfaces/projduration.interface";
@@ -34,11 +35,15 @@ import { Isite } from "../../shared/interfaces/site.interface";
 import { Ifilteredproject } from "../../shared/interfaces/filteredproject";
 import { Ifullproject } from "../../shared/interfaces/fullproject.interface";
 import { Ifullsite } from "../../shared/interfaces/fullsite.interface";
+import { EventEmitter } from 'selenium-webdriver';
 
 @Injectable()
 export class SiglService {
 	private filteredSiteIDArray: any;
-	private filteredSiteSubscription: any;
+    private filteredSiteSubscription: any;
+    
+    //TODO: Event Emitter to catch changes and report to FilterComponent?
+    //serviceUpdated: EventEmitter = new EventEmitter();
 
 	constructor(private _http: Http, private _mapService: MapService, private _loaderService: LoaderService) {
 		this.setParameters();
@@ -79,9 +84,20 @@ export class SiglService {
 	private _filteredProjectSubject: Subject<Array<Ifilteredproject>> = new Subject<Array<Ifilteredproject>>();
 	private _fullProjectSubject: Subject<Ifullproject> = new Subject<Ifullproject>();
 	private _singleSiteSubject: Subject<Ifullsite> = new Subject<Ifullsite>();
-	private _sitePointClick: Subject<boolean> = new Subject<boolean>();
-	
-	// getters
+    private _sitePointClick: Subject<boolean> = new Subject<boolean>();
+    
+    /*NEW ADDITIONS*/
+    private _clearAllFilters: BehaviorSubject<boolean> = <BehaviorSubject<boolean>> new BehaviorSubject(false);
+    public setClearAllFilters(wasClicked: boolean): void {
+        alert("in setter");
+        this._clearAllFilters.next(wasClicked);
+    }
+    public get clearAllFilters(): Observable<boolean>{
+        return this._clearAllFilters.asObservable();
+    }
+	/*****END NEW ADDITIONS */
+    
+    // getters
 	public get parameters(): Observable<Array<Iparameter>> {
 		return this._parameterSubject.asObservable();
 	}
@@ -298,7 +314,7 @@ export class SiglService {
 		} else {
 			// clear it all and show allProjects in sidebar
 			this._loaderService.hideSidebarLoad();
-			this._filteredProjectSubject.next([]);
+            this._filteredProjectSubject.next([]);
 			// HERE show all
 		}
 	}
@@ -372,4 +388,9 @@ export class SiglService {
     public hideTheSidebar() {
         this._showSidebarSubject.next(false);
     }
+
+   /*  public clearFilters(): Observable<any> {
+        alert("in clear filter function");
+        this._
+    } */
 }
