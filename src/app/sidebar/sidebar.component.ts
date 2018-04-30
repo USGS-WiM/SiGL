@@ -30,7 +30,6 @@ import { NullAstVisitor } from '@angular/compiler';
 declare let gtag: Function;
 
 @Component({
-	providers: [FilterComponent],
 	selector: 'sidebar',
 	templateUrl: 'sidebar.component.html',
 	styleUrls: ['./sidebar.component.css']
@@ -69,7 +68,7 @@ export class SidebarComponent implements OnInit {
     public basinsCheck: boolean;
 
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService,
-		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService, private filterComp: FilterComponent) { }
+		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService) { }
 
 	ngOnInit() {
 		this.chosenSortBy = undefined;
