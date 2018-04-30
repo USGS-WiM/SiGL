@@ -60,10 +60,13 @@ button:hover{
   min-width: 25%;
   color: white;
   background-color:rgb(134, 142, 150);
+  margin-right: 10px;
 }
 
 #closeButton {
-  max-width: 75%;
+  max-width: 70%;
+  padding-right: 40px;
+  margin-right: 15px;
 }
 /*
 HEADER
