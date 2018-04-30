@@ -178,7 +178,6 @@ export class FilterComponent implements OnInit {
         });
 
         this._siglService.clearAllFilters.subscribe((buttonClicked: boolean) => {
-            //console.log('in filter component');
             if (buttonClicked == true){
                 this.Clear();
             }
