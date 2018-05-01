@@ -544,3 +544,60 @@ Misc
   overflow-x: hidden;
   overflow-y: scroll;
 }
+
+
+/*  
+  Mitch - May 1
+  Mitch - May 1
+  Mitch - May 1
+*/
+.projDiv div:nth-child(1){
+  display: flex;
+  font-size: 14px;
+  line-height: 16px;
+  justify-content: space-between;
+}
+.projDiv div:last-child{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 8px;
+}
+
+.modal-body #filterContent h5{
+  padding-top: 0;
+  margin:10px 0;
+  font-size: 16px;
+  width: 100%;
+}
+.modal-body #filterContent{
+  display: flex;
+  flex-wrap:wrap;
+}
+
+.modal-body #filterContent .row{
+  width: 50%;
+  display: flex;
+  box-sizing:border-box;
+  padding: 5px 20px;
+}
+
+
+.modal-body #filterContent .row label{
+  font-weight: 500;
+  font-size: 14px;
+  flex-grow: 3;
+}
+
+.dropdown-item.active, .dropdown-item:active{
+  background-color:transparent;
+}
+
+.dropdown-item.active a {
+    color: black !important;
+    background-color: transparent !important;
+}
+.dropdown-item.active a span {
+    color: black !important;
+    background-color: transparent !important;
+}
