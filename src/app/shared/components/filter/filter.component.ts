@@ -394,8 +394,8 @@ export class FilterComponent implements OnInit {
             this.orgSelected = undefined;
             this.objectiveSelected = [];
             // reset everything just in case (so that the filters apply to all and not a previous subset)
-            this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
+            //this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
+            //this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
             this.chosenFiltersObj.ProjectName = { name: project.name, project_id: project.project_id };
         } else {
             this.chosenFiltersObj = {};

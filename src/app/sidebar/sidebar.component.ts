@@ -26,6 +26,7 @@ import { SiglService } from "../shared/services/siglservices.service";
 import { MapService } from '../shared/services/map.service';
 import { checkAndUpdateBinding } from '@angular/core/src/view/util';
 import { NullAstVisitor } from '@angular/compiler';
+import { Subject } from 'rxjs/Rx';
 
 declare let gtag: Function;
 
@@ -186,7 +187,12 @@ export class SidebarComponent implements OnInit {
 			});
 			this.allProjectsHolder = this.allProjects.map(x => Object.assign({}, x));
 			this.chosenSortBy = this.sortByObject[0];
-		})
+        })
+        
+        this._siglService.fullProject.subscribe((project: Ifullproject) =>{
+            console.log("change detected line 193 sidebar.comp.ts");
+        });
+
 		//for the results accordion panel
 		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
 			this.filteredProjects = [];
@@ -207,7 +213,7 @@ export class SidebarComponent implements OnInit {
 				
 			} else {
 				//clear it all
-				this.filteredProjects = [];
+                this.filteredProjects = [];
 				// HERE Show all projects only if there are no filters chosen				
 				if (this.filterCount > 0) {
 					this.NoMatches = true;
@@ -265,7 +271,7 @@ export class SidebarComponent implements OnInit {
 		}
 
 		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'ProjectNameClick: ' + projID });
-	}
+    }
 
 	public showSiteDetails(site: Isimplesite): void {
 		this._mapService.setProjectNameClicked(false);
