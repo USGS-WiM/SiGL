@@ -65,7 +65,26 @@
                 </div>
             </div>
             <br/>
+            <!--new singleselects-->
             <div class="row">
+                <label class="col-xs-3">Project Organization: </label>
+                <div class="col-xs-6">
+                        <ss-multiselect-dropdown [options]="orgMulti" [(ngModel)]="orgSelected" [settings]="singleSettings" (ngModelChange)="filterChange('organization', $event)"></ss-multiselect-dropdown>
+                </div>
+            </div>
+            <br/>
+            
+            <div class="row">
+                    <label class="col-xs-3">Search by project name: (Clears the above filters)</label>
+                    <div class="col-xs-6">
+                            <ss-multiselect-dropdown [options]="projMulti" [(ngModel)]="projectSelected" [settings]="singleSettings" (ngModelChange)="onProjectSelect($event)"></ss-multiselect-dropdown>
+                    </div>
+                </div>
+            <!--End New singlselects-->
+            
+            
+            
+            <!-- <div class="row">
                 <label class="col-xs-3">Project Organization: </label>
                 <div class="col-xs-6">
                     <select class="form-control" [(ngModel)]="orgSelected" (ngModelChange)="filterChange('organization', $event)">
@@ -75,8 +94,8 @@
                 </div>
             </div>
             <br/>
-            <hr/>
-            <div class="row">
+            <hr/> -->
+            <!-- <div class="row">
                 <label class="col-xs-3">Search by project name: (Clears the above filters)</label>
                 <div class="col-xs-6">
                     <select class="form-control" [(ngModel)]="projectSelected" (ngModelChange)="onProjectSelect($event)" name="project">
@@ -84,7 +103,7 @@
                         <option [ngValue]="p" *ngFor="let p of projectList">{{p.name}}</option>
                     </select>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="modal-footer">

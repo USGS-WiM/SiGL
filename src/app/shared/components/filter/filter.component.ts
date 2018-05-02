@@ -11,7 +11,7 @@ import { Component, Input, EventEmitter, OnInit, ViewChild } from '@angular/core
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from "../../../shared/services/modal.service";
 import { SiglService } from "../../../shared/services/siglservices.service";
-import { IMultiSelectOption } from "angular-2-dropdown-multiselect";
+import { IMultiSelectOption, IMultiSelectSettings } from "angular-2-dropdown-multiselect";
 import { Iparameter } from "../../../shared/interfaces/parameter.interface";
 import { IprojDuration } from "../../../shared/interfaces/projduration.interface";
 import { IprojStatus } from "../../../shared/interfaces/projstatus.interface";
@@ -65,16 +65,28 @@ export class FilterComponent implements OnInit {
     public monitoringEffortMulti: Array<IMultiSelectOption>;
     public monitoringEffortSelected: Array<Number>;
     //project
-    public projectList: Array<Iproject>;
+    public projMulti: Array<Iproject>;
     public projectSelected: Array<Number>;
+    //public projectList: Array<Iproject>;
+    //public projectSelected: Array<Number>;
+    
     //organization
-    public organizationList: Array<Iorganization>;
-    public orgSelected: Number;
+    public orgMulti: Array<IMultiSelectOption>;
+    public orgSelected: Array<Number>;
+    //public organizationList: Array<Iorganization>;
+    //public orgSelected: Number;
+    
     //objective
     public objectiveMulti: Array<IMultiSelectOption>;
     public objectiveSelected: Array<Number>;
 
     public chosenFiltersObj: IchosenFilters;
+
+    //settings for multiselects -- makes them single select only
+    public singleSettings: IMultiSelectSettings = {
+        selectionLimit: 1,
+        autoUnselect: true
+    }
 
     //injects services into this component
     constructor(private _ngbService: NgbModal, private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService) { }
@@ -157,10 +169,13 @@ export class FilterComponent implements OnInit {
             });
         });
         this._siglService.project.subscribe((projects: Array<Iproject>) => {
-            this.projectList = projects;
+            this.projMulti = projects;
         });
         this._siglService.organization.subscribe((organizations: Array<Iorganization>) => {
-            this.organizationList = organizations;
+            this.orgMulti = [];
+            organizations.forEach((org) => {
+                this.orgMulti.push({id: org.organization_id, name: org.organization_name})
+            });
         });
         this._siglService.objective.subscribe((objectives: Array<Iobjective>) => {
             this.objectiveMulti = [];
