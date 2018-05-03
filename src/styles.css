@@ -177,7 +177,7 @@ MODAL
 
 .modal-body {
   max-height: 700px;
-  overflow-y: auto;
+  overflow-y: visible;
 }
 
 .modal-body p{
@@ -591,15 +591,18 @@ Misc
 
 .dropdown-item.active, .dropdown-item:active{
   background-color:transparent;
+  max-height: none;
 }
 
 .dropdown-item.active a {
     color: black !important;
     background-color: transparent !important;
+    max-height: none;
 }
 .dropdown-item.active a span {
     color: black !important;
     background-color: transparent !important;
+    max-height: none;
 }
 
 
@@ -616,6 +619,7 @@ Misc
   left: auto;
   right: 0;
   overflow: visible;
+  max-height: none;
 }
 
 .dropdown-item a span{
@@ -633,6 +637,7 @@ Misc
   display: flex;
   flex-direction: column;
   justify-content: center;
+  max-height: none;
 }
 
 .modal-body #filterContent .row .dropdown{
@@ -653,4 +658,8 @@ Misc
 .dropdown-toggle:after{
   position:relative;
   top:5px;
+}
+
+body.modal-open, .modal-open, .navbar-fixed-top, -modal-open .navbar-fixed-bottom {
+  margin-right: 0;
 }
