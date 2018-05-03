@@ -161,7 +161,7 @@ export class SidebarComponent implements OnInit {
 
 			//if project filters:
 			/* p_objectives, s_monitorEffect, s_projDuration, s_projStatus */
-			if (choices.p_objectives || choices.s_monitorEffect || choices.s_projDuration || choices.s_projStatus)
+			if (choices.p_objectives || choices.s_monitorEffect || choices.s_projDuration || choices.s_projStatus || choices.ProjectName)
 				this.projectFilters = true;
 			else this.projectFilters = false;
 
@@ -493,7 +493,7 @@ export class SidebarComponent implements OnInit {
 		if (this.chosenFilters) {	
 			var filt = this.chosenFilters;
 			str += "Project Filters: "
-			if (filt.DURATIONS || filt.STATUSES || filt.MONITORS || filt.OBJS || filt.ORG || filt.ProjectName) {
+			if (this.projectFilters) {
 				if (filt.DURATIONS) {
 					str += "Project Duration: "
 					for (let s = 0; s < this.chosenFilters.DURATIONS.length; s++)  {
@@ -522,13 +522,13 @@ export class SidebarComponent implements OnInit {
 					str += "Organization(s): " + filt.ORG + "; "
 				}
 				if (filt.ProjectName) {
-					str += "Project Name: " + filt.ProjectName + "; "
+					str += "Project Name: " + filt.ProjectName.name + "; "
 				}
 			} else {
 				str += "none; "
 			}
 			str += "Site Filters: "
-			if (filt.PARAMETERS || filt.RESOURCES || filt.MEDIA || filt.LAKES || filt.STATES) {
+			if (this.siteFilters) {
 				if (filt.PARAMETERS) {
 					str += "Parameters: "
 					for (let s = 0; s < this.chosenFilters.PARAMETERS.length; s++)  {
