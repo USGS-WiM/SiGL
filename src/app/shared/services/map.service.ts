@@ -316,13 +316,8 @@ export class MapService {
             if (filters.ORG) {
                 let orgHere: boolean = false;
                // all orgSystems that have this orgId
-             /*   let testVar = this._allOrgSystems.getValue().forEach(function (orgSys, index) { 
-                if (orgSys.org_id == filters.ORG.id){
-                    return orgSys;
-                }
-            }); */
                 let orgSystemsWithThisOrg = this._allOrgSystems.getValue().filter(function (orgsSys) { 
-                    return orgsSys.org_id == filters.ORG.id; 
+                    return orgsSys.org_id == filters.ORG[0].id; 
                 })
                 // loop through and see if any of them include this filters.ORG.organization_id
                 let stophere = "hey!";

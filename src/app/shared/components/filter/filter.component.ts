@@ -65,17 +65,13 @@ export class FilterComponent implements OnInit {
     public monitoringEffortMulti: Array<IMultiSelectOption>;
     public monitoringEffortSelected: Array<Number>;
     //project
-    public projMulti: Array<Iproject>;
+    public projMulti: Array<IMultiSelectOption>;
     public projectSelected: Array<Number>;
     //public projectList: Array<Iproject>;
     //public projectSelected: Array<Number>;
-    
     //organization
     public orgMulti: Array<IMultiSelectOption>;
     public orgSelected: Array<Number>;
-    //public organizationList: Array<Iorganization>;
-    //public orgSelected: Number;
-    
     //objective
     public objectiveMulti: Array<IMultiSelectOption>;
     public objectiveSelected: Array<Number>;
@@ -169,7 +165,11 @@ export class FilterComponent implements OnInit {
             });
         });
         this._siglService.project.subscribe((projects: Array<Iproject>) => {
-            this.projMulti = projects;
+            this.projMulti = [];
+            projects.forEach((proj) => {
+                this.projMulti.push({id: proj.project_id, name: proj.name});
+            })
+            
         });
         this._siglService.organization.subscribe((organizations: Array<Iorganization>) => {
             this.orgMulti = [];
@@ -230,9 +230,9 @@ export class FilterComponent implements OnInit {
         this.lakeSelected = [];
         this.stateSelected = [];
         this.monitoringEffortSelected = [];
-        this.orgSelected = undefined;
+        this.orgSelected = [];
         this.objectiveSelected = [];
-        this.projectSelected = undefined;
+        this.projectSelected = [];
         //clear sidebar
         this.chosenFiltersObj = {};
         // let the map and sidebar know everything was cleared
@@ -243,7 +243,7 @@ export class FilterComponent implements OnInit {
     public filterChange(which: string, e: any): void {
         // if they've previously chosen a Project name to filter, clear it out now and let the map and sidebar know
         if (this.chosenFiltersObj.ProjectName) {
-            this.projectSelected = undefined;
+            this.projectSelected = [];
             delete this.chosenFiltersObj.ProjectName;
            
             this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
@@ -367,10 +367,6 @@ export class FilterComponent implements OnInit {
                     e.forEach(eachParam => {
                         this.chosenFiltersObj.ORG.push(this.orgMulti.filter((org: IMultiSelectOption) => {return org.id == eachParam; })[0]);
                     });
-                
-                /* if (e.organization_id) {
-                    this.chosenFiltersObj.p_organization = e.organization_id;
-                    this.chosenFiltersObj.ORG = e; */
                 } else {
                     //remove it
                     delete this.chosenFiltersObj.p_organization;
