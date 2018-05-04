@@ -27,9 +27,11 @@ export interface IchosenFilters {
     STATES?: Array<IMultiSelectOption>;
     s_monitorEffect?: Array<number>;
     MONITORS?:Array<IMultiSelectOption>;
-    p_organization?: number;
-    ORG?: Iorganization;
+    p_organization?: Array<number>;
+    ORG?: Array<IMultiSelectOption>;
     p_objectives?: Array<number>;
     OBJS?:Array<IMultiSelectOption>;
     ProjectName?: Isimpleproject;
+    p_project?: Array<number>;
+    PROJ?: Array<IMultiSelectOption>;
 }

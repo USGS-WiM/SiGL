@@ -315,15 +315,17 @@ export class MapService {
             }
             if (filters.ORG) {
                 let orgHere: boolean = false;
-                // all orgSystems that have this orgId
-                let orgSystemsWithThisOrg = this._allOrgSystems.getValue().filter(function (orgsSys) { return orgsSys.org_id == filters.ORG.organization_id; })
+               // all orgSystems that have this orgId
+                let orgSystemsWithThisOrg = this._allOrgSystems.getValue().filter(function (orgsSys) { 
+                    return orgsSys.org_id == filters.ORG[0].id; 
+                })
                 // loop through and see if any of them include this filters.ORG.organization_id
                 let stophere = "hey!";
                 orgSystemsWithThisOrg.forEach(sys => {
                     if (orgSysArray.includes(sys.organization_system_id.toString())) {
                         orgHere = true;
                     };
-                });
+                }); 
                 isPresent.push(orgHere);
             }
             // finish all loops

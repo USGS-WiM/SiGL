@@ -11,7 +11,7 @@ import { Component, Input, EventEmitter, OnInit, ViewChild } from '@angular/core
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from "../../../shared/services/modal.service";
 import { SiglService } from "../../../shared/services/siglservices.service";
-import { IMultiSelectOption } from "angular-2-dropdown-multiselect";
+import { IMultiSelectOption, IMultiSelectSettings } from "angular-2-dropdown-multiselect";
 import { Iparameter } from "../../../shared/interfaces/parameter.interface";
 import { IprojDuration } from "../../../shared/interfaces/projduration.interface";
 import { IprojStatus } from "../../../shared/interfaces/projstatus.interface";
@@ -65,16 +65,24 @@ export class FilterComponent implements OnInit {
     public monitoringEffortMulti: Array<IMultiSelectOption>;
     public monitoringEffortSelected: Array<Number>;
     //project
-    public projectList: Array<Iproject>;
+    public projMulti: Array<IMultiSelectOption>;
     public projectSelected: Array<Number>;
+    //public projectList: Array<Iproject>;
+    //public projectSelected: Array<Number>;
     //organization
-    public organizationList: Array<Iorganization>;
-    public orgSelected: Number;
+    public orgMulti: Array<IMultiSelectOption>;
+    public orgSelected: Array<Number>;
     //objective
     public objectiveMulti: Array<IMultiSelectOption>;
     public objectiveSelected: Array<Number>;
 
     public chosenFiltersObj: IchosenFilters;
+
+    //settings for multiselects -- makes them single select only
+    public singleSettings: IMultiSelectSettings = {
+        selectionLimit: 1,
+        autoUnselect: true
+    }
 
     //injects services into this component
     constructor(private _ngbService: NgbModal, private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService) { }
@@ -157,10 +165,17 @@ export class FilterComponent implements OnInit {
             });
         });
         this._siglService.project.subscribe((projects: Array<Iproject>) => {
-            this.projectList = projects;
+            this.projMulti = [];
+            projects.forEach((proj) => {
+                this.projMulti.push({id: proj.project_id, name: proj.name});
+            })
+            
         });
         this._siglService.organization.subscribe((organizations: Array<Iorganization>) => {
-            this.organizationList = organizations;
+            this.orgMulti = [];
+            organizations.forEach((org) => {
+                this.orgMulti.push({id: org.organization_id, name: org.organization_name})
+            });
         });
         this._siglService.objective.subscribe((objectives: Array<Iobjective>) => {
             this.objectiveMulti = [];
@@ -215,9 +230,9 @@ export class FilterComponent implements OnInit {
         this.lakeSelected = [];
         this.stateSelected = [];
         this.monitoringEffortSelected = [];
-        this.orgSelected = undefined;
+        this.orgSelected = [];
         this.objectiveSelected = [];
-        this.projectSelected = undefined;
+        this.projectSelected = [];
         //clear sidebar
         this.chosenFiltersObj = {};
         // let the map and sidebar know everything was cleared
@@ -228,7 +243,7 @@ export class FilterComponent implements OnInit {
     public filterChange(which: string, e: any): void {
         // if they've previously chosen a Project name to filter, clear it out now and let the map and sidebar know
         if (this.chosenFiltersObj.ProjectName) {
-            this.projectSelected = undefined;
+            this.projectSelected = [];
             delete this.chosenFiltersObj.ProjectName;
            
             this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
@@ -346,9 +361,12 @@ export class FilterComponent implements OnInit {
                 }
                 break;
             case "organization":
-                if (e.organization_id) {
-                    this.chosenFiltersObj.p_organization = e.organization_id;
-                    this.chosenFiltersObj.ORG = e;
+                if (e.length > 0){
+                    this.chosenFiltersObj.p_organization = e;
+                    this.chosenFiltersObj.ORG = [];
+                    e.forEach(eachParam => {
+                        this.chosenFiltersObj.ORG.push(this.orgMulti.filter((org: IMultiSelectOption) => {return org.id == eachParam; })[0]);
+                    });
                 } else {
                     //remove it
                     delete this.chosenFiltersObj.p_organization;
@@ -368,6 +386,22 @@ export class FilterComponent implements OnInit {
                     delete this.chosenFiltersObj.OBJS;
                 }
                 break;
+            case "project":
+                if (e.length > 0) {
+                    this.chosenFiltersObj= {}
+                    this.chosenFiltersObj.p_project = e;
+                    this.chosenFiltersObj.PROJ = [];
+                    e.forEach(eachParam => {
+                        let testVar = this.projMulti.filter((proj: IMultiSelectOption) => { return proj.id == eachParam; });
+                        this.chosenFiltersObj.PROJ.push(this.projMulti.filter((proj: IMultiSelectOption) => { return proj.id == eachParam; })[0]);
+                    });
+                    this.onProjectSelect(this.chosenFiltersObj.PROJ);
+                } else {
+                    //remove it
+                    delete this.chosenFiltersObj.p_project;
+                    delete this.chosenFiltersObj.PROJ;
+                }
+                break; 
         }//end switch
 
         // let google analytics know of the event
@@ -379,9 +413,8 @@ export class FilterComponent implements OnInit {
 
     // Project Name was changed in filters 
     public onProjectSelect(project: any) {
+        
         if (project != "") {
-            // clear out all chosenFiltersObj because this is project only filter
-            this.chosenFiltersObj = {};
             // reset all selects in the modal
             this.parameterSelected = [];
             this.projDurationSelected = [];
@@ -391,12 +424,14 @@ export class FilterComponent implements OnInit {
             this.lakeSelected = [];
             this.stateSelected = [];
             this.monitoringEffortSelected = [];
-            this.orgSelected = undefined;
+            this.orgSelected = [];
             this.objectiveSelected = [];
             // reset everything just in case (so that the filters apply to all and not a previous subset)
+            delete this.chosenFiltersObj.p_project;
+            delete this.chosenFiltersObj.PROJ;
             this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
             this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
-            this.chosenFiltersObj.ProjectName = { name: project.name, project_id: project.project_id };
+            this.chosenFiltersObj.ProjectName = { name: project[0].name, project_id: project[0].id };         
         } else {
             this.chosenFiltersObj = {};
         }
