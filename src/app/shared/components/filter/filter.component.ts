@@ -361,9 +361,16 @@ export class FilterComponent implements OnInit {
                 }
                 break;
             case "organization":
-                if (e.organization_id) {
+                if (e.length > 0){
+                    this.chosenFiltersObj.p_organization = e;
+                    this.chosenFiltersObj.ORG = [];
+                    e.forEach(eachParam => {
+                        this.chosenFiltersObj.ORG.push(this.orgMulti.filter((org: IMultiSelectOption) => {return org.id == eachParam; })[0]);
+                    });
+                
+                /* if (e.organization_id) {
                     this.chosenFiltersObj.p_organization = e.organization_id;
-                    this.chosenFiltersObj.ORG = e;
+                    this.chosenFiltersObj.ORG = e; */
                 } else {
                     //remove it
                     delete this.chosenFiltersObj.p_organization;
@@ -406,7 +413,7 @@ export class FilterComponent implements OnInit {
             this.lakeSelected = [];
             this.stateSelected = [];
             this.monitoringEffortSelected = [];
-            this.orgSelected = undefined;
+            this.orgSelected = [];
             this.objectiveSelected = [];
             // reset everything just in case (so that the filters apply to all and not a previous subset)
             //this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson

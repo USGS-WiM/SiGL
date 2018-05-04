@@ -189,10 +189,12 @@ export class SidebarComponent implements OnInit {
 			this.chosenSortBy = this.sortByObject[0];
         })
         
-        this._siglService.fullProject.subscribe((project: Ifullproject) =>{
+        /*TODO handle changes to the project name dropdown via subscritption*/
+        /* this._siglService.fullProject.subscribe((project: Ifullproject) =>{
             console.log("change detected line 193 sidebar.comp.ts");
-        });
-
+        }); */
+        //********************************* */
+        
 		//for the results accordion panel
 		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
 			this.filteredProjects = [];
