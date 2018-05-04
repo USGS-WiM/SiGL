@@ -77,7 +77,7 @@
             <div class="row">
                     <label class="col-xs-3">Search by project name: (Clears the above filters)</label>
                     <div class="col-xs-6">
-                            <ss-multiselect-dropdown [options]="projMulti" [(ngModel)]="projectSelected" [settings]="singleSettings" (ngModelChange)="onProjectSelect($event)"></ss-multiselect-dropdown>
+                            <ss-multiselect-dropdown [options]="projMulti" [(ngModel)]="projectSelected" [settings]="singleSettings" (ngModelChange)="filterChange('project', $event)"></ss-multiselect-dropdown>
                     </div>
                 </div>
             <!--End New singlselects-->

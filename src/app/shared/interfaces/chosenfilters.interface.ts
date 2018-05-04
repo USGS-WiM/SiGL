@@ -32,4 +32,6 @@ export interface IchosenFilters {
     p_objectives?: Array<number>;
     OBJS?:Array<IMultiSelectOption>;
     ProjectName?: Isimpleproject;
+    p_project?: Array<number>;
+    PROJ?: Array<IMultiSelectOption>;
 }

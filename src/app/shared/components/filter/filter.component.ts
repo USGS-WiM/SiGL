@@ -386,6 +386,22 @@ export class FilterComponent implements OnInit {
                     delete this.chosenFiltersObj.OBJS;
                 }
                 break;
+            case "project":
+                if (e.length > 0) {
+                    this.chosenFiltersObj= {}
+                    this.chosenFiltersObj.p_project = e;
+                    this.chosenFiltersObj.PROJ = [];
+                    e.forEach(eachParam => {
+                        let testVar = this.projMulti.filter((proj: IMultiSelectOption) => { return proj.id == eachParam; });
+                        this.chosenFiltersObj.PROJ.push(this.projMulti.filter((proj: IMultiSelectOption) => { return proj.id == eachParam; })[0]);
+                    });
+                    this.onProjectSelect(this.chosenFiltersObj.PROJ);
+                } else {
+                    //remove it
+                    delete this.chosenFiltersObj.p_project;
+                    delete this.chosenFiltersObj.PROJ;
+                }
+                break; 
         }//end switch
 
         // let google analytics know of the event
@@ -397,9 +413,8 @@ export class FilterComponent implements OnInit {
 
     // Project Name was changed in filters 
     public onProjectSelect(project: any) {
+        
         if (project != "") {
-            // clear out all chosenFiltersObj because this is project only filter
-            this.chosenFiltersObj = {};
             // reset all selects in the modal
             this.parameterSelected = [];
             this.projDurationSelected = [];
@@ -412,9 +427,11 @@ export class FilterComponent implements OnInit {
             this.orgSelected = [];
             this.objectiveSelected = [];
             // reset everything just in case (so that the filters apply to all and not a previous subset)
-            //this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-            //this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
-            this.chosenFiltersObj.ProjectName = { name: project.name, project_id: project.project_id };
+            delete this.chosenFiltersObj.p_project;
+            delete this.chosenFiltersObj.PROJ;
+            this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
+            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
+            this.chosenFiltersObj.ProjectName = { name: project[0].name, project_id: project[0].id };         
         } else {
             this.chosenFiltersObj = {};
         }
