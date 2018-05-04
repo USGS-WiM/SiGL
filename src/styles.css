@@ -654,3 +654,7 @@ Misc
   position:relative;
   top:5px;
 }
+
+#filterModal {
+  overflow-y: visible;
+}

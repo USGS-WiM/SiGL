@@ -325,7 +325,7 @@ export class SiglService {
 			.catch((err, caught) => this.handleError(err, caught))
 			.subscribe(fullProj => {
 				this._fullProjectSubject.next(fullProj);
-			});
+			});			
 	}	
 	// /GetFullSite
 	public setFullSite(siteId: string){
