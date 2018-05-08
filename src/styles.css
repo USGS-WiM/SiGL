@@ -561,7 +561,7 @@ Misc
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 8px;
+  /*padding-left: 8px;*/
 }
 
 .modal-body #filterContent h5{
@@ -656,6 +656,16 @@ Misc
   top:5px;
 }
 
+/* KJ Misc. Edits*/
+
 #filterModal {
   overflow-y: visible;
+}
+
+select:hover, option:hover {
+  cursor: pointer !important;
+}
+
+.marginLeft {
+  justify-content: left !important;
 }
