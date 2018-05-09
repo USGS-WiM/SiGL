@@ -590,7 +590,8 @@ Misc
 }
 
 .dropdown-item.active, .dropdown-item:active{
-  background-color:transparent;
+    color: black !important;
+    background-color:transparent;
 }
 
 .dropdown-item.active a {
