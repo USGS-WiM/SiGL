@@ -198,6 +198,8 @@ export class SidebarComponent implements OnInit {
 		//for the results accordion panel
 		this._siglService.filteredProjects.subscribe((projects: Array<Ifilteredproject>) => {
 			this.filteredProjects = [];
+			this.unHighlightProjName = true;
+			this.projectNameClickOnOff = 0
 			this.siteCountForm.controls['siteToggle'].setValue('filtered');
 			if (projects.length > 0) {
 				this.showAllProjects = false;
@@ -228,6 +230,14 @@ export class SidebarComponent implements OnInit {
 				this.sortProjListBy(this.chosenSortBy, 'redo');
 			}
 			this.allFilteredProjectsHolder = this.filteredProjects.map(x => Object.assign({}, x));
+			//check to see if projects without sites are hidden
+			if (!this.projectsWithSitesShowing) {
+				this.filteredProjects = this.allFilteredProjectsHolder.filter((proj: Ifilteredproject) => { return proj.projectSites.length > 0; });
+				if (this.filteredProjects.length == 0) { //if all filtered projects have no sites
+					this.NoMatches = true;
+				}
+			}
+
 		});
 		// to show the sidebar when mobile	subscription that adds the class ([class.sidebar-mobile-show]) on the div to show/hide it
 		this._siglService.showSidebar.subscribe((val: boolean) => {
@@ -293,7 +303,9 @@ export class SidebarComponent implements OnInit {
 		this.chosenFilters = {};
 		this._mapService.updateFilteredSites(this.chosenFilters); //updates map geojson
         this._siglService.setFilteredSites(this.chosenFilters);
-        this._siglService.setClearAllFilters(true);
+		this._siglService.setClearAllFilters(true);
+		this.unHighlightProjName = true;
+		this.projectNameClickOnOff = 0
     }
 
 	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'
