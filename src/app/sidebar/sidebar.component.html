@@ -26,7 +26,7 @@
                     <br/>
                     <div style="font-size:14px; font-weight: bolder; width: 100%; text-align:center; opacity:0.35; padding: 10px;" *ngIf="filterCount == 0">Showing all projects with sites.</div>
 
-                    <div style="font-size:large" *ngIf="projectFilters">
+                    <div style="font-size:large; padding: 10px" *ngIf="projectFilters">
                         <b>Project filters applied:</b>
                     </div>
                     <!-- Durations -->
@@ -94,7 +94,7 @@
                             <b>Organization</b>
                         </span>
                         <p class="contained" [hidden]="OrgCollapsed">
-                            <span>{{chosenFilters.ORG.organization_name}}</span>
+                            <span>{{chosenFilters.ORG[0].name}}</span>
                         </p>
                     </div>
 

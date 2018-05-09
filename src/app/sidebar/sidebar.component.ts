@@ -66,7 +66,7 @@ export class SidebarComponent implements OnInit {
 	public areasCheck: boolean;
 	public cededCheck: boolean;
     public tribalCheck: boolean;
-    public basinsCheck: boolean;
+	public basinsCheck: boolean;
 
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService,
 		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService) { }
@@ -430,12 +430,18 @@ export class SidebarComponent implements OnInit {
 			this.projectsWithSitesShowing = false;
 			// are we toggling all the project or filtered projects
 			if (this.showAllProjects) this.allProjects = this.allProjectsHolder.filter((proj: Ifilteredproject) => { return proj.projectSites.length > 0; });
-			else this.filteredProjects = this.allFilteredProjectsHolder.filter((proj: Ifilteredproject) => { return proj.projectSites.length > 0; });
+			else {
+				this.filteredProjects = this.allFilteredProjectsHolder.filter((proj: Ifilteredproject) => { return proj.projectSites.length > 0; });
+				if (this.filteredProjects.length == 0) { //if all filtered projects have no sites
+					this.NoMatches = true;
+				}
+			}
 		} else {
 			// show all projects (with and without sites)
 			this.projectsWithSitesShowing = true;
 			if (this.showAllProjects) this.allProjects = this.allProjectsHolder.map(x => Object.assign({}, x));
 			else this.filteredProjects = this.allFilteredProjectsHolder.map(x => Object.assign({}, x));
+			this.NoMatches = false;
 		}
 		if (this.chosenSortBy) {
 			this.sortProjListBy(this.chosenSortBy, 'redo');
