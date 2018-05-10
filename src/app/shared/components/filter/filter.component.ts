@@ -395,7 +395,7 @@ export class FilterComponent implements OnInit {
                         let testVar = this.projMulti.filter((proj: IMultiSelectOption) => { return proj.id == eachParam; });
                         this.chosenFiltersObj.PROJ.push(this.projMulti.filter((proj: IMultiSelectOption) => { return proj.id == eachParam; })[0]);
                     });
-                    this.onProjectSelect(this.chosenFiltersObj.PROJ);
+                    
                 } else {
                     //remove it
                     delete this.chosenFiltersObj.p_project;
@@ -403,12 +403,16 @@ export class FilterComponent implements OnInit {
                 }
                 break; 
         }//end switch
-
         // let google analytics know of the event
         gtag('event', 'click', {'event_category': 'Filter','event_label': 'filterChange: ' + (which + ": {" + e + "}")});
-        // send filters to mapService and siglService to get FilteredProjects listed and update geojson
-        this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
-        this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
+        
+        if(this.chosenFiltersObj.PROJ){
+            this.onProjectSelect(this.chosenFiltersObj.PROJ);
+        } else{
+            // send filters to mapService and siglService to get FilteredProjects listed and update geojson
+            this._mapService.updateFilteredSites(this.chosenFiltersObj); //updates map geojson
+            this._siglService.setFilteredSites(this.chosenFiltersObj); //updates project and sites from services in the List of Projects
+        }
     } // end filterChange
 
     // Project Name was changed in filters 
