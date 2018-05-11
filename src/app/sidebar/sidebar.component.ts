@@ -190,11 +190,11 @@ export class SidebarComponent implements OnInit {
         })
         
         /*TODO handle changes to the project name dropdown via subscritption*/
-        this._siglService.fullProject.subscribe((project: Ifullproject) =>{
+       /*  this._siglService.fullProject.subscribe((project: Ifullproject) =>{
             console.log("change detected line 193 sidebar.comp.ts");
-            this.filteredProjects = [];
+            //this.filteredProjects = [];
             
-        }); 
+        });  */
         //********************************* */
         
 		//for the results accordion panel
