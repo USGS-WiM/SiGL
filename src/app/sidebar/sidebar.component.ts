@@ -190,9 +190,11 @@ export class SidebarComponent implements OnInit {
         })
         
         /*TODO handle changes to the project name dropdown via subscritption*/
-        /* this._siglService.fullProject.subscribe((project: Ifullproject) =>{
+       /*  this._siglService.fullProject.subscribe((project: Ifullproject) =>{
             console.log("change detected line 193 sidebar.comp.ts");
-        }); */
+            //this.filteredProjects = [];
+            
+        });  */
         //********************************* */
         
 		//for the results accordion panel
@@ -514,7 +516,7 @@ export class SidebarComponent implements OnInit {
 		var datePipe = new DatePipe("en-US");
 		var filteredDate = datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm:ss Z');
 		var strDate = filteredDate.toString();
-		str = "#U.S. Geological Survey" + '\r\n' + "#Science in the Great Lakes (SiGL) Mapper"  + '\r\n' + "#https://sigl.wim.usgs.gov/sigl/" + '\r\n' + "#Retrieved: " + strDate + '\r\n' + '\r\n' + '"#SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes, universities, and nonprofit organizations. The USGS assumes no responsibility for the accuracy or completeness of information provided by other entities."' + '\r\n' + '\r\n' + "#Filters applied: " 
+		str = "#U.S. Geological Survey" + '\r\n' + "#Science in the Great Lakes (SiGL) Mapper"  + '\r\n' + "#https://sigldev.wim.usgs.gov/sigl/" + '\r\n' + "#Retrieved: " + strDate + '\r\n' + '\r\n' + '"#SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes, universities, and nonprofit organizations. The USGS assumes no responsibility for the accuracy or completeness of information provided by other entities."' + '\r\n' + '\r\n' + "#Filters applied: " 
 		//adding in applied filters in text heading
 		if (this.chosenFilters) {	
 			var filt = this.chosenFilters;
@@ -658,7 +660,7 @@ export class SidebarComponent implements OnInit {
 		var datePipe = new DatePipe("en-US");
 		var filteredDate = datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm:ss Z');
 		var strDate = filteredDate.toString();
-		str = "#U.S. Geological Survey" + '\r\n' + "#Science in the Great Lakes (SiGL) Mapper"  + '\r\n' + "#https://sigl.wim.usgs.gov/sigl/" + '\r\n' + "#Retrieved: " + strDate + '\r\n' + '\r\n' + '"#SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes, universities, and nonprofit organizations. The USGS assumes no responsibility for the accuracy or completeness of information provided by other entities."' + '\r\n' + '\r\n' + "#Filters applied: " 
+		str = "#U.S. Geological Survey" + '\r\n' + "#Science in the Great Lakes (SiGL) Mapper"  + '\r\n' + "#https://sigldev.wim.usgs.gov/sigl/" + '\r\n' + "#Retrieved: " + strDate + '\r\n' + '\r\n' + '"#SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes, universities, and nonprofit organizations. The USGS assumes no responsibility for the accuracy or completeness of information provided by other entities."' + '\r\n' + '\r\n' + "#Filters applied: " 
 		//adding in applied filters in text heading
 		if (this.chosenFilters) {	
 			var filt = this.chosenFilters;

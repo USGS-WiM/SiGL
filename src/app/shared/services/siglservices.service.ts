@@ -274,7 +274,8 @@ export class SiglService {
 			if (filters.s_media) sitesParam.set("Media", filters.s_media.join(","));
 			if (filters.s_lakes) sitesParam.set("Lake", filters.s_lakes.join(","));
 			if (filters.s_states) sitesParam.set("State", filters.s_states.join(","));
-			if (filters.s_monitorEffect) sitesParam.set("ProjMonitorCoords", filters.s_monitorEffect.join(","));
+            if (filters.s_monitorEffect) sitesParam.set("ProjMonitorCoords", filters.s_monitorEffect.join(","));
+            //if (filters.p_project) sitesParam.set("ProjMonitorCoords", filters.s_monitorEffect.join(","));
 			
 			if (sitesParam.paramsMap.size > 0) {
 				if (this.filteredSiteSubscription) this.filteredSiteSubscription.unsubscribe();
@@ -301,8 +302,10 @@ export class SiglService {
 			} else {
 				if (filters.ProjectName) {
 					// project name search
-					this._loaderService.hideSidebarLoad();
-					this.setFullProject(filters.ProjectName.project_id.toString());
+                    this._loaderService.hideSidebarLoad();
+                    this._filteredProjectSubject.next([]);
+                    this.setFullProject(filters.ProjectName.project_id.toString());
+                    
 				} else {
 					this._loaderService.hideSidebarLoad();
 					this._filteredProjectSubject.next([]);
@@ -386,8 +389,4 @@ export class SiglService {
         this._showSidebarSubject.next(false);
     }
 
-   /*  public clearFilters(): Observable<any> {
-        alert("in clear filter function");
-        this._
-    } */
 }
