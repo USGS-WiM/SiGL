@@ -335,6 +335,9 @@
                     <div *ngIf="NoMatches">
                         There are no projects that match the filtered request.
                     </div>
+                    <div *ngIf="ProjectNameSelected">
+                        You have selected by project name.  See the sites remaining on the map, as well as the "Project Summary" pane at the bottom of the map, for more details.
+                    </div>
                 </ng-template>
             </ngb-panel>
         </ngb-accordion>

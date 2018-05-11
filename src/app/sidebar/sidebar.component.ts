@@ -67,6 +67,7 @@ export class SidebarComponent implements OnInit {
 	public cededCheck: boolean;
     public tribalCheck: boolean;
 	public basinsCheck: boolean;
+	public ProjectNameSelected: boolean;
 
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService,
 		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService) { }
@@ -77,6 +78,7 @@ export class SidebarComponent implements OnInit {
 		this.unHighlightProjName = false;
 		this.projectNameClickOnOff = 0;
 		this.siteNameClickOnOff = 0;
+		this.ProjectNameSelected = false;
 		// update selected site when point is clicked in map
 		this._mapService.siteClicked.subscribe(site => {
 			if (Object.keys(site).length > 0) {
@@ -166,7 +168,9 @@ export class SidebarComponent implements OnInit {
 				this.projectFilters = true;
 			else this.projectFilters = false;
 
-			this.filterCount = Object.keys(this.chosenFilters).length;			
+			this.filterCount = Object.keys(this.chosenFilters).length;	
+			
+			if (choices.ProjectName) this.ProjectNameSelected = true;
 
 		});
 		this._siglService.sitePointClickBool.subscribe((val: boolean) => {
@@ -189,7 +193,7 @@ export class SidebarComponent implements OnInit {
 			this.chosenSortBy = this.sortByObject[0];
         })
         
-        /*TODO handle changes to the project name dropdown via subscritption*/
+        /*TODO handle changes to the project name dropdown via subscription*/
        /*  this._siglService.fullProject.subscribe((project: Ifullproject) =>{
             console.log("change detected line 193 sidebar.comp.ts");
             //this.filteredProjects = [];
@@ -221,12 +225,8 @@ export class SidebarComponent implements OnInit {
 				//clear it all
                 this.filteredProjects = [];
 				// HERE Show all projects only if there are no filters chosen				
-				if (this.filterCount > 0) {
-					this.NoMatches = true;
-					this.showAllProjects = false;
-				}
-				else 
-					this.showAllProjects = true;
+				if (this.filterCount > 0) this.showAllProjects = false;
+				else this.showAllProjects = true;
 			}
 			if (this.chosenSortBy) {
 				this.sortProjListBy(this.chosenSortBy, 'redo');

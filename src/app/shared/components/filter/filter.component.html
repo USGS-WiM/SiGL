@@ -74,8 +74,9 @@
             </div>
             <br/>
             
+            <h5 id="selectByProject">Select a Project (clears the above filters)</h5>
             <div class="row">
-                    <label class="col-xs-3">Search by project name: (Clears the above filters)</label>
+                    <label class="col-xs-3">Project Name:</label>
                     <div class="col-xs-6">
                             <ss-multiselect-dropdown [options]="projMulti" [(ngModel)]="projectSelected" [settings]="singleSettings" (ngModelChange)="filterChange('project', $event)"></ss-multiselect-dropdown>
                     </div>
