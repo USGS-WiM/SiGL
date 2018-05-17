@@ -262,9 +262,8 @@ export class SiglService {
 	public setFilteredSites(filters: IchosenFilters): void {
 		this.chosenFilters = filters;
 		this._loaderService.showSidebarLoad();
+		let sitesParam: URLSearchParams = new URLSearchParams();
 		if (Object.keys(filters).length > 0) {
-			// filter it
-			let sitesParam: URLSearchParams = new URLSearchParams();
 			if (filters.p_organization) sitesParam.set("ProjOrg", filters.p_organization.toString());
 			if (filters.p_objectives) sitesParam.set("ProjObjs", filters.p_objectives.join(','));
 			if(filters.s_parameters) sitesParam.set("Parameters", filters.s_parameters.join(","));
@@ -275,48 +274,38 @@ export class SiglService {
 			if (filters.s_lakes) sitesParam.set("Lake", filters.s_lakes.join(","));
 			if (filters.s_states) sitesParam.set("State", filters.s_states.join(","));
             if (filters.s_monitorEffect) sitesParam.set("ProjMonitorCoords", filters.s_monitorEffect.join(","));
-            //if (filters.p_project) sitesParam.set("ProjMonitorCoords", filters.s_monitorEffect.join(","));
-			
-			if (sitesParam.paramsMap.size > 0) {
-				if (this.filteredSiteSubscription) this.filteredSiteSubscription.unsubscribe();
-				// hit the filtered projects url
-				let options = new RequestOptions( { headers: CONFIG.MIN_JSON_HEADERS, search: sitesParam });
-				this.filteredSiteSubscription = this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
-					.map(res => <Array<Ifilteredproject>>res.json())
-					.catch((err, caught) => this.handleError(err, caught))
-					.subscribe(proj => {
-						// HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
-						for (let p of proj) {
-							for (let s of p.projectSites) {
-								if (this.filteredSiteIDArray.includes(s.site_id))
-								{
-									s.isDisplayed = true;
-								} else {
-									s.isTempDisplayed = false; //set rest to hold isTempDisplayed property
-								}						
-							}
+			//if (filters.p_project) sitesParam.set("ProjMonitorCoords", filters.s_monitorEffect.join(","));
+		}
+			if (this.filteredSiteSubscription) this.filteredSiteSubscription.unsubscribe();
+			// hit the filtered projects url
+			let options = new RequestOptions( { headers: CONFIG.MIN_JSON_HEADERS, search: sitesParam });
+			this.filteredSiteSubscription = this._http.get(CONFIG.FILTERED_PROJECTS_URL, options)
+				.map(res => <Array<Ifilteredproject>>res.json())
+				.catch((err, caught) => this.handleError(err, caught))
+				.subscribe(proj => {
+					// HERE is where to add the loop to find all the site_ids from filtered sites to these sites to add 'filtered' prop = true
+					for (let p of proj) {
+						for (let s of p.projectSites) {
+							if (this.filteredSiteIDArray.includes(s.site_id))
+							{
+								s.isDisplayed = true;
+							} else {
+								s.isTempDisplayed = false; //set rest to hold isTempDisplayed property
+							}						
 						}
+					}
+					if (sitesParam.paramsMap.size > 0) {
 						this._loaderService.hideSidebarLoad();
 						this._filteredProjectSubject.next(proj);
-					});					
-			} else {
-				if (filters.ProjectName) {
-					// project name search
-                    this._loaderService.hideSidebarLoad();
-                    this._filteredProjectSubject.next([]);
-                    this.setFullProject(filters.ProjectName.project_id.toString());
-                    
-				} else {
-					this._loaderService.hideSidebarLoad();
-					this._filteredProjectSubject.next([]);
-				}
-			}			
-		} else {
-			// clear it all and show allProjects in sidebar
-			this._loaderService.hideSidebarLoad();
-            this._filteredProjectSubject.next([]);
-			// HERE show all
-		}
+					} else {
+						this._loaderService.hideSidebarLoad();
+						this._filteredProjectSubject.next([]);
+						if (filters.ProjectName) {
+							// project name search
+							this.setFullProject(filters.ProjectName.project_id.toString());
+						}
+					}
+				});	
 	}
 	// GetFullProject?ByProject=
 	public setFullProject(projectId: string){		
