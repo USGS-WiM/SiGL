@@ -332,7 +332,7 @@
                         </div>
                     </div>
 
-                    <div *ngIf="NoMatches">
+                    <div *ngIf="NoMatches && !ProjectNameSelected">
                         There are no projects that match the filtered request.
                     </div>
                     <div *ngIf="ProjectNameSelected">

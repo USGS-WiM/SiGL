@@ -210,6 +210,7 @@ export class SidebarComponent implements OnInit {
 			if (projects.length > 0) {
 				this.showAllProjects = false;
 				this.NoMatches = false;
+				this.ProjectNameSelected = false;
 				this.accordion.activeIds = ['projList'];
 				projects.forEach((p: Ifilteredproject) => {
 					p.isCollapsed = true;
@@ -223,9 +224,9 @@ export class SidebarComponent implements OnInit {
 				
 			} else {
 				//clear it all
-                this.filteredProjects = [];
+				this.filteredProjects = [];
 				// HERE Show all projects only if there are no filters chosen				
-				if (this.filterCount > 0) this.showAllProjects = false;
+				if (this.filterCount > 0) this.showAllProjects = false; 
 				else this.showAllProjects = true;
 			}
 			if (this.chosenSortBy) {
@@ -238,6 +239,8 @@ export class SidebarComponent implements OnInit {
 				if (this.filteredProjects.length == 0) { //if all filtered projects have no sites
 					this.NoMatches = true;
 				}
+			} else {
+				if (this.filteredProjects.length == 0 && this.showAllProjects == false) this.NoMatches = true;
 			}
 
 		});
@@ -301,13 +304,11 @@ export class SidebarComponent implements OnInit {
 
 	public ClearFilt() {
 		//below works to clear map and sidebar/project list
-		gtag('event', 'click', {'event_category': 'Filter','event_label': 'filterCleared'});
-		this.chosenFilters = {};
-		this._mapService.updateFilteredSites(this.chosenFilters); //updates map geojson
-        this._siglService.setFilteredSites(this.chosenFilters);
 		this._siglService.setClearAllFilters(true);
 		this.unHighlightProjName = true;
 		this.projectNameClickOnOff = 0
+		this.ProjectNameSelected = false;
+		this.NoMatches = false;
     }
 
 	// toggle between showing only filtered sites and all sites under a project value = 'all' or 'filtered'
