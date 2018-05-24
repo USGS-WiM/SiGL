@@ -13,11 +13,13 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import 'rxjs/Rx';
 import { PageScrollInstance, PageScrollService } from 'ng2-page-scroll';
+import { Observable } from "rxjs/Observable";
 
 import { BasemapsComponent } from "../mainview/basemaps/basemaps.component";
 import { LayersComponent } from "../mainview/layers/layers.component"; 
 
 import { ModalService } from "../shared/services/modal.service";
+import { LoaderService } from "../shared/services/loader.service";
 import { IchosenFilters } from "../shared/interfaces/chosenFilters.interface";
 import { Ifilteredproject } from "../shared/interfaces/filteredproject";
 import { Isimplesite } from "../shared/interfaces/simplesite";
@@ -26,7 +28,7 @@ import { SiglService } from "../shared/services/siglservices.service";
 import { MapService } from '../shared/services/map.service';
 import { checkAndUpdateBinding } from '@angular/core/src/view/util';
 import { NullAstVisitor } from '@angular/compiler';
-import { Subject } from 'rxjs/Rx';
+import { Subject, Subscription } from 'rxjs/Rx';
 
 declare let gtag: Function;
 
@@ -68,9 +70,11 @@ export class SidebarComponent implements OnInit {
     public tribalCheck: boolean;
 	public basinsCheck: boolean;
 	public ProjectNameSelected: boolean;
+	private timer: Observable<any>;
+	private subscription: Subscription;
 
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService,
-		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService) { }
+		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService, private _loaderService: LoaderService) { }
 
 	ngOnInit() {
 		this.chosenSortBy = undefined;
@@ -771,15 +775,21 @@ export class SidebarComponent implements OnInit {
 	//toggle on/off Additional Layers
 	public toggleLayer(newVal: string) {
 		let index = this.chosenLayers.indexOf(newVal);
-
+		
 		if (index > -1) {
 			//already on, turn it off and remove from array
 			this.chosenLayers.splice(index, 1);
 			this._mapService.map.removeLayer(this._mapService.additionalLayers[newVal]);
 		} else {
 			// not in there yet, turn it on and add to array
+			this._loaderService.showFullPageLoad(); //need some sort of subscribe?
 			this.chosenLayers.push(newVal);
 			this._mapService.map.addLayer(this._mapService.additionalLayers[newVal]);
+			this.timer = Observable.timer(5000);
+			if (newVal == "basins") this.timer = Observable.timer(10000);
+			this.subscription = this.timer.subscribe(() => {
+				this._loaderService.hideFullPageLoad();
+			})
 		}
 
 	}
