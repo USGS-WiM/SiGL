@@ -556,12 +556,14 @@ Misc
   font-size: 14px;
   line-height: 16px;
   justify-content: space-between;
+  padding: 1.5px;
 }
 .projDiv div:last-child{
   display: flex;
   flex-direction: column;
   justify-content: center;
   /*padding-left: 8px;*/
+  padding: 1.5px;
 }
 
 .modal-body #filterContent h5{

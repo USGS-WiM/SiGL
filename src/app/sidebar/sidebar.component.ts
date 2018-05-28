@@ -258,7 +258,7 @@ export class SidebarComponent implements OnInit {
 		this.areasCheck = false;
 		this.cededCheck = false;
         this.tribalCheck = false;
-        this.basinsCheck = false;
+		this.basinsCheck = false;
 	} // end ngOnInit()
 
 	// show filter button click
@@ -614,10 +614,18 @@ export class SidebarComponent implements OnInit {
 					if (array[i]["Organizations"] == array[i][index]) {
 						if (array[i][index].length > 1) {
 							for (let org = 0; org < array[i][index].length; org++) {
-								line += array[i][index][org] + "; "
+								let orgName = array[i][index][org];
+								if (orgName.indexOf(",") > -1) {
+									orgName = orgName.replace(/,/g,' -');
+								};
+								line += orgName + "; "
 							}
 						} else {
-							line += array[i][index][0]
+							let orgName = array[i][index][0];
+							if (orgName && orgName.indexOf(",") > -1) {
+								orgName = orgName.replace(/,/g,' -');
+							};
+							line += orgName
 						}
 					} else if (array[i][index] == array[i]["projectSites"]) {
 						for (let s = 0; s < array[i][index].length; s++) {
@@ -782,14 +790,8 @@ export class SidebarComponent implements OnInit {
 			this._mapService.map.removeLayer(this._mapService.additionalLayers[newVal]);
 		} else {
 			// not in there yet, turn it on and add to array
-			this._loaderService.showFullPageLoad(); //need some sort of subscribe?
 			this.chosenLayers.push(newVal);
 			this._mapService.map.addLayer(this._mapService.additionalLayers[newVal]);
-			this.timer = Observable.timer(5000);
-			if (newVal == "basins") this.timer = Observable.timer(10000);
-			this.subscription = this.timer.subscribe(() => {
-				this._loaderService.hideFullPageLoad();
-			})
 		}
 
 	}
