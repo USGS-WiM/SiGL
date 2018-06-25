@@ -257,7 +257,7 @@
                                     </form>
                                 </span>
                             </div>
-                            <div id="collapseExample" [ngbCollapse]="proj.isCollapsed">
+                            <div id="collapseExample" *ngIf="proj.projectSites?.length < 250" [ngbCollapse]="proj.isCollapsed">
                                 <div *ngFor="let s of proj.projectSites" class="marginLeft">
                                     <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
                                         <div appHighlight [id]="'site_'+s.site_id" *ngIf="s.isDisplayed">
@@ -314,19 +314,14 @@
                                     <span [style.background-color]="proj.projectSites.length > 0 ? '#0F8AFF': '#868e96'" class="badge badge-secondary">Site Count: {{proj.projectSites.length}}</span>
                                 </div>      
                             </div>
-                            <div id="collapseExample1" [ngbCollapse]="proj.isCollapsed">
-                                <div *ngFor="let s of proj.projectSites" class="marginLeft">
-                                    <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
-                                        <div appHighlight [id]="'site_'+s.site_id"><!-- *ngIf="s.isDisplayed">-->
-                                            <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
-                                        </div>
-                                    </div>
-                                    <!--<div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
-                                        <div appHighlight [id]="'site_'+s.site_id" *ngIf="s.isTempDisplayed">
-                                            <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
-                                        </div>
-                                    </div>-->
-                                </div>
+                            <div id="collapseExample1" *ngIf="proj.projectSites?.length < 8000" [ngbCollapse]="proj.isCollapsed" >
+                                    <ul *ngFor="let s of proj.projectSites" class="marginLeft">
+                                        <li [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
+                                            <span appHighlight [id]="'site_'+s.site_id"><!-- *ngIf="s.isDisplayed">-->
+                                                <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
+                                            </span>
+                                        </li>
+                                    </ul>
                             </div>
                             <hr />
                         </div>
