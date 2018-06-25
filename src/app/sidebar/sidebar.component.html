@@ -314,7 +314,7 @@
                                     <span [style.background-color]="proj.projectSites.length > 0 ? '#0F8AFF': '#868e96'" class="badge badge-secondary">Site Count: {{proj.projectSites.length}}</span>
                                 </div>      
                             </div>
-                            <div id="collapseExample1" *ngIf="proj.projectSites?.length < 8000" [ngbCollapse]="proj.isCollapsed" >
+                            <div id="collapseExample1" *ngIf="proj.projectSites?.length < 250" [ngbCollapse]="proj.isCollapsed" >
                                     <ul *ngFor="let s of proj.projectSites" class="marginLeft">
                                         <li [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
                                             <span appHighlight [id]="'site_'+s.site_id"><!-- *ngIf="s.isDisplayed">-->
