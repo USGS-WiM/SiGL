@@ -315,13 +315,11 @@
                                 </div>      
                             </div>
                             <div id="collapseExample1" *ngIf="proj.projectSites?.length < 250" [ngbCollapse]="proj.isCollapsed" >
-                                    <ul *ngFor="let s of proj.projectSites" class="marginLeft">
-                                        <li [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
-                                            <span appHighlight [id]="'site_'+s.site_id"><!-- *ngIf="s.isDisplayed">-->
-                                                <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
-                                            </span>
-                                        </li>
-                                    </ul>
+                                    <p *ngFor="let s of proj.projectSites" class="marginLeft" [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
+                                        <span appHighlight [id]="'site_'+s.site_id"><!-- *ngIf="s.isDisplayed">-->
+                                            <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
+                                        </span>
+                                    </p>
                             </div>
                             <hr />
                         </div>
