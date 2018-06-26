@@ -782,5 +782,9 @@ export class SidebarComponent implements OnInit {
 			this._mapService.map.addLayer(this._mapService.additionalLayers[newVal]);
 		}
 
-	}
+    }
+    
+    public loadSites():void {
+        alert('soemthing mappened');
+    }
 }

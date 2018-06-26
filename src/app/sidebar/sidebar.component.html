@@ -10,10 +10,10 @@
             <!-- Layers -->
             <ngb-panel title="Layers">
                 <ng-template ngbPanelContent style='filter: brightness(120%)'>
-                        <button class="layersBtn"><input [(ngModel)]="areasCheck" name="areasCheck" (change)="toggleLayer('areas')" type="checkbox"> EPA Areas of Concern</button>
-                        <button class="layersBtn"><input [(ngModel)]="cededCheck" name="cededCheck" (change)="toggleLayer('ceded')" type="checkbox"> Ceded Tribal Boundaries</button>
-                        <button class="layersBtn"><input [(ngModel)]="tribalCheck" name="tribalCheck" (change)="toggleLayer('tribal')" type="checkbox"> Tribal Reservation Boundaries</button>
-                        <button class="layersBtn"><input [(ngModel)]="basinsCheck" name="basinsCheck" (change)="toggleLayer('basins')" type="checkbox"> Great Lakes Basins</button>
+                        <button class="layersBtn"><input [(ngModel)]="areasCheck" name="areasCheck" (ngModelChange)="toggleLayer('areas')" type="checkbox"> EPA Areas of Concern</button>
+                        <button class="layersBtn"><input [(ngModel)]="cededCheck" name="cededCheck" (ngModelChange)="toggleLayer('ceded')" type="checkbox"> Ceded Tribal Boundaries</button>
+                        <button class="layersBtn"><input [(ngModel)]="tribalCheck" name="tribalCheck" (ngModelChange)="toggleLayer('tribal')" type="checkbox"> Tribal Reservation Boundaries</button>
+                        <button class="layersBtn"><input [(ngModel)]="basinsCheck" name="basinsCheck" (ngModelChange)="toggleLayer('basins')" type="checkbox"> Great Lakes Basins</button>
                 <!-- <layers></layers>-->
                 </ng-template>
             </ngb-panel>
@@ -304,7 +304,7 @@
                         <div *ngFor="let proj of allProjects;let i = index;" class='projDiv'>
                             <div [style.background]="selectedProjectId == proj.project_id && !unHighlightProjName ? '#eaeaea': 'none'">
                                 <a *ngIf="proj.projectSites.length > 0" (click)="proj.isCollapsed = !proj.isCollapsed" [attr.aria-expanded]="!proj.isCollapsed"
-                                    aria-controls="collapseExample1">
+                                    aria-controls="collapseExample1" >
                                     <i [ngClass]="proj.isCollapsed ? 'fa fa-caret-right' : 'fa fa-caret-down'" aria-hidden="true"></i>
                                 </a>
                                 <span>
@@ -314,13 +314,17 @@
                                     <span [style.background-color]="proj.projectSites.length > 0 ? '#0F8AFF': '#868e96'" class="badge badge-secondary">Site Count: {{proj.projectSites.length}}</span>
                                 </div>      
                             </div>
-                            <div id="collapseExample1" *ngIf="proj.projectSites?.length < 250" [ngbCollapse]="proj.isCollapsed" >
-                                    <p *ngFor="let s of proj.projectSites" class="marginLeft" [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
-                                        <span appHighlight [id]="'site_'+s.site_id"><!-- *ngIf="s.isDisplayed">-->
-                                            <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
-                                        </span>
-                                    </p>
+                            <div id="collapseExample1"  [ngbCollapse]="proj.isCollapsed">
+                                <ng-container *ngIf="proj.projectSites?.length < 350; else tooManySites">
+                                        <div *ngFor="let s of proj.projectSites" class="marginLeft" [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
+                                            <span appHighlight [id]="'site_'+s.site_id"><!-- *ngIf="s.isDisplayed">-->
+                                                <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
+                                            </span>
+                                        </div>
+                                </ng-container>
+                                <ng-template #tooManySites>There are too many sites to display</ng-template>
                             </div>
+                            
                             <hr />
                         </div>
                     </div>
