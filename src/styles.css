@@ -553,10 +553,40 @@ Misc
 */
 .projDiv div:nth-child(1){
   display: flex;
-  font-size: 14px;
-  line-height: 16px;
-  justify-content: space-between;
+  font-size: 13px;
+  line-height: 17px;
+  justify-content: flex-start;
   padding: 1.5px;
+}
+.projDiv div:nth-child(1) span{
+  flex-grow:3;
+}
+.projDiv div:nth-child(1) .pull-right{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-left: 4px;
+}
+.projDiv div:nth-child(1) .pull-right .badge{
+  max-height:14px;
+}
+.projDiv div:nth-child(1) a:nth-child(1) .fa-caret-right,
+.projDiv div:nth-child(1) a:nth-child(1) .fa-caret-down{
+  width: 15px;
+  font-size: 16px;
+}
+.projDiv .marginLeft{
+  box-sizing: border-box;
+  padding: 2px 0 !important;
+  font-size: 12px !important;
+  line-height: 14px !important;
+}
+.projDiv .marginLeft a{
+  font-size: 12px !important;
+  line-height: 13px !important;
+}
+.projDiv .fa-caret-down{
+  padding-right: 5px !important;
 }
 .projDiv div:last-child{
   display: flex;
@@ -565,6 +595,9 @@ Misc
   /*padding-left: 8px;*/
   padding: 1.5px;
 }
+
+/* Align site count to right */
+
 
 .modal-body #filterContent h5{
   padding-top: 0;
