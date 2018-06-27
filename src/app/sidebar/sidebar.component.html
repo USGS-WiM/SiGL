@@ -244,8 +244,7 @@
                                     <a [style.font-weight]="selectedProjectId == proj.project_id && !unHighlightProjName ? 'bold': '400'" (click)="showProjectDetails(proj, false)">{{proj.name}}</a>
                                 </span>
                                 <span class="">
-                                    <!-- <span class="pull-right"> -->
-                                    <form [formGroup]="siteCountForm">
+                                    <form [formGroup]="siteCountForm" class="pull-right">
                                         <div class="btn-group" ngbRadioGroup name="radioBasic" formControlName="siteToggle">
                                             <label ngbButtonLabel class="btn-primary siteFormLabel all">
                                                 <input ngbButton type="radio" (click)="toggleSiteList('all', proj.project_id)" [value]="'all'">All sites ({{proj.projectSites.length}})
