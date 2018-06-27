@@ -258,18 +258,20 @@
                                 </span>
                             </div>
                             <div id="collapseExample" [ngbCollapse]="proj.isCollapsed" *ngIf="!proj.isCollapsed">
-                                <div *ngFor="let s of proj.projectSites" class="marginLeft">
-                                    <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
-                                        <div appHighlight [id]="'site_'+s.site_id" *ngIf="s.isDisplayed">
+                                <ng-container *ngFor="let s of proj.projectSites" class="marginLeft">
+                                    <ng-container *ngIf="s.isDisplayed">
+                                        <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'" >
+                                            <div appHighlight [id]="'site_'+s.site_id" >
+                                                <a [style.color]="s.isDisplayed ? '#ff9e2a' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'" *ngIf="s.isTempDisplayed">
+                                        <div appHighlight [id]="'site_'+s.site_id" >
                                             <a [style.color]="s.isDisplayed ? '#ff9e2a' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
                                         </div>
                                     </div>
-                                    <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
-                                        <div appHighlight [id]="'site_'+s.site_id" *ngIf="s.isTempDisplayed">
-                                            <a [style.color]="s.isDisplayed ? '#ff9e2a' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                </ng-container>
                             </div>
                             <hr />
                         </div>
