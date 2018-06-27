@@ -37,7 +37,7 @@ declare let gtag: Function;
 })
 export class SidebarComponent implements OnInit {
 	@ViewChild('acc') accordion;
-	@ViewChild('sidebarContainer') private sidebarContainer: ElementRef;
+    @ViewChild('sidebarContainer') private sidebarContainer: ElementRef;
 	public chosenFilters: IchosenFilters;
 	public filterCount: number;
 	public siteFilters: boolean;
@@ -67,7 +67,7 @@ export class SidebarComponent implements OnInit {
 	public cededCheck: boolean;
     public tribalCheck: boolean;
 	public basinsCheck: boolean;
-	public ProjectNameSelected: boolean;
+    public ProjectNameSelected: boolean;
 
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService,
 		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService) { }
@@ -782,9 +782,5 @@ export class SidebarComponent implements OnInit {
 			this._mapService.map.addLayer(this._mapService.additionalLayers[newVal]);
 		}
 
-    }
-    
-    public loadSites():void {
-        alert('soemthing mappened');
     }
 }
