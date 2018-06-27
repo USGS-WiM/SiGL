@@ -257,7 +257,7 @@
                                     </form>
                                 </span>
                             </div>
-                            <div id="collapseExample" [ngbCollapse]="proj.isCollapsed">
+                            <div id="collapseExample" [ngbCollapse]="proj.isCollapsed" *ngIf="!proj.isCollapsed">
                                 <div *ngFor="let s of proj.projectSites" class="marginLeft">
                                     <div [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
                                         <div appHighlight [id]="'site_'+s.site_id" *ngIf="s.isDisplayed">
