@@ -373,6 +373,7 @@ export class MapviewComponent implements OnInit {
             maxZoom: 19,
             defaultExtentControl: true,
             layers: [this._mapService.baseMaps.Topo],
+            renderer: L.canvas()
         });
 
         //keeps the geojson always on the top of all other layers

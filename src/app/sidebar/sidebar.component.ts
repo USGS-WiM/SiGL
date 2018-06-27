@@ -13,13 +13,11 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import 'rxjs/Rx';
 import { PageScrollInstance, PageScrollService } from 'ng2-page-scroll';
-import { Observable } from "rxjs/Observable";
 
 import { BasemapsComponent } from "../mainview/basemaps/basemaps.component";
 import { LayersComponent } from "../mainview/layers/layers.component"; 
 
 import { ModalService } from "../shared/services/modal.service";
-import { LoaderService } from "../shared/services/loader.service";
 import { IchosenFilters } from "../shared/interfaces/chosenFilters.interface";
 import { Ifilteredproject } from "../shared/interfaces/filteredproject";
 import { Isimplesite } from "../shared/interfaces/simplesite";
@@ -28,7 +26,7 @@ import { SiglService } from "../shared/services/siglservices.service";
 import { MapService } from '../shared/services/map.service';
 import { checkAndUpdateBinding } from '@angular/core/src/view/util';
 import { NullAstVisitor } from '@angular/compiler';
-import { Subject, Subscription } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Rx';
 
 declare let gtag: Function;
 
@@ -39,7 +37,7 @@ declare let gtag: Function;
 })
 export class SidebarComponent implements OnInit {
 	@ViewChild('acc') accordion;
-	@ViewChild('sidebarContainer') private sidebarContainer: ElementRef;
+    @ViewChild('sidebarContainer') private sidebarContainer: ElementRef;
 	public chosenFilters: IchosenFilters;
 	public filterCount: number;
 	public siteFilters: boolean;
@@ -69,12 +67,10 @@ export class SidebarComponent implements OnInit {
 	public cededCheck: boolean;
     public tribalCheck: boolean;
 	public basinsCheck: boolean;
-	public ProjectNameSelected: boolean;
-	private timer: Observable<any>;
-	private subscription: Subscription;
+    public ProjectNameSelected: boolean;
 
 	constructor(private _modalService: ModalService, private _siglService: SiglService, private _mapService: MapService,
-		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService, private _loaderService: LoaderService) { }
+		private _formBuilder: FormBuilder, @Inject(DOCUMENT) private _document: any, private _pageScrollService: PageScrollService) { }
 
 	ngOnInit() {
 		this.chosenSortBy = undefined;
@@ -783,7 +779,7 @@ export class SidebarComponent implements OnInit {
 	//toggle on/off Additional Layers
 	public toggleLayer(newVal: string) {
 		let index = this.chosenLayers.indexOf(newVal);
-		
+
 		if (index > -1) {
 			//already on, turn it off and remove from array
 			this.chosenLayers.splice(index, 1);
@@ -794,5 +790,5 @@ export class SidebarComponent implements OnInit {
 			this._mapService.map.addLayer(this._mapService.additionalLayers[newVal]);
 		}
 
-	}
+    }
 }
