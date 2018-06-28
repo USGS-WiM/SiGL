@@ -316,13 +316,13 @@
                                 </div>      
                             </div>
                             <div id="collapseExample1"  [ngbCollapse]="proj.isCollapsed" *ngIf="!proj.isCollapsed">
-                                <table *ngIf="proj.projectSites?.length < 8000; else tooManySites">
-                                        <tr *ngFor="let s of proj.projectSites" class="marginLeft" [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
-                                            <td appHighlight [id]="'site_'+s.site_id"><!-- *ngIf="s.isDisplayed">-->
+                                <div *ngIf="proj.projectSites?.length < 8000; else tooManySites">
+                                        <ng-container *ngFor="let s of proj.projectSites" class="marginLeft" [style.background]="selectedSite == s.site_id ? '#eaeaea': 'none'">
+                                            <div appHighlight [id]="'site_'+s.site_id"><!-- *ngIf="s.isDisplayed">-->
                                                 <a [style.color]="s.isDisplayed ? 'orange' : '#212529'" [style.font-weight]="selectedSite == s.site_id ? 'bold': '400'" (click)="showSiteDetails(s)">{{s.name}}</a>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                            </div>
+                                        </ng-container>
+                                </div>
                                 <ng-template #tooManySites>There are too many sites to display</ng-template>
                                 
                             </div>
