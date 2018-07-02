@@ -305,7 +305,8 @@ export class SiglService {
 							this.setFullProject(filters.ProjectName.project_id.toString());
 						}
 					}
-				});	
+                });	
+                //this._loaderService.hideSidebarLoad();
 	}
 	// GetFullProject?ByProject=
 	public setFullProject(projectId: string){		
