@@ -366,15 +366,27 @@ export class MapviewComponent implements OnInit {
         this.instantiateDefaultExtentControl();
         this.instantiateZoomLevelControl();
 
-        this.map = L.map("map", {
-            center: L.latLng(44.2, -82.01),
-            zoom: 6,
-            minZoom: 4,
-            maxZoom: 19,
-            defaultExtentControl: true,
-            layers: [this._mapService.baseMaps.Topo],
-            renderer: L.canvas()
-        });
+        if (window.innerWidth < 800) {
+            this.map = L.map("map", {
+                center: L.latLng(44.2, -82.01),
+                zoom: 4,
+                minZoom: 4,
+                maxZoom: 19,
+                defaultExtentControl: true,
+                layers: [this._mapService.baseMaps.Topo],
+                renderer: L.canvas()
+            });
+        } else {
+            this.map = L.map("map", {
+                center: L.latLng(44.2, -82.01),
+                zoom: 6,
+                minZoom: 4,
+                maxZoom: 19,
+                defaultExtentControl: true,
+                layers: [this._mapService.baseMaps.Topo],
+                renderer: L.canvas()
+            });
+        }
 
         //keeps the geojson always on the top of all other layers
         this.map.createPane('areas');
