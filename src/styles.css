@@ -38,7 +38,7 @@ button:hover{
 button{
   border: none;
   background-color: #ECEEF4;
-  padding: 8px 14px;
+  padding: 10px 14px;
   border-radius: 3px;
   color: rgba(0,0,0,0.6);
   letter-spacing: -0.25px;
@@ -107,7 +107,7 @@ LEFT SIDEBAR
 */
 .sidebar{
   background-color: #ECEEF4;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  box-shadow:0 1px 15px rgba(0,0,0,.22) !important;
 }
 #sidebar .card{
   border-radius:0;
@@ -162,6 +162,8 @@ LEFT SIDEBAR
 
 #sidebar .card-body{
   background-color: white;
+  box-sizing: border-box;
+  padding: 15px 0;
 }
 
 
@@ -474,34 +476,33 @@ Sidebar Responsiveness
 /*
   Sidebar Footer
 */
-.identification{
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 9pt;
-  display: block;
-  width: 100%;
-  margin: 20px 0 0 0;
-  padding: 0;
-  padding-left: 8px;
-  opacity: .75;
-  text-align: center;
-  color: #6e7490;
-}
-.identification img{
-  margin-left: 5px;
-  width: 50px;
-  height: auto;
-}
 .sidebar-footer{
   display: block;
   box-sizing: border-box;
-  padding: 15px!important;
+  padding: 15px !important;
   text-align: center;
-  border-top: 1px dashed rgba(0,0,0,.25);
-  margin-top: 55px;
+  margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+}
+.sidebar-identification{
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+  transform: scale(1);
+  margin-bottom: 10px;
+}
+.sidebar-identification:hover{
+  transition: 0.2s;
+  transform: scale(1.025);
+}
+.sidebar-identification img{
+  display: inline-block;
+  height: 20px;
+  vertical-align: middle;
 }
 .sidebar-footer a{
   font-size: 10px;
@@ -708,4 +709,239 @@ select:hover, option:hover {
 #selectByProject {
   padding-top: 10px !important;
   border-top: 1px solid rgba(0,0,0,0.15);
+}
+
+
+/* Modal Fixes */
+.modal-dialog{
+  width: 90% !important;
+  max-width: 800px !important;
+  position: absolute !important;
+  top: 10vh;
+  margin: 0 !important;
+  left: 50%;
+  margin-left: -400px !important;
+  max-height: 80% !important;
+  height: auto !important;
+}
+@media (max-width: 900px) {
+  .modal-dialog{
+    left: 0 !important;
+    margin: 5% !important;
+  }
+}
+
+.modal-content{
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  max-height: 80vh !important;
+}
+
+.modal-body{
+  overflow-x: hidden;
+}
+
+.modal-header .close{
+  top: -2px !important;
+}
+.modal-header .modal-title{
+  font-size: 18px !important;
+  line-height: 22px !important;
+}
+
+.nav-tabs{
+  justify-content: center !important;
+  box-sizing: border-box;
+  padding-bottom: 10px;
+}
+@media (max-width: 800px) {
+  .nav-tabs{
+    flex-wrap: wrap !important;
+  }
+}
+.modal-body .nav-tabs .nav-item{
+  flex-grow: 3;
+}
+.modal-body .nav-tabs .nav-link{
+  padding: 5px 5px 5px 5px !important;
+  margin: 0;
+  min-width: 0;
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 11.5px;
+  line-height: 13px;
+  height: 100%;
+  box-sizing: border-box;
+  border: none !important;
+  border-radius: 4px;
+}
+.modal-body .nav-tabs .nav-link:hover{
+  color: black !important;
+}
+.modal-body .nav-tabs .nav-link.active{
+  background-color: rgba(240,240,246,0.8) !important
+}
+.modal-body .nav-tabs .nav-link i{
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.aboutTitle{
+  color: inherit !important;
+}
+
+#explanationHeader{
+  border-radius: 4px !important;
+  padding: 10px;
+  padding-left: 14px;
+  cursor: pointer;
+  background-color: white;
+  text-align: center;
+}
+#explanation{
+  font-style: normal;
+  text-transform: none !important;
+  font-weight: 500;
+  font-size: 14px !important;
+  letter-spacing: 0.3px;
+}
+.legend{
+  box-shadow:0 1px 15px rgba(0,0,0,.15) !important;
+  border-radius: 3px !important;
+}
+.leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
+  box-shadow: 0 1px 15px rgba(0,0,0,.15);
+  border: none !important;
+  background-clip: padding-box;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+}
+.leaflet-control-zoom-display{
+  padding: 5px 8px !important;
+}
+.leaflet-touch .leaflet-bar a{
+  line-height: 27px !important;
+}
+.leaflet-control-zoom-in{
+  line-height: 25px !important;
+}
+.leaflet-control-zoom-display{
+  margin-top: 13px !important;
+}
+
+/* User guide */
+.user-guide-header{
+  font-size: 18px;
+  font-weight: 500;
+  padding: 8px 0 15px 0;
+}
+.user-guide-item:nth-child(even){
+  background-color: rgba(240,240,246,0.8) !important
+}
+
+button{
+  padding: 5px 8px !important;
+  font-size: 13px !important;
+  letter-spacing: 0.3px !important;
+}
+
+/* Sidebar header */
+#sidebar .card-header a{
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  padding: 14px !important;
+}
+
+body{
+  font-size: 13px !important;
+  line-height: 16px !important;
+}
+
+.projDiv .collapse a{
+  color: rgb(33, 37, 41) !important;
+  font-weight: 500 !important;
+  padding: 4px 8px !important;
+  border-bottom: 1px solid rgba(0,0,0,0.1) !important;
+  width: 100% !important;
+  font-size: 12px !important;
+  line-height: 14px !important;
+  display: block  !important;
+  width: 94% !important;
+  margin-left: 6% !important;
+}
+
+/* Mobile nav fixes  */
+@media (max-width: 800px) {
+  #navBar{
+    display: flex !important;
+    padding-right: 0px !important;
+  }
+  #usgsLogoDiv{
+    padding-left: 5px !important;
+    padding-top: 22px !important;
+  }
+  #usgsLogoDiv #mobileMenuBtn{
+    margin-right: 15px !important;
+    font-size: 20px !important;
+  }
+  #usgsLogo{
+    height: 20px !important;
+  }
+  #headerLogo #titles .appname{
+    font-size: 13px !important;
+    margin: 0 !important;
+    line-height: 15px !important;
+  }
+  .aboutNav{
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    padding: 2px !important;
+    margin: 0 !important;
+  }
+  .aboutNav i{
+    display: none !important;
+  }
+}
+@media (max-width: 400px) {
+  #usgsLogo{
+    display: none;
+  }
+  #navbar .appname{
+    width: 116px !important;
+  }
+}
+@media (max-width: 500px) {
+  .leaflet-left .leaflet-control-scale{
+    position: fixed !important;
+    top: 123px !important;
+    margin: 0 !important;
+    left: 50px !important;
+  }
+}
+
+.modal-body #filterContent .row label{
+  min-width: 0 !important;
+    margin: 0 !important;
+    font-size: 11.5px !important;
+    line-height: 12.5px !important;
+}
+@media (max-width: 900px) {
+  .modal-body #filterContent .row{
+    width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .modal-body #filterContent .row{
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+  .modal-body #filterContent .row label{
+    width: 100% !important;
+    padding-bottom: 3px !important;
+    text-align: center !important;
+  }
 }
