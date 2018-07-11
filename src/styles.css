@@ -750,13 +750,13 @@ select:hover, option:hover {
   line-height: 22px !important;
 }
 
-.modal-body .nav-tabs{
+.nav-tabs{
   justify-content: center !important;
   box-sizing: border-box;
   padding-bottom: 10px;
 }
 @media (max-width: 800px) {
-  .modal-body .nav-tabs{
+  .nav-tabs{
     flex-wrap: wrap !important;
   }
 }
@@ -827,6 +827,9 @@ select:hover, option:hover {
 }
 .leaflet-control-zoom-in{
   line-height: 25px !important;
+}
+.leaflet-control-zoom-display{
+  margin-top: 13px !important;
 }
 
 /* User guide */
@@ -906,5 +909,39 @@ body{
 @media (max-width: 400px) {
   #usgsLogo{
     display: none;
+  }
+  #navbar .appname{
+    width: 116px !important;
+  }
+}
+@media (max-width: 500px) {
+  .leaflet-left .leaflet-control-scale{
+    position: fixed !important;
+    top: 123px !important;
+    margin: 0 !important;
+    left: 50px !important;
+  }
+}
+
+.modal-body #filterContent .row label{
+  min-width: 0 !important;
+    margin: 0 !important;
+    font-size: 11.5px !important;
+    line-height: 12.5px !important;
+}
+@media (max-width: 900px) {
+  .modal-body #filterContent .row{
+    width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .modal-body #filterContent .row{
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+  .modal-body #filterContent .row label{
+    width: 100% !important;
+    padding-bottom: 3px !important;
+    text-align: center !important;
   }
 }
