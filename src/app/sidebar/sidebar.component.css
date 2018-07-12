@@ -25,23 +25,30 @@
 a {
     cursor: pointer;
 }
-.active{
-    box-shadow: 2px 0px 15px 1px #0F8AFF;
-}
 .siteFormLabel {
-    font-size: 12px !important;
-    padding: 0.2rem!important;
+    font-size: 10.5px !important;
+    padding: 3px !important;
     border: none;
     text-align: center;
-    padding-left: 0.6rem!important;
-    padding-right: 0.6rem!important;
-    /*border-color:black!important;*/
+    width: 110px !important;
+    border-radius:2px !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 0 5px 0 !important;
+}
+.projDiv .siteFormLabel:active {
+    border: none !important;
+    box-shadow: none !important;
+}
+.projDiv .siteFormLabel.active:before {
+    content: '\f00c';
+    font-family: FontAWesome;
 }
 .all {
-    background-color:#58595b !important;
+    background-color:#10152C !important;
 }
 .filtered {
-    background-color:#ff9e2a !important;
+    background-color:#e67e22 !important;
 }
 .contained {
     padding-left: 10px;
