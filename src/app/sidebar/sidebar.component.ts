@@ -291,7 +291,8 @@ export class SidebarComponent implements OnInit {
     }
 
 	public showSiteDetails(site: Isimplesite): void {
-		this._mapService.setProjectNameClicked(false);
+        this._mapService.setProjectNameClicked(false);
+        this.showProjectDetails(site.project_id, true);
 		if (site.project_id != this.selectedProjectId) {
 			this.selectedProjectId = site.project_id;
 		}
