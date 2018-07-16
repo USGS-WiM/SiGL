@@ -295,6 +295,7 @@ export class SidebarComponent implements OnInit {
         this.showProjectDetails(site.project_id, true);
 		if (site.project_id != this.selectedProjectId) {
 			this.selectedProjectId = site.project_id;
+			this._siglService.setFullProject(this.selectedProjectId.toString());
 		}
 		gtag('event', 'click', { 'event_category': 'ProjectList', 'event_label': 'SiteNameClick: ' + site.site_id });
 		// if project name has been highlighted, need to unhighlight if single site clicked
