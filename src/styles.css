@@ -696,9 +696,9 @@ Misc
 }
 
 /* KJ Misc. Edits*/
-
-#filterModal {
-  overflow: visible;
+#filterModal .modal-content{
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 select:hover, option:hover {
