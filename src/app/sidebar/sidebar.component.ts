@@ -518,7 +518,7 @@ export class SidebarComponent implements OnInit {
 		var datePipe = new DatePipe("en-US");
 		var filteredDate = datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm:ss Z');
 		var strDate = filteredDate.toString();
-		str = "#U.S. Geological Survey" + '\r\n' + "#Science in the Great Lakes (SiGL) Mapper"  + '\r\n' + "#https://sigldev.wim.usgs.gov/sigl/" + '\r\n' + "#Retrieved: " + strDate + '\r\n' + '\r\n' + '"#SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes, universities, and nonprofit organizations. The USGS assumes no responsibility for the accuracy or completeness of information provided by other entities."' + '\r\n' + '\r\n' + "#Filters applied: " 
+		str = "#U.S. Geological Survey" + '\r\n' + "#Science in the Great Lakes (SiGL) Mapper"  + '\r\n' + "#https://sigl.wim.usgs.gov/sigl/" + '\r\n' + "#Retrieved: " + strDate + '\r\n' + '\r\n' + '"#SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes, universities, and nonprofit organizations. The USGS assumes no responsibility for the accuracy or completeness of information provided by other entities."' + '\r\n' + '\r\n' + "#Filters applied: " 
 		//adding in applied filters in text heading
 		if (this.chosenFilters) {	
 			var filt = this.chosenFilters;
@@ -629,13 +629,13 @@ export class SidebarComponent implements OnInit {
 							if (s == 0) {
 								// is this from AllProjects?
 								if (this.showAllProjects) {
-									line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
+									line += "https://sigl.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
 								} else {
 									//is this a filtered site?
 									if (array[i][index][s].isDisplayed)
-										line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
+										line += "https://sigl.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + ",true," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
 									else
-										line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
+										line += "https://sigl.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + ",false," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
 								}
 							} else {
 								// is this from AllProjects?
@@ -670,7 +670,7 @@ export class SidebarComponent implements OnInit {
 		var datePipe = new DatePipe("en-US");
 		var filteredDate = datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm:ss Z');
 		var strDate = filteredDate.toString();
-		str = "#U.S. Geological Survey" + '\r\n' + "#Science in the Great Lakes (SiGL) Mapper"  + '\r\n' + "#https://sigldev.wim.usgs.gov/sigl/" + '\r\n' + "#Retrieved: " + strDate + '\r\n' + '\r\n' + '"#SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes, universities, and nonprofit organizations. The USGS assumes no responsibility for the accuracy or completeness of information provided by other entities."' + '\r\n' + '\r\n' + "#Filters applied: " 
+		str = "#U.S. Geological Survey" + '\r\n' + "#Science in the Great Lakes (SiGL) Mapper"  + '\r\n' + "#https://sigl.wim.usgs.gov/sigl/" + '\r\n' + "#Retrieved: " + strDate + '\r\n' + '\r\n' + '"#SiGL project and site information is voluntarily provided and managed by federal and state agencies, municipalities, Tribes, universities, and nonprofit organizations. The USGS assumes no responsibility for the accuracy or completeness of information provided by other entities."' + '\r\n' + '\r\n' + "#Filters applied: " 
 		//adding in applied filters in text heading
 		if (this.chosenFilters) {	
 			var filt = this.chosenFilters;
@@ -760,7 +760,7 @@ export class SidebarComponent implements OnInit {
 					//for each site in this project, make a new line
 					for (let s = 0; s < array[i][index].length; s++) {
 						if (s == 0) {
-							line += "https://sigldev.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
+							line += "https://sigl.wim.usgs.gov/SiGLServices/projects/GetFullProject.json?ByProject=" + array[i][index][s].project_id + "," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
 						} else {
 							line += ",,," + array[i][index][s].site_id + "," + array[i][index][s].name.replace(/,/g, " ") + "," + array[i][index][s].latitude + "," + array[i][index][s].longitude + "," + array[i][index][s].Country + "," + array[i][index][s].State + "," + array[i][index][s].Lake + '\r\n';
 						}

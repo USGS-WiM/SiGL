@@ -11,7 +11,7 @@ import {Headers} from "@angular/http";
 
 @Injectable()
 export class CONFIG {
-    private static baseURL: string = "https://sigldev.wim.usgs.gov/SiGLServices/";
+    private static baseURL: string = "https://sigl.wim.usgs.gov/SiGLServices/";
 
     public static get PARAMETERS_URL(): string { return this.baseURL + "Parameters"; };
     public static get PROJ_DURATIONS_URL(): string { return this.baseURL + "ProjectDuration"; };
