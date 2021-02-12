@@ -1,29 +1,66 @@
-<div #sigllegend class="legend" [style.width]="controlCollapsed ? '200px': '300px'"> 
+<div
+    #sigllegend
+    class="legend"
+    [style.width]="controlCollapsed ? '200px' : '300px'"
+>
     <div id="explanationHeader">
-        <i aria-hidden="true" (click)="controlCollapsed=!controlCollapsed">
-            <div id="explanation"><i id="facaret" class="fa fa-list pull-left down4" aria-hidden="true"></i>&nbsp;Explanation</div>
+        <i aria-hidden="true" (click)="controlCollapsed = !controlCollapsed">
+            <div id="explanation">
+                <i
+                    id="facaret"
+                    class="fa fa-list pull-left down4"
+                    aria-hidden="true"
+                ></i
+                >&nbsp;Explanation
+            </div>
         </i>
     </div>
     <p class="contained" [hidden]="controlCollapsed">
-        <b>Sites</b><br clear="all"/>
-        <i class="legendSite"><span id="superiorDot" class="dot"></span></i>Lake Superior<br clear="all"/>
-        <i class="legendSite"><span id="michiganDot" class="dot"></span></i>Lake Michigan<br clear="all"/>
-        <i  class="legendSite"><span id="huronDot" class="dot"></span></i>Lake Huron<br clear="all"/>
-        <i class="legendSite"><span id="erieDot" class="dot"></span></i>Lake Erie<br clear="all"/>
-        <i class="legendSite"><span id="ontarioDot" class="dot"></span></i>Lake Ontario<br clear="all"/>
-        <i class="legendSite"><img id="selected" title="selected" src="assets/orangeSelected.png" /></i> Selected Site<br clear="all"/>
-        <i class="legendSite"><span id="showingGrayDot" class="dot"></span></i>Site not matching filter<br/><br clear="all"/>
+        <b>Sites</b><br clear="all" />
+        <i class="legendSite"><span id="superiorDot" class="dot"></span></i>Lake
+        Superior<br clear="all" />
+        <i class="legendSite"><span id="michiganDot" class="dot"></span></i>Lake
+        Michigan<br clear="all" />
+        <i class="legendSite"><span id="huronDot" class="dot"></span></i>Lake
+        Huron<br clear="all" />
+        <i class="legendSite"><span id="erieDot" class="dot"></span></i>Lake
+        Erie<br clear="all" />
+        <i class="legendSite"><span id="ontarioDot" class="dot"></span></i>Lake
+        Ontario<br clear="all" />
+        <i class="legendSite"
+            ><img
+                id="selected"
+                title="selected"
+                src="assets/orangeSelected.png"
+        /></i>
+        Selected Site<br clear="all" />
+        <i class="legendSite"><span id="showingGrayDot" class="dot"></span></i
+        >Site not matching filter<br /><br clear="all" />
 
-        <b>Additional Layers</b><br clear="all"/>
-        <i id="epaLegend" class="legendLayers"></i> EPA Areas of Concern<br clear="all"/>
-        <i id="cededLegend" class="legendLayers"></i> Ceded Tribal Boundaries<br clear="all"/>
-        <i id="tribalLegend" class="legendLayers"></i> Tribal Reservation Boundaries<br clear="all"/>
-        <b>Great Lakes Basins</b><br clear="all"/>
-        <i id="superiorLegend" class="legendLayers"></i> Lake Superior Basin<br clear="all"/>
-        <i id="michiganLegend" class="legendLayers"></i> Lake Michigan Basin<br clear="all"/>
-        <i id="huronLegend" class="legendLayers"></i> Lake Huron Basin<br clear="all"/>
-        <i id="erieLegend" class="legendLayers"></i> Lake Erie Basin<br clear="all"/>
-        <i id="ontarioLegend" class="legendLayers"></i> Lake Ontario Basin<br clear="all"/>
-
-    </p>               
+        <b>Additional Layers</b><br clear="all" />
+        <i id="epaLegend" class="legendLayers"></i> EPA Areas of Concern<br
+            clear="all"
+        />
+        <i id="cededLegend" class="legendLayers"></i> Ceded Tribal Boundaries<br
+            clear="all"
+        />
+        <i id="tribalLegend" class="legendLayers"></i> Tribal Reservation
+        Boundaries<br clear="all" />
+        <b>Great Lakes Basins</b><br clear="all" />
+        <i id="superiorLegend" class="legendLayers"></i> Lake Superior Basin<br
+            clear="all"
+        />
+        <i id="michiganLegend" class="legendLayers"></i> Lake Michigan Basin<br
+            clear="all"
+        />
+        <i id="huronLegend" class="legendLayers"></i> Lake Huron Basin<br
+            clear="all"
+        />
+        <i id="erieLegend" class="legendLayers"></i> Lake Erie Basin<br
+            clear="all"
+        />
+        <i id="ontarioLegend" class="legendLayers"></i> Lake Ontario Basin<br
+            clear="all"
+        />
+    </p>
 </div>

@@ -17,5 +17,5 @@ export interface Isimplesite {
     country: string;
     state_province: string;
     lake_type_id: number;
-   // nameClicked: boolean; // when name is clicked in sidebar, toggle true
+    // nameClicked: boolean; // when name is clicked in sidebar, toggle true
 }

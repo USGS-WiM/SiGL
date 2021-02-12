@@ -9,15 +9,15 @@
     display: block;
     width: 100%;
     text-align: left;
-    color: #10152C;
+    color: #10152c;
     margin: 0 auto;
     border-left: 4px solid transparent;
-    background-color:#fff;
+    background-color: #fff;
     font-weight: 600;
 }
-.basemapBtn:hover{
+.basemapBtn:hover {
     background-color: #eceef4;
 }
-.basemapBtn img{
+.basemapBtn img {
     margin-right: 5px !important;
 }

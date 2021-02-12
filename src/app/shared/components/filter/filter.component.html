@@ -1,7 +1,12 @@
 <ng-template #filtermodal id="filter" let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">&nbsp;</h4>
-        <button type="button" class="close" aria-label="Close" (click)="d('cancel')">
+        <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="d('cancel')"
+        >
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -11,31 +16,51 @@
             <div class="row">
                 <label class="col-xs-3">Parameters: </label>
                 <div class="col-xs-6">
-                    <ss-multiselect-dropdown [options]="parameterMulti" [(ngModel)]="parameterSelected" (ngModelChange)="filterChange('parameters', $event)"></ss-multiselect-dropdown>
+                    <ss-multiselect-dropdown
+                        [options]="parameterMulti"
+                        [(ngModel)]="parameterSelected"
+                        (ngModelChange)="filterChange('parameters', $event)"
+                    ></ss-multiselect-dropdown>
                 </div>
             </div>
             <div class="row">
                 <label class="col-xs-3">Site Resource Component: </label>
                 <div class="col-xs-6">
-                    <ss-multiselect-dropdown [options]="resourceMulti" [(ngModel)]="resourceSelected" (ngModelChange)="filterChange('resource', $event)"></ss-multiselect-dropdown>
+                    <ss-multiselect-dropdown
+                        [options]="resourceMulti"
+                        [(ngModel)]="resourceSelected"
+                        (ngModelChange)="filterChange('resource', $event)"
+                    ></ss-multiselect-dropdown>
                 </div>
             </div>
             <div class="row">
                 <label class="col-xs-3">Site Media: </label>
                 <div class="col-xs-6">
-                    <ss-multiselect-dropdown [options]="mediaMulti" [(ngModel)]="mediaSelected" (ngModelChange)="filterChange('media', $event)"></ss-multiselect-dropdown>
+                    <ss-multiselect-dropdown
+                        [options]="mediaMulti"
+                        [(ngModel)]="mediaSelected"
+                        (ngModelChange)="filterChange('media', $event)"
+                    ></ss-multiselect-dropdown>
                 </div>
             </div>
             <div class="row">
                 <label class="col-xs-3">Great Lake: </label>
                 <div class="col-xs-6">
-                    <ss-multiselect-dropdown [options]="lakeMulti" [(ngModel)]="lakeSelected" (ngModelChange)="filterChange('lake', $event)"></ss-multiselect-dropdown>
+                    <ss-multiselect-dropdown
+                        [options]="lakeMulti"
+                        [(ngModel)]="lakeSelected"
+                        (ngModelChange)="filterChange('lake', $event)"
+                    ></ss-multiselect-dropdown>
                 </div>
             </div>
             <div class="row">
                 <label class="col-xs-3">State/Province: </label>
                 <div class="col-xs-6">
-                    <ss-multiselect-dropdown [options]="stateMulti" [(ngModel)]="stateSelected" (ngModelChange)="filterChange('state', $event)"></ss-multiselect-dropdown>
+                    <ss-multiselect-dropdown
+                        [options]="stateMulti"
+                        [(ngModel)]="stateSelected"
+                        (ngModelChange)="filterChange('state', $event)"
+                    ></ss-multiselect-dropdown>
                 </div>
             </div>
 
@@ -43,48 +68,76 @@
             <div class="row">
                 <label class="col-xs-3">Project Duration: </label>
                 <div class="col-xs-6">
-                    <ss-multiselect-dropdown [options]="projDurationMulti" [(ngModel)]="projDurationSelected" (ngModelChange)="filterChange('duration', $event)"></ss-multiselect-dropdown>
+                    <ss-multiselect-dropdown
+                        [options]="projDurationMulti"
+                        [(ngModel)]="projDurationSelected"
+                        (ngModelChange)="filterChange('duration', $event)"
+                    ></ss-multiselect-dropdown>
                 </div>
             </div>
             <div class="row">
                 <label class="col-xs-3">Project Status: </label>
                 <div class="col-xs-6">
-                    <ss-multiselect-dropdown [options]="projStatusMulti" [(ngModel)]="projStatusSelected" (ngModelChange)="filterChange('status', $event)"></ss-multiselect-dropdown>
+                    <ss-multiselect-dropdown
+                        [options]="projStatusMulti"
+                        [(ngModel)]="projStatusSelected"
+                        (ngModelChange)="filterChange('status', $event)"
+                    ></ss-multiselect-dropdown>
                 </div>
             </div>
             <div class="row">
-                <label class="col-xs-3">Monitoring effort or coordination: </label>
+                <label class="col-xs-3"
+                    >Monitoring effort or coordination:
+                </label>
                 <div class="col-xs-6">
-                    <ss-multiselect-dropdown [options]="monitoringEffortMulti" [(ngModel)]="monitoringEffortSelected" (ngModelChange)="filterChange('monitoring', $event)"></ss-multiselect-dropdown>
+                    <ss-multiselect-dropdown
+                        [options]="monitoringEffortMulti"
+                        [(ngModel)]="monitoringEffortSelected"
+                        (ngModelChange)="filterChange('monitoring', $event)"
+                    ></ss-multiselect-dropdown>
                 </div>
             </div>
             <div class="row">
                 <label class="col-xs-3">Project Objective: </label>
                 <div class="col-xs-6">
-                    <ss-multiselect-dropdown [options]="objectiveMulti" [(ngModel)]="objectiveSelected" (ngModelChange)="filterChange('objective', $event)"></ss-multiselect-dropdown>
+                    <ss-multiselect-dropdown
+                        [options]="objectiveMulti"
+                        [(ngModel)]="objectiveSelected"
+                        (ngModelChange)="filterChange('objective', $event)"
+                    ></ss-multiselect-dropdown>
                 </div>
             </div>
-            <br/>
+            <br />
             <!--new singleselects-->
             <div class="row">
                 <label class="col-xs-3">Project Organization: </label>
                 <div class="col-xs-6">
-                        <ss-multiselect-dropdown [options]="orgMulti" [(ngModel)]="orgSelected" [settings]="singleSettings" (ngModelChange)="filterChange('organization', $event)"></ss-multiselect-dropdown>
+                    <ss-multiselect-dropdown
+                        [options]="orgMulti"
+                        [(ngModel)]="orgSelected"
+                        [settings]="singleSettings"
+                        (ngModelChange)="filterChange('organization', $event)"
+                    ></ss-multiselect-dropdown>
                 </div>
             </div>
-            <br/>
-            
-            <h5 id="selectByProject">Select a Project (clears the above filters)</h5>
+            <br />
+
+            <h5 id="selectByProject">
+                Select a Project (clears the above filters)
+            </h5>
             <div class="row">
-                    <label class="col-xs-3">Project Name:</label>
-                    <div class="col-xs-6">
-                            <ss-multiselect-dropdown [options]="projMulti" [(ngModel)]="projectSelected" [settings]="singleSettings" (ngModelChange)="filterChange('project', $event)"></ss-multiselect-dropdown>
-                    </div>
+                <label class="col-xs-3">Project Name:</label>
+                <div class="col-xs-6">
+                    <ss-multiselect-dropdown
+                        [options]="projMulti"
+                        [(ngModel)]="projectSelected"
+                        [settings]="singleSettings"
+                        (ngModelChange)="filterChange('project', $event)"
+                    ></ss-multiselect-dropdown>
                 </div>
+            </div>
             <!--End New singlselects-->
-            
-            
-            
+
             <!-- <div class="row">
                 <label class="col-xs-3">Project Organization: </label>
                 <div class="col-xs-6">
@@ -109,7 +162,16 @@
     </div>
     <div class="modal-footer">
         <!--<button type="button" (click)="c('Clear')">Clear All</button>-->
-        <button id="clearButton" type="button" (click)="Clear()">Clear All</button>
-        <button id="closeButton" type="button" (click)="c('Search')" class="actionBtn">Close</button>
+        <button id="clearButton" type="button" (click)="Clear()">
+            Clear All
+        </button>
+        <button
+            id="closeButton"
+            type="button"
+            (click)="c('Search')"
+            class="actionBtn"
+        >
+            Close
+        </button>
     </div>
 </ng-template>

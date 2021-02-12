@@ -1,15 +1,16 @@
 #navbar {
-   top: 0px;
-   left: 0px;
-   right: 0px;
-   background-color: black;
-   color: #E7E4CE;
-   position: absolute;
-   z-index: 1;
-   display: inline;
-   font-family: BryantWebRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-   font-size: 40px;
-   padding-right: 15px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: black;
+    color: #e7e4ce;
+    position: absolute;
+    z-index: 1;
+    display: inline;
+    font-family: BryantWebRegular, "Lucida Sans Unicode", "Lucida Grande",
+        sans-serif;
+    font-size: 40px;
+    padding-right: 15px;
 }
 #usgsLogoDiv {
     float: left;
@@ -19,31 +20,33 @@
     padding-top: 10px;
     padding-right: 5px;
     padding-bottom: 5px;
-    text-align: center;   
-   line-height: 0px !important;
+    text-align: center;
+    line-height: 0px !important;
 }
-#headerLogo{
+#headerLogo {
     background-color: black;
     width: 70%;
     float: left;
 }
 #usgsLogo {
-   height: 45px;
-   cursor: pointer;
+    height: 45px;
+    cursor: pointer;
 }
 #title {
     float: left;
     padding-right: 5px;
     padding-left: 10px;
     padding-top: 10px;
-    font-family: "BryantWebBold","Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    font-family: "BryantWebBold", "Lucida Sans Unicode", "Lucida Grande",
+        sans-serif;
 }
 #titleSeparator {
-    color: #F37A49;
+    color: #f37a49;
     float: left;
     padding-right: 5px;
     padding-top: 10px;
-    font-family: BryantWebBold, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    font-family: BryantWebBold, "Lucida Sans Unicode", "Lucida Grande",
+        sans-serif;
 }
 #subTitle {
     padding-top: 10px;
@@ -53,16 +56,16 @@
     float: right;
     padding: 20px;
     font-size: 16px;
-    color: #AAAAB5;
+    color: #aaaab5;
 }
 #helpIcon {
     float: right;
     cursor: pointer;
     padding-top: 5px;
 }
-.aboutNav {    
+.aboutNav {
     position: relative;
-    color: rgba(255,255,255,.8);
+    color: rgba(255, 255, 255, 0.8);
     background: 0 0;
     font-size: 10pt;
     line-height: 16px;
@@ -70,6 +73,6 @@
     text-transform: uppercase;
     margin: 0 4px;
     box-sizing: border-box;
-    letter-spacing: .5px;
+    letter-spacing: 0.5px;
     height: 60px;
 }

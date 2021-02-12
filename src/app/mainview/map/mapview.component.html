@@ -4,77 +4,125 @@
 <div id="map">
     <sigllegend></sigllegend>
 </div>
-<div id="bottomBar" [hidden]="!showBottomBar" [ngStyle]="style" mwlResizable [enableGhostResize]="true" [resizeCursorPrecision]="30" 
-    (resizeEnd)="onResizeEnd($event)" [resizeEdges]="{bottom: false, right: false, top: true, left: false}">
+<div
+    id="bottomBar"
+    [hidden]="!showBottomBar"
+    [ngStyle]="style"
+    mwlResizable
+    [enableGhostResize]="true"
+    [resizeCursorPrecision]="30"
+    (resizeEnd)="onResizeEnd($event)"
+    [resizeEdges]="{ bottom: false, right: false, top: true, left: false }"
+>
     <div id="handle"><i class="fa fa-arrows-v" aria-hidden="true"></i></div>
 
     <div id="tabContainer">
-        <ngb-tabset #t> 
+        <ngb-tabset #t>
             <ngb-tab title="Project Summary" id="project">
                 <ng-template ngbTabContent>
                     <div>
-                        <span *ngIf="fullProj" class="dataHeader">Project Name: {{fullProj.Name}}
+                        <span *ngIf="fullProj" class="dataHeader"
+                            >Project Name: {{ fullProj.Name }}
                             <br *ngIf="fullProj?.last_edited_stamp" />
-                            <span style="font-size:smaller;color:black;font-weight:normal" *ngIf="fullProj?.last_edited_stamp">
-                                last edited: {{fullProj.last_edited_stamp | date: 'yMMMd'}}
-                            </span> 
+                            <span
+                                style="
+                                    font-size: smaller;
+                                    color: black;
+                                    font-weight: normal;
+                                "
+                                *ngIf="fullProj?.last_edited_stamp"
+                            >
+                                last edited:
+                                {{ fullProj.last_edited_stamp | date: "yMMMd" }}
+                            </span>
                         </span>
                     </div>
                     <div>
                         <div *ngIf="fullProj?.Organizations.length > 0">
                             <span class="dataLabel">Organizations: </span>
                             <ul>
-                                <li *ngFor="let org of fullProj?.Organizations">{{org.OrganizationName}}<span *ngIf="org.DivisionName != ''">, {{org.DivisionName}}</span><span *ngIf="org.SectionName != ''">, {{org.SectionName}}</span></li>
+                                <li *ngFor="let org of fullProj?.Organizations">
+                                    {{ org.OrganizationName
+                                    }}<span *ngIf="org.DivisionName != ''"
+                                        >, {{ org.DivisionName }}</span
+                                    ><span *ngIf="org.SectionName != ''"
+                                        >, {{ org.SectionName }}</span
+                                    >
+                                </li>
                             </ul>
                         </div>
                         <div *ngIf="fullProj?.ProjectURLs">
-                            <span class="dataLabel">Project Website<span *ngIf="fullProj.ProjectURLs.length > 1">s</span>:</span> 
-                                <ul>
-                                    <li *ngFor="let u of fullProj?.ProjectURLs">
-                                        <a target="blank" [href]="u">{{u}}</a></li>
-                                </ul>
+                            <span class="dataLabel"
+                                >Project Website<span
+                                    *ngIf="fullProj.ProjectURLs.length > 1"
+                                    >s</span
+                                >:</span
+                            >
+                            <ul>
+                                <li *ngFor="let u of fullProj?.ProjectURLs">
+                                    <a target="blank" [href]="u">{{ u }}</a>
+                                </li>
+                            </ul>
                         </div>
                         <div *ngIf="fullProj?.Status">
-                            <span class="dataLabel">Project Status: </span> 
-                            <span>{{fullProj.Status}}</span>
+                            <span class="dataLabel">Project Status: </span>
+                            <span>{{ fullProj.Status }}</span>
                         </div>
                         <div *ngIf="fullProj?.StartDate">
-                            <span class="dataLabel">Start Date: </span> 
-                            <span>{{fullProj.StartDate | date: 'MM/dd/yyyy'}}</span>
+                            <span class="dataLabel">Start Date: </span>
+                            <span>{{
+                                fullProj.StartDate | date: "MM/dd/yyyy"
+                            }}</span>
                         </div>
                         <div *ngIf="fullProj?.EndDate">
-                            <span class="dataLabel">End Date: </span> 
-                            <span>{{fullProj.EndDate | date: 'MM/dd/yyyy'}} </span>
+                            <span class="dataLabel">End Date: </span>
+                            <span
+                                >{{ fullProj.EndDate | date: "MM/dd/yyyy" }}
+                            </span>
                         </div>
                         <div *ngIf="fullProj?.Objectives.length > 0">
-                           <span class="dataLabel">Objectives:</span>
-                           <ul>
-                               <li *ngFor="let obj of fullProj?.Objectives">{{obj.objective}}</li>
-                           </ul>
+                            <span class="dataLabel">Objectives:</span>
+                            <ul>
+                                <li *ngFor="let obj of fullProj?.Objectives">
+                                    {{ obj.objective }}
+                                </li>
+                            </ul>
                         </div>
                         <div *ngIf="fullProj?.MonitoringCoords.length > 0">
-                            <span class="dataLabel">Project Monitoring Effort: </span>
+                            <span class="dataLabel"
+                                >Project Monitoring Effort:
+                            </span>
                             <ul>
-                                <li *ngFor="let MC of fullProj?.MonitoringCoords">{{MC.effort}}</li>
+                                <li
+                                    *ngFor="
+                                        let MC of fullProj?.MonitoringCoords
+                                    "
+                                >
+                                    {{ MC.effort }}
+                                </li>
                             </ul>
                         </div>
                         <div *ngIf="fullProj?.Duration">
-                            <span class="dataLabel">Project Duration: </span> 
-                            <span>{{fullProj.Duration}} </span>
+                            <span class="dataLabel">Project Duration: </span>
+                            <span>{{ fullProj.Duration }} </span>
                         </div>
                         <div *ngIf="fullProj?.Description">
-                            <span class="dataLabel">Project Description: </span> 
-                            <span>{{fullProj.Description}}</span>
+                            <span class="dataLabel">Project Description: </span>
+                            <span>{{ fullProj.Description }}</span>
                         </div>
                         <div *ngIf="fullProj?.Keywords.length > 0">
                             <span class="dataLabel">Project Keywords: </span>
                             <ul>
-                                <li *ngFor="let KW of fullProj?.Keywords">{{KW.term}}</li>
+                                <li *ngFor="let KW of fullProj?.Keywords">
+                                    {{ KW.term }}
+                                </li>
                             </ul>
                         </div>
                         <div *ngIf="fullProj?.AdditionalInfo">
-                            <span class="dataLabel">Additional Project Information: </span> 
-                            <span>{{fullProj.AdditionalInfo}}</span>
+                            <span class="dataLabel"
+                                >Additional Project Information:
+                            </span>
+                            <span>{{ fullProj.AdditionalInfo }}</span>
                         </div>
                     </div>
                 </ng-template>
@@ -84,18 +132,26 @@
                     <div>
                         <div *ngIf="fullProj?.DataHosts.length > 0">
                             <span class="dataHeader">Project Data</span>
-                            <div *ngFor="let DH of fullProj?.DataHosts">                                
+                            <div *ngFor="let DH of fullProj?.DataHosts">
                                 <div *ngIf="DH?.description">
-                                    <span class="dataLabel">Data Management System: </span>
-                                    <span>{{DH.description}}</span>
+                                    <span class="dataLabel"
+                                        >Data Management System:
+                                    </span>
+                                    <span>{{ DH.description }}</span>
                                 </div>
                                 <div *ngIf="DH?.host_name">
-                                    <span class="dataLabel">Data Hosting Entity: </span>
-                                    <span>{{DH.host_name}}</span>
+                                    <span class="dataLabel"
+                                        >Data Hosting Entity:
+                                    </span>
+                                    <span>{{ DH.host_name }}</span>
                                 </div>
                                 <div *ngIf="DH?.portal_url">
-                                    <span class="dataLabel">Online Data Location: </span>
-                                    <a target="blank" [href]="DH?.portal_url">{{DH.portal_url}}</a>
+                                    <span class="dataLabel"
+                                        >Online Data Location:
+                                    </span>
+                                    <a target="blank" [href]="DH?.portal_url">{{
+                                        DH.portal_url
+                                    }}</a>
                                 </div>
                                 <div>_____________________________</div>
                             </div>
@@ -103,22 +159,30 @@
                         <div>
                             <div *ngIf="fullProj?.Publications.length > 0">
                                 <span class="dataHeader">Publications</span>
-                                <div *ngFor="let PUB of fullProj?.Publications">                                    
+                                <div *ngFor="let PUB of fullProj?.Publications">
                                     <div *ngIf="PUB?.title">
-                                        <span class="dataLabel">Publication Title: </span>
-                                        <span>{{PUB.title}}</span>
+                                        <span class="dataLabel"
+                                            >Publication Title:
+                                        </span>
+                                        <span>{{ PUB.title }}</span>
                                     </div>
                                     <div *ngIf="PUB?.description">
-                                        <span class="dataLabel">Publication Description: </span>
-                                        <span>{{PUB.description}}</span>
+                                        <span class="dataLabel"
+                                            >Publication Description:
+                                        </span>
+                                        <span>{{ PUB.description }}</span>
                                     </div>
                                     <div *ngIf="PUB.url">
-                                        <span class="dataLabel">Publication URL: </span>
-                                        <a target="blank" [href]="PUB?.url">{{PUB.url}}</a>
+                                        <span class="dataLabel"
+                                            >Publication URL:
+                                        </span>
+                                        <a target="blank" [href]="PUB?.url">{{
+                                            PUB.url
+                                        }}</a>
                                     </div>
                                     <div>_____________________________</div>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                 </ng-template>
@@ -127,18 +191,29 @@
                 <ng-template ngbTabContent>
                     <div *ngIf="fullProj?.Contacts.length > 0">
                         <span class="dataHeader">Project Contacts</span>
-                        <div *ngFor="let C of fullProj?.Contacts">                            
+                        <div *ngFor="let C of fullProj?.Contacts">
                             <div *ngIf="C.name">
-                                <span>{{C.name}}</span>
+                                <span>{{ C.name }}</span>
                             </div>
                             <div *ngIf="C.ContactOrgName">
-                                <span>{{C.ContactOrgName}}<span *ngIf="C.ContactDivName != ''">, {{C.ContactDivName}}</span><span *ngIf="C.ContactSecName != ''">, {{C.ContactSecName}}</span></span> 
+                                <span
+                                    >{{ C.ContactOrgName
+                                    }}<span *ngIf="C.ContactDivName != ''"
+                                        >, {{ C.ContactDivName }}</span
+                                    ><span *ngIf="C.ContactSecName != ''"
+                                        >, {{ C.ContactSecName }}</span
+                                    ></span
+                                >
                             </div>
                             <div *ngIf="C.email">
-                                <a target="_blank" [href]="'mailto:' + C.email">{{C.email}}</a>
+                                <a
+                                    target="_blank"
+                                    [href]="'mailto:' + C.email"
+                                    >{{ C.email }}</a
+                                >
                             </div>
                             <div *ngIf="C.phone">
-                                <span>{{C.phone}}</span>
+                                <span>{{ C.phone }}</span>
                             </div>
                             <div>_____________________________</div>
                         </div>
@@ -147,152 +222,210 @@
             </ngb-tab>
             <ngb-tab title="Site Information" id="site">
                 <ng-template ngbTabContent>
-                     <div *ngIf="fullSiteFlag">
+                    <div *ngIf="fullSiteFlag">
                         <div>
                             <!--selecting the first site in the array for now-->
-                            <span *ngIf="fullSite" class="dataHeader">Site Name: {{fullSite.Name}}</span> 
+                            <span *ngIf="fullSite" class="dataHeader"
+                                >Site Name: {{ fullSite.Name }}</span
+                            >
                         </div>
-                        <ng-container *ngTemplateOutlet="innerTabset"></ng-container>
-                     </div>
-                     <div *ngIf="!fullSiteFlag">
+                        <ng-container
+                            *ngTemplateOutlet="innerTabset"
+                        ></ng-container>
+                    </div>
+                    <div *ngIf="!fullSiteFlag">
                         <div>
-                            <span >Select a site from the Project List sidebar or on the map to view detailed site information</span> 
+                            <span
+                                >Select a site from the Project List sidebar or
+                                on the map to view detailed site
+                                information</span
+                            >
                         </div>
-                        
-                     </div>
+                    </div>
                 </ng-template>
             </ngb-tab>
         </ngb-tabset>
-        
+
         <ng-template #innerTabset>
             <ngb-tabset>
                 <ngb-tab>
-                <ng-template ngbTabTitle>
-                    Site Details
-                </ng-template>
-                <ng-template ngbTabContent>
-                    <span *ngIf="fullSite">
-                        <div>
-                            <span class="dataLabel">Location: </span>
-                            <span class="dataLabel">Lat. </span><span>{{fullSite.latitude}}, </span><span class="dataLabel">Long. </span><span>{{fullSite.longitude}}</span>
-                        </div>
-                        <div>
-                            <span class="dataLabel">State: </span>
-                            <span>{{fullSite.State}}</span>
-                        </div>
-                        <div *ngIf="fullSite.Country">
-                            <span class="dataLabel" >Country: </span>
-                            <span>{{fullSite.Country}}</span>
-                        </div>
-                         <div *ngIf="fullSite.Lake">
-                            <span class="dataLabel" >Great Lake: </span>
-                            <span>{{fullSite.Lake}}</span>
-                        </div>
-                         <div *ngIf="fullSite.Waterbody">
-                            <span class="dataLabel">Waterbody: </span>
-                            <span>{{fullSite.Waterbody}}</span>
-                        </div>
-                         <div *ngIf="fullSite.Watershed">
-                            <span class="dataLabel">Watershed (HUC8): </span>
-                            <span>{{fullSite.Watershed}}</span>
-                        </div>
-                         <div *ngIf="fullSite.Description">
-                            <span class="dataLabel">Site Description: </span>
-                            <span>{{fullSite.Description}}</span>
-                        </div>
-                         <div *ngIf="fullSite.StartDate">
-                            <span class="dataLabel">Start Date: </span>
-                            <span>{{fullSite.StartDate | date: 'MM/dd/yyyy'}}</span>
-                        </div>
-                         <div *ngIf="fullSite.EndDate">
-                            <span class="dataLabel">End Date: </span>
-                            <span>{{fullSite.EndDate | date: 'MM/dd/yyyy'}}</span>
-                        </div>
-                         <div *ngIf="fullSite.Status">
-                            <span class="dataLabel">Status: </span>
-                            <span>{{fullSite.Status}}</span>
-                        </div>
-                        <div *ngIf="fullSite.Resources.length > 0">
-                            <span class="dataLabel">Resource Component: </span>
-                            <ul>
-                                <li *ngFor="let R of fullSite.Resources">{{R.resource_name}}</li>
-                            </ul>
-                        </div>
-                        <div *ngIf="fullSite.Media.length > 0">
-                            <span class="dataLabel">Media: </span>
-                            <ul>
-                                <li *ngFor="let M of fullSite.Media">{{M.media}}</li>
-                            </ul>
-                        </div>
-                        <div *ngIf="fullSite.Frequencies.length > 0">
-                            <span class="dataLabel">Sampling Frequency: </span>
-                            <ul>
-                                <li *ngFor="let F of fullSite.Frequencies">{{F.frequency}}</li>
-                            </ul>
-                        </div>
-                        <div *ngIf="fullSite.SamplePlatform">
-                            <span class="dataLabel">Sampling Platform: </span>
-                            <span>{{fullSite.SamplePlatform}}</span>
-                        </div>
-                        <div *ngIf="fullSite.AdditionalInfo">
-                            <span class="dataLabel">Additional Site Information: </span>
-                            <span>{{fullSite.AdditionalInfo}}</span>
-                        </div>
-                        <div *ngIf="fullSite.url">
-                            <span class="dataLabel">Site Website: </span>
-                            <a target="blank" [href]="fullSite?.url">{{fullSite.url}}</a> 
-                        </div>
-                    </span>
-                </ng-template>
+                    <ng-template ngbTabTitle> Site Details </ng-template>
+                    <ng-template ngbTabContent>
+                        <span *ngIf="fullSite">
+                            <div>
+                                <span class="dataLabel">Location: </span>
+                                <span class="dataLabel">Lat. </span
+                                ><span>{{ fullSite.latitude }}, </span
+                                ><span class="dataLabel">Long. </span
+                                ><span>{{ fullSite.longitude }}</span>
+                            </div>
+                            <div>
+                                <span class="dataLabel">State: </span>
+                                <span>{{ fullSite.State }}</span>
+                            </div>
+                            <div *ngIf="fullSite.Country">
+                                <span class="dataLabel">Country: </span>
+                                <span>{{ fullSite.Country }}</span>
+                            </div>
+                            <div *ngIf="fullSite.Lake">
+                                <span class="dataLabel">Great Lake: </span>
+                                <span>{{ fullSite.Lake }}</span>
+                            </div>
+                            <div *ngIf="fullSite.Waterbody">
+                                <span class="dataLabel">Waterbody: </span>
+                                <span>{{ fullSite.Waterbody }}</span>
+                            </div>
+                            <div *ngIf="fullSite.Watershed">
+                                <span class="dataLabel"
+                                    >Watershed (HUC8):
+                                </span>
+                                <span>{{ fullSite.Watershed }}</span>
+                            </div>
+                            <div *ngIf="fullSite.Description">
+                                <span class="dataLabel"
+                                    >Site Description:
+                                </span>
+                                <span>{{ fullSite.Description }}</span>
+                            </div>
+                            <div *ngIf="fullSite.StartDate">
+                                <span class="dataLabel">Start Date: </span>
+                                <span>{{
+                                    fullSite.StartDate | date: "MM/dd/yyyy"
+                                }}</span>
+                            </div>
+                            <div *ngIf="fullSite.EndDate">
+                                <span class="dataLabel">End Date: </span>
+                                <span>{{
+                                    fullSite.EndDate | date: "MM/dd/yyyy"
+                                }}</span>
+                            </div>
+                            <div *ngIf="fullSite.Status">
+                                <span class="dataLabel">Status: </span>
+                                <span>{{ fullSite.Status }}</span>
+                            </div>
+                            <div *ngIf="fullSite.Resources.length > 0">
+                                <span class="dataLabel"
+                                    >Resource Component:
+                                </span>
+                                <ul>
+                                    <li *ngFor="let R of fullSite.Resources">
+                                        {{ R.resource_name }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div *ngIf="fullSite.Media.length > 0">
+                                <span class="dataLabel">Media: </span>
+                                <ul>
+                                    <li *ngFor="let M of fullSite.Media">
+                                        {{ M.media }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div *ngIf="fullSite.Frequencies.length > 0">
+                                <span class="dataLabel"
+                                    >Sampling Frequency:
+                                </span>
+                                <ul>
+                                    <li *ngFor="let F of fullSite.Frequencies">
+                                        {{ F.frequency }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div *ngIf="fullSite.SamplePlatform">
+                                <span class="dataLabel"
+                                    >Sampling Platform:
+                                </span>
+                                <span>{{ fullSite.SamplePlatform }}</span>
+                            </div>
+                            <div *ngIf="fullSite.AdditionalInfo">
+                                <span class="dataLabel"
+                                    >Additional Site Information:
+                                </span>
+                                <span>{{ fullSite.AdditionalInfo }}</span>
+                            </div>
+                            <div *ngIf="fullSite.url">
+                                <span class="dataLabel">Site Website: </span>
+                                <a target="blank" [href]="fullSite?.url">{{
+                                    fullSite.url
+                                }}</a>
+                            </div>
+                        </span>
+                    </ng-template>
                 </ngb-tab>
                 <ngb-tab>
-                <ng-template ngbTabTitle>
-                    Parameters Sampled
-                </ng-template>
-                <ng-template ngbTabContent>
-                    <!--could this be custom pipe time?-->
-                    <div *ngIf="fullSite?.Parameters.length > 0">
-                       <div *ngIf="groupedParams?.BioArray">
-                            <span class="dataHeader">Biological</span>
-                            <ul>
-                                <li *ngFor="let Bio of groupedParams?.BioArray">{{Bio.parameter}}</li>
-                            </ul>
-                       </div> <!--END ngIf for Biological-->
-                       <div *ngIf="groupedParams?.ChemArray">
-                            <span class="dataHeader">Chemical</span>
-                            <ul>
-                                <li *ngFor="let Chem of groupedParams?.ChemArray">{{Chem.parameter}}</li>
-                            </ul>
-                       </div> <!--END ngIf for Chemical-->
-                       <div *ngIf="groupedParams?.MicroBioArray">
-                            <span class="dataHeader">Microbiological</span>
-                            <ul>
-                                <li *ngFor="let Micro of groupedParams?.MicroBioArray">{{Micro.parameter}}</li>
-                            </ul>
-                       </div> <!--END ngIf for Microbiological-->
-                       <div *ngIf="groupedParams?.PhysArray">
-                            <span class="dataHeader">Physical</span>
-                            <ul>
-                                <li *ngFor="let Phys of groupedParams?.PhysArray">{{Phys.parameter}}</li>
-                            </ul>
-                       </div> <!--END ngIf for Physical-->
-                       <div *ngIf="groupedParams?.ToxicArray">
-                            <span class="dataHeader">Toxicological</span>
-                            <ul>
-                                <li *ngFor="let Tox of groupedParams?.ToxicArray">{{Tox.parameter}}</li>
-                            </ul>
-                       </div> <!--END ngIf for Toxicological-->
-
-                    </div>
-                </ng-template>
+                    <ng-template ngbTabTitle> Parameters Sampled </ng-template>
+                    <ng-template ngbTabContent>
+                        <!--could this be custom pipe time?-->
+                        <div *ngIf="fullSite?.Parameters.length > 0">
+                            <div *ngIf="groupedParams?.BioArray">
+                                <span class="dataHeader">Biological</span>
+                                <ul>
+                                    <li
+                                        *ngFor="
+                                            let Bio of groupedParams?.BioArray
+                                        "
+                                    >
+                                        {{ Bio.parameter }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--END ngIf for Biological-->
+                            <div *ngIf="groupedParams?.ChemArray">
+                                <span class="dataHeader">Chemical</span>
+                                <ul>
+                                    <li
+                                        *ngFor="
+                                            let Chem of groupedParams?.ChemArray
+                                        "
+                                    >
+                                        {{ Chem.parameter }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--END ngIf for Chemical-->
+                            <div *ngIf="groupedParams?.MicroBioArray">
+                                <span class="dataHeader">Microbiological</span>
+                                <ul>
+                                    <li
+                                        *ngFor="
+                                            let Micro of groupedParams?.MicroBioArray
+                                        "
+                                    >
+                                        {{ Micro.parameter }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--END ngIf for Microbiological-->
+                            <div *ngIf="groupedParams?.PhysArray">
+                                <span class="dataHeader">Physical</span>
+                                <ul>
+                                    <li
+                                        *ngFor="
+                                            let Phys of groupedParams?.PhysArray
+                                        "
+                                    >
+                                        {{ Phys.parameter }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--END ngIf for Physical-->
+                            <div *ngIf="groupedParams?.ToxicArray">
+                                <span class="dataHeader">Toxicological</span>
+                                <ul>
+                                    <li
+                                        *ngFor="
+                                            let Tox of groupedParams?.ToxicArray
+                                        "
+                                    >
+                                        {{ Tox.parameter }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--END ngIf for Toxicological-->
+                        </div>
+                    </ng-template>
                 </ngb-tab>
-
             </ngb-tabset>
         </ng-template>
     </div>
-
-    
-
-
-
 </div>

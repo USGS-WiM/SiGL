@@ -10,11 +10,11 @@
     display: block;
     width: 100%;
     text-align: left;
-    color: #6F758E;
+    color: #6f758e;
     margin: 0 auto;
     border-left: 4px solid transparent;
-    background-color:#fff;
+    background-color: #fff;
 }
-.basemapBtn:hover{
+.basemapBtn:hover {
     background-color: #eceef4;
 }

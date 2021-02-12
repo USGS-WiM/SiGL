@@ -7,21 +7,21 @@
 // purpose:     Directive used in the sidebar Project List that is activated on mouseenter and mouseleave of the element with the selector
 //              Adds gray temporary highlight as user mouses over site names under the Project name.
 
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener } from "@angular/core";
 
 @Directive({
-    selector: '[appHighlight]'
+    selector: "[appHighlight]",
 })
 export class HighlightDirective {
-    constructor(private _el: ElementRef) { }
+    constructor(private _el: ElementRef) {}
 
     // on mouseenter, set backgroundColor to gray
-    @HostListener('mouseenter') onMouseEnter() {
-        this.highlight('#eaeaea');
-    }    
+    @HostListener("mouseenter") onMouseEnter() {
+        this.highlight("#eaeaea");
+    }
 
     // on mouseleave, set backgroundColor to null
-    @HostListener('mouseleave') onMouseLeave() {    
+    @HostListener("mouseleave") onMouseLeave() {
         this.highlight(null);
     }
 
