@@ -13,7 +13,6 @@ import { NgbTabset } from "@ng-bootstrap/ng-bootstrap";
 import { ResizeEvent } from "angular-resizable-element/dist/esm/src";
 import "leaflet.markercluster";
 import "leaflet.markercluster.freezable";
-import esri from "esri-leaflet";
 import { MapService } from "../../shared/services/map.service";
 import { FilterComponent } from "../../shared/components/filter/filter.component";
 import { SiglService } from "../../shared/services/siglservices.service";
