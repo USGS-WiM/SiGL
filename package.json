@@ -5,10 +5,14 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve -o",
-        "build": "ng build",
+        "build-test": "npm install && ng build --prod --base-href /sigl/",
+        "patch": "bump patch package.json code.json",
+        "minor": "bump minor package.json code.json",
+        "major": "bump major package.json code.json",
         "test": "ng test",
         "lint": "ng lint",
-        "e2e": "ng e2e"
+        "e2e": "ng e2e",
+        "live": "ng serve --configuration hmr"
     },
     "private": true,
     "dependencies": {
