@@ -5,7 +5,7 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve -o",
-        "build-test": "npm install && ng build --prod --base-href /sigl/",
+        "build-test": "npm install && ng build --prod",
         "patch": "bump patch package.json code.json",
         "minor": "bump minor package.json code.json",
         "major": "bump major package.json code.json",
@@ -62,6 +62,6 @@
         "protractor": "~5.1.0",
         "ts-node": "~2.0.0",
         "tslint": "~4.5.0",
-        "typescript": "^2.4.2"
+        "typescript": "~2.7.0"
     }
 }
