@@ -86,7 +86,7 @@ export class MapviewComponent implements OnInit {
         });
 
         this.tempSitesIcon = {
-            radius: 4,
+            radius: 8,
             fillColor: "#6d7175",
             color: "#000",
             weight: 0,
@@ -95,7 +95,7 @@ export class MapviewComponent implements OnInit {
             pane: "geojson",
         };
         this.highlightIcon = {
-            radius: 3,
+            radius: 6,
             weight: 12,
             opacity: 0.45,
             fill: true,
@@ -291,7 +291,7 @@ export class MapviewComponent implements OnInit {
                 }); //.addTo(this.map);
                 this.clusterGeoJsonMarkers = L.markerClusterGroup({
                     showCoverageOnHover: false, // When you mouse over a cluster it shows the bounds of its markers
-                    maxClusterRadius: 0.1, // The maximum radius that a cluster will cover from the central marker (in pixels). Default 80. Decreasing will make more, smaller clusters. You can also use a function that accepts the current map zoom and returns the maximum cluster radius in pixels.
+                    maxClusterRadius: 0.5, // The maximum radius that a cluster will cover from the central marker (in pixels). Default 80. Decreasing will make more, smaller clusters. You can also use a function that accepts the current map zoom and returns the maximum cluster radius in pixels.
                     spiderfyDistanceMultiplier: 2, // increase the distance of the spiderlegs, need this so that all points are clickable
                 });
 
@@ -403,7 +403,7 @@ export class MapviewComponent implements OnInit {
                 }); //.addTo(this.map);
                 this.clusterTempJsonMarkers = L.markerClusterGroup({
                     showCoverageOnHover: false, // When you mouse over a cluster it shows the bounds of its markers
-                    maxClusterRadius: 0.1, // The maximum radius that a cluster will cover from the central marker (in pixels). Default 80. Decreasing will make more, smaller clusters. You can also use a function that accepts the current map zoom and returns the maximum cluster radius in pixels.
+                    maxClusterRadius: 0.5, // The maximum radius that a cluster will cover from the central marker (in pixels). Default 80. Decreasing will make more, smaller clusters. You can also use a function that accepts the current map zoom and returns the maximum cluster radius in pixels.
                     spiderfyDistanceMultiplier: 2, // increase the distance of the spiderlegs, need this so that all points are clickable
                 });
 
@@ -702,7 +702,7 @@ export class MapviewComponent implements OnInit {
                 break;
         }
         return {
-            radius: 3,
+            radius: 6,
             fillColor: fillColor,
             color: "#000",
             weight: 0,
