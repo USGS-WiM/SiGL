@@ -30,7 +30,7 @@ import { ImonitorEffort } from "../../shared/interfaces/monitoreffort.interface"
 import { Iproject } from "../../shared/interfaces/project.interface";
 import { Iorganization } from "../../shared/interfaces/organization.interface";
 import { Iobjective } from "../../shared/interfaces/objective.interface";
-import { IchosenFilters } from "../../shared/interfaces/chosenFilters.interface";
+import { IchosenFilters } from "../../shared/interfaces/chosenfilters.interface";
 import { Isite } from "../../shared/interfaces/site.interface";
 import { Ifilteredproject } from "../../shared/interfaces/filteredproject";
 import { Ifullproject } from "../../shared/interfaces/fullproject.interface";
