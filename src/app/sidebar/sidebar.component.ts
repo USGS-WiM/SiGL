@@ -24,7 +24,7 @@ import { BasemapsComponent } from "../mainview/basemaps/basemaps.component";
 import { LayersComponent } from "../mainview/layers/layers.component";
 
 import { ModalService } from "../shared/services/modal.service";
-import { IchosenFilters } from "../shared/interfaces/chosenFilters.interface";
+import { IchosenFilters } from "../shared/interfaces/chosenfilters.interface";
 import { Ifilteredproject } from "../shared/interfaces/filteredproject";
 import { Isimplesite } from "../shared/interfaces/simplesite";
 import { Ifullproject } from "../shared/interfaces/fullproject.interface";
@@ -268,7 +268,7 @@ export class SidebarComponent implements OnInit {
         /*  this._siglService.fullProject.subscribe((project: Ifullproject) =>{
             console.log("change detected line 193 sidebar.comp.ts");
             //this.filteredProjects = [];
-            
+
         });  */
         //********************************* */
 

@@ -18,7 +18,7 @@ import { Subject } from "rxjs/Subject";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 import { CONFIG } from "./config";
-import { IchosenFilters } from "../../shared/interfaces/chosenFilters.interface";
+import { IchosenFilters } from "../../shared/interfaces/chosenfilters.interface";
 import { LoaderService } from "../../shared/services/loader.service";
 
 // import { isPending } from 'q'; // not sure why this is imported here, maybe started, but not finished?
