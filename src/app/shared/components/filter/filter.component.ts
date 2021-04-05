@@ -32,7 +32,7 @@ import { ImonitorEffort } from "../../../shared/interfaces/monitoreffort.interfa
 import { Iproject } from "../../../shared/interfaces/project.interface";
 import { Iorganization } from "../../../shared/interfaces/organization.interface";
 import { Iobjective } from "../../../shared/interfaces/objective.interface";
-import { IchosenFilters } from "../../../shared/interfaces/chosenFilters.interface";
+import { IchosenFilters } from "../../../shared/interfaces/chosenfilters.interface";
 import { MapService } from "../../../shared/services/map.service";
 import { prepareProfile } from "selenium-webdriver/firefox";
 declare let gtag: Function;
