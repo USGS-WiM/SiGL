@@ -4,6 +4,10 @@
 
 Science in the Great Lakes (SiGL) Mapper, a data-discovery tool that captures information about a wide range of scientific activities and provides details on how to access associated data and products. SiGL helps researchers and managers strategically plan, implement, and analyze monitoring and restoration activities by providing easy access to current and historical project metadata, connecting them with project leads and data repositories, and assisting in the identification of spatial and topical gaps in previous and ongoing monitoring efforts.
 
+### Data
+
+This project is officially retired.  An archive of the database is available in sciencebase [[### Prerequisites](https://www.sciencebase.gov/catalog/item/632a1b9ad34e71c6d67b908d)](https://www.sciencebase.gov/catalog/item/632a1b9ad34e71c6d67b908d)
+
 ### Prerequisites
 
 This project has dependencies that require [Node 6.9.0] (https://nodejs.org/en/) or higher, which includes NPM 3 or higher, and Angular CLI.
